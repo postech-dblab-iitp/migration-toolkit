@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<migration version="9.1.0">
+	<source db_type="mysql" online="no">
+		<jdbc host="test-dbtool2" port="3306"
+			driver="mysql-connector-java-5.1.10-bin.jar" name="migrationdev"
+			user="cmt" password="cmt" charset="utf-8" timezone="GMT+8" />
+		<file location="gaoym0701.xml" charset="utf-8" timezone="GMT+8"
+			version="5.0" />
+		<tables>
+			<table name="table1" create="yes" replace="yes" migrate_data="yes"
+				pk="yes" partition="no" target="table1">
+				<columns>
+					<column name="f1" target="f1" />
+					<column name="f2" target="f2" />
+					<column name="f3" target="f3" />
+				</columns>
+				<constraints>
+					<fk name="fk1" target="fk1" />
+					<index name="idx1" target="idx1" />
+				</constraints>
+			</table>
+		</tables>
+		<sqlTables>
+			<sqlTable name="sqltable1" create="yes" replace="yes"
+				migrate_data="yes" target="table2">
+				<statement>
+					select * from table1 where f1&gt;1000
+				</statement>
+				<columns>
+					<column name="f1" target="f1" />
+					<column name="f2" target="f2" />
+					<column name="f3" target="f3" />
+				</columns>
+			</sqlTable>
+		</sqlTables>
+		<sequences>
+			<sequence name="serial_1" target="serial_1" />
+		</sequences>
+		<views>
+			<view name="view_1" target="view_1" />
+		</views>
+		<triggers>
+			<trigger name="trigger1" target="trigger1" />
+		</triggers>
+		<functions>
+			<function name="function1" target="trigger1" />
+		</functions>
+		<procedures>
+			<procedure name="procedure1" target="trigger1" />
+		</procedures>
+	</source>
+	<target type="online/offline/dir" version="8.4.0" db_type="cubrid">
+		<fileRepository dir="e:/output/" />
+		<cmServer host="localhost" port="8333" user="admin"
+			password="1111">
+			<existDB name="mt" user="dba" password="" charset="utf-8"
+				timezone="GMT+8" />
+			<loadDBSetting load_only="no" no_oid="no" no_logging="no"
+				no_statistics="no" optimize_db="no" />
+		</cmServer>
+		<jdbc name="mt" host="localhost" port="35000" driver="JDBC-8.4.0.1008.jar"
+			user="dba" password="" charset="utf-8" timezone="GMT+8" />
+		<tables>
+			<table name="table1">
+				<columns>
+					<column name="f1" type="integer" base_type="integer" null="no"
+						auto_increment="yes" start="0" increment="1" default="1" />
+					<column name="f2" type="set(datetime)" base_type="set"
+						sub_type="datetime" null="yes" auto_increment="no" start="0"
+						increment="1" default="1" />
+					<column name="f3" type="varchar(200)" base_type="varchar"
+						null="yes" auto_increment="no" start="0" increment="1" default="1" />
+				</columns>
+				<constraints>
+					<pk fields="f1" />
+					<fk name="fk1" on_update="RESTRICT" on_delete="RESTRICT"
+						on_cache_object="" fields="f2" ref_table="table2" ref_fields="f1" />
+					<index name="idx1" reverse="no" unique="no" fields="f3"
+						order_rule="ASC" pre_fix="xe_" />
+				</constraints>
+				<partitions type="range" expression="[f1]">
+					<range name="p0" value="10000" />
+					<range name="p1" value="20000" />
+					<range name="p2" value="30000" />
+				</partitions>
+			</table>
+
+			<table name="table2">
+				<columns>
+					<column name="f1" type="varchar(200)" base_type="varchar"
+						sub_type="" null="yes" auto_increment="no" start="0" increment="1"
+						default="1" />
+					<column name="f2" type="varchar(200)" base_type="varchar"
+						sub_type="" null="yes" auto_increment="no" start="0" increment="1"
+						default="1" />
+					<column name="f3" type="varchar(200)" base_type="varchar"
+						sub_type="" null="yes" auto_increment="no" start="0" increment="1"
+						default="1" />
+				</columns>
+				<constraints>
+					<pk fields="f1" />
+				</constraints>
+			</table>
+		</tables>
+		<sequences>
+			<sequence name="serial_1" start="0" nomax="yes" max="1000000000000"
+				nomin="yes" min="0" cycle="no" increment="1" cache="yes" cache_size="50"
+				order="" isXE="no" />
+		</sequences>
+		<views>
+			<view name="view_1">
+				<viewQuerySQL>
+					select * from table1
+					</viewQuerySQL>
+				<createViewSQL>
+					create view view_1 as select * from table1
+				</createViewSQL>
+				<viewColumns>
+					<viewColumn name="f1" type="varchar(200)" base_type="varchar"
+						default="1" />
+					<viewColumn name="f2" type="varchar(200)" base_type="varchar"
+						default="2" />
+					<viewColumn name="f3" type="varchar(200)" base_type="varchar" />
+				</viewColumns>
+			</view>
+		</views>
+	</target>
+
+	<params export_thread="5" import_thread="5" commit_count="5000" implicit_estimate_progress="no"/>
+</migration>

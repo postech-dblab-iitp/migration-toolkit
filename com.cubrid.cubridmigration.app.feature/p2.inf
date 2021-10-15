@@ -1,0 +1,1 @@
+instructions.configure=org.eclipse.equinox.p2.touchpoint.eclipse.addRepository(type:0,location:http${#58}//ftp.cubrid.org/sites/rcp/cubridmigration,name:CUBRID Migration Toolkit);org.eclipse.equinox.p2.touchpoint.eclipse.addRepository(type:1,location:http${#58}//ftp.cubrid.org/sites/rcp/cubridmigration,name:CUBRID Migration Toolkit)

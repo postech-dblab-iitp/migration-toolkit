@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<migration version="9.1.0">
+	<source db_type="csv" online="no">
+        <csvs charset="UTF-8" csv_escape="\" csv_null_value="\N;NULL;(NULL)" csv_quote="&quot;" csv_separate=",">
+            <csv create="yes" import_first_row="yes" name="athlete.csv" replace="yes" target="athlete">
+                <csv_columns>
+                    <csv_column create="yes" name="col1" target="code"/>
+                    <csv_column create="yes" name="col2" target="name"/>
+                    <csv_column create="yes" name="col3" target="gender"/>
+                    <csv_column create="yes" name="col4" target="nation_code"/>
+                    <csv_column create="yes" name="col5" target="event"/>
+                </csv_columns>
+            </csv>
+            <csv create="yes" import_first_row="yes" name="code.csv" replace="yes" target="code">
+                <csv_columns>
+                    <csv_column create="yes" name="col1" target="s_name"/>
+                    <csv_column create="yes" name="col2" target="f_name"/>
+                </csv_columns>
+            </csv>
+            <csv create="yes" import_first_row="yes" name="event.csv" replace="yes" target="event">
+                <csv_columns>
+                    <csv_column create="yes" name="col1" target="code"/>
+                    <csv_column create="yes" name="col2" target="sports"/>
+                    <csv_column create="yes" name="col3" target="name"/>
+                    <csv_column create="yes" name="col4" target="gender"/>
+                    <csv_column create="yes" name="col5" target="players"/>
+                </csv_columns>
+            </csv>
+            <csv create="yes" import_first_row="yes" name="game.csv" replace="yes" target="game">
+                <csv_columns>
+                    <csv_column create="yes" name="col1" target="host_year"/>
+                    <csv_column create="yes" name="col2" target="event_code"/>
+                    <csv_column create="yes" name="col3" target="athlete_code"/>
+                    <csv_column create="yes" name="col4" target="stadium_code"/>
+                    <csv_column create="yes" name="col5" target="nation_code"/>
+                    <csv_column create="yes" name="col6" target="medal"/>
+                    <csv_column create="yes" name="col7" target="game_date"/>
+                </csv_columns>
+            </csv>
+            <csv create="yes" import_first_row="yes" name="history.csv" replace="yes" target="history">
+                <csv_columns>
+                    <csv_column create="yes" name="col1" target="event_code"/>
+                    <csv_column create="yes" name="col2" target="athlete"/>
+                    <csv_column create="yes" name="col3" target="host_year"/>
+                    <csv_column create="yes" name="col4" target="score"/>
+                    <csv_column create="yes" name="col5" target="unit"/>
+                </csv_columns>
+            </csv>
+            <csv create="yes" import_first_row="yes" name="nation.csv" replace="yes" target="nation">
+                <csv_columns>
+                    <csv_column create="yes" name="col1" target="code"/>
+                    <csv_column create="yes" name="col2" target="name"/>
+                    <csv_column create="yes" name="col3" target="continent"/>
+                    <csv_column create="yes" name="col4" target="capital"/>
+                </csv_columns>
+            </csv>
+            <csv create="yes" import_first_row="yes" name="olympic.csv" replace="yes" target="olympic">
+                <csv_columns>
+                    <csv_column create="yes" name="col1" target="host_year"/>
+                    <csv_column create="yes" name="col2" target="host_nation"/>
+                    <csv_column create="yes" name="col3" target="host_city"/>
+                    <csv_column create="yes" name="col4" target="opening_date"/>
+                    <csv_column create="yes" name="col5" target="closing_date"/>
+                    <csv_column create="yes" name="col6" target="mascot"/>
+                    <csv_column create="yes" name="col7" target="slogan"/>
+                    <csv_column create="yes" name="col8" target="introduction"/>
+                </csv_columns>
+            </csv>
+            <csv create="yes" import_first_row="yes" name="participant.csv" replace="yes" target="participant">
+                <csv_columns>
+                    <csv_column create="yes" name="col1" target="host_year"/>
+                    <csv_column create="yes" name="col2" target="nation_code"/>
+                    <csv_column create="yes" name="col3" target="gold"/>
+                    <csv_column create="yes" name="col4" target="silver"/>
+                    <csv_column create="yes" name="col5" target="bronze"/>
+                </csv_columns>
+            </csv>
+            <csv create="yes" import_first_row="yes" name="record.csv" replace="yes" target="record">
+                <csv_columns>
+                    <csv_column create="yes" name="col1" target="host_year"/>
+                    <csv_column create="yes" name="col2" target="event_code"/>
+                    <csv_column create="yes" name="col3" target="athlete_code"/>
+                    <csv_column create="yes" name="col4" target="medal"/>
+                    <csv_column create="yes" name="col5" target="score"/>
+                    <csv_column create="yes" name="col6" target="unit"/>
+                </csv_columns>
+            </csv>
+            <csv create="yes" import_first_row="yes" name="stadium.csv" replace="yes" target="stadium">
+                <csv_columns>
+                    <csv_column create="yes" name="col1" target="code"/>
+                    <csv_column create="yes" name="col2" target="nation_code"/>
+                    <csv_column create="yes" name="col3" target="name"/>
+                    <csv_column create="yes" name="col4" target="area"/>
+                    <csv_column create="yes" name="col5" target="seats"/>
+                    <csv_column create="yes" name="col6" target="address"/>
+                </csv_columns>
+            </csv>
+            <csv create="yes" import_first_row="yes" name="test_binary.csv" replace="yes" target="test_binary">
+                <csv_columns>
+                    <csv_column create="yes" name="col1" target="f1"/>
+                    <csv_column create="yes" name="col2" target="f2"/>
+                    <csv_column create="yes" name="col3" target="f3"/>
+                </csv_columns>
+            </csv>
+            <csv create="yes" import_first_row="yes" name="test_hash_partition.csv" replace="yes" target="test_hash_partition">
+                <csv_columns>
+                    <csv_column create="yes" name="col1" target="col1"/>
+                    <csv_column create="yes" name="col2" target="col2"/>
+                </csv_columns>
+            </csv>
+            <csv create="yes" import_first_row="yes" name="test_list_partition.csv" replace="yes" target="test_list_partition">
+                <csv_columns>
+                    <csv_column create="yes" name="col1" target="col1"/>
+                    <csv_column create="yes" name="col2" target="col2"/>
+                </csv_columns>
+            </csv>
+            <csv create="yes" import_first_row="yes" name="test_range_partition.csv" replace="yes" target="test_range_partition">
+                <csv_columns>
+                    <csv_column create="yes" name="col1" target="col1"/>
+                    <csv_column create="yes" name="col2" target="col2"/>
+                </csv_columns>
+            </csv>
+            <csv create="yes" import_first_row="yes" name="test_set.csv" replace="yes" target="test_set">
+                <csv_columns>
+                    <csv_column create="yes" name="col1" target="col1"/>
+                    <csv_column create="yes" name="col2" target="col2"/>
+                    <csv_column create="yes" name="col3" target="col3"/>
+                </csv_columns>
+            </csv>
+        </csvs>
+    </source>
+    <target db_type="cubrid" type="online" version="">
+        <jdbc charset="UTF-8" create_constraints_before_data="no" driver="JDBC-9.2.0.0155-cubrid.jar" host="test-dbtool2" name="mt_cubrid" password="" port="30920" timezone="GMT+08:00" user="dba" user_jdbc_url="" write_error_records="no"/>
+        <tables>
+            <table name="athlete" reuse_oid="no">
+                <columns>
+                    <column auto_increment="no" base_type="integer" increment="1" name="code" null="yes" shared="no" start="0" type="integer" unique="no"/>
+                    <column auto_increment="no" base_type="varchar" increment="1" name="name" null="yes" shared="no" start="0" type="varchar(40)" unique="no"/>
+                    <column auto_increment="no" base_type="char" increment="1" name="gender" null="yes" shared="no" start="0" type="char(1)" unique="no"/>
+                    <column auto_increment="no" base_type="char" increment="1" name="nation_code" null="yes" shared="no" start="0" type="char(3)" unique="no"/>
+                    <column auto_increment="no" base_type="varchar" increment="1" name="event" null="yes" shared="no" start="0" type="varchar(30)" unique="no"/>
+                </columns>
+            </table>
+            <table name="code" reuse_oid="no">
+                <columns>
+                    <column auto_increment="no" base_type="char" increment="1" name="s_name" null="yes" shared="no" start="0" type="char(1)" unique="no"/>
+                    <column auto_increment="no" base_type="varchar" increment="1" name="f_name" null="yes" shared="no" start="0" type="varchar(6)" unique="no"/>
+                </columns>
+            </table>
+            <table name="event" reuse_oid="no">
+                <columns>
+                    <column auto_increment="no" base_type="integer" increment="1" name="code" null="yes" shared="no" start="0" type="integer" unique="no"/>
+                    <column auto_increment="no" base_type="varchar" increment="1" name="sports" null="yes" shared="no" start="0" type="varchar(50)" unique="no"/>
+                    <column auto_increment="no" base_type="varchar" increment="1" name="name" null="yes" shared="no" start="0" type="varchar(50)" unique="no"/>
+                    <column auto_increment="no" base_type="char" increment="1" name="gender" null="yes" shared="no" start="0" type="char(1)" unique="no"/>
+                    <column auto_increment="no" base_type="integer" increment="1" name="players" null="yes" shared="no" start="0" type="integer" unique="no"/>
+                </columns>
+            </table>
+            <table name="game" reuse_oid="no">
+                <columns>
+                    <column auto_increment="no" base_type="integer" increment="1" name="host_year" null="yes" shared="no" start="0" type="integer" unique="no"/>
+                    <column auto_increment="no" base_type="integer" increment="1" name="event_code" null="yes" shared="no" start="0" type="integer" unique="no"/>
+                    <column auto_increment="no" base_type="integer" increment="1" name="athlete_code" null="yes" shared="no" start="0" type="integer" unique="no"/>
+                    <column auto_increment="no" base_type="integer" increment="1" name="stadium_code" null="yes" shared="no" start="0" type="integer" unique="no"/>
+                    <column auto_increment="no" base_type="char" increment="1" name="nation_code" null="yes" shared="no" start="0" type="char(3)" unique="no"/>
+                    <column auto_increment="no" base_type="char" increment="1" name="medal" null="yes" shared="no" start="0" type="char(1)" unique="no"/>
+                    <column auto_increment="no" base_type="date" increment="1" name="game_date" null="yes" shared="no" start="0" type="date" unique="no"/>
+                </columns>
+            </table>
+            <table name="history" reuse_oid="no">
+                <columns>
+                    <column auto_increment="no" base_type="integer" increment="1" name="event_code" null="yes" shared="no" start="0" type="integer" unique="no"/>
+                    <column auto_increment="no" base_type="varchar" increment="1" name="athlete" null="yes" shared="no" start="0" type="varchar(40)" unique="no"/>
+                    <column auto_increment="no" base_type="integer" increment="1" name="host_year" null="yes" shared="no" start="0" type="integer" unique="no"/>
+                    <column auto_increment="no" base_type="varchar" increment="1" name="score" null="yes" shared="no" start="0" type="varchar(10)" unique="no"/>
+                    <column auto_increment="no" base_type="varchar" increment="1" name="unit" null="yes" shared="no" start="0" type="varchar(5)" unique="no"/>
+                </columns>
+            </table>
+            <table name="nation" reuse_oid="no">
+                <columns>
+                    <column auto_increment="no" base_type="char" increment="1" name="code" null="yes" shared="no" start="0" type="char(3)" unique="no"/>
+                    <column auto_increment="no" base_type="varchar" increment="1" name="name" null="yes" shared="no" start="0" type="varchar(40)" unique="no"/>
+                    <column auto_increment="no" base_type="varchar" increment="1" name="continent" null="yes" shared="no" start="0" type="varchar(10)" unique="no"/>
+                    <column auto_increment="no" base_type="varchar" increment="1" name="capital" null="yes" shared="no" start="0" type="varchar(30)" unique="no"/>
+                </columns>
+            </table>
+            <table name="olympic" reuse_oid="no">
+                <columns>
+                    <column auto_increment="no" base_type="integer" increment="1" name="host_year" null="yes" shared="no" start="0" type="integer" unique="no"/>
+                    <column auto_increment="no" base_type="varchar" increment="1" name="host_nation" null="yes" shared="no" start="0" type="varchar(40)" unique="no"/>
+                    <column auto_increment="no" base_type="varchar" increment="1" name="host_city" null="yes" shared="no" start="0" type="varchar(20)" unique="no"/>
+                    <column auto_increment="no" base_type="date" increment="1" name="opening_date" null="yes" shared="no" start="0" type="date" unique="no"/>
+                    <column auto_increment="no" base_type="date" increment="1" name="closing_date" null="yes" shared="no" start="0" type="date" unique="no"/>
+                    <column auto_increment="no" base_type="varchar" increment="1" name="mascot" null="yes" shared="no" start="0" type="varchar(20)" unique="no"/>
+                    <column auto_increment="no" base_type="varchar" increment="1" name="slogan" null="yes" shared="no" start="0" type="varchar(40)" unique="no"/>
+                    <column auto_increment="no" base_type="varchar" increment="1" name="introduction" null="yes" shared="no" start="0" type="varchar(1500)" unique="no"/>
+                </columns>
+            </table>
+            <table name="participant" reuse_oid="no">
+                <columns>
+                    <column auto_increment="no" base_type="integer" increment="1" name="host_year" null="yes" shared="no" start="0" type="integer" unique="no"/>
+                    <column auto_increment="no" base_type="char" increment="1" name="nation_code" null="yes" shared="no" start="0" type="char(3)" unique="no"/>
+                    <column auto_increment="no" base_type="integer" increment="1" name="gold" null="yes" shared="no" start="0" type="integer" unique="no"/>
+                    <column auto_increment="no" base_type="integer" increment="1" name="silver" null="yes" shared="no" start="0" type="integer" unique="no"/>
+                    <column auto_increment="no" base_type="integer" increment="1" name="bronze" null="yes" shared="no" start="0" type="integer" unique="no"/>
+                </columns>
+            </table>
+            <table name="record" reuse_oid="no">
+                <columns>
+                    <column auto_increment="no" base_type="integer" increment="1" name="host_year" null="yes" shared="no" start="0" type="integer" unique="no"/>
+                    <column auto_increment="no" base_type="integer" increment="1" name="event_code" null="yes" shared="no" start="0" type="integer" unique="no"/>
+                    <column auto_increment="no" base_type="integer" increment="1" name="athlete_code" null="yes" shared="no" start="0" type="integer" unique="no"/>
+                    <column auto_increment="no" base_type="char" increment="1" name="medal" null="yes" shared="no" start="0" type="char(1)" unique="no"/>
+                    <column auto_increment="no" base_type="varchar" increment="1" name="score" null="yes" shared="no" start="0" type="varchar(20)" unique="no"/>
+                    <column auto_increment="no" base_type="varchar" increment="1" name="unit" null="yes" shared="no" start="0" type="varchar(5)" unique="no"/>
+                </columns>
+            </table>
+            <table name="stadium" reuse_oid="no">
+                <columns>
+                    <column auto_increment="no" base_type="integer" increment="1" name="code" null="yes" shared="no" start="0" type="integer" unique="no"/>
+                    <column auto_increment="no" base_type="char" increment="1" name="nation_code" null="yes" shared="no" start="0" type="char(3)" unique="no"/>
+                    <column auto_increment="no" base_type="varchar" increment="1" name="name" null="yes" shared="no" start="0" type="varchar(50)" unique="no"/>
+                    <column auto_increment="no" base_type="numeric" increment="1" name="area" null="yes" shared="no" start="0" type="numeric(10,2)" unique="no"/>
+                    <column auto_increment="no" base_type="integer" increment="1" name="seats" null="yes" shared="no" start="0" type="integer" unique="no"/>
+                    <column auto_increment="no" base_type="varchar" increment="1" name="address" null="yes" shared="no" start="0" type="varchar(100)" unique="no"/>
+                </columns>
+            </table>
+            <table name="test_binary" reuse_oid="no">
+                <columns>
+                    <column auto_increment="no" base_type="blob" increment="1" name="f1" null="yes" shared="no" start="0" type="blob" unique="no"/>
+                    <column auto_increment="no" base_type="bit" increment="1" name="f2" null="yes" shared="no" start="0" type="bit(255)" unique="no"/>
+                    <column auto_increment="no" base_type="bit varying" increment="1" name="f3" null="yes" shared="no" start="0" type="bit varying(60000)" unique="no"/>
+                </columns>
+            </table>
+            <table name="test_hash_partition" reuse_oid="no">
+                <columns>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="col1" null="yes" shared="no" start="0" type="character varying(1024)" unique="no"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="col2" null="yes" shared="no" start="0" type="character varying(1024)" unique="no"/>
+                </columns>
+            </table>
+            <table name="test_list_partition" reuse_oid="no">
+                <columns>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="col1" null="yes" shared="no" start="0" type="character varying(1024)" unique="no"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="col2" null="yes" shared="no" start="0" type="character varying(1024)" unique="no"/>
+                </columns>
+            </table>
+            <table name="test_range_partition" reuse_oid="no">
+                <columns>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="col1" null="yes" shared="no" start="0" type="character varying(1024)" unique="no"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="col2" null="yes" shared="no" start="0" type="character varying(1024)" unique="no"/>
+                </columns>
+            </table>
+            <table name="test_set" reuse_oid="no">
+                <columns>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="col1" null="yes" shared="no" start="0" type="character varying(1024)" unique="no"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="col2" null="yes" shared="no" start="0" type="character varying(1024)" unique="no"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="col3" null="yes" shared="no" start="0" type="character varying(1024)" unique="no"/>
+                </columns>
+            </table>
+        </tables>
+        <views/>
+    </target>
+    <params commit_count="1000" export_thread="2" implicit_estimate_progress="no" import_thread="2"/>
+</migration>

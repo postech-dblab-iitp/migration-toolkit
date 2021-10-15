@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="features/com.cubrid.cubridmigration.plugin.feature_9.3.0.qualifier.jar" id="com.cubrid.cubridmigration.plugin.feature" version="9.3.0.qualifier">
+      <category name="com.cubrid.cubridmigration.plugin.category"/>
+   </feature>
+   <category-def name="com.cubrid.cubridmigration.plugin.category" label="CUBRID Migration Tookit"/>
+</site>

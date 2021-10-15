@@ -1,0 +1,100 @@
+Copyright (C) 2008-2016 Search Solution Corporation. All rights reserved.
+CUBRID is registered trademark of Search Solution Corporation.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+  * Redistributions of source code must retain the above copyright notice, this
+    list of conditions and the following disclaimer.
+  * Redistributions in binary form must reproduce the above copyright notice,
+    this list of conditions and the following disclaimer in the documentation
+    and/or other materials provided with the distribution.
+  * Neither the name of the Dojo Foundation nor the names of its contributors
+    may be used to endorse or promote products derived from this software
+    without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE
+FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+===========================================================================================
+
+* Followings may be contained for this software:
+
+- Apache Commons Lang from http://commons.apache.org/proper/commons-lang/index.html
+
+- Apache Commons BeanUtils from http://commons.apache.org/proper/commons-lang/
+
+- Apache Commons CLI from https://commons.apache.org/proper/commons-cli/
+
+- Apache Commons Codec from http://commons.apache.org/proper/commons-codec
+
+- Apache Commons Collections from http://commons.apache.org/proper/commons-collections/
+
+- Apache Commons Configuration from http://commons.apache.org/proper/commons-configuration/
+
+- Apache Commons Daemon from http://commons.apache.org/proper/commons-daemon/
+
+- Apache Commons Digester from http://commons.apache.org/proper/commons-digester/index.html
+
+- Apache Commons EL from http://commons.apache.org/proper/commons-el/
+
+- Apache Components Httpclient from https://hc.apache.org/httpcomponents-client-4.2.x/index.html
+
+- Apache Commons IO from http://commons.apache.org/proper/commons-io/
+
+- Apache Commons Logging from http://commons.apache.org/proper/commons-logging
+
+- Apache Commons Math from http://commons.apache.org/proper/commons-logging
+
+- Apache Commons Net from http://commons.apache.org/proper/commons-net/
+
+- DOM4j from https://github.com/dom4j/dom4j
+
+- ezmorph from http://ezmorph.sourceforge.net/
+
+- Apache Hadoop from https://github.com/apache/hadoop
+
+- hsqldb from http://hsqldb.org/
+
+- jsch from http://www.jcraft.com/jsch/
+
+- json-lib from http://json-lib.sourceforge.net/
+
+- opencsv from http://sourceforge.net/projects/opencsv/
+
+- Apache log4j from https://logging.apache.org/log4j/1.2/
+
+- Apache POI from http://poi.apache.org
+
+- SLF4J from http://www.slf4j.org
+
+- stax2-api from https://github.com/FasterXML/stax2-api
+
+- cglib from https://github.com/cglib/cglib
+
+- hamcrest from https://code.google.com/p/hamcrest
+
+- jmock-library from https://github.com/jmock-developers/jmock-library
+
+- objenesis from http://objenesis.org/index.html
+
+- JDOM from https://github.com/hunterhacker/jdom
+
+- Rome from https://github.com/rometools/rome
+
+
+* Followings may be contained for this software independently (without modification)
+
+- Jexcelapi from http://sourceforge.net/projects/jexcelapi
+
+- woodstox from https://github.com/FasterXML/woodstox
+
+- cron4j from http://www.sauronsoftware.it/projects/cron4j/

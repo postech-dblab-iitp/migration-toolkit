@@ -1,0 +1,134 @@
+<project default="dist" name="cubridmigration">
+	<property file="${basedir}/../com.cubrid.cubridmigration.ui/version.properties" />
+	<property file="plugin_build_conf/build.properties" />
+	<property file="plugin_build_conf/build_common.properties" />
+
+	<!--
+		Clean
+		-->
+	<target name="clean">
+		<!-- Clean build directory and workspace -->
+		<delete includeemptydirs="true" failonerror="false">
+			<fileset dir="${buildDirectory}" />
+			<fileset dir="${deploy.home}" />
+		</delete>
+	</target>
+
+	<!--
+	    Prepare the environment
+	    -->
+	<target name="prepare">
+		<mkdir dir="${deploy.home}" />
+		<mkdir dir="${output.path}" />
+
+		<!-- Copy plug-ins from workspace -->
+		<copy todir="${buildDirectory}/plugins">
+			<fileset dir="${basedir}/..">
+				<include name="com.cubrid.cubridmigration.core/**/*" />
+				<include name="com.cubrid.cubridmigration.ui/**/*" />
+				<include name="com.cubrid.cubridmigration.plugin/**/*" />
+				<exclude name="**/bin/**" />
+				<exclude name="com.cubrid.cubridmigration.core/jdbc/**/*" />
+			</fileset>
+		</copy>
+		<!-- Copy features from workspace -->
+		<copy todir="${buildDirectory}/features">
+			<fileset dir="${basedir}/..">
+				<include name="com.cubrid.cubridmigration.plugin.feature/**/*" />
+				<exclude name="**/bin/**" />
+			</fileset>
+		</copy>
+	</target>
+
+	<!--<target name="compile">
+		<path id="core.compile.classpath">
+			<fileset dir="${basedir}/lib/common">
+				<include name="*.jar" />
+			</fileset>
+		</path>
+		<javac srcdir="${basedir}/../com.cubrid.common.configuration/src" destdir="${common.configuration.compile.out}" debug="${javac.debug}" encoding="${javac.encoding}">
+			<classpath refid="core.compile.classpath" />
+		</javac>
+		<copy todir="${common.configuration.compile.out}">
+			<fileset dir="${basedir}/../com.cubrid.common.configuration">
+				<include name="*.properties" />
+				<include name="*.xml" />
+				<include name="**/*.xml" />
+				<include name="**/*.properties" />
+				<include name="lib/**/*" />
+				<include name="META-INF/**/*" />
+			</fileset>
+		</copy>
+	</target>-->
+
+
+	<!-- build -->
+	<target name="build" depends="prepare">
+		<ant antfile="${eclipse.pdebuild.scripts}/build.xml" />
+	</target>
+
+	<!-- post build -->
+	<target name="postbuild" depends="build">
+		<!--
+		<unzip dest="${repositoryDirectory}" overwrite="true">
+			<fileset dir="${buildDirectory}/${buildLabel}">
+				<include name="*.zip" />
+			</fileset>
+		</unzip>
+		<signjar alias="${sign.alias}" keystore="${sign.keystore}" storepass="${sign.storepass}" keypass="${sign.keypass}">
+			<path>
+				<fileset dir="${repositoryDirectory}/plugins" includes="com.cubrid.*.jar" />
+				<fileset dir="${repositoryDirectory}/features" includes="com.cubrid.*.jar" />
+			</path>
+		</signjar>
+		-->
+	</target>
+
+	<!--
+		package plugin for eclipse in win
+		<target name="package_plugin_win" depends="postbuild">
+		<zip destfile="${output.path}/${product.name}-plugin-${product.version}.zip">
+			<zipfileset prefix="${archivePrefix}" dir="${repositoryDirectory}" excludes="*.jar" />
+		</zip>
+	</target>
+		-->
+
+
+	<!--
+		package plugin site for eclipse in win
+		-->
+	<target name="package_plugin_site_win" depends="postbuild">
+		<zip destfile="${output.path}/${product.name}-plugin-site-${product.version}.zip">
+			<zipfileset prefix="${archivePrefix}" dir="${repositoryDirectory}" />
+		</zip>
+	</target>
+
+	<!--
+		package plugin for eclipse in linux
+		<target name="package_plugin_linux" depends="postbuild">
+		<tar destfile="${deploy.home}/${product.name}-plugin-${product.version}.tar">
+			<tarfileset dir="${repositoryDirectory}" prefix="${archivePrefix}">
+				<exclude name="*.jar" />
+			</tarfileset>
+		</tar>
+		<gzip src="${deploy.home}/${product.name}-plugin-${product.version}.tar" destfile="${output.path}/${product.name}-plugin-${product.version}.tar.gz" />
+	</target>
+		-->
+
+
+	<!--
+		package plugin site for eclipse in linux
+		-->
+	<target name="package_plugin_site_linux" depends="postbuild">
+		<tar destfile="${deploy.home}/${product.name}-plugin-site-${product.version}.tar">
+			<tarfileset dir="${repositoryDirectory}" prefix="${archivePrefix}" />
+		</tar>
+		<gzip src="${deploy.home}/${product.name}-plugin-site-${product.version}.tar" destfile="${output.path}/${product.name}-plugin-site-${product.version}.tar.gz" />
+	</target>
+
+	<target depends="package_plugin_site_win" name="distwin" />
+	<target depends="package_plugin_site_linux" name="distlinux" />
+	<target depends="package_plugin_site_linux" name="distlinux_without_cleanup" />
+	<target depends="distwin,distlinux" name="dist" />
+	<target depends="clean,dist" name="redist" />
+</project>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<MigrationParameter>
+	<MySQLtoCUBRIDMigrationParameters>
+		<unparsed_time>00:00:00</unparsed_time>
+		<unparsed_date>0001-01-01</unparsed_date>
+		<unparsed_timestamp>1970-01-02 01:00:00.000</unparsed_timestamp>
+		<replace_char0>' '</replace_char0>
+	</MySQLtoCUBRIDMigrationParameters>
+</MigrationParameter>

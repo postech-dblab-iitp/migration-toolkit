@@ -1,0 +1,671 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<migration version="9.1.0">
+	<source db_type="mysql" online="yes">
+		<jdbc host="test-dbtool2" port="3306"
+			driver="mysql-connector-java-5.1.22-bin.jar" name="migtestforhudson"
+			user="migtestforhudson" password="cmt" charset="utf-8" timezone="GMT+08" />
+		<tables>
+			<table name="athlete" create="yes" replace="yes" migrate_data="yes"
+				pk="yes" partition="no" target="athlete">
+				<columns>
+					<column name="code" target="code" />
+					<column name="name" target="name" />
+					<column name="gender" target="gender" />
+					<column name="nation_code" target="nation_code" />
+					<column name="event" target="event" />
+				</columns>
+				<constraints>
+					<index name="idx_athlete_name" target="idx_athlete_name" />
+				</constraints>
+			</table>
+
+			<table name="code" create="yes" replace="yes" migrate_data="yes"
+				pk="no" partition="no" target="code">
+				<columns>
+					<column name="s_name" target="s_name" />
+					<column name="f_name" target="f_name" />
+				</columns>
+			</table>
+
+			<table name="event" create="yes" replace="yes" migrate_data="yes"
+				pk="yes" partition="no" target="event">
+				<columns>
+					<column name="code" target="code" />
+					<column name="sports" target="sports" />
+					<column name="name" target="name" />
+					<column name="gender" target="gender" />
+					<column name="players" target="players" />
+				</columns>
+			</table>
+
+			<table name="game" create="yes" replace="yes" migrate_data="yes"
+				pk="yes" partition="no" target="game">
+				<columns>
+					<column name="host_year" target="host_year" />
+					<column name="event_code" target="event_code" />
+					<column name="athlete_code" target="athlete_code" />
+					<column name="stadium_code" target="stadium_code" />
+					<column name="nation_code" target="nation_code" />
+					<column name="medal" target="medal" />
+					<column name="game_date" target="game_date" />
+				</columns>
+				<constraints>
+					<fk name="fk_game_event_code" target="fk_game_event_code" />
+					<fk name="fk_game_athlete_code" target="fk_game_athlete_code" />
+					<index name="idx_game_game_date" target="idx_game_game_date" />
+				</constraints>
+			</table>
+
+			<table name="history" create="yes" replace="yes" migrate_data="yes"
+				pk="yes" partition="no" target="history">
+				<columns>
+					<column name="event_code" target="event_code" />
+					<column name="athlete" target="athlete" />
+					<column name="host_year" target="host_year" />
+					<column name="score" target="score" />
+					<column name="unit" target="unit" />
+				</columns>
+			</table>
+
+			<table name="nation" create="yes" replace="yes" migrate_data="yes"
+				pk="yes" partition="no" target="nation">
+				<columns>
+					<column name="code" target="code" />
+					<column name="name" target="name" />
+					<column name="continent" target="continent" />
+					<column name="capital" target="capital" />
+				</columns>
+			</table>
+
+			<table name="olympic" create="yes" replace="yes" migrate_data="yes"
+				pk="yes" partition="no" target="olympic">
+				<columns>
+					<column name="host_year" target="host_year" />
+					<column name="host_nation" target="host_nation" />
+					<column name="host_city" target="host_city" />
+					<column name="opening_date" target="opening_date" />
+					<column name="closing_date" target="closing_date" />
+					<column name="mascot" target="mascot" />
+					<column name="slogan" target="slogan" />
+					<column name="introduction" target="introduction" />
+				</columns>
+			</table>
+
+			<table name="participant" create="yes" replace="yes"
+				migrate_data="yes" pk="yes" partition="no" target="participant">
+				<columns>
+					<column name="host_year" target="host_year" />
+					<column name="nation_code" target="nation_code" />
+					<column name="gold" target="gold" />
+					<column name="silver" target="silver" />
+					<column name="bronze" target="bronze" />
+				</columns>
+
+				<constraints>
+					<fk name="fk_participant_host_year" target="fk_participant_host_year" />
+					<fk name="fk_participant_nation_code" target="fk_participant_nation_code" />
+				</constraints>
+			</table>
+
+			<table name="record" create="yes" replace="yes" migrate_data="yes"
+				pk="yes" partition="no" target="record">
+				<columns>
+					<column name="host_year" target="host_year" />
+					<column name="event_code" target="event_code" />
+					<column name="athlete_code" target="athlete_code" />
+					<column name="medal" target="medal" />
+					<column name="score" target="score" />
+					<column name="unit" target="unit" />
+				</columns>
+			</table>
+
+			<table name="stadium" create="yes" replace="yes" migrate_data="yes"
+				pk="yes" partition="no" target="stadium">
+				<!-- Columns definitions -->
+				<columns>
+					<column name="code" target="code" />
+					<column name="nation_code" target="nation_code" />
+					<column name="name" target="name" />
+					<column name="area" target="area" />
+					<column name="seats" target="seats" />
+					<column name="address" target="address" />
+				</columns>
+			</table>
+
+			<table name="test_binary" create="yes" replace="yes"
+				migrate_data="yes" pk="no" partition="no" target="test_binary">
+				<columns>
+					<column name="f1" target="f1" />
+					<column name="f2" target="f2" />
+					<column name="f3" target="f3" />
+					<column name="f4" target="f4" />
+					<column name="f5" target="f5" />
+					<column name="f6" target="f6" />
+					<column name="f7" target="f7" />
+				</columns>
+			</table>
+
+			<table name="test_number" create="yes" replace="yes"
+				migrate_data="yes" pk="yes" partition="no" target="test_number">
+				<columns>
+					<column name="id" target="id" />
+					<column name="f1" target="f1" />
+					<column name="f2" target="f2" />
+					<column name="f3" target="f3" />
+					<column name="f4" target="f4" />
+					<column name="f5" target="f5" />
+					<column name="f6" target="f6" />
+					<column name="f7" target="f7" />
+					<column name="f8" target="f8" />
+					<column name="f9" target="f9" />
+				</columns>
+			</table>
+
+			<table name="test_string" create="yes" replace="yes"
+				migrate_data="yes" pk="yes" partition="no" target="test_string">
+				<columns>
+					<column name="id" target="id" />
+					<column name="f1" target="f1" />
+					<column name="f2" target="f2" />
+					<column name="f3" target="f3" />
+					<column name="f4" target="f4" />
+					<column name="f5" target="f5" />
+					<column name="f6" target="f6" />
+					<column name="f7" target="f7" />
+					<column name="f8" target="f8" />
+					<column name="f9" target="f9" />
+					<column name="f10" target="f10" />
+				</columns>
+			</table>
+
+			<table name="test_time" create="yes" replace="yes"
+				migrate_data="yes" pk="yes" partition="no" target="test_time">
+				<columns>
+					<column name="f1" target="f1" />
+					<column name="f2" target="f2" />
+					<column name="f3" target="f3" />
+					<column name="f4" target="f4" />
+					<column name="f5" target="f5" />
+				</columns>
+			</table>
+
+			<table create="yes" migrate_data="yes" name="name" partition="no"
+				pk="yes" replace="yes" target="name">
+				<columns>
+					<column name="ID" target="ID" />
+					<column name="NAME" target="NAME" />
+					<column name="GENDER" target="GENDER" />
+				</columns>
+				<constraints>
+					<index name="index_name" target="index_name" />
+					<index name="GENDER" target="GENDER" />
+					<index name="ID" target="ID" />
+					<index name="NAME" target="NAME" />
+				</constraints>
+			</table>
+		</tables>
+		<!-- <sqlTables> <sqlTable name="game_event" create="yes" replace="yes" 
+			migrate_data="yes" target="game_event"> <statement> SELECT t1.host_year,t1.event_code,t2.CODE 
+			FROM game t1,event t2 WHERE t1.event_code=t2.CODE </statement> <columns> 
+			<column name="host_year" target="host_year" /> <column name="event_code" 
+			target="event_code" /> <column name="code" target="code" /> </columns> </sqlTable> 
+			</sqlTables> -->
+		<sqlTables>
+			<sqlTable create="yes" migrate_data="yes" name="code2"
+				replace="yes" target="code2">
+				<statement>select * from code</statement>
+				<columns>
+					<column name="s_name" target="s_name" />
+					<column name="f_name" target="f_name" />
+					<column name="g_name" target="g_name" />
+				</columns>
+			</sqlTable>
+		</sqlTables>
+		<views>
+			<view name="game_view" target="game_view" />
+			<view name="participant_view" target="participant_view" />
+		</views>
+		<triggers>
+			<trigger name="test_trigger" target="test_trigger" />
+		</triggers>
+		<functions>
+			<function name="test_function" target="test_function" />
+		</functions>
+		<procedures>
+			<procedure name="test_procedure" target="test_procedure" />
+		</procedures>
+	</source>
+
+	<target type="online" version="9.1.0" db_type="cubrid">
+		<jdbc name="mt_mysql" host="192.168.64.220" port="30920"
+			driver="JDBC-9.2.0.0155-cubrid.jar" user="dba" password="" charset="utf-8"
+			timezone="GMT+08" create_constraints_before_data="no" user_jdbc_url=""
+			write_error_records="no" />
+		<tables>
+			<table name="athlete">
+				<columns>
+					<column name="code" type="integer" base_type="integer"
+						sub_type="" null="no" auto_increment="yes" start="0" increment="1" />
+					<column name="name" type="varchar(40)" base_type="varchar"
+						sub_type="" null="yes" auto_increment="no" start="0" increment="1"
+						default="" />
+					<column name="gender" type="char(1)" base_type="char"
+						sub_type="" null="yes" auto_increment="no" start="0" increment="1"
+						default="" />
+					<column name="nation_code" type="char(3)" base_type="char"
+						sub_type="" null="yes" auto_increment="no" start="0" increment="1"
+						default="" />
+					<column name="event" type="varchar(30)" base_type="varchar"
+						sub_type="" null="yes" auto_increment="no" start="0" increment="1"
+						default="" />
+				</columns>
+				<constraints>
+					<pk fields="code" />
+					<index name="idx_athlete_name" reverse="no" unique="no"
+						fields="name" order_rule="ASC" pre_fix="" />
+				</constraints>
+			</table>
+
+			<table name="code">
+				<columns>
+					<column name="s_name" type="char(1)" base_type="char"
+						sub_type="" null="yes" auto_increment="no" start="0" increment="1" />
+					<column name="f_name" type="varchar(6)" base_type="varchar"
+						sub_type="" null="yes" auto_increment="no" start="0" increment="1" />
+				</columns>
+			</table>
+
+			<table name="event">
+				<columns>
+					<column name="code" type="integer" base_type="integer"
+						sub_type="" null="no" auto_increment="no" start="0" increment="1" />
+					<column name="sports" type="varchar(50)" base_type="varchar"
+						sub_type="" null="yes" auto_increment="no" start="0" increment="1"
+						default="" />
+					<column name="name" type="varchar(50)" base_type="varchar"
+						sub_type="" null="yes" auto_increment="no" start="0" increment="1"
+						default="" />
+					<column name="gender" type="char(1)" base_type="char"
+						sub_type="" null="yes" auto_increment="no" start="0" increment="1"
+						default="" />
+					<column name="players" type="integer" base_type="integer"
+						sub_type="" null="yes" auto_increment="no" start="0" increment="1" />
+				</columns>
+				<constraints>
+					<pk fields="code" />
+				</constraints>
+			</table>
+
+			<table name="game">
+				<columns>
+					<column name="host_year" type="integer" base_type="integer"
+						sub_type="" null="no" auto_increment="no" start="0" increment="1" />
+					<column name="event_code" type="integer" base_type="integer"
+						sub_type="" null="no" auto_increment="no" start="0" increment="1" />
+					<column name="athlete_code" type="integer" base_type="integer"
+						sub_type="" null="no" auto_increment="no" start="0" increment="1" />
+					<column name="stadium_code" type="integer" base_type="integer"
+						sub_type="" null="no" auto_increment="no" start="0" increment="1" />
+					<column name="nation_code" type="char(3)" base_type="char(3)"
+						sub_type="" null="yes" auto_increment="no" start="0" increment="1" />
+					<column name="medal" type="char(1)" base_type="char"
+						sub_type="" null="yes" auto_increment="no" start="0" increment="1" />
+					<column name="game_date" type="date" base_type="date"
+						sub_type="" null="yes" auto_increment="no" start="0" increment="1" />
+				</columns>
+				<constraints>
+					<pk fields="host_year,event_code,athlete_code" />
+					<fk name="fk_game_event_code" on_update="RESTRICT" on_delete="RESTRICT"
+						on_cache_object="" fields="event_code" ref_table="event"
+						ref_fields="code" />
+					<fk name="fk_game_athlete_code" on_update="RESTRICT" on_delete="RESTRICT"
+						on_cache_object="" fields="athlete_code" ref_table="athlete"
+						ref_fields="code" />
+					<index name="idx_game_game_date" reverse="no" unique="no"
+						fields="game_date" order_rule="ASC" pre_fix="" />
+				</constraints>
+			</table>
+
+			<table name="history">
+				<columns>
+					<column name="event_code" type="integer" base_type="integer"
+						sub_type="" null="no" auto_increment="no" start="0" increment="1" />
+					<column name="athlete" type="varchar(40)" base_type="varchar"
+						sub_type="" null="no" auto_increment="no" start="0" increment="1"
+						default="" />
+					<column name="host_year" type="integer" base_type="integer"
+						sub_type="" null="yes" auto_increment="no" start="0" increment="1" />
+					<column name="score" type="varchar(10)" base_type="varchar"
+						sub_type="" null="yes" auto_increment="no" start="0" increment="1"
+						default="" />
+					<column name="unit" type="varchar(5)" base_type="varchar"
+						sub_type="" null="yes" auto_increment="no" start="0" increment="1"
+						default="" />
+				</columns>
+				<constraints>
+					<pk fields="event_code,athlete" />
+				</constraints>
+			</table>
+
+			<table name="nation">
+				<columns>
+					<column name="code" type="char(3)" base_type="char"
+						sub_type="" null="no" auto_increment="no" start="0" increment="1"
+						default="" />
+					<column name="name" type="varchar(40)" base_type="varchar"
+						sub_type="" null="yes" auto_increment="no" start="0" increment="1"
+						default="" />
+					<column name="continent" type="varchar(10)" base_type="varchar"
+						sub_type="" null="yes" auto_increment="no" start="0" increment="1"
+						default="" />
+					<column name="capital" type="varchar(30)" base_type="varchar"
+						sub_type="" null="yes" auto_increment="no" start="0" increment="1"
+						default="" />
+				</columns>
+				<constraints>
+					<pk fields="code" />
+				</constraints>
+			</table>
+
+			<table name="olympic">
+				<columns>
+					<column name="host_year" type="integer" base_type="integer"
+						sub_type="" null="no" auto_increment="no" start="0" increment="1" />
+					<column name="host_nation" type="varchar(40)" base_type="varchar"
+						sub_type="" null="yes" auto_increment="no" start="0" increment="1"
+						default="" />
+					<column name="host_city" type="varchar(20)" base_type="varchar"
+						sub_type="" null="yes" auto_increment="no" start="0" increment="1"
+						default="" />
+					<column name="opening_date" type="date" base_type="date"
+						sub_type="" null="no" auto_increment="no" start="0" increment="1" />
+					<column name="closing_date" type="date" base_type="date"
+						sub_type="" null="no" auto_increment="no" start="0" increment="1" />
+					<column name="mascot" type="varchar(20)" base_type="varchar"
+						sub_type="" null="yes" auto_increment="no" start="0" increment="1"
+						default="" />
+					<column name="slogan" type="varchar(40)" base_type="varchar"
+						sub_type="" null="yes" auto_increment="no" start="0" increment="1"
+						default="" />
+					<column name="introduction" type="varchar(1500)" base_type="varchar"
+						sub_type="" null="yes" auto_increment="no" start="0" increment="1"
+						default="" />
+				</columns>
+				<constraints>
+					<pk fields="host_year" />
+				</constraints>
+			</table>
+
+			<table name="participant">
+				<columns>
+					<column name="host_year" type="integer" base_type="integer"
+						sub_type="" null="no" auto_increment="no" start="0" increment="1" />
+					<column name="nation_code" type="char(3)" base_type="char"
+						sub_type="" null="no" auto_increment="no" start="0" increment="1"
+						default="" />
+					<column name="gold" type="integer" base_type="integer"
+						sub_type="" null="yes" auto_increment="no" start="0" increment="1"
+						default="0" />
+					<column name="silver" type="integer" base_type="integer"
+						sub_type="" null="yes" auto_increment="no" start="0" increment="1"
+						default="0" />
+					<column name="bronze" type="integer" base_type="integer"
+						sub_type="" null="yes" auto_increment="no" start="0" increment="1"
+						default="0" />
+				</columns>
+
+				<constraints>
+					<pk fields="host_year,nation_code" />
+					<fk name="fk_participant_host_year" on_update="RESTRICT"
+						on_delete="RESTRICT" on_cache_object="" fields="host_year"
+						ref_table="olympic" ref_fields="host_year" />
+					<fk name="fk_participant_nation_code" on_update="RESTRICT"
+						on_delete="RESTRICT" on_cache_object="" fields="nation_code"
+						ref_table="nation" ref_fields="code" />
+				</constraints>
+			</table>
+
+			<table name="record">
+				<columns>
+					<column name="host_year" type="integer" base_type="integer"
+						sub_type="" null="no" auto_increment="no" start="0" increment="1" />
+					<column name="event_code" type="integer" base_type="integer"
+						sub_type="" null="no" auto_increment="no" start="0" increment="1" />
+					<column name="athlete_code" type="integer" base_type="integer"
+						sub_type="" null="no" auto_increment="no" start="0" increment="1" />
+					<column name="medal" type="char(1)" base_type="char"
+						sub_type="" null="no" auto_increment="no" start="0" increment="1"
+						default="" />
+					<column name="score" type="varchar(20)" base_type="varchar"
+						sub_type="" null="yes" auto_increment="no" start="0" increment="1"
+						default="" />
+					<column name="unit" type="varchar(5)" base_type="varchar"
+						sub_type="" null="yes" auto_increment="no" start="0" increment="1"
+						default="" />
+				</columns>
+				<constraints>
+					<pk fields="host_year,event_code,athlete_code,medal" />
+				</constraints>
+			</table>
+
+			<table name="stadium">
+				<!-- Columns definitions -->
+				<columns>
+					<column name="code" type="integer" base_type="integer"
+						sub_type="" null="yes" auto_increment="no" start="0" increment="1" />
+					<column name="nation_code" type="char(3)" base_type="char"
+						sub_type="" null="yes" auto_increment="no" start="0" increment="1"
+						default="" />
+					<column name="name" type="varchar(50)" base_type="varchar"
+						sub_type="" null="yes" auto_increment="no" start="0" increment="1"
+						default="" />
+					<column name="area" type="numeric(10,2)" base_type="numeric"
+						sub_type="" null="yes" auto_increment="no" start="0" increment="1" />
+					<column name="seats" type="integer" base_type="integer"
+						sub_type="" null="yes" auto_increment="no" start="0" increment="1" />
+					<column name="address" type="varchar(100)" base_type="varchar"
+						sub_type="" null="yes" auto_increment="no" start="0" increment="1"
+						default="" />
+				</columns>
+				<constraints>
+					<pk fields="code" />
+				</constraints>
+			</table>
+
+			<table name="test_binary">
+				<columns>
+					<column name="f1" type="blob" base_type="blob" sub_type=""
+						null="yes" auto_increment="no" start="0" increment="1" />
+					<column name="f2" type="blob" base_type="blob" sub_type=""
+						null="yes" auto_increment="no" start="0" increment="1" />
+					<column name="f3" type="blob" base_type="blob" sub_type=""
+						null="yes" auto_increment="no" start="0" increment="1" />
+					<column name="f4" type="blob" base_type="blob" sub_type=""
+						null="yes" auto_increment="no" start="0" increment="1" />
+					<column name="f5" type="bit(255)" base_type="bit" sub_type=""
+						null="yes" auto_increment="no" start="0" increment="1" />
+					<column name="f6" type="bit varying(60000)" base_type="bit varying"
+						sub_type="" null="yes" auto_increment="no" start="0" increment="1" />
+					<column name="f7" type="bit(64)" base_type="bit" sub_type=""
+						null="yes" auto_increment="no" start="0" increment="1" />
+				</columns>
+			</table>
+
+			<table name="test_number">
+				<columns>
+					<column name="id" type="integer" base_type="integer"
+						sub_type="" null="no" auto_increment="yes" start="0" increment="1" />
+					<column name="f1" type="smallint" base_type="smallint"
+						sub_type="" null="yes" auto_increment="no" start="0" increment="1" />
+					<column name="f2" type="smallint" base_type="smallint"
+						sub_type="" null="yes" auto_increment="no" start="0" increment="1" />
+					<column name="f3" type="integer" base_type="integer"
+						sub_type="" null="yes" auto_increment="no" start="0" increment="1" />
+					<column name="f4" type="integer" base_type="integer"
+						sub_type="" null="yes" auto_increment="no" start="0" increment="1" />
+					<column name="f5" type="bigint" base_type="bigint" sub_type=""
+						null="yes" auto_increment="no" start="0" increment="1" />
+					<column name="f6" type="float" base_type="float" sub_type=""
+						null="yes" auto_increment="no" start="0" increment="1" />
+					<column name="f7" type="double" base_type="double" sub_type=""
+						null="yes" auto_increment="no" start="0" increment="1" />
+					<column name="f8" type="decimal(38,0)" base_type="decimal"
+						sub_type="" null="yes" auto_increment="no" start="0" increment="1" />
+					<column name="f9" type="decimal(38,2)" base_type="decimal"
+						sub_type="" null="yes" auto_increment="no" start="0" increment="1" />
+				</columns>
+			</table>
+
+			<table name="test_string">
+				<columns>
+					<column name="id" type="varchar(128)" base_type="varchar"
+						sub_type="" null="yes" auto_increment="no" start="0" increment="1"
+						default="" />
+					<column name="f1" type="char(1)" base_type="char" sub_type=""
+						null="yes" auto_increment="no" start="0" increment="1" default="" />
+					<column name="f2" type="char(2)" base_type="char" sub_type=""
+						null="yes" auto_increment="no" start="0" increment="1" default="" />
+					<column name="f3" type="char(255)" base_type="char"
+						sub_type="" null="yes" auto_increment="no" start="0" increment="1"
+						default="" />
+					<column name="f4" type="varchar(1)" base_type="varchar"
+						sub_type="" null="yes" auto_increment="no" start="0" increment="1"
+						default="" />
+					<column name="f5" type="varchar(2)" base_type="varchar"
+						sub_type="" null="yes" auto_increment="no" start="0" increment="1"
+						default="" />
+					<column name="f6" type="varchar(4096)" base_type="varchar"
+						sub_type="" null="yes" auto_increment="no" start="0" increment="1"
+						default="" />
+					<column name="f7" type="varchar(255)" base_type="varchar"
+						sub_type="" null="yes" auto_increment="no" start="0" increment="1"
+						default="" />
+					<column name="f8" type="varchar(65535)" base_type="varchar"
+						sub_type="" null="yes" auto_increment="no" start="0" increment="1"
+						default="" />
+					<column name="f9" type="varchar(16777215)" base_type="varchar"
+						sub_type="" null="yes" auto_increment="no" start="0" increment="1"
+						default="" />
+					<column name="f10" type="clob" base_type="clob" sub_type=""
+						null="yes" auto_increment="no" start="0" increment="1" default="" />
+				</columns>
+				<constraints>
+					<pk fields="id" />
+				</constraints>
+			</table>
+
+			<table name="test_time">
+				<columns>
+					<column name="f1" type="date" base_type="date" sub_type=""
+						null="yes" auto_increment="no" start="0" increment="1" />
+					<column name="f2" type="time" base_type="time" sub_type=""
+						null="yes" auto_increment="no" start="0" increment="1" />
+					<column name="f3" type="integer" base_type="integer"
+						sub_type="" null="yes" auto_increment="no" start="0" increment="1" />
+					<column name="f4" type="datetime" base_type="datetime"
+						sub_type="" null="yes" auto_increment="no" start="0" increment="1" />
+					<column name="f5" type="timestamp" base_type="timestamp"
+						sub_type="" null="yes" auto_increment="no" start="0" increment="1" />
+				</columns>
+			</table>
+			<!-- <table name="game_event"> <columns> <column name="host_year" type="integer" 
+				base_type="integer" sub_type="" null="no" auto_increment="no" start="0" increment="1" 
+				/> <column name="event_code" type="integer" base_type="integer" sub_type="" 
+				null="no" auto_increment="no" start="0" increment="1" /> <column name="code" 
+				type="integer" base_type="integer" sub_type="" null="yes" auto_increment="no" 
+				start="0" increment="1" /> </columns> </table> -->
+
+			<table name="name">
+				<columns>
+					<column auto_increment="yes" base_type="int" increment="0"
+						name="ID" null="no" start="1" type="INTEGER" />
+					<column auto_increment="no" base_type="character varying"
+						increment="1" name="NAME" null="yes" start="0" type="VARCHAR(120)" />
+					<column auto_increment="no" base_type="character varying"
+						increment="1" name="GENDER" null="yes" start="0" type="VARCHAR(120)" />
+				</columns>
+				<constraints>
+					<pk fields="ID" />
+					<index fields="ID" name="index_name" order_rule="A" pre_fix=""
+						reverse="no" unique="yes" />
+					<index fields="GENDER" name="GENDER" order_rule="A" pre_fix=""
+						reverse="no" unique="yes" />
+					<index fields="ID,NAME" name="ID" order_rule="A,A" pre_fix=""
+						reverse="no" unique="no" />
+					<index fields="NAME" name="NAME" order_rule="A" pre_fix=""
+						reverse="no" unique="no" />
+				</constraints>
+			</table>
+			<table name="code2">
+				<columns>
+					<column auto_increment="no" base_type="character" increment="1"
+						name="s_name" null="yes" start="0" type="CHAR(2)" />
+					<column auto_increment="no" base_type="character varying"
+						increment="1" name="f_name" null="yes" start="0" type="VARCHAR(12)" />
+					<column auto_increment="no" base_type="character varying"
+						increment="1" name="g_name" null="yes" start="0" type="VARCHAR(12)" />
+				</columns>
+			</table>
+		</tables>
+		<views>
+			<view name="game_view">
+				<viewQuerySQL>
+					SELECT a.* FROM game a, event b WHERE
+					a.event_code=b.code
+				</viewQuerySQL>
+				<createViewSQL>
+					CREATE OR REPLACE VIEW game_view
+					AS
+					SELECT a.*
+					FROM game
+					a, event b WHERE a.event_code=b.code
+				</createViewSQL>
+				<viewColumns>
+					<viewColumn name="host_year" type="integer" base_type="integer"
+						sub_type="" />
+					<viewColumn name="event_code" type="integer" base_type="integer"
+						sub_type="" />
+					<viewColumn name="athlete_code" type="integer"
+						base_type="integer" sub_type="" default="1" />
+					<viewColumn name="stadium_code" type="integer"
+						base_type="integer" sub_type="" />
+					<viewColumn name="nation_code" type="char(3)" base_type="char"
+						sub_type="" default="" />
+					<viewColumn name="medal" type="char(1)" base_type="char"
+						sub_type="" default="" />
+					<viewColumn name="game_date" type="date" base_type="date"
+						sub_type="" />
+				</viewColumns>
+			</view>
+			<view name="participant_view">
+				<viewQuerySQL>
+					SELECT a.* FROM participant a ,nation b WHERE
+					a.nation_code=b.code
+				</viewQuerySQL>
+				<createViewSQL>
+					CREATE OR REPLACE VIEW participant_view
+					AS
+					SELECT a.*
+					FROM participant a ,nation b WHERE
+					a.nation_code=b.code
+				</createViewSQL>
+				<viewColumns>
+					<viewColumn name="host_year" type="integer" base_type="integer"
+						sub_type="" />
+					<viewColumn name="nation_code" type="char(3)" base_type="char"
+						sub_type="" default="" />
+					<viewColumn name="gold" type="integer" base_type="integer"
+						sub_type="" />
+					<viewColumn name="silver" type="integer" base_type="integer"
+						sub_type="" />
+					<viewColumn name="bronze" type="integer" base_type="integer"
+						sub_type="" />
+				</viewColumns>
+			</view>
+		</views>
+	</target>
+	<params commit_count="1000" export_thread="2"
+		implicit_estimate_progress="no" import_thread="2" replace_char0="' '"
+		unparsed_date="0001-01-01" unparsed_time="01:00:00"
+		unparsed_timestamp="1981-01-01 00:00:00.001" />
+</migration>

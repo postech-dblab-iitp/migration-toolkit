@@ -1,0 +1,8 @@
+
+Usage in Windows: migration.bat report [options] [migration history file(*.mh)]
+Usage in Linux: migration.sh report [options] [migration history file(*.mh)]
+
+Available [options]:
+    -l,    To show the latest migration report automatically.
+    
+Please visit http://www.cubrid.org for more information.

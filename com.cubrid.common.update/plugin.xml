@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+ <!--
+    <extension
+         point="org.eclipse.ui.installationPages">
+          <page
+            name="%installedSoftwarePage"
+            class="org.eclipse.equinox.internal.provisional.p2.ui.dialogs.InstalledSoftwarePage"
+            id="com.cubrid.common.update.InstalledSoftwarePage">
+          </page>
+          <page
+            name="%installHistoryPage"
+            class="org.eclipse.equinox.internal.provisional.p2.ui.dialogs.RevertProfilePage"
+            id="com.cubrid.common.update.RevertProfilePage">
+          </page>
+    </extension>
+   
+    <extension 
+   		id="preferences" point="org.eclipse.core.runtime.preferences" name="%preferences">
+		<initializer class="com.cubrid.common.update.p2.prefs.PreferenceInitializer"/>
+	</extension>
+
+   <extension
+     point="org.eclipse.ui.preferencePages">
+        <page
+	        name="%provisioningPrefPage"
+	        class="com.cubrid.common.update.p2.prefs.ProvisioningPreferencePage"
+	        id="org.eclipse.equinox.internal.p2.ui.sdk.ProvisioningPreferencePage">
+	        <keywordReference id="org.eclipse.equinox.p2.ui.sdk.updates.general"/>
+  		</page>
+  
+   		<page
+	        name="%sitesPrefPage"
+	        category="org.eclipse.equinox.internal.p2.ui.sdk.ProvisioningPreferencePage"
+	        class="org.eclipse.equinox.internal.provisional.p2.ui.dialogs.RepositoryManipulationPage"
+	        id="org.eclipse.equinox.internal.p2.ui.sdk.SitesPreferencePage">
+	        <keywordReference id="org.eclipse.equinox.p2.ui.sdk.updates.general"/>
+  		</page>
+   </extension>
+-->
+      
+    <extension
+         point="org.eclipse.ui.commands">
+      <command
+            name="%menu.update"
+            id="com.cubrid.common.update.p2.command.update">
+      </command>
+      <command
+            name="%menu.install"
+            id="com.cubrid.common.update.p2.command.install">
+      </command>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            commandId="com.cubrid.common.update.p2.command.update"
+            class="com.cubrid.common.update.p2.handler.UpdateHandler">
+      </handler>
+      <handler
+            commandId="com.cubrid.common.update.p2.command.install"
+            class="com.cubrid.common.update.p2.handler.InstallPluginHandler">
+      </handler>
+   </extension>
+         
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="menu:help?after=updates">
+            <command
+                  commandId="com.cubrid.common.update.p2.command.update"
+                  id="com.cubrid.common.update.p2.menu.update"
+                  label="%menu.update"
+                  mnemonic="C">
+            </command>                      
+      </menuContribution>
+      <menuContribution
+            locationURI="menu:help?after=com.cubrid.common.update.p2.menu.update">
+            <command
+                  commandId="com.cubrid.common.update.p2.command.install"
+                  id="com.cubrid.common.update.p2.menu.install"
+                  label="%menu.install"
+            	  mnemonic="I">
+            </command>                   
+      </menuContribution>     
+   </extension>
+      	
+</plugin>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry exported="true" kind="lib" path="lib/jsch-0.1.51.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/commons-beanutils-core-1.8.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/commons-cli-1.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/commons-codec-1.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/commons-configuration-1.6.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/commons-daemon-1.0.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/commons-digester-1.8.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/commons-el-1.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/commons-httpclient-3.0.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/commons-io-2.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/commons-logging-api-1.0.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/commons-math-2.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/commons-net-3.1.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/J2SE-1.5"/>
+	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry exported="true" kind="lib" path="lib/commons-beanutils-1.8.0.jar" sourcepath="com.cubrid.cubridmigration.coresrc.zip"/>
+	<classpathentry exported="true" kind="lib" path="lib/commons-collections-3.2.1.jar" sourcepath="com.cubrid.cubridmigration.coresrc.zip"/>
+	<classpathentry exported="true" kind="lib" path="lib/commons-lang-2.4.jar" sourcepath="com.cubrid.cubridmigration.coresrc.zip"/>
+	<classpathentry exported="true" kind="lib" path="lib/commons-logging-1.1.1.jar" sourcepath="com.cubrid.cubridmigration.coresrc.zip"/>
+	<classpathentry exported="true" kind="lib" path="lib/dom4j-1.6.1.jar" sourcepath="com.cubrid.cubridmigration.coresrc.zip"/>
+	<classpathentry exported="true" kind="lib" path="lib/json-lib-2.3-jdk15.jar" sourcepath="com.cubrid.cubridmigration.coresrc.zip"/>
+	<classpathentry exported="true" kind="lib" path="lib/xmlbeans-2.3.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/slf4j-api-1.5.8.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/org.apache.log4j_1.2.13.v200806030600.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/com.cubrid.cubridmanager.jdbc.proxy.jar" sourcepath="E:/mydocument/下载/软件下载/com.cubrid.cubridmanager.jdbc.proxy.zip"/>
+	<classpathentry exported="true" kind="lib" path="lib/stax2-api-3.1.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/woodstox-core-lgpl-4.1.2.jar" sourcepath="D:/woodstox-4.1.2/src"/>
+	<classpathentry exported="true" kind="lib" path="lib/ezmorph-1.0.6.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/opencsv-2.3.jar" sourcepath="E:/dev/opencsv-2.3/src"/>
+	<classpathentry exported="true" kind="lib" path="lib/poi-3.8-20120326.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/poi-ooxml-3.8-20120326.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/poi-ooxml-schemas-3.8-20120326.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jxl.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/hadoop-ant-1.1.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/hadoop-capacity-scheduler-1.1.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/hadoop-client-1.1.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/hadoop-core-1.1.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/hadoop-examples-1.1.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/hadoop-fairscheduler-1.1.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/hadoop-minicluster-1.1.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/hadoop-test-1.1.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/hadoop-thriftfs-1.1.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/hadoop-tools-1.1.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/hsqldb-1.8.0.10.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

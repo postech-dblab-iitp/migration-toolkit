@@ -1,0 +1,7 @@
+%class datatype_test1 (bit1 bit2 date1 datetime1 timestamp1 time1 year1 char2 char1 varchar1 varchar3 varchar2 binary1 binary2 numbers)
+ 'y'  X'07'  date '09/09/2009'  datetime '04:21:38.000 PM 09/16/2009'  timestamp '04:21:44 PM 09/16/2009'  time '12:00:00'  '2023'  X'616100'  '1'  'sss'  X'7373'  'ss'  X'313100'  X'3132'  '0'
+
+NULL NULL  date '09/30/2009'  datetime '04:20:11.000 PM 09/30/2009'  timestamp '04:20:40 PM 09/18/2009' NULL NULL NULL NULL NULL NULL NULL NULL NULL NULL
+
+NULL NULL NULL  datetime '10:40:04.000 AM 09/22/2009'  timestamp '10:40:44 AM 09/22/2009' NULL NULL NULL NULL NULL NULL NULL NULL NULL NULL
+

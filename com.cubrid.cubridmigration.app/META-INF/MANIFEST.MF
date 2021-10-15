@@ -1,0 +1,18 @@
+Bundle-ManifestVersion: 2
+Bundle-Name: CUBRID Migration Toolkit Application
+Bundle-SymbolicName: com.cubrid.cubridmigration.app;singleton:=true
+Bundle-Version: 9.3.0.qualifier
+Bundle-Activator: com.cubrid.cubridmigration.app.MigrationApplicationPlugin
+Bundle-Vendor: CUBRID
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.equinox.p2.ui,
+ com.cubrid.cubridmigration.core,
+ com.cubrid.cubridmigration.ui,
+ com.cubrid.common.update
+Bundle-ActivationPolicy: lazy
+Export-Package: com.cubrid.cubridmigration.app
+Bundle-ClassPath: .
+Bundle-RequiredExecutionEnvironment: J2SE-1.5,
+ JavaSE-1.6
+Bundle-Localization: plugin

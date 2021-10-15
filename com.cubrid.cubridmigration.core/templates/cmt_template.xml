@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<migration version="9.1.0"><!-- migration script -->
+	<!-- source data definition dbtype="oracle/mysql" -->
+	<!-- Please pay attention that the database objects' names are case sensitive. -->
+	<source dbtype="mysql" online="yes">
+		<!-- Online JDBC connection configuration. If parent online attribute is 
+			no, this tag will be ignored. -->
+		<jdbc host="127.0.0.1" port="3306"
+			driver="c:\jdbc\mysql-connector-java-5.1.10-bin.jar" name="testdb"
+			user="root" password="" charset="utf-8" timezone="GMT" version="5.5" />
+		<!-- Off line file data source configuration. If parent online attribute 
+			is yes, this tag will be ignored. -->
+		<file location="d:\db\xe.xml" charset="utf-8" timezone="GMT"
+			version="5.5" />
+
+		<!-- definitions of tables, including PKs,FKs,indexes,triggers and partitions. -->
+		<tables>
+			<table name="table1" create="yes" replace="yes" migrate_data="yes"
+				pk="yes" partition="no" target="table1">
+				<!-- Columns definitions -->
+				<columns>
+					<column name="f1" target="f1" />
+					<column name="f2" target="f2" />
+					<column name="f3" target="f3" />
+				</columns>
+				<!-- PK,FKs,Indexes definitions. -->
+				<constraints>
+					<!-- FKs -->
+					<fk name="fk1" target="fk1" />
+					<!-- Indexes -->
+					<index name="idx1" target="idx1" />
+				</constraints>
+			</table>
+		</tables>
+		<!-- SQL statement data source definitions. -->
+		<sqltables>
+			<sqltable name="sqltable1" create="yes" replace="yes"
+				migrate_data="yes" target="table2">
+				<statement>
+					select * from table1 where f1&gt;1000
+				</statement>
+				<!-- Columns definitions -->
+				<columns>
+					<column name="f1" target="f1" />
+					<column name="f2" target="f2" />
+					<column name="f3" target="f3" />
+				</columns>
+			</sqltable>
+		</sqltables>
+		<!-- sequences definitions -->
+		<sequences>
+			<sequence name="serial_1" target="serial_1" />
+		</sequences>
+		<!-- views definitions -->
+		<views>
+			<view name="view_1" target="view_1" />
+		</views>
+		<!-- Triggers, functions, procedures are not supported now. They will be 
+			export to a text file after migration -->
+		<!-- Triggers definitions. -->
+		<triggers>
+			<trigger name="trigger1" />
+		</triggers>
+		<!-- functions definitions -->
+		<functions>
+			<function name="function1" />
+		</functions>
+		<!-- procedures definitions -->
+		<procedures>
+			<procedure name="procedure1" />
+		</procedures>
+	</source>
+
+	<!-- Target CUBRID database information. If target is off-line, CM server 
+		must be specified. If target is on-line, JDBC driver should be specified. 
+		If the type is 'dir', the database unload configuration should be defined. -->
+	<target db_type="cubrid" type="dir/online/offline" version="9.1.0">
+		<!-- CM server definition -->
+		<cmserver host="127.0.0.1" port="8001" user="admin" password="admin"
+			dbname="demodb" dbuser="dba" dbpassword="" />
+		<!-- JDBC connection definition -->
+		<jdbc type="cubrid" name="mt" host="127.0.0.1" port="30000"
+			driver="c:\jdbc\JDBC-8.4.0.0243.jar" user="dba" password="">
+		</jdbc>
+		<!-- Database unload file configuration -->
+		<fileRepository data="C:\data.txt" dir="C:\" index="C:\index.txt"
+			schema="C:\schema.txt" timezone="Default" />
+		<!-- Target tables definitions. -->
+		<tables>
+			<table name="table1">
+				<!-- target columns definitions. -->
+				<columns>
+					<column name="f1" type="integer" base_type="integer"
+						subType="" null="yes" auto_increment="no" start="0" increment="1"
+						default="1" />
+					<column name="f2" type="varchar(200)" base_type="varchar"
+						subType="" null="yes" auto_increment="no" start="0" increment="1"
+						default="1" />
+					<column name="f3" type="varchar(200)" base_type="varchar"
+						subType="" null="yes" auto_increment="no" start="0" increment="1"
+						default="1" />
+				</columns>
+				<!-- target PK,FK,indexes definitions. on_update="CASCADE/RESTRICT/NO 
+					ACTION/SET NULL" -->
+				<constraints>
+					<pk fields="f1" />
+					<fk name="fk1" on_update="RESTRICT" on_delete="RESTRICT"
+						on_cache_object="" fields="f2" ref_table="table2" ref_fields="f1" />
+					<index name="idx1" reverse="no" unique="no" fields="f3"
+						order_rule="ASC" pre_fix="xe_" />
+				</constraints>
+				<!-- Table partitions definition type="range/hash/list" -->
+				<partitions type="range" expression="[f1]">
+					<range name="p0" value="10000" />
+					<range name="p1" value="20000" />
+					<range name="p2" value="30000" />
+					<!--<hash name="p0" /> -->
+					<!--<list name="p0" value="1,2,3,4"/> -->
+					<partitionDDL>partition ...</partitionDDL>
+				</partitions>
+			</table>
+
+			<table name="table2">
+				<columns>
+					<column name="f1" type="varchar(200)" base_type="varchar"
+						subType="" null="yes" auto_increment="no" start="0" increment="1"
+						default="1" />
+					<column name="f2" type="varchar(200)" base_type="varchar"
+						subType="" null="yes" auto_increment="no" start="0" increment="1"
+						default="1" />
+					<column name="f3" type="varchar(200)" base_type="varchar"
+						subType="" null="yes" auto_increment="no" start="0" increment="1"
+						default="1" />
+				</columns>
+				<constraints>
+					<pk fields="f1" />
+				</constraints>
+			</table>
+		</tables>
+		<!-- sequences definitions -->
+		<sequences>
+			<sequence name="serial_1" start="0" nomax="yes" max="1000000000000"
+				nomin="yes" min="0" cycle="no" increment="1" cache="yes" cache_size="50"
+				order="" isXE="no" />
+		</sequences>
+		<views>
+			<view name="view_1">
+				<viewQuerySQL>
+					select * from table1
+					</viewQuerySQL>
+				<createViewSQL>
+					create view view_1 as select * from table1
+				</createViewSQL>
+				<viewcolumns>
+					<viewcolumn name="f1" type="varchar(200)" base_type="varchar"
+						subType="" default="1" />
+					<viewcolumn name="f2" type="varchar(200)" base_type="varchar"
+						subType="" default="1" />
+					<viewcolumn name="f3" type="varchar(200)" base_type="varchar"
+						subType="" default="1" />
+				</viewcolumns>
+			</view>
+		</views>
+	</target>
+	<params commit_count="10000" export_thread="1" import_thread="5" />
+</migration>

@@ -1,0 +1,502 @@
+<project default="dist" name="cubridmigration">
+	<property file="${basedir}/../com.cubrid.cubridmigration.ui/version.properties" />
+	<property file="product_build_conf/build.properties" />
+	<property file="product_build_conf/build_common.properties" />
+	<property name="product.version" value="${releaseStr}-build-${buildNumber}" />
+	<property name="launcher.win.32" value="${basedir}/launcher/win32/cubridmigration.exe" />
+	<property name="launcher.win.64" value="${basedir}/launcher/win64/cubridmigration.exe" />
+	<!-- Clean build directory and workspace -->
+	<target name="cleanTrash">
+		<delete includeemptydirs="true" failonerror="false">
+			<fileset dir="${buildDirectory}" />
+			<fileset dir="${deploy.home}" />
+			<fileset dir="${output.path}" />
+		</delete>
+	</target>
+
+	<!-- Clean build directory and workspace -->
+	<target name="clean">
+		<delete includeemptydirs="true" failonerror="false">
+			<fileset dir="${buildDirectory}" />
+			<fileset dir="${deploy.home}" />
+			<fileset dir="${output.path}" />
+			<fileset dir="${basedir}/patch" />
+		</delete>
+	</target>
+
+	<!-- Prepare the environment -->
+	<target name="prepare">
+		<mkdir dir="${deploy.home}" />
+		<mkdir dir="${console.deploy}" />
+		<mkdir dir="${console.deploy.class}" />
+		<mkdir dir="${output.path}" />
+
+		<!-- Copy plug-ins from workspace -->
+		<copy todir="${buildDirectory}/plugins">
+			<fileset dir="${basedir}/..">
+				<include name="com.cubrid.common.update/**/*" />
+				<include name="com.cubrid.common.configuration/**/*" />
+				<include name="com.cubrid.cubridmigration.core/**/*" />
+				<include name="com.cubrid.cubridmigration.ui/**/*" />
+				<include name="com.cubrid.cubridmigration.app/**/*" />
+				<include name="com.cubrid.cubridmigration.plugin/**/*" />
+				<exclude name="**/bin/**" />
+				<exclude name="com.cubrid.cubridmigration.core/jdbc/*" />
+			</fileset>
+		</copy>
+
+		<!-- Copy features from workspace -->
+		<copy todir="${buildDirectory}/features">
+			<fileset dir="${basedir}/..">
+				<include name="com.cubrid.cubridmigration.app.feature/**/*" />
+				<include name="com.cubrid.common.update.feature/**/*" />
+				<include name="com.cubrid.cubridmigration.plugin.feature/**/*" />
+				<exclude name="**/bin/**" />
+			</fileset>
+		</copy>
+	</target>
+
+	<!-- build by headless-building of p2 -->
+	<target name="build" depends="prepare">
+		<ant antfile="${eclipse.pdebuild.scripts}/productBuild/productBuild.xml" />
+	</target>
+
+	<!-- build -->
+	<target name="build_plugin" depends="clean,prepare">
+		<ant antfile="${eclipse.pdebuild.scripts}/build.xml" />
+	</target>
+
+	<!--
+	<target name="build" depends="prepare">
+		<ant antfile="productBuild.xml" />
+	</target>
+	 
+	-->
+
+	<!-- post build -->
+	<target name="postbuild" depends="build">
+		<!-- optimize win32 -->
+		<unzip dest="${deploy.home}/win32" overwrite="true">
+			<fileset dir="${buildDirectory}/${buildLabel}">
+				<include name="${buildId}-win32.win32.x86.zip" />
+			</fileset>
+		</unzip>
+		<replaceregexp file="${product.win.32}/configuration/org.eclipse.equinox.simpleconfigurator/bundles.info" match="${update.configurator.match}" replace="${update.configurator.replace}" byline="true" />
+		<delete dir="${product.win.32}/readme" />
+		<delete>
+			<fileset dir="${product.win.32}" includes="*.html" />
+			<fileset dir="${product.win.32}" includes="*.xml" />
+			<fileset dir="${product.win.32}" includes="*.eclipseproduct" />
+		</delete>
+		<copy todir="${product.win.32}/jdbc">
+			<fileset dir="${jdbc.file}">
+				<include name="*.jar" />
+			</fileset>
+		</copy>
+		<copy todir="${product.win.32}/dropins">
+			<fileset dir="${builder}">
+				<include name="*.txt" />
+			</fileset>
+		</copy>
+		<copy todir="${product.win.32}/handlers">
+			<fileset dir="${handlerPath}/..">
+				<include name="*.jar" />
+			</fileset>
+		</copy>
+		<touch file="${launcher.win.32}"/>
+		<copy file="${launcher.win.32}" todir="${product.win.32}" overwrite="true"/>
+
+		<!--
+		<signjar alias="${sign.alias}" keystore="${sign.keystore}" storepass="${sign.storepass}" keypass="${sign.keypass}">
+			<path>
+				<fileset dir="${product.win.32}/plugins" includes="com.cubrid.*.jar" />
+				<fileset dir="${product.win.32}/features" includes="com.cubrid.*.jar" />
+			</path>
+		</signjar>
+		-->
+		<!-- optimize win64 -->
+		<unzip dest="${deploy.home}/win64" overwrite="true">
+			<fileset dir="${buildDirectory}/${buildLabel}">
+				<include name="${buildId}-win32.win32.x86_64.zip" />
+			</fileset>
+		</unzip>
+		<replaceregexp file="${product.win.64}/configuration/org.eclipse.equinox.simpleconfigurator/bundles.info" match="${update.configurator.match}" replace="${update.configurator.replace}" byline="true" />
+		<delete dir="${product.win.64}/readme" />
+		<delete>
+			<fileset dir="${product.win.64}" includes="*.html" />
+			<fileset dir="${product.win.64}" includes="*.xml" />
+			<fileset dir="${product.win.64}" includes="*.eclipseproduct" />
+		</delete>
+		<copy todir="${product.win.64}/jdbc">
+			<fileset dir="${jdbc.file}">
+				<include name="*.jar" />
+			</fileset>
+		</copy>
+		<copy todir="${product.win.64}/dropins">
+			<fileset dir="${builder}">
+				<include name="*.txt" />
+			</fileset>
+		</copy>
+		<copy todir="${product.win.64}/handlers">
+			<fileset dir="${handlerPath}/..">
+				<include name="*.jar" />
+			</fileset>
+		</copy>
+		<touch file="${launcher.win.64}"/>
+		<copy file="${launcher.win.64}" todir="${product.win.64}" overwrite="true"/>
+
+		<!--
+		<signjar alias="${sign.alias}" keystore="${sign.keystore}" storepass="${sign.storepass}" keypass="${sign.keypass}">
+			<path>
+				<fileset dir="${product.win.64}/plugins" includes="com.cubrid.*.jar" />
+				<fileset dir="${product.win.64}/features" includes="com.cubrid.*.jar" />
+			</path>
+		</signjar>
+-->
+		<!-- optimize linux32 -->
+		<unzip dest="${deploy.home}/linux32" overwrite="true">
+			<fileset dir="${buildDirectory}/${buildLabel}">
+				<include name="${buildId}-linux.gtk.x86.zip" />
+			</fileset>
+		</unzip>
+		<replaceregexp file="${product.linux.32}/configuration/org.eclipse.equinox.simpleconfigurator/bundles.info" match="${update.configurator.match}" replace="${update.configurator.replace}" byline="true" />
+		<delete dir="${product.linux.32}/readme" />
+		<delete dir="${product.linux.32}/about_files" />
+		<delete>
+			<fileset dir="${product.linux.32}" includes="*.html" />
+			<fileset dir="${product.linux.32}" includes="*.xml" />
+			<fileset dir="${product.linux.32}" includes="*.eclipseproduct" />
+		</delete>
+		<copy todir="${product.linux.32}/jdbc">
+			<fileset dir="${jdbc.file}">
+				<include name="*.jar" />
+			</fileset>
+		</copy>
+		<copy todir="${product.linux.32}/dropins">
+			<fileset dir="${builder}">
+				<include name="*.txt" />
+			</fileset>
+		</copy>
+		<copy todir="${product.linux.32}/handlers">
+			<fileset dir="${handlerPath}/..">
+				<include name="*.jar" />
+			</fileset>
+		</copy>
+		<!--
+		<signjar alias="${sign.alias}" keystore="${sign.keystore}" storepass="${sign.storepass}" keypass="${sign.keypass}">
+			<path>
+				<fileset dir="${product.linux.32}/plugins" includes="com.cubrid.*.jar" />
+				<fileset dir="${product.linux.32}/features" includes="com.cubrid.*.jar" />
+			</path>
+		</signjar>
+		 -->
+		<!-- optimize linux64 -->
+		<unzip dest="${deploy.home}/linux64" overwrite="true">
+			<fileset dir="${buildDirectory}/${buildLabel}">
+				<include name="${buildId}-linux.gtk.x86_64.zip" />
+			</fileset>
+		</unzip>
+		<replaceregexp file="${product.linux.64}/configuration/org.eclipse.equinox.simpleconfigurator/bundles.info" match="${update.configurator.match}" replace="${update.configurator.replace}" byline="true" />
+		<delete dir="${product.linux.64}/readme" />
+		<delete dir="${product.linux.64}/about_files" />
+		<delete>
+			<fileset dir="${product.linux.64}" includes="*.html" />
+			<fileset dir="${product.linux.64}" includes="*.xml" />
+			<fileset dir="${product.linux.64}" includes="*.eclipseproduct" />
+		</delete>
+		<copy todir="${product.linux.64}/jdbc">
+			<fileset dir="${jdbc.file}">
+				<include name="*.jar" />
+			</fileset>
+		</copy>
+		<copy todir="${product.linux.64}/dropins">
+			<fileset dir="${builder}">
+				<include name="*.txt" />
+			</fileset>
+		</copy>
+		<copy todir="${product.linux.64}/handlers">
+			<fileset dir="${handlerPath}/..">
+				<include name="*.jar" />
+			</fileset>
+		</copy>
+		<!--
+		<signjar alias="${sign.alias}" keystore="${sign.keystore}" storepass="${sign.storepass}" keypass="${sign.keypass}">
+			<path>
+				<fileset dir="${product.linux.64}/plugins" includes="com.cubrid.*.jar" />
+				<fileset dir="${product.linux.64}/features" includes="com.cubrid.*.jar" />
+			</path>
+		</signjar>
+		-->
+		<!-- optimize carbon 
+		<unzip dest="${deploy.home}/carbon" overwrite="true">
+			<fileset dir="${buildDirectory}/${buildLabel}">
+				<include name="${buildId}-macosx.carbon.x86.zip" />
+			</fileset>
+		</unzip>
+		<replaceregexp file="${product.macosx.carbon}/configuration/org.eclipse.equinox.simpleconfigurator/bundles.info" match="${update.configurator.match}" replace="${update.configurator.replace}" byline="true" />
+		<delete dir="${product.macosx.carbon}/readme" />
+		<delete>
+			<fileset dir="${product.macosx.carbon}" includes="*.html" />
+			<fileset dir="${product.macosx.carbon}" includes="*.xml" />
+			<fileset dir="${product.macosx.carbon}" includes="*.eclipseproduct" />
+		</delete>
+		<copy todir="${product.macosx.carbon}/jdbc">
+			<fileset dir="${jdbc.file}">
+				<include name="*.jar" />
+			</fileset>
+		</copy>
+		<copy todir="${product.macosx.carbon}/dropins">
+			<fileset dir="${builder}">
+				<include name="*.txt" />
+			</fileset>
+		</copy>
+		<copy todir="${product.macosx.carbon}/handlers">
+			<fileset dir="${handlerPath}/..">
+				<include name="*.jar" />
+			</fileset>
+		</copy>
+		<signjar alias="${sign.alias}" keystore="${sign.keystore}" storepass="${sign.storepass}" keypass="${sign.keypass}">
+			<path>
+				<fileset dir="${product.macosx.carbon}/plugins" includes="com.cubrid.*.jar" />
+				<fileset dir="${product.macosx.carbon}/features" includes="com.cubrid.*.jar" />
+			</path>
+		</signjar>
+-->
+		<!-- optimize cocoa -->
+		<unzip dest="${deploy.home}/cocoa" overwrite="true">
+			<fileset dir="${buildDirectory}/${buildLabel}">
+				<include name="${buildId}-macosx.cocoa.x86_64.zip" />
+			</fileset>
+		</unzip>
+		<replaceregexp file="${product.macosx.cocoa}/configuration/org.eclipse.equinox.simpleconfigurator/bundles.info" match="${update.configurator.match}" replace="${update.configurator.replace}" byline="true" />
+		<delete dir="${product.macosx.cocoa}/readme" />
+		<delete dir="${product.macosx.cocoa}/Eclipse.app" />
+		<delete>
+			<fileset dir="${product.macosx.cocoa}" includes="*.html" />
+			<fileset dir="${product.macosx.cocoa}" includes="*.xml" />
+			<fileset dir="${product.macosx.cocoa}" includes="*.eclipseproduct" />
+		</delete>
+		<copy todir="${product.macosx.cocoa}/jdbc">
+			<fileset dir="${jdbc.file}">
+				<include name="*.jar" />
+			</fileset>
+		</copy>
+		<copy todir="${product.macosx.cocoa}/dropins">
+			<fileset dir="${builder}">
+				<include name="*.txt" />
+			</fileset>
+		</copy>
+		<copy todir="${product.macosx.cocoa}/handlers">
+			<fileset dir="${handlerPath}/..">
+				<include name="*.jar" />
+			</fileset>
+		</copy>
+		<!--
+		<signjar alias="${sign.alias}" keystore="${sign.keystore}" storepass="${sign.storepass}" keypass="${sign.keypass}">
+			<path>
+				<fileset dir="${product.macosx.cocoa}/plugins" includes="com.cubrid.*.jar" />
+				<fileset dir="${product.macosx.cocoa}/features" includes="com.cubrid.*.jar" />
+			</path>
+		</signjar>
+		-->
+		<!-- optimize plugin -->
+		<!--
+		<signjar alias="${sign.alias}" keystore="${sign.keystore}" storepass="${sign.storepass}" keypass="${sign.keypass}">
+			<path>
+				<fileset dir="${repositoryDirectory}/plugins" includes="com.cubrid.*.jar" />
+				<fileset dir="${repositoryDirectory}/features" includes="com.cubrid.*.jar" />
+			</path>
+		</signjar>
+		-->
+	</target>
+
+
+	<!-- package win32-->
+	<target name="packagewin32" depends="postbuild">
+		<zip destfile="${output.path}/${product.name}-${product.version}-windows-i386.zip">
+			<zipfileset prefix="cubridmigration" dir="${product.win.32}" />
+			<zipfileset prefix="cubridmigration/handlers" dir="${handlerPath}" />
+		</zip>
+	</target>
+
+	<!-- package win64 -->
+	<target name="packagewin64" depends="postbuild">
+		<zip destfile="${output.path}/${product.name}-${product.version}-windows-x64.zip">
+			<zipfileset prefix="cubridmigration" dir="${product.win.64}" />
+			<zipfileset prefix="cubridmigration/handlers" dir="${handlerPath}" />
+		</zip>
+	</target>
+
+	<!-- package linux32 -->
+	<target name="packagelinux32" depends="postbuild">
+		<tar destfile="${deploy.home}/${product.name}-${product.version}-linux-i386.tar">
+			<tarfileset dir="${product.linux.32}" prefix="cubridmigration" />
+			<tarfileset dir="${handlerPath}" prefix="cubridmigration/handlers" />
+			<tarfileset file="${product.linux.32}/${launcher.name}" filemode="755" prefix="cubridmigration" />
+		</tar>
+		<gzip src="${deploy.home}/${product.name}-${product.version}-linux-i386.tar" destfile="${output.path}/${product.name}-${product.version}-linux-i386.tar.gz" />
+	</target>
+
+	<!-- package linux64 -->
+	<target name="packagelinux64" depends="postbuild">
+		<tar destfile="${deploy.home}/${product.name}-${product.version}-linux-x86_64.tar">
+			<tarfileset dir="${product.linux.64}" prefix="cubridmigration" />
+			<tarfileset dir="${handlerPath}" prefix="cubridmigration/handlers" />
+			<tarfileset file="${product.linux.64}/${launcher.name}" filemode="755" prefix="cubridmigration" />
+		</tar>
+		<gzip src="${deploy.home}/${product.name}-${product.version}-linux-x86_64.tar" destfile="${output.path}/${product.name}-${product.version}-linux-x86_64.tar.gz" />
+	</target>
+
+	<!-- package macosx carbon -->
+	<!--
+	<target name="packagecarbon" depends="postbuild">
+		<tar destfile="${deploy.home}/${product.name}-${product.version}-macosx-carbon.tar">
+			<tarfileset dir="${product.macosx.carbon}" filemode="755" includes="**/Contents/MacOS/${launcher.name}" />
+			<tarfileset dir="${product.macosx.carbon}" excludes="**/Contents/MacOS/${launcher.name}" />
+			<tarfileset dir="${handlerPath}" prefix="handlers" />
+		</tar>
+		<gzip src="${deploy.home}/${product.name}-${product.version}-macosx-carbon.tar" destfile="${output.path}/${product.name}-${product.version}-macosx-carbon.tar.gz" />
+	</target>
+ 	-->
+	<!-- package macosx cocoa -->
+	<target name="packagecocoa" depends="postbuild">
+		<untar src="${basedir}/cmt-macosx-java7-patch.tgz" dest="${basedir}/patch" compression="gzip" />
+		<delete dir="${product.macosx.cocoa}/cubridmigration.app" />
+		<delete dir="${product.macosx.cocoa}/plugins/org.eclipse.equinox.launcher.cocoa.macosx.x86_64_1.1.0.v20100503" />
+		<delete file="${product.macosx.cocoa}/plugins/org.eclipse.equinox.launcher_1.1.0.v20100507.jar" />
+		<copy todir="${product.macosx.cocoa}/cubridmigration.app">
+			<fileset dir="${basedir}/patch/cubridmigration.app" />
+		</copy>
+		<copy todir="${product.macosx.cocoa}/plugins">
+			<fileset file="${basedir}/patch/org.eclipse.equinox.launcher_1.1.0.v20100507.jar" />
+		</copy>
+		<copy todir="${product.macosx.cocoa}/plugins/org.eclipse.equinox.launcher.cocoa.macosx.x86_64_1.1.0.v20100503">
+			<fileset dir="${basedir}/patch/org.eclipse.equinox.launcher.cocoa.macosx.x86_64_1.1.0.v20100503" />
+		</copy>
+		<tar longfile="gnu" destfile="${deploy.home}/${product.name}-${product.version}-macosx-cocoa.tar">
+			<tarfileset dir="${product.macosx.cocoa}" filemode="755" includes="**/Contents/MacOS/${launcher.name}" />
+			<tarfileset dir="${product.macosx.cocoa}" excludes="**/Contents/MacOS/${launcher.name}" />
+			<tarfileset dir="${handlerPath}" prefix="handlers" />
+		</tar>
+		<gzip src="${deploy.home}/${product.name}-${product.version}-macosx-cocoa.tar" destfile="${output.path}/${product.name}-${product.version}-macosx-cocoa.tar.gz" />
+	</target>
+
+	<!-- Compile and package Console tool -->
+	<target name="create_migration_console_jar" depends="prepare">
+		<path id="core.compile.classpath">
+			<fileset dir="${console.lib}">
+				<include name="*.jar" />
+			</fileset>
+		</path>
+		<javac srcdir="${basedir}/../com.cubrid.common.configuration/src" destdir="${console.deploy.class}" debug="${javac.debug}" encoding="${javac.encoding}">
+			<classpath refid="core.compile.classpath" />
+		</javac>
+		<javac srcdir="${basedir}/../com.cubrid.cubridmigration.core/src" destdir="${console.deploy.class}" debug="${javac.debug}" encoding="${javac.encoding}">
+			<classpath refid="core.compile.classpath" />
+		</javac>
+		<javac srcdir="${basedir}/../com.cubrid.cubridmigration.command/src" destdir="${console.deploy.class}" debug="${javac.debug}" encoding="${javac.encoding}">
+			<classpath refid="core.compile.classpath" />
+		</javac>
+		<jar destfile="${basedir}/deploy/console/migration.jar">
+			<manifest>
+				<attribute name="Manifest-Version" value="1.0" />
+				<attribute name="Class-Path" value=" . lib/org.eclipse.equinox.app_1.3.0.v20100512.jar lib/hadoop-minicluster-1.1.2.jar lib/commons-math-2.1.jar lib/commons-httpclient-3.0.1.jar lib/commons-net-3.1.jar lib/commons-beanutils-1.8.0.jar lib/org.eclipse.core.jobs_3.5.0.v20100515.jar lib/commons-logging-1.1.1.jar lib/org.eclipse.equinox.registry_3.5.0.v20100503.jar lib/poi-3.8-20120326.jar lib/org.eclipse.equinox.common_3.6.0.v20100503.jar lib/org.eclipse.osgi_3.6.0.v20100517.jar lib/org.eclipse.core.contenttype_3.4.100.v20100505-1235.jar lib/poi-ooxml-schemas-3.8-20120326.jar lib/hadoop-examples-1.1.2.jar lib/json-lib-2.3-jdk15.jar lib/commons-lang-2.4.jar lib/commons-beanutils-core-1.8.0.jar lib/poi-ooxml-3.8-20120326.jar lib/commons-codec-1.4.jar lib/slf4j-api-1.5.8.jar lib/runtime_registry_compatibility.jar lib/dom4j-1.6.1.jar lib/hadoop-capacity-scheduler-1.1.2.jar lib/commons-daemon-1.0.1.jar lib/woodstox-core-lgpl-4.1.2.jar lib/opencsv-2.3.jar lib/org.eclipse.osgi.nl_ko_3.6.0.v20101211043401.jar lib/hadoop-tools-1.1.2.jar lib/org.apache.log4j_1.2.13.v200806030600.jar lib/ezmorph-1.0.6.jar lib/commons-digester-1.8.jar lib/xmlbeans-2.3.0.jar lib/org.eclipse.equinox.registry.nl_ko_3.6.0.v20101211043401.jar lib/org.eclipse.equinox.preferences_3.3.0.v20100503.jar lib/hadoop-thriftfs-1.1.2.jar lib/hadoop-client-1.1.2.jar lib/hsqldb-1.8.0.10.jar lib/jxl.jar lib/commons-configuration-1.6.jar lib/commons-lang-2.6.jar lib/commons-collections-3.2.1.jar lib/commons-el-1.0.jar lib/org.eclipse.core.runtime_3.6.0.v20100505.jar lib/hadoop-core-1.1.2.jar lib/commons-logging-api-1.0.4.jar lib/com.cubrid.cubridmanager.jdbc.proxy.jar lib/commons-io-2.1.jar lib/hadoop-fairscheduler-1.1.2.jar lib/jsch-0.1.51.jar lib/hadoop-ant-1.1.2.jar lib/hadoop-test-1.1.2.jar lib/commons-cli-1.2.jar lib/stax2-api-3.1.1.jar" />
+				<attribute name="Main-Class" value="com.cubrid.cubridmigration.command.DoMigration" />
+			</manifest>
+			<tarfileset prefix="" dir="${console.deploy.class}" />
+			<tarfileset prefix="" dir="${basedir}/../com.cubrid.cubridmigration.command/src/">
+				<include name="**/*.xml" />
+				<include name="**/*.properties" />
+				<include name="**/*.txt" />
+			</tarfileset>
+			<tarfileset prefix="" dir="${basedir}/../com.cubrid.cubridmigration.core/src/">
+				<include name="**/*.xml" />
+				<include name="**/*.properties" />
+			</tarfileset>
+		</jar>
+	</target>
+
+	<!-- package console tool of windows-->
+	<target name="package_console_win" depends="create_migration_console_jar">
+		<zip destfile="${output.path}/${product.name}-console-${product.version}-windows.zip">
+			<zipfileset prefix="cubridmigration" file="${console.deploy}/migration.jar" />
+			<zipfileset prefix="cubridmigration" file="${basedir}/../com.cubrid.cubridmigration.command/db.conf" />
+			<zipfileset prefix="cubridmigration" file="${basedir}/../com.cubrid.cubridmigration.command/migration.bat" />
+			<zipfileset prefix="cubridmigration/jdbc" dir="${jdbc.file}" />
+			<zipfileset prefix="cubridmigration/lib" dir="${console.lib}/" />
+			<zipfileset prefix="cubridmigration/handlers" dir="${handlerPath}" />
+		</zip>
+	</target>
+	<!-- package console tool of linux-->
+	<target name="package_console_linux" depends="create_migration_console_jar">
+		<tar destfile="${deploy.home}/${product.name}-console-${product.version}-linux.tar">
+			<tarfileset prefix="cubridmigration" file="${console.deploy}/migration.jar" />
+			<tarfileset prefix="cubridmigration" file="${basedir}/../com.cubrid.cubridmigration.command/db.conf" />
+			<tarfileset prefix="cubridmigration" file="${basedir}/../com.cubrid.cubridmigration.command/migration.sh" />
+			<tarfileset prefix="cubridmigration/jdbc" dir="${jdbc.file}" />
+			<tarfileset prefix="cubridmigration/lib" dir="${console.lib}/" />
+			<tarfileset prefix="cubridmigration/handlers" dir="${handlerPath}" />
+		</tar>
+		<gzip src="${deploy.home}/${product.name}-console-${product.version}-linux.tar" destfile="${output.path}/${product.name}-console-${product.version}-linux.tar.gz" />
+		<delete file="${deploy.home}/${product.name}-console-${product.version}-linux.tar" />
+	</target>
+
+	<!-- package product site in win-->
+	<target name="package_product_site_win" depends="postbuild">
+		<zip destfile="${output.path}/${product.name}-site-${product.version}.zip">
+			<zipfileset prefix="cubridmigration" dir="${repositoryDirectory}" />
+		</zip>
+	</target>
+
+	<!-- package product site in linux-->
+	<target name="package_product_site_linux" depends="postbuild">
+		<tar destfile="${deploy.home}/${product.name}-site-${product.version}.tar">
+			<tarfileset dir="${repositoryDirectory}" prefix="cubridmigration" />
+		</tar>
+		<gzip src="${deploy.home}/${product.name}-site-${product.version}.tar" destfile="${output.path}/${product.name}-site-${product.version}.tar.gz" />
+	</target>
+
+	<!-- Make win32 installer for CUBRID Manager
+	<target name="win32installer" description="Make win32 installer" depends="postbuild">
+		<exec dir="${installer.win}" outputproperty="installer.output" errorproperty="redirector.err" executable="cmd" failifexecutionfails="false">
+			<arg value="/c" />
+	  		<arg value="makensis" />
+	  		<arg value="/DINTERNAL_VERSION=${product.version}" />
+	  		<arg value="/DINFILE_PATH=${product.win.32}" />
+	  		<arg value="/DOUTFILE_PATH=${output.path}" />
+	  		<arg value="cubridmigration.nsi" />
+		</exec>
+	</target> -->
+	<!-- Make win64 installer for CUBRID Manager 
+	<target name="win64installer" description="Make win64 installer" depends="postbuild">
+		<exec dir="${installer.win}"  outputproperty="installer.output" errorproperty="redirector.err" executable="cmd" failifexecutionfails="false">
+			<arg value="/c" />
+	  		<arg value="makensis" />
+	  		<arg value="/DINTERNAL_VERSION=${product.version}" />
+	  		<arg value="/DINFILE_PATH=${product.win.64}" />
+	  		<arg value="/DOUTFILE_PATH=${output.path}" />
+	  		<arg value="CUBRIDManager_x64.nsi" />
+		</exec>
+	</target>-->
+	<!-- Make linux32 installer for CUBRID Manager 
+	<target name="linux32installer" description="Make linux32 installer" depends="postbuild">
+		<exec dir="${installer.linux}" outputproperty="installer.output" errorproperty="redirector.err" executable="${installer.linux}/build.sh" failifexecutionfails="false">
+	  		<arg value="-v${product.version}" />
+	  		<arg value="-i${product.linux.32}" />
+	  		<arg value="-o${output.path}" />
+	  		<arg value="-plinux-i386" />
+		</exec>
+	</target>-->
+	<!-- Make linux64 installer for CUBRID Manager 
+	<target name="linux64installer" description="Make linux64 installer" depends="postbuild">
+		<exec dir="${installer.linux}" outputproperty="installer.output" errorproperty="redirector.err" executable="${installer.linux}/build.sh" failifexecutionfails="false">
+	  		<arg value="-v${product.version}" />
+	  		<arg value="-i${product.linux.64}" />
+	  		<arg value="-o${output.path}" />
+	  		<arg value="-plinux-x86_64" />
+		</exec>
+	</target>
+	-->
+	<target name="testbuild" depends="clean,build" />
+	<target name="dist" depends="clean,packagewin32,packagewin64,packagelinux32,packagelinux64,packagecocoa,package_console_win,package_console_linux,package_product_site_win,package_product_site_linux" />
+</project>

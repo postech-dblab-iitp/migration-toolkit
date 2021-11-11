@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<mysqldump xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<database name="xpressengine">
+	<table_structure name="xe_comments">
+		<field Field="comment_srl" Type="bigint(11)" Null="NO" Key="PRI" Extra="" />
+		<field Field="module_srl" Type="bigint(11)" Null="NO" Key="MUL" Extra="" />
+		<field Field="document_srl" Type="bigint(11)" Null="NO" Key="MUL" Extra="" />
+		<field Field="parent_srl" Type="bigint(11)" Null="NO" Key="" Extra="" />
+		<field Field="is_secret" Type="char(1)" Null="NO" Key="" Default="N" Extra="" />
+		<field Field="content" Type="longtext" Null="NO" Key="" Extra="" />
+		<field Field="password" Type="varchar(60)" Null="YES" Key="" Extra="" />
+		<field Field="user_id" Type="varchar(80)" Null="YES" Key="" Extra="" />
+		<field Field="user_name" Type="varchar(80)" Null="NO" Key="" Extra="" />
+		<field Field="nick_name" Type="varchar(80)" Null="NO" Key="" Extra="" />
+		<field Field="member_srl" Type="bigint(11)" Null="NO" Key="MUL" Extra="" />
+		<field Field="email_address" Type="varchar(250)" Null="NO" Key="" Extra="" />
+		<field Field="homepage" Type="varchar(250)" Null="NO" Key="" Extra="" />
+		<field Field="uploaded_count" Type="bigint(11)" Null="NO" Key="MUL" Extra="" />
+		<field Field="regdate" Type="varchar(14)" Null="YES" Key="MUL" Extra="" />
+		<field Field="last_update" Type="varchar(14)" Null="YES" Key="MUL" Extra="" />
+		<field Field="ipaddress" Type="varchar(128)" Null="NO" Key="MUL" Extra="" />
+		<field Field="list_order" Type="bigint(11)" Null="NO" Key="MUL" Extra="" />
+		<field Field="voted_count" Type="bigint(11)" Null="YES" Key="MUL" Extra="" />
+		<field Field="notify_message" Type="char(1)" Null="YES" Key="" Extra="" />
+		<field Field="blamed_count" Type="bigint(11)" Null="NO" Key="MUL" Extra="" />
+		<key Table="xe_comments" Non_unique="0" Key_name="PRIMARY" Seq_in_index="1" Column_name="comment_srl" Collation="A" Cardinality="666900" Null="" Index_type="BTREE" Comment="" />
+		<key Table="xe_comments" Non_unique="1" Key_name="idx_module_srl" Seq_in_index="1" Column_name="module_srl" Collation="A" Cardinality="262" Null="" Index_type="BTREE" Comment="" />
+		<key Table="xe_comments" Non_unique="1" Key_name="idx_document_srl" Seq_in_index="1" Column_name="document_srl" Collation="A" Cardinality="222300" Null="" Index_type="BTREE" Comment="" />
+		<key Table="xe_comments" Non_unique="1" Key_name="idx_member_srl" Seq_in_index="1" Column_name="member_srl" Collation="A" Cardinality="60627" Null="" Index_type="BTREE" Comment="" />
+		<key Table="xe_comments" Non_unique="1" Key_name="idx_uploaded_count" Seq_in_index="1" Column_name="uploaded_count" Collation="A" Cardinality="21" Null="" Index_type="BTREE" Comment="" />
+		<key Table="xe_comments" Non_unique="1" Key_name="idx_regdate" Seq_in_index="1" Column_name="regdate" Collation="A" Cardinality="666900" Null="YES" Index_type="BTREE" Comment="" />
+		<key Table="xe_comments" Non_unique="1" Key_name="idx_last_update" Seq_in_index="1" Column_name="last_update" Collation="A" Cardinality="666900" Null="YES" Index_type="BTREE" Comment="" />
+		<key Table="xe_comments" Non_unique="1" Key_name="idx_ipaddress" Seq_in_index="1" Column_name="ipaddress" Collation="A" Cardinality="222300" Null="" Index_type="BTREE" Comment="" />
+		<key Table="xe_comments" Non_unique="1" Key_name="idx_list_order" Seq_in_index="1" Column_name="list_order" Collation="A" Cardinality="666900" Null="" Index_type="BTREE" Comment="" />
+		<key Table="xe_comments" Non_unique="1" Key_name="idx_voted_count" Seq_in_index="1" Column_name="voted_count" Collation="A" Cardinality="666900" Null="YES" Index_type="BTREE" Comment="" />
+		<key Table="xe_comments" Non_unique="1" Key_name="idx_blamed_count" Seq_in_index="1" Column_name="blamed_count" Collation="A" Cardinality="7" Null="" Index_type="BTREE" Comment="" />
+		<options Name="xe_comments" Engine="MyISAM" Version="10" Row_format="Dynamic" Rows="666900" Avg_row_length="445" Data_length="296862192" Max_data_length="281474976710655" Index_length="90375168" Data_free="0" Create_time="2010-09-09 02:55:06" Update_time="2010-09-09 02:55:55" Check_time="2010-09-09 02:56:35" Collation="utf8_general_ci" Create_options="" Comment="" />
+	</table_structure>
+	<table_data name="xe_comments">
+	<row>
+		<field name="comment_srl">1037</field>
+		<field name="module_srl">11</field>
+		<field name="document_srl">17803</field>
+		<field name="parent_srl">73817</field>
+		<field name="is_secret">N</field>
+		<field name="content">제가 bbs/index.php. (만 밖에)&lt;BR&gt;URL는 기니다.&lt;BR&gt;설겠죠.</field>
+		<field name="password"></field>
+		<field name="user_id">mj937</field>
+		<field name="user_name">김지</field>
+		<field name="nick_name">네</field>
+		<field name="member_srl">16063</field>
+		<field name="email_address">a@test.com</field>
+		<field name="homepage"></field>
+		<field name="uploaded_count">0</field>
+		<field name="regdate">20081117232557</field>
+		<field name="last_update">20081117232655</field>
+		<field name="ipaddress">192.168.0.100</field>
+		<field name="list_order">-17039</field>
+		<field name="voted_count">0</field>
+		<field name="notify_message">N</field>
+		<field name="blamed_count">0</field>
+	</row>
+	</table_data>
+</database>
+</mysqldump>

@@ -1,0 +1,5 @@
+#db-name	vol-path		db-host		log-path
+t2t		C:\CUBRID\DATABA~1\t2t	localhost	C:\CUBRID\DATABA~1\t2t 
+t1		C:\CUBRID\DATABA~1\t1	localhost	C:\CUBRID\DATABA~1\t1 
+t2		C:\CUBRID\DATABA~1\t2	localhost	C:\CUBRID\DATABA~1\t2 
+test		C:\CUBRID\DATABA~1\test	localhost	C:\CUBRID\DATABA~1\test 

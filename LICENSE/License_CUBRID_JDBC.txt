@@ -1,0 +1,72 @@
+Copyright (C) 2008-2016 Search Solution Corporation. All rights reserved.
+CUBRID is registered trademark of Search Solution Corporation.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+  * Redistributions of source code must retain the above copyright notice, this
+    list of conditions and the following disclaimer.
+  * Redistributions in binary form must reproduce the above copyright notice,
+    this list of conditions and the following disclaimer in the documentation
+    and/or other materials provided with the distribution.
+  * Neither the name of the Dojo Foundation nor the names of its contributors
+    may be used to endorse or promote products derived from this software
+    without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE
+FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+===========================================================================================
+
+* Followings may be contained for this software:
+
+- Apache Commons Lang from http://commons.apache.org/proper/commons-lang/index.html
+
+- Dom4j from http://dom4j.sourceforge.net
+
+- Apache Commons Net from http://commons.apache.org/proper/commons-net
+
+- SLF4J from http://www.slf4j.org
+
+- JSON-js from https://github.com/douglascrockford/JSON-js
+
+- ANTLR from http://www.antlr.org
+
+- Apache Geronimo http://geronimo.apache.org
+
+- Google-gson from https://code.google.com/p/google-gson
+
+- JDOM from https://github.com/hunterhacker/jdom
+
+- Apache xerces	from http://xerces.apache.org
+
+- Apache POI from http://poi.apache.org
+
+- Rome from https://github.com/rometools/rome
+
+- Apache XMLBeans from http://xmlbeans.apache.org
+
+- Apache Commons Codec from http://commons.apache.org/proper/commons-codec
+
+- Apache Commons Logging from http://commons.apache.org/proper/commons-logging
+
+- Apache Components Httpclient from https://hc.apache.org/httpcomponents-client-4.2.x/index.html
+
+- Apache Components HttpCore from https://hc.apache.org/httpcomponents-core-4.2.x/index.html
+
+- Json-simple from http://code.google.com/p/json-simple
+
+
+* Followings may be contained for this software independently (without modification)
+
+- JFreeChart from http://sourceforge.net/projects/jfreechart
+
+- Jexcelapi from http://sourceforge.net/projects/jexcelapi

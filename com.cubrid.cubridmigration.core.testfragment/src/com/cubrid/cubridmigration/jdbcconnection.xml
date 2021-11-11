@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databases>
+	<database charSet="latin1" databaseTypeID="0" dbName="migtestforhudson"
+		driverClass="org.gjt.mm.mysql.Driver" driverPath="mysql-connector-java-5.1.22-bin.jar"
+		encrypted="true" hostIP="localhost" isXMLDatabase="false" name="mysqltest"
+		password="5db220014edad5cd83b059459877f6e4bc1d7b652c8c634068bc694399c65452"
+		port="3306" user="cmt" user_jdbc_url="" />
+	<database charSet="AL32UTF8" databaseTypeID="3" dbName="XE"
+		driverClass="oracle.jdbc.OracleDriver" driverPath="ojdbc14.jar"
+		encrypted="true" hostIP="localhost" isXMLDatabase="false" name="oracletest"
+		password="cc6f986ae1895234cec7b9f699c8b6dd5a1a0c6e69473dabacda193843ef5158"
+		port="1521" user="migtestforhudson" user_jdbc_url="jdbc:oracle:thin:@localhost:1521/XE" />
+	<database charSet="UTF-8" databaseTypeID="1" dbName="migtestforhudson"
+		driverClass="cubrid.jdbc.driver.CUBRIDDriver" driverPath="JDBC-8.4.3.1005.jar"
+		encrypted="true" hostIP="localhost" isXMLDatabase="false"
+		name="migtestforhudson" password="" port="30000" user="dba" />
+	<database charSet="UTF-8" databaseTypeID="1" dbName="mt_cubrid"
+		driverClass="cubrid.jdbc.driver.CUBRIDDriver" driverPath="JDBC-8.4.3.1005.jar"
+		encrypted="true" hostIP="localhost" isXMLDatabase="false" name="mt_cubrid"
+		password="" port="30000" user="dba" />
+</databases>

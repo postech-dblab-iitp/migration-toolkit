@@ -1,0 +1,17 @@
+CREATE TABLE "datatype_test1"(
+"bit1" CHAR(1),
+"bit2" BIT(10),
+"date1" DATE,
+"datetime1" DATETIME,
+"timestamp1" TIMESTAMP DEFAULT current_timestamp NOT NULL,
+"time1" TIME,
+"year1" CHAR(4),
+"char2" BIT(4),
+"char1" CHAR(2),
+"varchar1" VARCHAR(12),
+"varchar3" BIT VARYING(4),
+"varchar2" VARCHAR(12),
+"binary1" BIT(4),
+"binary2" BIT VARYING(4),
+"numbers" VARCHAR(1073741823)
+);

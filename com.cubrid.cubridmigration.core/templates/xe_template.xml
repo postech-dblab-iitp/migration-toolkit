@@ -1,0 +1,2407 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<migration version="9.1.0">
+    <source db_type="MYSQL" online="no">
+        <file charset="UTF-8" location="xe_default_installed.xml" timezone="Default" version="5.5"/>
+        <tables>
+            <table create="yes" migrate_data="yes" name="xe_action_forward" partition="no" pk="no" replace="yes" target="xe_action_forward">
+                <columns>
+                    <column name="act" target="act"/>
+                    <column name="module" target="module"/>
+                    <column name="type" target="type"/>
+                </columns>
+                <constraints>
+                    <index name="idx_foward" target="idx_foward_xe_action_forward"/>
+                </constraints>
+            </table>
+            <table create="yes" migrate_data="yes" name="xe_addons" partition="no" pk="yes" replace="yes" target="xe_addons">
+                <columns>
+                    <column name="addon" target="addon"/>
+                    <column name="is_used" target="is_used"/>
+                    <column name="is_used_m" target="is_used_m"/>
+                    <column name="is_fixed" target="is_fixed"/>
+                    <column name="extra_vars" target="extra_vars"/>
+                    <column name="regdate" target="regdate"/>
+                </columns>
+                <constraints>
+                    <index name="idx_regdate" target="idx_regdate_xe_addons"/>
+                </constraints>
+            </table>
+            <table create="yes" migrate_data="yes" name="xe_addons_site" partition="no" pk="no" replace="yes" target="xe_addons_site">
+                <columns>
+                    <column name="site_srl" target="site_srl"/>
+                    <column name="addon" target="addon"/>
+                    <column name="is_used" target="is_used"/>
+                    <column name="is_used_m" target="is_used_m"/>
+                    <column name="extra_vars" target="extra_vars"/>
+                    <column name="regdate" target="regdate"/>
+                </columns>
+                <constraints>
+                    <index name="unique_addon_site" target="unique_addon_site_xe_addons_site"/>
+                    <index name="idx_regdate" target="idx_regdate_xe_addons_site"/>
+                </constraints>
+            </table>
+            <table create="yes" migrate_data="yes" name="xe_admin_favorite" partition="no" pk="yes" replace="yes" target="xe_admin_favorite">
+                <columns>
+                    <column name="admin_favorite_srl" target="admin_favorite_srl"/>
+                    <column name="site_srl" target="site_srl"/>
+                    <column name="module" target="module"/>
+                    <column name="type" target="type"/>
+                </columns>
+            </table>
+            <table create="yes" migrate_data="yes" name="xe_admin_log" partition="no" pk="no" replace="yes" target="xe_admin_log">
+                <columns>
+                    <column name="ipaddress" target="ipaddress"/>
+                    <column name="regdate" target="regdate"/>
+                    <column name="site_srl" target="site_srl"/>
+                    <column name="module" target="module"/>
+                    <column name="act" target="act"/>
+                    <column name="request_vars" target="request_vars"/>
+                </columns>
+                <constraints>
+                    <index name="idx_admin_ip" target="idx_admin_ip_xe_admin_log"/>
+                    <index name="idx_admin_date" target="idx_admin_date_xe_admin_log"/>
+                </constraints>
+            </table>
+            <table create="yes" migrate_data="yes" name="xe_ai_installed_packages" partition="no" pk="no" replace="yes" target="xe_ai_installed_packages">
+                <columns>
+                    <column name="package_srl" target="package_srl"/>
+                    <column name="version" target="version"/>
+                    <column name="current_version" target="current_version"/>
+                    <column name="need_update" target="need_update"/>
+                </columns>
+                <constraints>
+                    <index name="idx_package_srl" target="idx_package_srl_xe_ai_installed_packages"/>
+                </constraints>
+            </table>
+            <table create="yes" migrate_data="yes" name="xe_ai_remote_categories" partition="no" pk="yes" replace="yes" target="xe_ai_remote_categories">
+                <columns>
+                    <column name="category_srl" target="category_srl"/>
+                    <column name="parent_srl" target="parent_srl"/>
+                    <column name="title" target="title"/>
+                    <column name="list_order" target="list_order"/>
+                </columns>
+                <constraints>
+                    <index name="idx_parent_srl" target="idx_parent_srl_xe_ai_remote_categories"/>
+                    <index name="idx_list_order" target="idx_list_order_xe_ai_remote_categories"/>
+                </constraints>
+            </table>
+            <table create="yes" migrate_data="yes" name="xe_autoinstall_packages" partition="no" pk="no" replace="yes" target="xe_autoinstall_packages">
+                <columns>
+                    <column name="package_srl" target="package_srl"/>
+                    <column name="category_srl" target="category_srl"/>
+                    <column name="path" target="path"/>
+                    <column name="updatedate" target="updatedate"/>
+                    <column name="latest_item_srl" target="latest_item_srl"/>
+                    <column name="version" target="version"/>
+                </columns>
+                <constraints>
+                    <index name="unique_path" target="unique_path_xe_autoinstall_packages"/>
+                    <index name="idx_package_srl" target="idx_package_srl_xe_autoinstall_packages"/>
+                    <index name="idx_category_srl" target="idx_category_srl_xe_autoinstall_packages"/>
+                    <index name="idx_regdate" target="idx_regdate_xe_autoinstall_packages"/>
+                </constraints>
+            </table>
+            <table create="yes" migrate_data="yes" name="xe_comment_declared" partition="no" pk="yes" replace="yes" target="xe_comment_declared">
+                <columns>
+                    <column name="comment_srl" target="comment_srl"/>
+                    <column name="declared_count" target="declared_count"/>
+                </columns>
+                <constraints>
+                    <index name="idx_declared_count" target="idx_declared_count_xe_comment_declared"/>
+                </constraints>
+            </table>
+            <table create="yes" migrate_data="yes" name="xe_comment_declared_log" partition="no" pk="no" replace="yes" target="xe_comment_declared_log">
+                <columns>
+                    <column name="comment_srl" target="comment_srl"/>
+                    <column name="member_srl" target="member_srl"/>
+                    <column name="ipaddress" target="ipaddress"/>
+                    <column name="regdate" target="regdate"/>
+                </columns>
+                <constraints>
+                    <index name="idx_comment_srl" target="idx_comment_srl_xe_comment_declared_log"/>
+                    <index name="idx_member_srl" target="idx_member_srl_xe_comment_declared_log"/>
+                    <index name="idx_ipaddress" target="idx_ipaddress_xe_comment_declared_log"/>
+                    <index name="idx_regdate" target="idx_regdate_xe_comment_declared_log"/>
+                </constraints>
+            </table>
+            <table create="yes" migrate_data="yes" name="xe_comment_voted_log" partition="no" pk="no" replace="yes" target="xe_comment_voted_log">
+                <columns>
+                    <column name="comment_srl" target="comment_srl"/>
+                    <column name="member_srl" target="member_srl"/>
+                    <column name="ipaddress" target="ipaddress"/>
+                    <column name="regdate" target="regdate"/>
+                    <column name="point" target="point"/>
+                </columns>
+                <constraints>
+                    <index name="idx_comment_srl" target="idx_comment_srl_xe_comment_voted_log"/>
+                    <index name="idx_member_srl" target="idx_member_srl_xe_comment_voted_log"/>
+                    <index name="idx_ipaddress" target="idx_ipaddress_xe_comment_voted_log"/>
+                    <index name="idx_regdate" target="idx_regdate_xe_comment_voted_log"/>
+                </constraints>
+            </table>
+            <table create="yes" migrate_data="yes" name="xe_comments" partition="no" pk="yes" replace="yes" target="xe_comments">
+                <columns>
+                    <column name="comment_srl" target="comment_srl"/>
+                    <column name="module_srl" target="module_srl"/>
+                    <column name="document_srl" target="document_srl"/>
+                    <column name="parent_srl" target="parent_srl"/>
+                    <column name="is_secret" target="is_secret"/>
+                    <column name="content" target="content"/>
+                    <column name="voted_count" target="voted_count"/>
+                    <column name="blamed_count" target="blamed_count"/>
+                    <column name="notify_message" target="notify_message"/>
+                    <column name="password" target="password"/>
+                    <column name="user_id" target="user_id"/>
+                    <column name="user_name" target="user_name"/>
+                    <column name="nick_name" target="nick_name"/>
+                    <column name="member_srl" target="member_srl"/>
+                    <column name="email_address" target="email_address"/>
+                    <column name="homepage" target="homepage"/>
+                    <column name="uploaded_count" target="uploaded_count"/>
+                    <column name="regdate" target="regdate"/>
+                    <column name="last_update" target="last_update"/>
+                    <column name="ipaddress" target="ipaddress"/>
+                    <column name="list_order" target="list_order"/>
+                </columns>
+                <constraints>
+                    <index name="idx_module_srl" target="idx_module_srl_xe_comments"/>
+                    <index name="idx_document_srl" target="idx_document_srl_xe_comments"/>
+                    <index name="idx_voted_count" target="idx_voted_count_xe_comments"/>
+                    <index name="idx_blamed_count" target="idx_blamed_count_xe_comments"/>
+                    <index name="idx_member_srl" target="idx_member_srl_xe_comments"/>
+                    <index name="idx_uploaded_count" target="idx_uploaded_count_xe_comments"/>
+                    <index name="idx_regdate" target="idx_regdate_xe_comments"/>
+                    <index name="idx_last_update" target="idx_last_update_xe_comments"/>
+                    <index name="idx_ipaddress" target="idx_ipaddress_xe_comments"/>
+                    <index name="idx_list_order" target="idx_list_order_xe_comments"/>
+                </constraints>
+            </table>
+            <table create="yes" migrate_data="yes" name="xe_comments_list" partition="no" pk="yes" replace="yes" target="xe_comments_list">
+                <columns>
+                    <column name="comment_srl" target="comment_srl"/>
+                    <column name="document_srl" target="document_srl"/>
+                    <column name="head" target="head"/>
+                    <column name="arrange" target="arrange"/>
+                    <column name="module_srl" target="module_srl"/>
+                    <column name="regdate" target="regdate"/>
+                    <column name="depth" target="depth"/>
+                </columns>
+                <constraints>
+                    <index name="idx_list" target="idx_list_xe_comments_list"/>
+                    <index name="idx_date" target="idx_date_xe_comments_list"/>
+                </constraints>
+            </table>
+            <table create="yes" migrate_data="yes" name="xe_counter_log" partition="no" pk="no" replace="yes" target="xe_counter_log">
+                <columns>
+                    <column name="site_srl" target="site_srl"/>
+                    <column name="ipaddress" target="ipaddress"/>
+                    <column name="regdate" target="regdate"/>
+                    <column name="user_agent" target="user_agent"/>
+                </columns>
+                <constraints>
+                    <index name="idx_site_counter_log" target="idx_site_counter_log_xe_counter_log"/>
+                    <index name="idx_counter_log" target="idx_counter_log_xe_counter_log"/>
+                </constraints>
+            </table>
+            <table create="yes" migrate_data="yes" name="xe_counter_site_status" partition="no" pk="no" replace="yes" target="xe_counter_site_status">
+                <columns>
+                    <column name="site_srl" target="site_srl"/>
+                    <column name="regdate" target="regdate"/>
+                    <column name="unique_visitor" target="unique_visitor"/>
+                    <column name="pageview" target="pageview"/>
+                </columns>
+                <constraints>
+                    <index name="site_status" target="site_status_xe_counter_site_status"/>
+                </constraints>
+            </table>
+            <table create="yes" migrate_data="yes" name="xe_counter_status" partition="no" pk="yes" replace="yes" target="xe_counter_status">
+                <columns>
+                    <column name="regdate" target="regdate"/>
+                    <column name="unique_visitor" target="unique_visitor"/>
+                    <column name="pageview" target="pageview"/>
+                </columns>
+            </table>
+            <table create="yes" migrate_data="yes" name="xe_document_aliases" partition="no" pk="yes" replace="yes" target="xe_document_aliases">
+                <columns>
+                    <column name="alias_srl" target="alias_srl"/>
+                    <column name="module_srl" target="module_srl"/>
+                    <column name="document_srl" target="document_srl"/>
+                    <column name="alias_title" target="alias_title"/>
+                </columns>
+                <constraints>
+                    <index name="idx_module_title" target="idx_module_title_xe_document_aliases"/>
+                    <index name="idx_module_srl" target="idx_module_srl_xe_document_aliases"/>
+                    <index name="idx_document_srl" target="idx_document_srl_xe_document_aliases"/>
+                    <index name="idx_alias_title" target="idx_alias_title_xe_document_aliases"/>
+                </constraints>
+            </table>
+            <table create="yes" migrate_data="yes" name="xe_document_categories" partition="no" pk="yes" replace="yes" target="xe_document_categories">
+                <columns>
+                    <column name="category_srl" target="category_srl"/>
+                    <column name="module_srl" target="module_srl"/>
+                    <column name="parent_srl" target="parent_srl"/>
+                    <column name="title" target="title"/>
+                    <column name="expand" target="expand"/>
+                    <column name="document_count" target="document_count"/>
+                    <column name="regdate" target="regdate"/>
+                    <column name="last_update" target="last_update"/>
+                    <column name="list_order" target="list_order"/>
+                    <column name="group_srls" target="group_srls"/>
+                    <column name="color" target="color"/>
+                    <column name="description" target="description"/>
+                </columns>
+                <constraints>
+                    <index name="idx_module_srl" target="idx_module_srl_xe_document_categories"/>
+                    <index name="idx_regdate" target="idx_regdate_xe_document_categories"/>
+                </constraints>
+            </table>
+            <table create="yes" migrate_data="yes" name="xe_document_declared" partition="no" pk="yes" replace="yes" target="xe_document_declared">
+                <columns>
+                    <column name="document_srl" target="document_srl"/>
+                    <column name="declared_count" target="declared_count"/>
+                </columns>
+                <constraints>
+                    <index name="idx_declared_count" target="idx_declared_count_xe_document_declared"/>
+                </constraints>
+            </table>
+            <table create="yes" migrate_data="yes" name="xe_document_declared_log" partition="no" pk="no" replace="yes" target="xe_document_declared_log">
+                <columns>
+                    <column name="document_srl" target="document_srl"/>
+                    <column name="member_srl" target="member_srl"/>
+                    <column name="ipaddress" target="ipaddress"/>
+                    <column name="regdate" target="regdate"/>
+                </columns>
+                <constraints>
+                    <index name="idx_document_srl" target="idx_document_srl_xe_document_declared_log"/>
+                    <index name="idx_member_srl" target="idx_member_srl_xe_document_declared_log"/>
+                    <index name="idx_ipaddress" target="idx_ipaddress_xe_document_declared_log"/>
+                    <index name="idx_regdate" target="idx_regdate_xe_document_declared_log"/>
+                </constraints>
+            </table>
+            <table create="yes" migrate_data="yes" name="xe_document_extra_keys" partition="no" pk="no" replace="yes" target="xe_document_extra_keys">
+                <columns>
+                    <column name="module_srl" target="module_srl"/>
+                    <column name="var_idx" target="var_idx"/>
+                    <column name="var_name" target="var_name"/>
+                    <column name="var_type" target="var_type"/>
+                    <column name="var_is_required" target="var_is_required"/>
+                    <column name="var_search" target="var_search"/>
+                    <column name="var_default" target="var_default"/>
+                    <column name="var_desc" target="var_desc"/>
+                    <column name="eid" target="eid"/>
+                </columns>
+                <constraints>
+                    <index name="unique_module_keys" target="unique_module_keys_xe_document_extra_keys"/>
+                </constraints>
+            </table>
+            <table create="yes" migrate_data="yes" name="xe_document_extra_vars" partition="no" pk="no" replace="yes" target="xe_document_extra_vars">
+                <columns>
+                    <column name="module_srl" target="module_srl"/>
+                    <column name="document_srl" target="document_srl"/>
+                    <column name="var_idx" target="var_idx"/>
+                    <column name="lang_code" target="lang_code"/>
+                    <column name="value" target="value"/>
+                    <column name="eid" target="eid"/>
+                </columns>
+                <constraints>
+                    <index name="unique_extra_vars" target="unique_extra_vars_xe_document_extra_vars"/>
+                    <index name="idx_document_list_order" target="idx_document_list_order_xe_document_extra_vars"/>
+                </constraints>
+            </table>
+            <table create="yes" migrate_data="yes" name="xe_document_histories" partition="no" pk="yes" replace="yes" target="xe_document_histories">
+                <columns>
+                    <column name="history_srl" target="history_srl"/>
+                    <column name="module_srl" target="module_srl"/>
+                    <column name="document_srl" target="document_srl"/>
+                    <column name="content" target="content"/>
+                    <column name="nick_name" target="nick_name"/>
+                    <column name="member_srl" target="member_srl"/>
+                    <column name="regdate" target="regdate"/>
+                    <column name="ipaddress" target="ipaddress"/>
+                </columns>
+                <constraints>
+                    <index name="idx_module_srl" target="idx_module_srl_xe_document_histories"/>
+                    <index name="idx_document_srl" target="idx_document_srl_xe_document_histories"/>
+                    <index name="idx_regdate" target="idx_regdate_xe_document_histories"/>
+                    <index name="idx_ipaddress" target="idx_ipaddress_xe_document_histories"/>
+                </constraints>
+            </table>
+            <table create="yes" migrate_data="yes" name="xe_document_readed_log" partition="no" pk="no" replace="yes" target="xe_document_readed_log">
+                <columns>
+                    <column name="document_srl" target="document_srl"/>
+                    <column name="member_srl" target="member_srl"/>
+                    <column name="ipaddress" target="ipaddress"/>
+                    <column name="regdate" target="regdate"/>
+                </columns>
+                <constraints>
+                    <index name="idx_document_srl" target="idx_document_srl_xe_document_readed_log"/>
+                    <index name="idx_member_srl" target="idx_member_srl_xe_document_readed_log"/>
+                    <index name="idx_ipaddress" target="idx_ipaddress_xe_document_readed_log"/>
+                    <index name="idx_regdate" target="idx_regdate_xe_document_readed_log"/>
+                </constraints>
+            </table>
+            <table create="yes" migrate_data="yes" name="xe_document_trash" partition="no" pk="yes" replace="yes" target="xe_document_trash">
+                <columns>
+                    <column name="trash_srl" target="trash_srl"/>
+                    <column name="document_srl" target="document_srl"/>
+                    <column name="module_srl" target="module_srl"/>
+                    <column name="trash_date" target="trash_date"/>
+                    <column name="description" target="description"/>
+                    <column name="ipaddress" target="ipaddress"/>
+                    <column name="user_id" target="user_id"/>
+                    <column name="user_name" target="user_name"/>
+                    <column name="nick_name" target="nick_name"/>
+                    <column name="member_srl" target="member_srl"/>
+                </columns>
+                <constraints>
+                    <index name="idx_document_srl" target="idx_document_srl_xe_document_trash"/>
+                    <index name="idx_module_srl" target="idx_module_srl_xe_document_trash"/>
+                    <index name="idx_trash_date" target="idx_trash_date_xe_document_trash"/>
+                    <index name="idx_ipaddress" target="idx_ipaddress_xe_document_trash"/>
+                    <index name="idx_member_srl" target="idx_member_srl_xe_document_trash"/>
+                </constraints>
+            </table>
+            <table create="yes" migrate_data="yes" name="xe_document_voted_log" partition="no" pk="no" replace="yes" target="xe_document_voted_log">
+                <columns>
+                    <column name="document_srl" target="document_srl"/>
+                    <column name="member_srl" target="member_srl"/>
+                    <column name="ipaddress" target="ipaddress"/>
+                    <column name="regdate" target="regdate"/>
+                    <column name="point" target="point"/>
+                </columns>
+                <constraints>
+                    <index name="idx_document_srl" target="idx_document_srl_xe_document_voted_log"/>
+                    <index name="idx_member_srl" target="idx_member_srl_xe_document_voted_log"/>
+                    <index name="idx_ipaddress" target="idx_ipaddress_xe_document_voted_log"/>
+                    <index name="idx_regdate" target="idx_regdate_xe_document_voted_log"/>
+                </constraints>
+            </table>
+            <table create="yes" migrate_data="yes" name="xe_documents" partition="no" pk="yes" replace="yes" target="xe_documents">
+                <columns>
+                    <column name="document_srl" target="document_srl"/>
+                    <column name="module_srl" target="module_srl"/>
+                    <column name="category_srl" target="category_srl"/>
+                    <column name="lang_code" target="lang_code"/>
+                    <column name="is_notice" target="is_notice"/>
+                    <column name="title" target="title"/>
+                    <column name="title_bold" target="title_bold"/>
+                    <column name="title_color" target="title_color"/>
+                    <column name="content" target="content"/>
+                    <column name="readed_count" target="readed_count"/>
+                    <column name="voted_count" target="voted_count"/>
+                    <column name="blamed_count" target="blamed_count"/>
+                    <column name="comment_count" target="comment_count"/>
+                    <column name="trackback_count" target="trackback_count"/>
+                    <column name="uploaded_count" target="uploaded_count"/>
+                    <column name="password" target="password"/>
+                    <column name="user_id" target="user_id"/>
+                    <column name="user_name" target="user_name"/>
+                    <column name="nick_name" target="nick_name"/>
+                    <column name="member_srl" target="member_srl"/>
+                    <column name="email_address" target="email_address"/>
+                    <column name="homepage" target="homepage"/>
+                    <column name="tags" target="tags"/>
+                    <column name="extra_vars" target="extra_vars"/>
+                    <column name="regdate" target="regdate"/>
+                    <column name="last_update" target="last_update"/>
+                    <column name="last_updater" target="last_updater"/>
+                    <column name="ipaddress" target="ipaddress"/>
+                    <column name="list_order" target="list_order"/>
+                    <column name="update_order" target="update_order"/>
+                    <column name="allow_trackback" target="allow_trackback"/>
+                    <column name="notify_message" target="notify_message"/>
+                    <column name="status" target="status"/>
+                    <column name="comment_status" target="comment_status"/>
+                </columns>
+                <constraints>
+                    <index name="idx_module_srl" target="idx_module_srl_xe_documents"/>
+                    <index name="idx_category_srl" target="idx_category_srl_xe_documents"/>
+                    <index name="idx_is_notice" target="idx_is_notice_xe_documents"/>
+                    <index name="idx_readed_count" target="idx_readed_count_xe_documents"/>
+                    <index name="idx_voted_count" target="idx_voted_count_xe_documents"/>
+                    <index name="idx_blamed_count" target="idx_blamed_count_xe_documents"/>
+                    <index name="idx_comment_count" target="idx_comment_count_xe_documents"/>
+                    <index name="idx_trackback_count" target="idx_trackback_count_xe_documents"/>
+                    <index name="idx_uploaded_count" target="idx_uploaded_count_xe_documents"/>
+                    <index name="idx_member_srl" target="idx_member_srl_xe_documents"/>
+                    <index name="idx_regdate" target="idx_regdate_xe_documents"/>
+                    <index name="idx_last_update" target="idx_last_update_xe_documents"/>
+                    <index name="idx_ipaddress" target="idx_ipaddress_xe_documents"/>
+                    <index name="idx_list_order" target="idx_list_order_xe_documents"/>
+                    <index name="idx_update_order" target="idx_update_order_xe_documents"/>
+                    <index name="idx_module_list_order" target="idx_module_list_order_xe_documents"/>
+                    <index name="idx_module_update_order" target="idx_module_update_order_xe_documents"/>
+                    <index name="idx_module_readed_count" target="idx_module_readed_count_xe_documents"/>
+                    <index name="idx_module_voted_count" target="idx_module_voted_count_xe_documents"/>
+                    <index name="idx_module_notice" target="idx_module_notice_xe_documents"/>
+                    <index name="idx_module_document_srl" target="idx_module_document_srl_xe_documents"/>
+                    <index name="idx_module_blamed_count" target="idx_module_blamed_count_xe_documents"/>
+                    <index name="idx_module_status" target="idx_module_status_xe_documents"/>
+                </constraints>
+            </table>
+            <table create="yes" migrate_data="yes" name="xe_editor_autosave" partition="no" pk="no" replace="yes" target="xe_editor_autosave">
+                <columns>
+                    <column name="member_srl" target="member_srl"/>
+                    <column name="ipaddress" target="ipaddress"/>
+                    <column name="module_srl" target="module_srl"/>
+                    <column name="document_srl" target="document_srl"/>
+                    <column name="title" target="title"/>
+                    <column name="content" target="content"/>
+                    <column name="regdate" target="regdate"/>
+                </columns>
+                <constraints>
+                    <index name="idx_member_srl" target="idx_member_srl_xe_editor_autosave"/>
+                    <index name="idx_ipaddress" target="idx_ipaddress_xe_editor_autosave"/>
+                    <index name="idx_module_srl" target="idx_module_srl_xe_editor_autosave"/>
+                    <index name="idx_regdate" target="idx_regdate_xe_editor_autosave"/>
+                </constraints>
+            </table>
+            <table create="yes" migrate_data="yes" name="xe_editor_components" partition="no" pk="yes" replace="yes" target="xe_editor_components">
+                <columns>
+                    <column name="component_name" target="component_name"/>
+                    <column name="enabled" target="enabled"/>
+                    <column name="extra_vars" target="extra_vars"/>
+                    <column name="list_order" target="list_order"/>
+                </columns>
+                <constraints>
+                    <index name="idx_list_order" target="idx_list_order_xe_editor_components"/>
+                </constraints>
+            </table>
+            <table create="yes" migrate_data="yes" name="xe_editor_components_site" partition="no" pk="no" replace="yes" target="xe_editor_components_site">
+                <columns>
+                    <column name="site_srl" target="site_srl"/>
+                    <column name="component_name" target="component_name"/>
+                    <column name="enabled" target="enabled"/>
+                    <column name="extra_vars" target="extra_vars"/>
+                    <column name="list_order" target="list_order"/>
+                </columns>
+                <constraints>
+                    <index name="unique_component_site" target="unique_component_site_xe_editor_components_site"/>
+                    <index name="idx_list_order" target="idx_list_order_xe_editor_components_site"/>
+                </constraints>
+            </table>
+            <table create="yes" migrate_data="yes" name="xe_files" partition="no" pk="yes" replace="yes" target="xe_files">
+                <columns>
+                    <column name="file_srl" target="file_srl"/>
+                    <column name="upload_target_srl" target="upload_target_srl"/>
+                    <column name="upload_target_type" target="upload_target_type"/>
+                    <column name="sid" target="sid"/>
+                    <column name="module_srl" target="module_srl"/>
+                    <column name="member_srl" target="member_srl"/>
+                    <column name="download_count" target="download_count"/>
+                    <column name="direct_download" target="direct_download"/>
+                    <column name="source_filename" target="source_filename"/>
+                    <column name="uploaded_filename" target="uploaded_filename"/>
+                    <column name="file_size" target="file_size"/>
+                    <column name="comment" target="comment"/>
+                    <column name="isvalid" target="isvalid"/>
+                    <column name="regdate" target="regdate"/>
+                    <column name="ipaddress" target="ipaddress"/>
+                </columns>
+                <constraints>
+                    <index name="idx_upload_target_srl" target="idx_upload_target_srl_xe_files"/>
+                    <index name="idx_upload_target_type" target="idx_upload_target_type_xe_files"/>
+                    <index name="idx_module_srl" target="idx_module_srl_xe_files"/>
+                    <index name="idx_member_srl" target="idx_member_srl_xe_files"/>
+                    <index name="idx_download_count" target="idx_download_count_xe_files"/>
+                    <index name="idx_file_size" target="idx_file_size_xe_files"/>
+                    <index name="idx_is_valid" target="idx_is_valid_xe_files"/>
+                    <index name="idx_regdate" target="idx_regdate_xe_files"/>
+                    <index name="idx_ipaddress" target="idx_ipaddress_xe_files"/>
+                </constraints>
+            </table>
+            <table create="yes" migrate_data="yes" name="xe_lang" partition="no" pk="no" replace="yes" target="xe_lang">
+                <columns>
+                    <column name="site_srl" target="site_srl"/>
+                    <column name="name" target="name"/>
+                    <column name="lang_code" target="lang_code"/>
+                    <column name="value" target="value"/>
+                </columns>
+                <constraints>
+                    <index name="idx_lang" target="idx_lang_xe_lang"/>
+                </constraints>
+            </table>
+            <table create="yes" migrate_data="yes" name="xe_layouts" partition="no" pk="yes" replace="yes" target="xe_layouts">
+                <columns>
+                    <column name="layout_srl" target="layout_srl"/>
+                    <column name="site_srl" target="site_srl"/>
+                    <column name="layout" target="layout"/>
+                    <column name="title" target="title"/>
+                    <column name="extra_vars" target="extra_vars"/>
+                    <column name="layout_path" target="layout_path"/>
+                    <column name="module_srl" target="module_srl"/>
+                    <column name="regdate" target="regdate"/>
+                    <column name="layout_type" target="layout_type"/>
+                </columns>
+                <constraints>
+                    <index name="menu_site_srl" target="menu_site_srl_xe_layouts"/>
+                    <index name="idx_module_srl" target="idx_module_srl_xe_layouts"/>
+                    <index name="idx_regdate" target="idx_regdate_xe_layouts"/>
+                </constraints>
+            </table>
+            <table create="yes" migrate_data="yes" name="xe_member" partition="no" pk="yes" replace="yes" target="xe_member">
+                <columns>
+                    <column name="member_srl" target="member_srl"/>
+                    <column name="user_id" target="user_id"/>
+                    <column name="email_address" target="email_address"/>
+                    <column name="password" target="password"/>
+                    <column name="email_id" target="email_id"/>
+                    <column name="email_host" target="email_host"/>
+                    <column name="user_name" target="user_name"/>
+                    <column name="nick_name" target="nick_name"/>
+                    <column name="find_account_question" target="find_account_question"/>
+                    <column name="find_account_answer" target="find_account_answer"/>
+                    <column name="homepage" target="homepage"/>
+                    <column name="blog" target="blog"/>
+                    <column name="birthday" target="birthday"/>
+                    <column name="allow_mailing" target="allow_mailing"/>
+                    <column name="allow_message" target="allow_message"/>
+                    <column name="denied" target="denied"/>
+                    <column name="limit_date" target="limit_date"/>
+                    <column name="regdate" target="regdate"/>
+                    <column name="last_login" target="last_login"/>
+                    <column name="change_password_date" target="change_password_date"/>
+                    <column name="is_admin" target="is_admin"/>
+                    <column name="description" target="description"/>
+                    <column name="extra_vars" target="extra_vars"/>
+                    <column name="list_order" target="list_order"/>
+                </columns>
+                <constraints>
+                    <index name="unique_user_id" target="unique_user_id_xe_member"/>
+                    <index name="unique_email_address" target="unique_email_address_xe_member"/>
+                    <index name="unique_nick_name" target="unique_nick_name_xe_member"/>
+                    <index name="idx_email_host" target="idx_email_host_xe_member"/>
+                    <index name="idx_allow_mailing" target="idx_allow_mailing_xe_member"/>
+                    <index name="idx_is_denied" target="idx_is_denied_xe_member"/>
+                    <index name="idx_regdate" target="idx_regdate_xe_member"/>
+                    <index name="idx_last_login" target="idx_last_login_xe_member"/>
+                    <index name="idx_is_admin" target="idx_is_admin_xe_member"/>
+                    <index name="idx_list_order" target="idx_list_order_xe_member"/>
+                </constraints>
+            </table>
+            <table create="yes" migrate_data="yes" name="xe_member_auth_mail" partition="no" pk="no" replace="yes" target="xe_member_auth_mail">
+                <columns>
+                    <column name="auth_key" target="auth_key"/>
+                    <column name="member_srl" target="member_srl"/>
+                    <column name="user_id" target="user_id"/>
+                    <column name="new_password" target="new_password"/>
+                    <column name="is_register" target="is_register"/>
+                    <column name="regdate" target="regdate"/>
+                </columns>
+                <constraints>
+                    <index name="unique_key" target="unique_key_xe_member_auth_mail"/>
+                    <index name="idx_regdate" target="idx_regdate_xe_member_auth_mail"/>
+                </constraints>
+            </table>
+            <table create="yes" migrate_data="yes" name="xe_member_autologin" partition="no" pk="no" replace="yes" target="xe_member_autologin">
+                <columns>
+                    <column name="autologin_key" target="autologin_key"/>
+                    <column name="member_srl" target="member_srl"/>
+                </columns>
+                <constraints>
+                    <index name="unique_key" target="unique_key_xe_member_autologin"/>
+                </constraints>
+            </table>
+            <table create="yes" migrate_data="yes" name="xe_member_denied_user_id" partition="no" pk="yes" replace="yes" target="xe_member_denied_user_id">
+                <columns>
+                    <column name="user_id" target="user_id"/>
+                    <column name="regdate" target="regdate"/>
+                    <column name="description" target="description"/>
+                    <column name="list_order" target="list_order"/>
+                </columns>
+                <constraints>
+                    <index name="idx_list_order" target="idx_list_order_xe_member_denied_user_id"/>
+                </constraints>
+            </table>
+            <table create="yes" migrate_data="yes" name="xe_member_friend" partition="no" pk="yes" replace="yes" target="xe_member_friend">
+                <columns>
+                    <column name="friend_srl" target="friend_srl"/>
+                    <column name="friend_group_srl" target="friend_group_srl"/>
+                    <column name="member_srl" target="member_srl"/>
+                    <column name="target_srl" target="target_srl"/>
+                    <column name="list_order" target="list_order"/>
+                    <column name="regdate" target="regdate"/>
+                </columns>
+                <constraints>
+                    <index name="idx_friend_group_srl" target="idx_friend_group_srl_xe_member_friend"/>
+                    <index name="idx_member_srl" target="idx_member_srl_xe_member_friend"/>
+                    <index name="idx_target_srl" target="idx_target_srl_xe_member_friend"/>
+                    <index name="idx_list_order" target="idx_list_order_xe_member_friend"/>
+                </constraints>
+            </table>
+            <table create="yes" migrate_data="yes" name="xe_member_friend_group" partition="no" pk="yes" replace="yes" target="xe_member_friend_group">
+                <columns>
+                    <column name="friend_group_srl" target="friend_group_srl"/>
+                    <column name="member_srl" target="member_srl"/>
+                    <column name="title" target="title"/>
+                    <column name="regdate" target="regdate"/>
+                </columns>
+                <constraints>
+                    <index name="index_owner_member_srl" target="index_owner_member_srl_xe_member_friend_group"/>
+                </constraints>
+            </table>
+            <table create="yes" migrate_data="yes" name="xe_member_group" partition="no" pk="yes" replace="yes" target="xe_member_group">
+                <columns>
+                    <column name="site_srl" target="site_srl"/>
+                    <column name="group_srl" target="group_srl"/>
+                    <column name="list_order" target="list_order"/>
+                    <column name="title" target="title"/>
+                    <column name="regdate" target="regdate"/>
+                    <column name="is_default" target="is_default"/>
+                    <column name="is_admin" target="is_admin"/>
+                    <column name="image_mark" target="image_mark"/>
+                    <column name="description" target="description"/>
+                </columns>
+                <constraints>
+                    <index name="idx_site_title" target="idx_site_title_xe_member_group"/>
+                    <index name="idx_list_order" target="idx_list_order_xe_member_group"/>
+                </constraints>
+            </table>
+            <table create="yes" migrate_data="yes" name="xe_member_group_member" partition="no" pk="no" replace="yes" target="xe_member_group_member">
+                <columns>
+                    <column name="site_srl" target="site_srl"/>
+                    <column name="group_srl" target="group_srl"/>
+                    <column name="member_srl" target="member_srl"/>
+                    <column name="regdate" target="regdate"/>
+                </columns>
+                <constraints>
+                    <index name="idx_site_srl" target="idx_site_srl_xe_member_group_member"/>
+                    <index name="idx_group_member" target="idx_group_member_xe_member_group_member"/>
+                </constraints>
+            </table>
+            <table create="yes" migrate_data="yes" name="xe_member_join_form" partition="no" pk="yes" replace="yes" target="xe_member_join_form">
+                <columns>
+                    <column name="member_join_form_srl" target="member_join_form_srl"/>
+                    <column name="column_type" target="column_type"/>
+                    <column name="column_name" target="column_name"/>
+                    <column name="column_title" target="column_title"/>
+                    <column name="required" target="required"/>
+                    <column name="default_value" target="default_value"/>
+                    <column name="is_active" target="is_active"/>
+                    <column name="description" target="description"/>
+                    <column name="list_order" target="list_order"/>
+                    <column name="regdate" target="regdate"/>
+                </columns>
+                <constraints>
+                    <index name="idx_list_order" target="idx_list_order_xe_member_join_form"/>
+                </constraints>
+            </table>
+            <table create="yes" migrate_data="yes" name="xe_member_message" partition="no" pk="yes" replace="yes" target="xe_member_message">
+                <columns>
+                    <column name="message_srl" target="message_srl"/>
+                    <column name="related_srl" target="related_srl"/>
+                    <column name="sender_srl" target="sender_srl"/>
+                    <column name="receiver_srl" target="receiver_srl"/>
+                    <column name="message_type" target="message_type"/>
+                    <column name="title" target="title"/>
+                    <column name="content" target="content"/>
+                    <column name="readed" target="readed"/>
+                    <column name="list_order" target="list_order"/>
+                    <column name="regdate" target="regdate"/>
+                    <column name="readed_date" target="readed_date"/>
+                </columns>
+                <constraints>
+                    <index name="idx_related_srl" target="idx_related_srl_xe_member_message"/>
+                    <index name="idx_sender_srl" target="idx_sender_srl_xe_member_message"/>
+                    <index name="idx_receiver_srl" target="idx_receiver_srl_xe_member_message"/>
+                    <index name="idx_list_order" target="idx_list_order_xe_member_message"/>
+                </constraints>
+            </table>
+            <table create="yes" migrate_data="yes" name="xe_member_openid" partition="no" pk="no" replace="yes" target="xe_member_openid">
+                <columns>
+                    <column name="member_srl" target="member_srl"/>
+                    <column name="openid" target="openid"/>
+                    <column name="regdate" target="regdate"/>
+                </columns>
+                <constraints>
+                    <index name="unique_openid" target="unique_openid_xe_member_openid"/>
+                    <index name="idx_member_srl" target="idx_member_srl_xe_member_openid"/>
+                    <index name="idx_regdate" target="idx_regdate_xe_member_openid"/>
+                </constraints>
+            </table>
+            <table create="yes" migrate_data="yes" name="xe_member_openid_association" partition="no" pk="no" replace="yes" target="xe_member_openid_association">
+                <columns>
+                    <column name="server_url" target="server_url"/>
+                    <column name="handle" target="handle"/>
+                    <column name="secret" target="secret"/>
+                    <column name="issued" target="issued"/>
+                    <column name="lifetime" target="lifetime"/>
+                    <column name="assoc_type" target="assoc_type"/>
+                </columns>
+            </table>
+            <table create="yes" migrate_data="yes" name="xe_member_openid_nonce" partition="no" pk="yes" replace="yes" target="xe_member_openid_nonce">
+                <columns>
+                    <column name="nonce" target="nonce"/>
+                    <column name="expires" target="expires"/>
+                </columns>
+            </table>
+            <table create="yes" migrate_data="yes" name="xe_member_scrap" partition="no" pk="no" replace="yes" target="xe_member_scrap">
+                <columns>
+                    <column name="member_srl" target="member_srl"/>
+                    <column name="document_srl" target="document_srl"/>
+                    <column name="title" target="title"/>
+                    <column name="user_id" target="user_id"/>
+                    <column name="user_name" target="user_name"/>
+                    <column name="nick_name" target="nick_name"/>
+                    <column name="target_member_srl" target="target_member_srl"/>
+                    <column name="regdate" target="regdate"/>
+                    <column name="list_order" target="list_order"/>
+                </columns>
+                <constraints>
+                    <index name="unique_scrap" target="unique_scrap_xe_member_scrap"/>
+                    <index name="idx_regdate" target="idx_regdate_xe_member_scrap"/>
+                    <index name="idx_list_order" target="idx_list_order_xe_member_scrap"/>
+                </constraints>
+            </table>
+            <table create="yes" migrate_data="yes" name="xe_menu" partition="no" pk="yes" replace="yes" target="xe_menu">
+                <columns>
+                    <column name="menu_srl" target="menu_srl"/>
+                    <column name="site_srl" target="site_srl"/>
+                    <column name="title" target="title"/>
+                    <column name="listorder" target="listorder"/>
+                    <column name="regdate" target="regdate"/>
+                </columns>
+                <constraints>
+                    <index name="menu_site_srl" target="menu_site_srl_xe_menu"/>
+                    <index name="idx_listorder" target="idx_listorder_xe_menu"/>
+                    <index name="idx_regdate" target="idx_regdate_xe_menu"/>
+                </constraints>
+            </table>
+            <table create="yes" migrate_data="yes" name="xe_menu_item" partition="no" pk="yes" replace="yes" target="xe_menu_item">
+                <columns>
+                    <column name="menu_item_srl" target="menu_item_srl"/>
+                    <column name="parent_srl" target="parent_srl"/>
+                    <column name="menu_srl" target="menu_srl"/>
+                    <column name="name" target="name"/>
+                    <column name="url" target="url"/>
+                    <column name="open_window" target="open_window"/>
+                    <column name="expand" target="expand"/>
+                    <column name="normal_btn" target="normal_btn"/>
+                    <column name="hover_btn" target="hover_btn"/>
+                    <column name="active_btn" target="active_btn"/>
+                    <column name="group_srls" target="group_srls"/>
+                    <column name="listorder" target="listorder"/>
+                    <column name="regdate" target="regdate"/>
+                </columns>
+                <constraints>
+                    <index name="idx_menu_srl" target="idx_menu_srl_xe_menu_item"/>
+                    <index name="idx_listorder" target="idx_listorder_xe_menu_item"/>
+                    <index name="idx_regdate" target="idx_regdate_xe_menu_item"/>
+                </constraints>
+            </table>
+            <table create="yes" migrate_data="yes" name="xe_menu_layout" partition="no" pk="yes" replace="yes" target="xe_menu_layout">
+                <columns>
+                    <column name="menu_srl" target="menu_srl"/>
+                    <column name="layout_srl" target="layout_srl"/>
+                </columns>
+            </table>
+            <table create="yes" migrate_data="yes" name="xe_module_admins" partition="no" pk="no" replace="yes" target="xe_module_admins">
+                <columns>
+                    <column name="module_srl" target="module_srl"/>
+                    <column name="member_srl" target="member_srl"/>
+                    <column name="regdate" target="regdate"/>
+                </columns>
+                <constraints>
+                    <index name="unique_module_admin" target="unique_module_admin_xe_module_admins"/>
+                    <index name="idx_regdate" target="idx_regdate_xe_module_admins"/>
+                </constraints>
+            </table>
+            <table create="yes" migrate_data="yes" name="xe_module_categories" partition="no" pk="yes" replace="yes" target="xe_module_categories">
+                <columns>
+                    <column name="module_category_srl" target="module_category_srl"/>
+                    <column name="title" target="title"/>
+                    <column name="regdate" target="regdate"/>
+                </columns>
+                <constraints>
+                    <index name="idx_regdate" target="idx_regdate_xe_module_categories"/>
+                </constraints>
+            </table>
+            <table create="yes" migrate_data="yes" name="xe_module_config" partition="no" pk="yes" replace="yes" target="xe_module_config">
+                <columns>
+                    <column name="module" target="module"/>
+                    <column name="site_srl" target="site_srl"/>
+                    <column name="config" target="config"/>
+                    <column name="regdate" target="regdate"/>
+                </columns>
+            </table>
+            <table create="yes" migrate_data="yes" name="xe_module_extend" partition="no" pk="no" replace="yes" target="xe_module_extend">
+                <columns>
+                    <column name="parent_module" target="parent_module"/>
+                    <column name="extend_module" target="extend_module"/>
+                    <column name="type" target="type"/>
+                    <column name="kind" target="kind"/>
+                </columns>
+            </table>
+            <table create="yes" migrate_data="yes" name="xe_module_extra_vars" partition="no" pk="no" replace="yes" target="xe_module_extra_vars">
+                <columns>
+                    <column name="module_srl" target="module_srl"/>
+                    <column name="name" target="name"/>
+                    <column name="value" target="value"/>
+                </columns>
+                <constraints>
+                    <index name="unique_module_vars" target="unique_module_vars_xe_module_extra_vars"/>
+                </constraints>
+            </table>
+            <table create="yes" migrate_data="yes" name="xe_module_filebox" partition="no" pk="yes" replace="yes" target="xe_module_filebox">
+                <columns>
+                    <column name="module_filebox_srl" target="module_filebox_srl"/>
+                    <column name="member_srl" target="member_srl"/>
+                    <column name="filename" target="filename"/>
+                    <column name="fileextension" target="fileextension"/>
+                    <column name="filesize" target="filesize"/>
+                    <column name="comment" target="comment"/>
+                    <column name="regdate" target="regdate"/>
+                </columns>
+                <constraints>
+                    <index name="idx_member_srl" target="idx_member_srl_xe_module_filebox"/>
+                    <index name="idx_fileextension" target="idx_fileextension_xe_module_filebox"/>
+                </constraints>
+            </table>
+            <table create="yes" migrate_data="yes" name="xe_module_grants" partition="no" pk="no" replace="yes" target="xe_module_grants">
+                <columns>
+                    <column name="module_srl" target="module_srl"/>
+                    <column name="name" target="name"/>
+                    <column name="group_srl" target="group_srl"/>
+                </columns>
+                <constraints>
+                    <index name="unique_module" target="unique_module_xe_module_grants"/>
+                </constraints>
+            </table>
+            <table create="yes" migrate_data="yes" name="xe_module_locks" partition="no" pk="no" replace="yes" target="xe_module_locks">
+                <columns>
+                    <column name="lock_name" target="lock_name"/>
+                    <column name="deadline" target="deadline"/>
+                    <column name="member_srl" target="member_srl"/>
+                </columns>
+                <constraints>
+                    <index name="unique_lock_name" target="unique_lock_name_xe_module_locks"/>
+                    <index name="idx_deadline" target="idx_deadline_xe_module_locks"/>
+                </constraints>
+            </table>
+            <table create="yes" migrate_data="yes" name="xe_module_part_config" partition="no" pk="no" replace="yes" target="xe_module_part_config">
+                <columns>
+                    <column name="module" target="module"/>
+                    <column name="module_srl" target="module_srl"/>
+                    <column name="config" target="config"/>
+                    <column name="regdate" target="regdate"/>
+                </columns>
+                <constraints>
+                    <index name="idx_module_part_config" target="idx_module_part_config_xe_module_part_config"/>
+                </constraints>
+            </table>
+            <table create="yes" migrate_data="yes" name="xe_module_skins" partition="no" pk="no" replace="yes" target="xe_module_skins">
+                <columns>
+                    <column name="module_srl" target="module_srl"/>
+                    <column name="name" target="name"/>
+                    <column name="value" target="value"/>
+                </columns>
+                <constraints>
+                    <index name="unique_module_skins" target="unique_module_skins_xe_module_skins"/>
+                </constraints>
+            </table>
+            <table create="yes" migrate_data="yes" name="xe_module_trigger" partition="no" pk="no" replace="yes" target="xe_module_trigger">
+                <columns>
+                    <column name="trigger_name" target="trigger_name"/>
+                    <column name="called_position" target="called_position"/>
+                    <column name="module" target="module"/>
+                    <column name="type" target="type"/>
+                    <column name="called_method" target="called_method"/>
+                </columns>
+                <constraints>
+                    <index name="idx_trigger" target="idx_trigger_xe_module_trigger"/>
+                </constraints>
+            </table>
+            <table create="yes" migrate_data="yes" name="xe_modules" partition="no" pk="yes" replace="yes" target="xe_modules">
+                <columns>
+                    <column name="module_srl" target="module_srl"/>
+                    <column name="module" target="module"/>
+                    <column name="module_category_srl" target="module_category_srl"/>
+                    <column name="layout_srl" target="layout_srl"/>
+                    <column name="use_mobile" target="use_mobile"/>
+                    <column name="mlayout_srl" target="mlayout_srl"/>
+                    <column name="menu_srl" target="menu_srl"/>
+                    <column name="site_srl" target="site_srl"/>
+                    <column name="mid" target="mid"/>
+                    <column name="is_skin_fix" target="is_skin_fix"/>
+                    <column name="skin" target="skin"/>
+                    <column name="mskin" target="mskin"/>
+                    <column name="browser_title" target="browser_title"/>
+                    <column name="description" target="description"/>
+                    <column name="is_default" target="is_default"/>
+                    <column name="content" target="content"/>
+                    <column name="mcontent" target="mcontent"/>
+                    <column name="open_rss" target="open_rss"/>
+                    <column name="header_text" target="header_text"/>
+                    <column name="footer_text" target="footer_text"/>
+                    <column name="regdate" target="regdate"/>
+                </columns>
+                <constraints>
+                    <index name="idx_site_mid" target="idx_site_mid_xe_modules"/>
+                    <index name="idx_module" target="idx_module_xe_modules"/>
+                    <index name="idx_module_category" target="idx_module_category_xe_modules"/>
+                </constraints>
+            </table>
+            <table create="yes" migrate_data="yes" name="xe_point" partition="no" pk="yes" replace="yes" target="xe_point">
+                <columns>
+                    <column name="member_srl" target="member_srl"/>
+                    <column name="point" target="point"/>
+                </columns>
+                <constraints>
+                    <index name="idx_point" target="idx_point_xe_point"/>
+                </constraints>
+            </table>
+            <table create="yes" migrate_data="yes" name="xe_poll" partition="no" pk="yes" replace="yes" target="xe_poll">
+                <columns>
+                    <column name="poll_srl" target="poll_srl"/>
+                    <column name="stop_date" target="stop_date"/>
+                    <column name="upload_target_srl" target="upload_target_srl"/>
+                    <column name="poll_count" target="poll_count"/>
+                    <column name="member_srl" target="member_srl"/>
+                    <column name="ipaddress" target="ipaddress"/>
+                    <column name="regdate" target="regdate"/>
+                    <column name="list_order" target="list_order"/>
+                </columns>
+                <constraints>
+                    <index name="idx_upload_target_srl" target="idx_upload_target_srl_xe_poll"/>
+                    <index name="idx_member_srl" target="idx_member_srl_xe_poll"/>
+                    <index name="idx_ipaddress" target="idx_ipaddress_xe_poll"/>
+                    <index name="idx_regdate" target="idx_regdate_xe_poll"/>
+                    <index name="idx_list_order" target="idx_list_order_xe_poll"/>
+                </constraints>
+            </table>
+            <table create="yes" migrate_data="yes" name="xe_poll_item" partition="no" pk="yes" replace="yes" target="xe_poll_item">
+                <columns>
+                    <column name="poll_item_srl" target="poll_item_srl"/>
+                    <column name="poll_srl" target="poll_srl"/>
+                    <column name="poll_index_srl" target="poll_index_srl"/>
+                    <column name="upload_target_srl" target="upload_target_srl"/>
+                    <column name="title" target="title"/>
+                    <column name="poll_count" target="poll_count"/>
+                </columns>
+                <constraints>
+                    <index name="index_poll_srl" target="index_poll_srl_xe_poll_item"/>
+                    <index name="idx_poll_index_srl" target="idx_poll_index_srl_xe_poll_item"/>
+                    <index name="idx_upload_target_srl" target="idx_upload_target_srl_xe_poll_item"/>
+                </constraints>
+            </table>
+            <table create="yes" migrate_data="yes" name="xe_poll_log" partition="no" pk="no" replace="yes" target="xe_poll_log">
+                <columns>
+                    <column name="poll_srl" target="poll_srl"/>
+                    <column name="member_srl" target="member_srl"/>
+                    <column name="ipaddress" target="ipaddress"/>
+                    <column name="regdate" target="regdate"/>
+                </columns>
+                <constraints>
+                    <index name="idx_poll_srl" target="idx_poll_srl_xe_poll_log"/>
+                    <index name="idx_member_srl" target="idx_member_srl_xe_poll_log"/>
+                    <index name="idx_ipaddress" target="idx_ipaddress_xe_poll_log"/>
+                    <index name="idx_regdate" target="idx_regdate_xe_poll_log"/>
+                </constraints>
+            </table>
+            <table create="yes" migrate_data="yes" name="xe_poll_title" partition="no" pk="no" replace="yes" target="xe_poll_title">
+                <columns>
+                    <column name="poll_srl" target="poll_srl"/>
+                    <column name="poll_index_srl" target="poll_index_srl"/>
+                    <column name="title" target="title"/>
+                    <column name="checkcount" target="checkcount"/>
+                    <column name="poll_count" target="poll_count"/>
+                    <column name="upload_target_srl" target="upload_target_srl"/>
+                    <column name="member_srl" target="member_srl"/>
+                    <column name="ipaddress" target="ipaddress"/>
+                    <column name="regdate" target="regdate"/>
+                    <column name="list_order" target="list_order"/>
+                </columns>
+                <constraints>
+                    <index name="idx_poll_srl" target="idx_poll_srl_xe_poll_title"/>
+                    <index name="idx_upload_target_srl" target="idx_upload_target_srl_xe_poll_title"/>
+                    <index name="idx_member_srl" target="idx_member_srl_xe_poll_title"/>
+                    <index name="idx_ipaddress" target="idx_ipaddress_xe_poll_title"/>
+                    <index name="idx_regdate" target="idx_regdate_xe_poll_title"/>
+                    <index name="idx_list_order" target="idx_list_order_xe_poll_title"/>
+                </constraints>
+            </table>
+            <table create="yes" migrate_data="yes" name="xe_sequence" partition="no" pk="yes" replace="yes" target="xe_sequence">
+                <columns>
+                    <column name="seq" target="seq"/>
+                </columns>
+            </table>
+            <table create="yes" migrate_data="yes" name="xe_session" partition="no" pk="yes" replace="yes" target="xe_session">
+                <columns>
+                    <column name="session_key" target="session_key"/>
+                    <column name="member_srl" target="member_srl"/>
+                    <column name="expired" target="expired"/>
+                    <column name="val" target="val"/>
+                    <column name="ipaddress" target="ipaddress"/>
+                    <column name="last_update" target="last_update"/>
+                    <column name="cur_mid" target="cur_mid"/>
+                </columns>
+                <constraints>
+                    <index name="idx_session_member_srl" target="idx_session_member_srl_xe_session"/>
+                    <index name="idx_session_expired" target="idx_session_expired_xe_session"/>
+                    <index name="idx_session_update" target="idx_session_update_xe_session"/>
+                    <index name="idx_session_cur_mid" target="idx_session_cur_mid_xe_session"/>
+                    <index name="idx_session_update_mid" target="idx_session_update_mid_xe_session"/>
+                </constraints>
+            </table>
+            <table create="yes" migrate_data="yes" name="xe_site_admin" partition="no" pk="no" replace="yes" target="xe_site_admin">
+                <columns>
+                    <column name="site_srl" target="site_srl"/>
+                    <column name="member_srl" target="member_srl"/>
+                    <column name="regdate" target="regdate"/>
+                </columns>
+                <constraints>
+                    <index name="idx_site_admin" target="idx_site_admin_xe_site_admin"/>
+                </constraints>
+            </table>
+            <table create="yes" migrate_data="yes" name="xe_sites" partition="no" pk="yes" replace="yes" target="xe_sites">
+                <columns>
+                    <column name="site_srl" target="site_srl"/>
+                    <column name="index_module_srl" target="index_module_srl"/>
+                    <column name="domain" target="domain"/>
+                    <column name="default_language" target="default_language"/>
+                    <column name="regdate" target="regdate"/>
+                </columns>
+                <constraints>
+                    <index name="unique_domain" target="unique_domain_xe_sites"/>
+                </constraints>
+            </table>
+            <table create="yes" migrate_data="yes" name="xe_spamfilter_denied_ip" partition="no" pk="yes" replace="yes" target="xe_spamfilter_denied_ip">
+                <columns>
+                    <column name="ipaddress" target="ipaddress"/>
+                    <column name="description" target="description"/>
+                    <column name="regdate" target="regdate"/>
+                </columns>
+                <constraints>
+                    <index name="idx_regdate" target="idx_regdate_xe_spamfilter_denied_ip"/>
+                </constraints>
+            </table>
+            <table create="yes" migrate_data="yes" name="xe_spamfilter_denied_word" partition="no" pk="yes" replace="yes" target="xe_spamfilter_denied_word">
+                <columns>
+                    <column name="word" target="word"/>
+                    <column name="hit" target="hit"/>
+                    <column name="latest_hit" target="latest_hit"/>
+                    <column name="regdate" target="regdate"/>
+                </columns>
+                <constraints>
+                    <index name="idx_hit" target="idx_hit_xe_spamfilter_denied_word"/>
+                    <index name="idx_latest_hit" target="idx_latest_hit_xe_spamfilter_denied_word"/>
+                    <index name="idx_regdate" target="idx_regdate_xe_spamfilter_denied_word"/>
+                </constraints>
+            </table>
+            <table create="yes" migrate_data="yes" name="xe_spamfilter_log" partition="no" pk="yes" replace="yes" target="xe_spamfilter_log">
+                <columns>
+                    <column name="spamfilter_log_srl" target="spamfilter_log_srl"/>
+                    <column name="ipaddress" target="ipaddress"/>
+                    <column name="regdate" target="regdate"/>
+                </columns>
+                <constraints>
+                    <index name="idx_ipaddress" target="idx_ipaddress_xe_spamfilter_log"/>
+                    <index name="idx_regdate" target="idx_regdate_xe_spamfilter_log"/>
+                </constraints>
+            </table>
+            <table create="yes" migrate_data="yes" name="xe_syndication_except_modules" partition="no" pk="yes" replace="yes" target="xe_syndication_except_modules">
+                <columns>
+                    <column name="module_srl" target="module_srl"/>
+                    <column name="regdate" target="regdate"/>
+                </columns>
+            </table>
+            <table create="yes" migrate_data="yes" name="xe_syndication_logs" partition="no" pk="no" replace="yes" target="xe_syndication_logs">
+                <columns>
+                    <column name="log_srl" target="log_srl"/>
+                    <column name="module_srl" target="module_srl"/>
+                    <column name="document_srl" target="document_srl"/>
+                    <column name="title" target="title"/>
+                    <column name="summary" target="summary"/>
+                    <column name="regdate" target="regdate"/>
+                </columns>
+                <constraints>
+                    <index name="primary_key" target="primary_key_xe_syndication_logs"/>
+                    <index name="idx_regdate" target="idx_regdate_xe_syndication_logs"/>
+                </constraints>
+            </table>
+            <table create="yes" migrate_data="yes" name="xe_tags" partition="no" pk="yes" replace="yes" target="xe_tags">
+                <columns>
+                    <column name="tag_srl" target="tag_srl"/>
+                    <column name="module_srl" target="module_srl"/>
+                    <column name="document_srl" target="document_srl"/>
+                    <column name="tag" target="tag"/>
+                    <column name="regdate" target="regdate"/>
+                </columns>
+                <constraints>
+                    <index name="idx_module_srl" target="idx_module_srl_xe_tags"/>
+                    <index name="idx_document_srl" target="idx_document_srl_xe_tags"/>
+                    <index name="idx_regdate" target="idx_regdate_xe_tags"/>
+                    <index name="idx_tag" target="idx_tag_xe_tags"/>
+                </constraints>
+            </table>
+            <table create="yes" migrate_data="yes" name="xe_trackbacks" partition="no" pk="yes" replace="yes" target="xe_trackbacks">
+                <columns>
+                    <column name="trackback_srl" target="trackback_srl"/>
+                    <column name="module_srl" target="module_srl"/>
+                    <column name="document_srl" target="document_srl"/>
+                    <column name="url" target="url"/>
+                    <column name="title" target="title"/>
+                    <column name="blog_name" target="blog_name"/>
+                    <column name="excerpt" target="excerpt"/>
+                    <column name="regdate" target="regdate"/>
+                    <column name="ipaddress" target="ipaddress"/>
+                    <column name="list_order" target="list_order"/>
+                </columns>
+                <constraints>
+                    <index name="idx_module_srl" target="idx_module_srl_xe_trackbacks"/>
+                    <index name="idx_document_srl" target="idx_document_srl_xe_trackbacks"/>
+                    <index name="idx_regdate" target="idx_regdate_xe_trackbacks"/>
+                    <index name="idx_ipaddress" target="idx_ipaddress_xe_trackbacks"/>
+                    <index name="idx_list_order" target="idx_list_order_xe_trackbacks"/>
+                </constraints>
+            </table>
+            <table create="yes" migrate_data="yes" name="xe_trash" partition="no" pk="yes" replace="yes" target="xe_trash">
+                <columns>
+                    <column name="trash_srl" target="trash_srl"/>
+                    <column name="title" target="title"/>
+                    <column name="origin_module" target="origin_module"/>
+                    <column name="serialized_object" target="serialized_object"/>
+                    <column name="description" target="description"/>
+                    <column name="ipaddress" target="ipaddress"/>
+                    <column name="remover_srl" target="remover_srl"/>
+                    <column name="regdate" target="regdate"/>
+                </columns>
+                <constraints>
+                    <index name="idx_regdate" target="idx_regdate_xe_trash"/>
+                </constraints>
+            </table>
+        </tables>
+    </source>
+    <target db_type="cubrid" type="dir" version="">
+        <fileRepository data="C:\data.txt" dir="C:\" index="C:\index.txt" schema="C:\schema.txt" timezone="Default"/>
+        <tables>
+            <table name="xe_action_forward">
+                <columns>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="act" null="no" start="0" type="VARCHAR(80)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="module" null="no" start="0" type="VARCHAR(60)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="type" null="no" start="0" type="VARCHAR(15)"/>
+                </columns>
+                <constraints>
+                    <index fields="act" name="idx_foward_xe_action_forward" order_rule="A" pre_fix="" reverse="no" unique="yes"/>
+                </constraints>
+            </table>
+            <table name="xe_addons">
+                <columns>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="addon" null="no" start="0" type="VARCHAR(250)"/>
+                    <column auto_increment="no" base_type="character" default="'Y'" increment="1" name="is_used" null="no" start="0" type="CHAR(1)"/>
+                    <column auto_increment="no" base_type="character" default="'N'" increment="1" name="is_used_m" null="no" start="0" type="CHAR(1)"/>
+                    <column auto_increment="no" base_type="character" default="'N'" increment="1" name="is_fixed" null="no" start="0" type="CHAR(1)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="extra_vars" null="yes" start="0" type="VARCHAR(65535)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="regdate" null="yes" start="0" type="VARCHAR(14)"/>
+                </columns>
+                <constraints>
+                    <pk fields="addon"/>
+                    <index fields="regdate" name="idx_regdate_xe_addons" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                </constraints>
+            </table>
+            <table name="xe_addons_site">
+                <columns>
+                    <column auto_increment="no" base_type="bigint" default="0" increment="1" name="site_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="addon" null="no" start="0" type="VARCHAR(250)"/>
+                    <column auto_increment="no" base_type="character" default="'Y'" increment="1" name="is_used" null="no" start="0" type="CHAR(1)"/>
+                    <column auto_increment="no" base_type="character" default="'N'" increment="1" name="is_used_m" null="no" start="0" type="CHAR(1)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="extra_vars" null="yes" start="0" type="VARCHAR(65535)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="regdate" null="yes" start="0" type="VARCHAR(14)"/>
+                </columns>
+                <constraints>
+                    <index fields="site_srl,addon" name="unique_addon_site_xe_addons_site" order_rule="A,A" pre_fix="" reverse="no" unique="yes"/>
+                    <index fields="regdate" name="idx_regdate_xe_addons_site" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                </constraints>
+            </table>
+            <table name="xe_admin_favorite">
+                <columns>
+                    <column auto_increment="yes" base_type="bigint" increment="1" name="admin_favorite_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" default="0" increment="1" name="site_srl" null="yes" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="module" null="yes" start="0" type="VARCHAR(80)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="type" null="yes" start="0" type="VARCHAR(30)"/>
+                </columns>
+                <constraints>
+                    <pk fields="admin_favorite_srl"/>
+                </constraints>
+            </table>
+            <table name="xe_admin_log">
+                <columns>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="ipaddress" null="no" start="0" type="VARCHAR(100)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="regdate" null="yes" start="0" type="VARCHAR(14)"/>
+                    <column auto_increment="no" base_type="bigint" default="0" increment="1" name="site_srl" null="yes" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="module" null="yes" start="0" type="VARCHAR(100)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="act" null="yes" start="0" type="VARCHAR(100)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="request_vars" null="yes" start="0" type="VARCHAR(65535)"/>
+                </columns>
+                <constraints>
+                    <index fields="ipaddress" name="idx_admin_ip_xe_admin_log" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="regdate" name="idx_admin_date_xe_admin_log" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                </constraints>
+            </table>
+            <table name="xe_ai_installed_packages">
+                <columns>
+                    <column auto_increment="no" base_type="bigint" default="0" increment="1" name="package_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="version" null="yes" start="0" type="VARCHAR(255)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="current_version" null="yes" start="0" type="VARCHAR(255)"/>
+                    <column auto_increment="no" base_type="character" default="'N'" increment="1" name="need_update" null="yes" start="0" type="CHAR(1)"/>
+                </columns>
+                <constraints>
+                    <index fields="package_srl" name="idx_package_srl_xe_ai_installed_packages" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                </constraints>
+            </table>
+            <table name="xe_ai_remote_categories">
+                <columns>
+                    <column auto_increment="no" base_type="bigint" default="0" increment="1" name="category_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" default="0" increment="1" name="parent_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="title" null="no" start="0" type="VARCHAR(750)"/>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="list_order" null="no" start="0" type="BIGINT"/>
+                </columns>
+                <constraints>
+                    <pk fields="category_srl"/>
+                    <index fields="parent_srl" name="idx_parent_srl_xe_ai_remote_categories" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="list_order" name="idx_list_order_xe_ai_remote_categories" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                </constraints>
+            </table>
+            <table name="xe_autoinstall_packages">
+                <columns>
+                    <column auto_increment="no" base_type="bigint" default="0" increment="1" name="package_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" default="0" increment="1" name="category_srl" null="yes" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="path" null="no" start="0" type="VARCHAR(250)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="updatedate" null="yes" start="0" type="VARCHAR(14)"/>
+                    <column auto_increment="no" base_type="bigint" default="0" increment="1" name="latest_item_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="version" null="yes" start="0" type="VARCHAR(255)"/>
+                </columns>
+                <constraints>
+                    <index fields="path" name="unique_path_xe_autoinstall_packages" order_rule="A" pre_fix="" reverse="no" unique="yes"/>
+                    <index fields="package_srl" name="idx_package_srl_xe_autoinstall_packages" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="category_srl" name="idx_category_srl_xe_autoinstall_packages" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="updatedate" name="idx_regdate_xe_autoinstall_packages" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                </constraints>
+            </table>
+            <table name="xe_comment_declared">
+                <columns>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="comment_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" default="0" increment="1" name="declared_count" null="no" start="0" type="BIGINT"/>
+                </columns>
+                <constraints>
+                    <pk fields="comment_srl"/>
+                    <index fields="declared_count" name="idx_declared_count_xe_comment_declared" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                </constraints>
+            </table>
+            <table name="xe_comment_declared_log">
+                <columns>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="comment_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="member_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="ipaddress" null="no" start="0" type="VARCHAR(128)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="regdate" null="yes" start="0" type="VARCHAR(14)"/>
+                </columns>
+                <constraints>
+                    <index fields="comment_srl" name="idx_comment_srl_xe_comment_declared_log" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="member_srl" name="idx_member_srl_xe_comment_declared_log" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="ipaddress" name="idx_ipaddress_xe_comment_declared_log" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="regdate" name="idx_regdate_xe_comment_declared_log" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                </constraints>
+            </table>
+            <table name="xe_comment_voted_log">
+                <columns>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="comment_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="member_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="ipaddress" null="no" start="0" type="VARCHAR(128)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="regdate" null="yes" start="0" type="VARCHAR(14)"/>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="point" null="no" start="0" type="BIGINT"/>
+                </columns>
+                <constraints>
+                    <index fields="comment_srl" name="idx_comment_srl_xe_comment_voted_log" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="member_srl" name="idx_member_srl_xe_comment_voted_log" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="ipaddress" name="idx_ipaddress_xe_comment_voted_log" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="regdate" name="idx_regdate_xe_comment_voted_log" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                </constraints>
+            </table>
+            <table name="xe_comments">
+                <columns>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="comment_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" default="0" increment="1" name="module_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" default="0" increment="1" name="document_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" default="0" increment="1" name="parent_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character" default="'N'" increment="1" name="is_secret" null="no" start="0" type="CHAR(1)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="content" null="no" start="0" type="STRING"/>
+                    <column auto_increment="no" base_type="bigint" default="0" increment="1" name="voted_count" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" default="0" increment="1" name="blamed_count" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character" default="'N'" increment="1" name="notify_message" null="no" start="0" type="CHAR(1)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="password" null="yes" start="0" type="VARCHAR(60)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="user_id" null="yes" start="0" type="VARCHAR(80)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="user_name" null="no" start="0" type="VARCHAR(80)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="nick_name" null="no" start="0" type="VARCHAR(240)"/>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="member_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="email_address" null="no" start="0" type="VARCHAR(250)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="homepage" null="no" start="0" type="VARCHAR(250)"/>
+                    <column auto_increment="no" base_type="bigint" default="0" increment="1" name="uploaded_count" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="regdate" null="yes" start="0" type="VARCHAR(14)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="last_update" null="yes" start="0" type="VARCHAR(14)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="ipaddress" null="no" start="0" type="VARCHAR(128)"/>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="list_order" null="no" start="0" type="BIGINT"/>
+                </columns>
+                <constraints>
+                    <pk fields="comment_srl"/>
+                    <index fields="module_srl" name="idx_module_srl_xe_comments" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="document_srl" name="idx_document_srl_xe_comments" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="voted_count" name="idx_voted_count_xe_comments" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="blamed_count" name="idx_blamed_count_xe_comments" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="member_srl" name="idx_member_srl_xe_comments" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="uploaded_count" name="idx_uploaded_count_xe_comments" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="regdate" name="idx_regdate_xe_comments" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="last_update" name="idx_last_update_xe_comments" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="ipaddress" name="idx_ipaddress_xe_comments" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="list_order" name="idx_list_order_xe_comments" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                </constraints>
+            </table>
+            <table name="xe_comments_list">
+                <columns>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="comment_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" default="0" increment="1" name="document_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" default="0" increment="1" name="head" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" default="0" increment="1" name="arrange" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" default="0" increment="1" name="module_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="regdate" null="yes" start="0" type="VARCHAR(14)"/>
+                    <column auto_increment="no" base_type="bigint" default="0" increment="1" name="depth" null="no" start="0" type="BIGINT"/>
+                </columns>
+                <constraints>
+                    <pk fields="comment_srl"/>
+                    <index fields="document_srl,head,arrange" name="idx_list_xe_comments_list" order_rule="A,A,A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="module_srl,regdate" name="idx_date_xe_comments_list" order_rule="A,A" pre_fix="" reverse="no" unique="no"/>
+                </constraints>
+            </table>
+            <table name="xe_counter_log">
+                <columns>
+                    <column auto_increment="no" base_type="bigint" default="0" increment="1" name="site_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="ipaddress" null="no" start="0" type="VARCHAR(250)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="regdate" null="yes" start="0" type="VARCHAR(14)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="user_agent" null="yes" start="0" type="VARCHAR(750)"/>
+                </columns>
+                <constraints>
+                    <index fields="site_srl,ipaddress" name="idx_site_counter_log_xe_counter_log" order_rule="A,A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="regdate" name="idx_counter_log_xe_counter_log" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                </constraints>
+            </table>
+            <table name="xe_counter_site_status">
+                <columns>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="site_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="regdate" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" default="0" increment="1" name="unique_visitor" null="yes" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" default="0" increment="1" name="pageview" null="yes" start="0" type="BIGINT"/>
+                </columns>
+                <constraints>
+                    <index fields="site_srl,regdate" name="site_status_xe_counter_site_status" order_rule="A,A" pre_fix="" reverse="no" unique="yes"/>
+                </constraints>
+            </table>
+            <table name="xe_counter_status">
+                <columns>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="regdate" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" default="0" increment="1" name="unique_visitor" null="yes" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" default="0" increment="1" name="pageview" null="yes" start="0" type="BIGINT"/>
+                </columns>
+                <constraints>
+                    <pk fields="regdate"/>
+                </constraints>
+            </table>
+            <table name="xe_document_aliases">
+                <columns>
+                    <column auto_increment="no" base_type="bigint" default="0" increment="1" name="alias_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" default="0" increment="1" name="module_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" default="0" increment="1" name="document_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="alias_title" null="no" start="0" type="VARCHAR(750)"/>
+                </columns>
+                <constraints>
+                    <pk fields="alias_srl"/>
+                    <index fields="module_srl,alias_title" name="idx_module_title_xe_document_aliases" order_rule="A,A" pre_fix="" reverse="no" unique="yes"/>
+                    <index fields="module_srl" name="idx_module_srl_xe_document_aliases" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="document_srl" name="idx_document_srl_xe_document_aliases" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="alias_title" name="idx_alias_title_xe_document_aliases" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                </constraints>
+            </table>
+            <table name="xe_document_categories">
+                <columns>
+                    <column auto_increment="no" base_type="bigint" default="0" increment="1" name="category_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" default="0" increment="1" name="module_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" default="0" increment="1" name="parent_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="title" null="yes" start="0" type="VARCHAR(750)"/>
+                    <column auto_increment="no" base_type="character" default="'N'" increment="1" name="expand" null="yes" start="0" type="CHAR(1)"/>
+                    <column auto_increment="no" base_type="bigint" default="0" increment="1" name="document_count" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="regdate" null="yes" start="0" type="VARCHAR(14)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="last_update" null="yes" start="0" type="VARCHAR(14)"/>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="list_order" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="group_srls" null="yes" start="0" type="VARCHAR(65535)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="color" null="yes" start="0" type="VARCHAR(11)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="description" null="yes" start="0" type="VARCHAR(600)"/>
+                </columns>
+                <constraints>
+                    <pk fields="category_srl"/>
+                    <index fields="module_srl" name="idx_module_srl_xe_document_categories" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="regdate" name="idx_regdate_xe_document_categories" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                </constraints>
+            </table>
+            <table name="xe_document_declared">
+                <columns>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="document_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" default="0" increment="1" name="declared_count" null="no" start="0" type="BIGINT"/>
+                </columns>
+                <constraints>
+                    <pk fields="document_srl"/>
+                    <index fields="declared_count" name="idx_declared_count_xe_document_declared" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                </constraints>
+            </table>
+            <table name="xe_document_declared_log">
+                <columns>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="document_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="member_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="ipaddress" null="no" start="0" type="VARCHAR(128)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="regdate" null="yes" start="0" type="VARCHAR(14)"/>
+                </columns>
+                <constraints>
+                    <index fields="document_srl" name="idx_document_srl_xe_document_declared_log" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="member_srl" name="idx_member_srl_xe_document_declared_log" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="ipaddress" name="idx_ipaddress_xe_document_declared_log" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="regdate" name="idx_regdate_xe_document_declared_log" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                </constraints>
+            </table>
+            <table name="xe_document_extra_keys">
+                <columns>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="module_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="var_idx" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="var_name" null="no" start="0" type="VARCHAR(250)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="var_type" null="no" start="0" type="VARCHAR(50)"/>
+                    <column auto_increment="no" base_type="character" default="'N'" increment="1" name="var_is_required" null="no" start="0" type="CHAR(1)"/>
+                    <column auto_increment="no" base_type="character" default="'N'" increment="1" name="var_search" null="no" start="0" type="CHAR(1)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="var_default" null="yes" start="0" type="VARCHAR(65535)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="var_desc" null="yes" start="0" type="VARCHAR(65535)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="eid" null="yes" start="0" type="VARCHAR(40)"/>
+                </columns>
+                <constraints>
+                    <index fields="module_srl,var_idx" name="unique_module_keys_xe_document_extra_keys" order_rule="A,A" pre_fix="" reverse="no" unique="yes"/>
+                </constraints>
+            </table>
+            <table name="xe_document_extra_vars">
+                <columns>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="module_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="document_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="var_idx" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="lang_code" null="no" start="0" type="VARCHAR(10)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="value" null="yes" start="0" type="STRING"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="eid" null="yes" start="0" type="VARCHAR(40)"/>
+                </columns>
+                <constraints>
+                    <index fields="module_srl,document_srl,var_idx,lang_code" name="unique_extra_vars_xe_document_extra_vars" order_rule="A,A,A,A" pre_fix="" reverse="no" unique="yes"/>
+                    <index fields="document_srl,module_srl,var_idx" name="idx_document_list_order_xe_document_extra_vars" order_rule="A,A,A" pre_fix="" reverse="no" unique="no"/>
+                </constraints>
+            </table>
+            <table name="xe_document_histories">
+                <columns>
+                    <column auto_increment="no" base_type="bigint" default="0" increment="1" name="history_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" default="0" increment="1" name="module_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" default="0" increment="1" name="document_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="content" null="yes" start="0" type="STRING"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="nick_name" null="no" start="0" type="VARCHAR(240)"/>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="member_srl" null="yes" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="regdate" null="yes" start="0" type="VARCHAR(14)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="ipaddress" null="no" start="0" type="VARCHAR(128)"/>
+                </columns>
+                <constraints>
+                    <pk fields="history_srl"/>
+                    <index fields="module_srl" name="idx_module_srl_xe_document_histories" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="document_srl" name="idx_document_srl_xe_document_histories" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="regdate" name="idx_regdate_xe_document_histories" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="ipaddress" name="idx_ipaddress_xe_document_histories" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                </constraints>
+            </table>
+            <table name="xe_document_readed_log">
+                <columns>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="document_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="member_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="ipaddress" null="no" start="0" type="VARCHAR(128)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="regdate" null="yes" start="0" type="VARCHAR(14)"/>
+                </columns>
+                <constraints>
+                    <index fields="document_srl" name="idx_document_srl_xe_document_readed_log" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="member_srl" name="idx_member_srl_xe_document_readed_log" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="ipaddress" name="idx_ipaddress_xe_document_readed_log" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="regdate" name="idx_regdate_xe_document_readed_log" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                </constraints>
+            </table>
+            <table name="xe_document_trash">
+                <columns>
+                    <column auto_increment="no" base_type="bigint" default="0" increment="1" name="trash_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" default="0" increment="1" name="document_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" default="0" increment="1" name="module_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="trash_date" null="yes" start="0" type="VARCHAR(14)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="description" null="yes" start="0" type="VARCHAR(65535)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="ipaddress" null="no" start="0" type="VARCHAR(128)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="user_id" null="yes" start="0" type="VARCHAR(80)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="user_name" null="no" start="0" type="VARCHAR(80)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="nick_name" null="no" start="0" type="VARCHAR(240)"/>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="member_srl" null="no" start="0" type="BIGINT"/>
+                </columns>
+                <constraints>
+                    <pk fields="trash_srl"/>
+                    <index fields="document_srl" name="idx_document_srl_xe_document_trash" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="module_srl" name="idx_module_srl_xe_document_trash" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="trash_date" name="idx_trash_date_xe_document_trash" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="ipaddress" name="idx_ipaddress_xe_document_trash" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="member_srl" name="idx_member_srl_xe_document_trash" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                </constraints>
+            </table>
+            <table name="xe_document_voted_log">
+                <columns>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="document_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="member_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="ipaddress" null="no" start="0" type="VARCHAR(128)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="regdate" null="yes" start="0" type="VARCHAR(14)"/>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="point" null="no" start="0" type="BIGINT"/>
+                </columns>
+                <constraints>
+                    <index fields="document_srl" name="idx_document_srl_xe_document_voted_log" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="member_srl" name="idx_member_srl_xe_document_voted_log" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="ipaddress" name="idx_ipaddress_xe_document_voted_log" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="regdate" name="idx_regdate_xe_document_voted_log" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                </constraints>
+            </table>
+            <table name="xe_documents">
+                <columns>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="document_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" default="0" increment="1" name="module_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" default="0" increment="1" name="category_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" default="" increment="1" name="lang_code" null="no" start="0" type="VARCHAR(10)"/>
+                    <column auto_increment="no" base_type="character" default="'N'" increment="1" name="is_notice" null="no" start="0" type="CHAR(1)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="title" null="yes" start="0" type="VARCHAR(250)"/>
+                    <column auto_increment="no" base_type="character" default="'N'" increment="1" name="title_bold" null="no" start="0" type="CHAR(1)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="title_color" null="yes" start="0" type="VARCHAR(7)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="content" null="no" start="0" type="STRING"/>
+                    <column auto_increment="no" base_type="bigint" default="0" increment="1" name="readed_count" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" default="0" increment="1" name="voted_count" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" default="0" increment="1" name="blamed_count" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" default="0" increment="1" name="comment_count" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" default="0" increment="1" name="trackback_count" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" default="0" increment="1" name="uploaded_count" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="password" null="yes" start="0" type="VARCHAR(60)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="user_id" null="yes" start="0" type="VARCHAR(80)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="user_name" null="no" start="0" type="VARCHAR(80)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="nick_name" null="no" start="0" type="VARCHAR(240)"/>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="member_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="email_address" null="no" start="0" type="VARCHAR(250)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="homepage" null="no" start="0" type="VARCHAR(250)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="tags" null="yes" start="0" type="VARCHAR(65535)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="extra_vars" null="yes" start="0" type="VARCHAR(65535)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="regdate" null="yes" start="0" type="VARCHAR(14)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="last_update" null="yes" start="0" type="VARCHAR(14)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="last_updater" null="yes" start="0" type="VARCHAR(80)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="ipaddress" null="no" start="0" type="VARCHAR(128)"/>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="list_order" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="update_order" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character" default="'Y'" increment="1" name="allow_trackback" null="no" start="0" type="CHAR(1)"/>
+                    <column auto_increment="no" base_type="character" default="'N'" increment="1" name="notify_message" null="no" start="0" type="CHAR(1)"/>
+                    <column auto_increment="no" base_type="character varying" default="'PUBLIC'" increment="1" name="status" null="yes" start="0" type="VARCHAR(20)"/>
+                    <column auto_increment="no" base_type="character varying" default="'ALLOW'" increment="1" name="comment_status" null="yes" start="0" type="VARCHAR(20)"/>
+                </columns>
+                <constraints>
+                    <pk fields="document_srl"/>
+                    <index fields="module_srl" name="idx_module_srl_xe_documents" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="category_srl" name="idx_category_srl_xe_documents" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="is_notice" name="idx_is_notice_xe_documents" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="readed_count" name="idx_readed_count_xe_documents" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="voted_count" name="idx_voted_count_xe_documents" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="blamed_count" name="idx_blamed_count_xe_documents" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="comment_count" name="idx_comment_count_xe_documents" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="trackback_count" name="idx_trackback_count_xe_documents" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="uploaded_count" name="idx_uploaded_count_xe_documents" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="member_srl" name="idx_member_srl_xe_documents" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="regdate" name="idx_regdate_xe_documents" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="last_update" name="idx_last_update_xe_documents" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="ipaddress" name="idx_ipaddress_xe_documents" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="list_order" name="idx_list_order_xe_documents" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="update_order" name="idx_update_order_xe_documents" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="module_srl,list_order" name="idx_module_list_order_xe_documents" order_rule="A,A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="module_srl,update_order" name="idx_module_update_order_xe_documents" order_rule="A,A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="module_srl,readed_count" name="idx_module_readed_count_xe_documents" order_rule="A,A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="module_srl,voted_count" name="idx_module_voted_count_xe_documents" order_rule="A,A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="module_srl,is_notice" name="idx_module_notice_xe_documents" order_rule="A,A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="module_srl,document_srl" name="idx_module_document_srl_xe_documents" order_rule="A,A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="module_srl,blamed_count" name="idx_module_blamed_count_xe_documents" order_rule="A,A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="module_srl,status" name="idx_module_status_xe_documents" order_rule="A,A" pre_fix="" reverse="no" unique="no"/>
+                </constraints>
+            </table>
+            <table name="xe_editor_autosave">
+                <columns>
+                    <column auto_increment="no" base_type="bigint" default="0" increment="1" name="member_srl" null="yes" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="ipaddress" null="yes" start="0" type="VARCHAR(128)"/>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="module_srl" null="yes" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" default="0" increment="1" name="document_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="title" null="yes" start="0" type="VARCHAR(750)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="content" null="no" start="0" type="STRING"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="regdate" null="yes" start="0" type="VARCHAR(14)"/>
+                </columns>
+                <constraints>
+                    <index fields="member_srl" name="idx_member_srl_xe_editor_autosave" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="ipaddress" name="idx_ipaddress_xe_editor_autosave" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="module_srl" name="idx_module_srl_xe_editor_autosave" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="regdate" name="idx_regdate_xe_editor_autosave" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                </constraints>
+            </table>
+            <table name="xe_editor_components">
+                <columns>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="component_name" null="no" start="0" type="VARCHAR(250)"/>
+                    <column auto_increment="no" base_type="character" default="'N'" increment="1" name="enabled" null="no" start="0" type="CHAR(1)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="extra_vars" null="yes" start="0" type="VARCHAR(65535)"/>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="list_order" null="no" start="0" type="BIGINT"/>
+                </columns>
+                <constraints>
+                    <pk fields="component_name"/>
+                    <index fields="list_order" name="idx_list_order_xe_editor_components" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                </constraints>
+            </table>
+            <table name="xe_editor_components_site">
+                <columns>
+                    <column auto_increment="no" base_type="bigint" default="0" increment="1" name="site_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="component_name" null="no" start="0" type="VARCHAR(250)"/>
+                    <column auto_increment="no" base_type="character" default="'N'" increment="1" name="enabled" null="no" start="0" type="CHAR(1)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="extra_vars" null="yes" start="0" type="VARCHAR(65535)"/>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="list_order" null="no" start="0" type="BIGINT"/>
+                </columns>
+                <constraints>
+                    <index fields="site_srl,component_name" name="unique_component_site_xe_editor_components_site" order_rule="A,A" pre_fix="" reverse="no" unique="yes"/>
+                    <index fields="list_order" name="idx_list_order_xe_editor_components_site" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                </constraints>
+            </table>
+            <table name="xe_files">
+                <columns>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="file_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" default="0" increment="1" name="upload_target_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character" increment="1" name="upload_target_type" null="yes" start="0" type="CHAR(3)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="sid" null="yes" start="0" type="VARCHAR(60)"/>
+                    <column auto_increment="no" base_type="bigint" default="0" increment="1" name="module_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="member_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" default="0" increment="1" name="download_count" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character" default="'N'" increment="1" name="direct_download" null="no" start="0" type="CHAR(1)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="source_filename" null="yes" start="0" type="VARCHAR(250)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="uploaded_filename" null="yes" start="0" type="VARCHAR(250)"/>
+                    <column auto_increment="no" base_type="bigint" default="0" increment="1" name="file_size" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="comment" null="yes" start="0" type="VARCHAR(250)"/>
+                    <column auto_increment="no" base_type="character" default="'N'" increment="1" name="isvalid" null="yes" start="0" type="CHAR(1)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="regdate" null="yes" start="0" type="VARCHAR(14)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="ipaddress" null="no" start="0" type="VARCHAR(128)"/>
+                </columns>
+                <constraints>
+                    <pk fields="file_srl"/>
+                    <index fields="upload_target_srl" name="idx_upload_target_srl_xe_files" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="upload_target_type" name="idx_upload_target_type_xe_files" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="module_srl" name="idx_module_srl_xe_files" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="member_srl" name="idx_member_srl_xe_files" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="download_count" name="idx_download_count_xe_files" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="file_size" name="idx_file_size_xe_files" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="isvalid" name="idx_is_valid_xe_files" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="regdate" name="idx_regdate_xe_files" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="ipaddress" name="idx_ipaddress_xe_files" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                </constraints>
+            </table>
+            <table name="xe_lang">
+                <columns>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="site_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="name" null="no" start="0" type="VARCHAR(255)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="lang_code" null="no" start="0" type="VARCHAR(10)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="value" null="yes" start="0" type="VARCHAR(65535)"/>
+                </columns>
+                <constraints>
+                    <index fields="site_srl,name,lang_code" name="idx_lang_xe_lang" order_rule="A,A,A" pre_fix="" reverse="no" unique="no"/>
+                </constraints>
+            </table>
+            <table name="xe_layouts">
+                <columns>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="layout_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" default="0" increment="1" name="site_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="layout" null="yes" start="0" type="VARCHAR(250)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="title" null="yes" start="0" type="VARCHAR(750)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="extra_vars" null="yes" start="0" type="VARCHAR(65535)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="layout_path" null="yes" start="0" type="VARCHAR(250)"/>
+                    <column auto_increment="no" base_type="bigint" default="0" increment="1" name="module_srl" null="yes" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="regdate" null="yes" start="0" type="VARCHAR(14)"/>
+                    <column auto_increment="no" base_type="character" default="'P'" increment="1" name="layout_type" null="yes" start="0" type="CHAR(1)"/>
+                </columns>
+                <constraints>
+                    <pk fields="layout_srl"/>
+                    <index fields="site_srl" name="menu_site_srl_xe_layouts" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="module_srl" name="idx_module_srl_xe_layouts" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="regdate" name="idx_regdate_xe_layouts" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                </constraints>
+            </table>
+            <table name="xe_member">
+                <columns>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="member_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="user_id" null="no" start="0" type="VARCHAR(80)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="email_address" null="no" start="0" type="VARCHAR(250)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="password" null="no" start="0" type="VARCHAR(60)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="email_id" null="no" start="0" type="VARCHAR(80)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="email_host" null="yes" start="0" type="VARCHAR(160)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="user_name" null="no" start="0" type="VARCHAR(40)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="nick_name" null="no" start="0" type="VARCHAR(120)"/>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="find_account_question" null="yes" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="find_account_answer" null="yes" start="0" type="VARCHAR(250)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="homepage" null="yes" start="0" type="VARCHAR(250)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="blog" null="yes" start="0" type="VARCHAR(250)"/>
+                    <column auto_increment="no" base_type="character" increment="1" name="birthday" null="yes" start="0" type="CHAR(8)"/>
+                    <column auto_increment="no" base_type="character" default="'Y'" increment="1" name="allow_mailing" null="no" start="0" type="CHAR(1)"/>
+                    <column auto_increment="no" base_type="character" default="'Y'" increment="1" name="allow_message" null="no" start="0" type="CHAR(1)"/>
+                    <column auto_increment="no" base_type="character" default="'N'" increment="1" name="denied" null="yes" start="0" type="CHAR(1)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="limit_date" null="yes" start="0" type="VARCHAR(14)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="regdate" null="yes" start="0" type="VARCHAR(14)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="last_login" null="yes" start="0" type="VARCHAR(14)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="change_password_date" null="yes" start="0" type="VARCHAR(14)"/>
+                    <column auto_increment="no" base_type="character" default="'N'" increment="1" name="is_admin" null="yes" start="0" type="CHAR(1)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="description" null="yes" start="0" type="VARCHAR(65535)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="extra_vars" null="yes" start="0" type="VARCHAR(65535)"/>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="list_order" null="no" start="0" type="BIGINT"/>
+                </columns>
+                <constraints>
+                    <pk fields="member_srl"/>
+                    <index fields="user_id" name="unique_user_id_xe_member" order_rule="A" pre_fix="" reverse="no" unique="yes"/>
+                    <index fields="email_address" name="unique_email_address_xe_member" order_rule="A" pre_fix="" reverse="no" unique="yes"/>
+                    <index fields="nick_name" name="unique_nick_name_xe_member" order_rule="A" pre_fix="" reverse="no" unique="yes"/>
+                    <index fields="email_host" name="idx_email_host_xe_member" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="allow_mailing" name="idx_allow_mailing_xe_member" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="denied" name="idx_is_denied_xe_member" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="regdate" name="idx_regdate_xe_member" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="last_login" name="idx_last_login_xe_member" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="is_admin" name="idx_is_admin_xe_member" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="list_order" name="idx_list_order_xe_member" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                </constraints>
+            </table>
+            <table name="xe_member_auth_mail">
+                <columns>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="auth_key" null="no" start="0" type="VARCHAR(60)"/>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="member_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="user_id" null="no" start="0" type="VARCHAR(80)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="new_password" null="no" start="0" type="VARCHAR(80)"/>
+                    <column auto_increment="no" base_type="character" default="'N'" increment="1" name="is_register" null="yes" start="0" type="CHAR(1)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="regdate" null="yes" start="0" type="VARCHAR(14)"/>
+                </columns>
+                <constraints>
+                    <index fields="auth_key,member_srl" name="unique_key_xe_member_auth_mail" order_rule="A,A" pre_fix="" reverse="no" unique="yes"/>
+                    <index fields="regdate" name="idx_regdate_xe_member_auth_mail" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                </constraints>
+            </table>
+            <table name="xe_member_autologin">
+                <columns>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="autologin_key" null="no" start="0" type="VARCHAR(80)"/>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="member_srl" null="no" start="0" type="BIGINT"/>
+                </columns>
+                <constraints>
+                    <index fields="autologin_key,member_srl" name="unique_key_xe_member_autologin" order_rule="A,A" pre_fix="" reverse="no" unique="yes"/>
+                </constraints>
+            </table>
+            <table name="xe_member_denied_user_id">
+                <columns>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="user_id" null="no" start="0" type="VARCHAR(80)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="regdate" null="yes" start="0" type="VARCHAR(14)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="description" null="yes" start="0" type="VARCHAR(65535)"/>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="list_order" null="no" start="0" type="BIGINT"/>
+                </columns>
+                <constraints>
+                    <pk fields="user_id"/>
+                    <index fields="list_order" name="idx_list_order_xe_member_denied_user_id" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                </constraints>
+            </table>
+            <table name="xe_member_friend">
+                <columns>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="friend_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" default="0" increment="1" name="friend_group_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="member_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="target_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="list_order" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="regdate" null="yes" start="0" type="VARCHAR(14)"/>
+                </columns>
+                <constraints>
+                    <pk fields="friend_srl"/>
+                    <index fields="friend_group_srl" name="idx_friend_group_srl_xe_member_friend" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="member_srl" name="idx_member_srl_xe_member_friend" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="target_srl" name="idx_target_srl_xe_member_friend" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="list_order" name="idx_list_order_xe_member_friend" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                </constraints>
+            </table>
+            <table name="xe_member_friend_group">
+                <columns>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="friend_group_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="member_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="title" null="no" start="0" type="VARCHAR(250)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="regdate" null="yes" start="0" type="VARCHAR(14)"/>
+                </columns>
+                <constraints>
+                    <pk fields="friend_group_srl"/>
+                    <index fields="member_srl" name="index_owner_member_srl_xe_member_friend_group" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                </constraints>
+            </table>
+            <table name="xe_member_group">
+                <columns>
+                    <column auto_increment="no" base_type="bigint" default="0" increment="1" name="site_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="group_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="list_order" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="title" null="no" start="0" type="VARCHAR(80)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="regdate" null="yes" start="0" type="VARCHAR(14)"/>
+                    <column auto_increment="no" base_type="character" default="'N'" increment="1" name="is_default" null="yes" start="0" type="CHAR(1)"/>
+                    <column auto_increment="no" base_type="character" default="'N'" increment="1" name="is_admin" null="yes" start="0" type="CHAR(1)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="image_mark" null="yes" start="0" type="VARCHAR(65535)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="description" null="yes" start="0" type="VARCHAR(65535)"/>
+                </columns>
+                <constraints>
+                    <pk fields="group_srl"/>
+                    <index fields="site_srl,title" name="idx_site_title_xe_member_group" order_rule="A,A" pre_fix="" reverse="no" unique="yes"/>
+                    <index fields="list_order" name="idx_list_order_xe_member_group" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                </constraints>
+            </table>
+            <table name="xe_member_group_member">
+                <columns>
+                    <column auto_increment="no" base_type="bigint" default="0" increment="1" name="site_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="group_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="member_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="regdate" null="yes" start="0" type="VARCHAR(14)"/>
+                </columns>
+                <constraints>
+                    <index fields="site_srl" name="idx_site_srl_xe_member_group_member" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="group_srl,member_srl" name="idx_group_member_xe_member_group_member" order_rule="A,A" pre_fix="" reverse="no" unique="no"/>
+                </constraints>
+            </table>
+            <table name="xe_member_join_form">
+                <columns>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="member_join_form_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="column_type" null="no" start="0" type="VARCHAR(60)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="column_name" null="no" start="0" type="VARCHAR(180)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="column_title" null="no" start="0" type="VARCHAR(180)"/>
+                    <column auto_increment="no" base_type="character" default="'N'" increment="1" name="required" null="no" start="0" type="CHAR(1)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="default_value" null="yes" start="0" type="VARCHAR(65535)"/>
+                    <column auto_increment="no" base_type="character" default="'Y'" increment="1" name="is_active" null="yes" start="0" type="CHAR(1)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="description" null="yes" start="0" type="VARCHAR(65535)"/>
+                    <column auto_increment="no" base_type="bigint" default="1" increment="1" name="list_order" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="regdate" null="yes" start="0" type="VARCHAR(14)"/>
+                </columns>
+                <constraints>
+                    <pk fields="member_join_form_srl"/>
+                    <index fields="list_order" name="idx_list_order_xe_member_join_form" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                </constraints>
+            </table>
+            <table name="xe_member_message">
+                <columns>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="message_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="related_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="sender_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="receiver_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character" default="'S'" increment="1" name="message_type" null="no" start="0" type="CHAR(1)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="title" null="no" start="0" type="VARCHAR(250)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="content" null="no" start="0" type="VARCHAR(65535)"/>
+                    <column auto_increment="no" base_type="character" default="'N'" increment="1" name="readed" null="no" start="0" type="CHAR(1)"/>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="list_order" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="regdate" null="yes" start="0" type="VARCHAR(14)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="readed_date" null="yes" start="0" type="VARCHAR(14)"/>
+                </columns>
+                <constraints>
+                    <pk fields="message_srl"/>
+                    <index fields="related_srl" name="idx_related_srl_xe_member_message" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="sender_srl" name="idx_sender_srl_xe_member_message" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="receiver_srl" name="idx_receiver_srl_xe_member_message" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="list_order" name="idx_list_order_xe_member_message" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                </constraints>
+            </table>
+            <table name="xe_member_openid">
+                <columns>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="member_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="openid" null="no" start="0" type="VARCHAR(80)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="regdate" null="yes" start="0" type="VARCHAR(14)"/>
+                </columns>
+                <constraints>
+                    <index fields="openid" name="unique_openid_xe_member_openid" order_rule="A" pre_fix="" reverse="no" unique="yes"/>
+                    <index fields="member_srl" name="idx_member_srl_xe_member_openid" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="regdate" name="idx_regdate_xe_member_openid" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                </constraints>
+            </table>
+            <table name="xe_member_openid_association">
+                <columns>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="server_url" null="no" start="0" type="VARCHAR(65535)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="handle" null="no" start="0" type="VARCHAR(255)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="secret" null="no" start="0" type="VARCHAR(65535)"/>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="issued" null="yes" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="lifetime" null="yes" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="assoc_type" null="yes" start="0" type="VARCHAR(64)"/>
+                </columns>
+            </table>
+            <table name="xe_member_openid_nonce">
+                <columns>
+                    <column auto_increment="no" base_type="character" increment="1" name="nonce" null="no" start="0" type="CHAR(8)"/>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="expires" null="yes" start="0" type="BIGINT"/>
+                </columns>
+                <constraints>
+                    <pk fields="nonce"/>
+                </constraints>
+            </table>
+            <table name="xe_member_scrap">
+                <columns>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="member_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="document_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="title" null="yes" start="0" type="VARCHAR(250)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="user_id" null="yes" start="0" type="VARCHAR(80)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="user_name" null="no" start="0" type="VARCHAR(80)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="nick_name" null="no" start="0" type="VARCHAR(240)"/>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="target_member_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="regdate" null="yes" start="0" type="VARCHAR(14)"/>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="list_order" null="no" start="0" type="BIGINT"/>
+                </columns>
+                <constraints>
+                    <index fields="member_srl,document_srl" name="unique_scrap_xe_member_scrap" order_rule="A,A" pre_fix="" reverse="no" unique="yes"/>
+                    <index fields="regdate" name="idx_regdate_xe_member_scrap" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="list_order" name="idx_list_order_xe_member_scrap" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                </constraints>
+            </table>
+            <table name="xe_menu">
+                <columns>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="menu_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" default="0" increment="1" name="site_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="title" null="yes" start="0" type="VARCHAR(750)"/>
+                    <column auto_increment="no" base_type="bigint" default="0" increment="1" name="listorder" null="yes" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="regdate" null="yes" start="0" type="VARCHAR(14)"/>
+                </columns>
+                <constraints>
+                    <pk fields="menu_srl"/>
+                    <index fields="site_srl" name="menu_site_srl_xe_menu" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="listorder" name="idx_listorder_xe_menu" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="regdate" name="idx_regdate_xe_menu" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                </constraints>
+            </table>
+            <table name="xe_menu_item">
+                <columns>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="menu_item_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" default="0" increment="1" name="parent_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="menu_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="name" null="yes" start="0" type="VARCHAR(65535)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="url" null="yes" start="0" type="VARCHAR(250)"/>
+                    <column auto_increment="no" base_type="character" default="'N'" increment="1" name="open_window" null="yes" start="0" type="CHAR(1)"/>
+                    <column auto_increment="no" base_type="character" default="'N'" increment="1" name="expand" null="yes" start="0" type="CHAR(1)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="normal_btn" null="yes" start="0" type="VARCHAR(255)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="hover_btn" null="yes" start="0" type="VARCHAR(255)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="active_btn" null="yes" start="0" type="VARCHAR(255)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="group_srls" null="yes" start="0" type="VARCHAR(65535)"/>
+                    <column auto_increment="no" base_type="bigint" default="0" increment="1" name="listorder" null="yes" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="regdate" null="yes" start="0" type="VARCHAR(14)"/>
+                </columns>
+                <constraints>
+                    <pk fields="menu_item_srl"/>
+                    <index fields="menu_srl" name="idx_menu_srl_xe_menu_item" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="listorder" name="idx_listorder_xe_menu_item" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="regdate" name="idx_regdate_xe_menu_item" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                </constraints>
+            </table>
+            <table name="xe_menu_layout">
+                <columns>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="menu_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="layout_srl" null="no" start="0" type="BIGINT"/>
+                </columns>
+                <constraints>
+                    <pk fields="menu_srl"/>
+                </constraints>
+            </table>
+            <table name="xe_module_admins">
+                <columns>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="module_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="member_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="regdate" null="yes" start="0" type="VARCHAR(14)"/>
+                </columns>
+                <constraints>
+                    <index fields="module_srl,member_srl" name="unique_module_admin_xe_module_admins" order_rule="A,A" pre_fix="" reverse="no" unique="yes"/>
+                    <index fields="regdate" name="idx_regdate_xe_module_admins" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                </constraints>
+            </table>
+            <table name="xe_module_categories">
+                <columns>
+                    <column auto_increment="no" base_type="bigint" default="0" increment="1" name="module_category_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="title" null="yes" start="0" type="VARCHAR(750)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="regdate" null="yes" start="0" type="VARCHAR(14)"/>
+                </columns>
+                <constraints>
+                    <pk fields="module_category_srl"/>
+                    <index fields="regdate" name="idx_regdate_xe_module_categories" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                </constraints>
+            </table>
+            <table name="xe_module_config">
+                <columns>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="module" null="no" start="0" type="VARCHAR(250)"/>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="site_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="config" null="yes" start="0" type="VARCHAR(65535)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="regdate" null="yes" start="0" type="VARCHAR(14)"/>
+                </columns>
+                <constraints>
+                    <pk fields="module"/>
+                </constraints>
+            </table>
+            <table name="xe_module_extend">
+                <columns>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="parent_module" null="no" start="0" type="VARCHAR(80)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="extend_module" null="no" start="0" type="VARCHAR(80)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="type" null="no" start="0" type="VARCHAR(15)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="kind" null="yes" start="0" type="VARCHAR(5)"/>
+                </columns>
+            </table>
+            <table name="xe_module_extra_vars">
+                <columns>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="module_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="name" null="no" start="0" type="VARCHAR(80)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="value" null="yes" start="0" type="VARCHAR(65535)"/>
+                </columns>
+                <constraints>
+                    <index fields="module_srl,name" name="unique_module_vars_xe_module_extra_vars" order_rule="A,A" pre_fix="" reverse="no" unique="yes"/>
+                </constraints>
+            </table>
+            <table name="xe_module_filebox">
+                <columns>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="module_filebox_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="member_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="filename" null="no" start="0" type="VARCHAR(250)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="fileextension" null="no" start="0" type="VARCHAR(4)"/>
+                    <column auto_increment="no" base_type="bigint" default="0" increment="1" name="filesize" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="comment" null="yes" start="0" type="VARCHAR(750)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="regdate" null="yes" start="0" type="VARCHAR(14)"/>
+                </columns>
+                <constraints>
+                    <pk fields="module_filebox_srl"/>
+                    <index fields="member_srl" name="idx_member_srl_xe_module_filebox" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="fileextension" name="idx_fileextension_xe_module_filebox" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                </constraints>
+            </table>
+            <table name="xe_module_grants">
+                <columns>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="module_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="name" null="no" start="0" type="VARCHAR(20)"/>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="group_srl" null="no" start="0" type="BIGINT"/>
+                </columns>
+                <constraints>
+                    <index fields="module_srl,name,group_srl" name="unique_module_xe_module_grants" order_rule="A,A,A" pre_fix="" reverse="no" unique="yes"/>
+                </constraints>
+            </table>
+            <table name="xe_module_locks">
+                <columns>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="lock_name" null="no" start="0" type="VARCHAR(40)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="deadline" null="yes" start="0" type="VARCHAR(14)"/>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="member_srl" null="yes" start="0" type="BIGINT"/>
+                </columns>
+                <constraints>
+                    <index fields="lock_name" name="unique_lock_name_xe_module_locks" order_rule="A" pre_fix="" reverse="no" unique="yes"/>
+                    <index fields="deadline" name="idx_deadline_xe_module_locks" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                </constraints>
+            </table>
+            <table name="xe_module_part_config">
+                <columns>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="module" null="no" start="0" type="VARCHAR(250)"/>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="module_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="config" null="yes" start="0" type="VARCHAR(65535)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="regdate" null="yes" start="0" type="VARCHAR(14)"/>
+                </columns>
+                <constraints>
+                    <index fields="module,module_srl" name="idx_module_part_config_xe_module_part_config" order_rule="A,A" pre_fix="" reverse="no" unique="no"/>
+                </constraints>
+            </table>
+            <table name="xe_module_skins">
+                <columns>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="module_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="name" null="no" start="0" type="VARCHAR(80)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="value" null="yes" start="0" type="VARCHAR(65535)"/>
+                </columns>
+                <constraints>
+                    <index fields="module_srl,name" name="unique_module_skins_xe_module_skins" order_rule="A,A" pre_fix="" reverse="no" unique="yes"/>
+                </constraints>
+            </table>
+            <table name="xe_module_trigger">
+                <columns>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="trigger_name" null="no" start="0" type="VARCHAR(80)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="called_position" null="no" start="0" type="VARCHAR(15)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="module" null="no" start="0" type="VARCHAR(80)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="type" null="no" start="0" type="VARCHAR(15)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="called_method" null="no" start="0" type="VARCHAR(80)"/>
+                </columns>
+                <constraints>
+                    <index fields="trigger_name,called_position,module,type,called_method" name="idx_trigger_xe_module_trigger" order_rule="A,A,A,A,A" pre_fix="" reverse="no" unique="yes"/>
+                </constraints>
+            </table>
+            <table name="xe_modules">
+                <columns>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="module_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="module" null="no" start="0" type="VARCHAR(80)"/>
+                    <column auto_increment="no" base_type="bigint" default="0" increment="1" name="module_category_srl" null="yes" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" default="0" increment="1" name="layout_srl" null="yes" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character" default="'N'" increment="1" name="use_mobile" null="yes" start="0" type="CHAR(1)"/>
+                    <column auto_increment="no" base_type="bigint" default="0" increment="1" name="mlayout_srl" null="yes" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" default="0" increment="1" name="menu_srl" null="yes" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" default="0" increment="1" name="site_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="mid" null="no" start="0" type="VARCHAR(40)"/>
+                    <column auto_increment="no" base_type="character" default="'Y'" increment="1" name="is_skin_fix" null="no" start="0" type="CHAR(1)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="skin" null="yes" start="0" type="VARCHAR(250)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="mskin" null="yes" start="0" type="VARCHAR(250)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="browser_title" null="no" start="0" type="VARCHAR(250)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="description" null="yes" start="0" type="VARCHAR(65535)"/>
+                    <column auto_increment="no" base_type="character" default="'N'" increment="1" name="is_default" null="no" start="0" type="CHAR(1)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="content" null="yes" start="0" type="STRING"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="mcontent" null="yes" start="0" type="STRING"/>
+                    <column auto_increment="no" base_type="character" default="'Y'" increment="1" name="open_rss" null="no" start="0" type="CHAR(1)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="header_text" null="yes" start="0" type="VARCHAR(65535)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="footer_text" null="yes" start="0" type="VARCHAR(65535)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="regdate" null="yes" start="0" type="VARCHAR(14)"/>
+                </columns>
+                <constraints>
+                    <pk fields="module_srl"/>
+                    <index fields="site_srl,mid" name="idx_site_mid_xe_modules" order_rule="A,A" pre_fix="" reverse="no" unique="yes"/>
+                    <index fields="module" name="idx_module_xe_modules" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="module_category_srl" name="idx_module_category_xe_modules" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                </constraints>
+            </table>
+            <table name="xe_point">
+                <columns>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="member_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" default="0" increment="1" name="point" null="no" start="0" type="BIGINT"/>
+                </columns>
+                <constraints>
+                    <pk fields="member_srl"/>
+                    <index fields="point" name="idx_point_xe_point" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                </constraints>
+            </table>
+            <table name="xe_poll">
+                <columns>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="poll_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="stop_date" null="yes" start="0" type="VARCHAR(14)"/>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="upload_target_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="poll_count" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="member_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="ipaddress" null="no" start="0" type="VARCHAR(128)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="regdate" null="yes" start="0" type="VARCHAR(14)"/>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="list_order" null="no" start="0" type="BIGINT"/>
+                </columns>
+                <constraints>
+                    <pk fields="poll_srl"/>
+                    <index fields="upload_target_srl" name="idx_upload_target_srl_xe_poll" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="member_srl" name="idx_member_srl_xe_poll" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="ipaddress" name="idx_ipaddress_xe_poll" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="regdate" name="idx_regdate_xe_poll" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="list_order" name="idx_list_order_xe_poll" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                </constraints>
+            </table>
+            <table name="xe_poll_item">
+                <columns>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="poll_item_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="poll_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="poll_index_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="upload_target_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="title" null="no" start="0" type="VARCHAR(750)"/>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="poll_count" null="no" start="0" type="BIGINT"/>
+                </columns>
+                <constraints>
+                    <pk fields="poll_item_srl"/>
+                    <index fields="poll_srl" name="index_poll_srl_xe_poll_item" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="poll_index_srl" name="idx_poll_index_srl_xe_poll_item" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="upload_target_srl" name="idx_upload_target_srl_xe_poll_item" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                </constraints>
+            </table>
+            <table name="xe_poll_log">
+                <columns>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="poll_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="member_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="ipaddress" null="no" start="0" type="VARCHAR(128)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="regdate" null="yes" start="0" type="VARCHAR(14)"/>
+                </columns>
+                <constraints>
+                    <index fields="poll_srl" name="idx_poll_srl_xe_poll_log" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="member_srl" name="idx_member_srl_xe_poll_log" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="ipaddress" name="idx_ipaddress_xe_poll_log" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="regdate" name="idx_regdate_xe_poll_log" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                </constraints>
+            </table>
+            <table name="xe_poll_title">
+                <columns>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="poll_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="poll_index_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="title" null="no" start="0" type="VARCHAR(750)"/>
+                    <column auto_increment="no" base_type="bigint" default="1" increment="1" name="checkcount" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="poll_count" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="upload_target_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="member_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="ipaddress" null="no" start="0" type="VARCHAR(128)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="regdate" null="yes" start="0" type="VARCHAR(14)"/>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="list_order" null="no" start="0" type="BIGINT"/>
+                </columns>
+                <constraints>
+                    <index fields="poll_srl,poll_index_srl" name="idx_poll_srl_xe_poll_title" order_rule="A,A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="upload_target_srl" name="idx_upload_target_srl_xe_poll_title" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="member_srl" name="idx_member_srl_xe_poll_title" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="ipaddress" name="idx_ipaddress_xe_poll_title" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="regdate" name="idx_regdate_xe_poll_title" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="list_order" name="idx_list_order_xe_poll_title" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                </constraints>
+            </table>
+            <table name="xe_sequence">
+                <columns>
+                    <column auto_increment="yes" base_type="bigint" increment="1" name="seq" null="no" start="0" type="BIGINT"/>
+                </columns>
+                <constraints>
+                    <pk fields="seq"/>
+                </constraints>
+            </table>
+            <table name="xe_session">
+                <columns>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="session_key" null="no" start="0" type="VARCHAR(255)"/>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="member_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="expired" null="yes" start="0" type="VARCHAR(14)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="val" null="yes" start="0" type="STRING"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="ipaddress" null="no" start="0" type="VARCHAR(128)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="last_update" null="yes" start="0" type="VARCHAR(14)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="cur_mid" null="yes" start="0" type="VARCHAR(128)"/>
+                </columns>
+                <constraints>
+                    <pk fields="session_key"/>
+                    <index fields="member_srl" name="idx_session_member_srl_xe_session" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="expired" name="idx_session_expired_xe_session" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="last_update" name="idx_session_update_xe_session" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="cur_mid" name="idx_session_cur_mid_xe_session" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="member_srl,last_update,cur_mid" name="idx_session_update_mid_xe_session" order_rule="A,A,A" pre_fix="" reverse="no" unique="no"/>
+                </constraints>
+            </table>
+            <table name="xe_site_admin">
+                <columns>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="site_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="member_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="regdate" null="yes" start="0" type="VARCHAR(14)"/>
+                </columns>
+                <constraints>
+                    <index fields="site_srl,member_srl" name="idx_site_admin_xe_site_admin" order_rule="A,A" pre_fix="" reverse="no" unique="yes"/>
+                </constraints>
+            </table>
+            <table name="xe_sites">
+                <columns>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="site_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" default="0" increment="1" name="index_module_srl" null="yes" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="domain" null="no" start="0" type="VARCHAR(255)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="default_language" null="yes" start="0" type="VARCHAR(255)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="regdate" null="yes" start="0" type="VARCHAR(14)"/>
+                </columns>
+                <constraints>
+                    <pk fields="site_srl"/>
+                    <index fields="domain" name="unique_domain_xe_sites" order_rule="A" pre_fix="" reverse="no" unique="yes"/>
+                </constraints>
+            </table>
+            <table name="xe_spamfilter_denied_ip">
+                <columns>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="ipaddress" null="no" start="0" type="VARCHAR(250)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="description" null="yes" start="0" type="VARCHAR(750)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="regdate" null="yes" start="0" type="VARCHAR(14)"/>
+                </columns>
+                <constraints>
+                    <pk fields="ipaddress"/>
+                    <index fields="regdate" name="idx_regdate_xe_spamfilter_denied_ip" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                </constraints>
+            </table>
+            <table name="xe_spamfilter_denied_word">
+                <columns>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="word" null="no" start="0" type="VARCHAR(750)"/>
+                    <column auto_increment="no" base_type="bigint" default="0" increment="1" name="hit" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="latest_hit" null="yes" start="0" type="VARCHAR(14)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="regdate" null="yes" start="0" type="VARCHAR(14)"/>
+                </columns>
+                <constraints>
+                    <pk fields="word"/>
+                    <index fields="hit" name="idx_hit_xe_spamfilter_denied_word" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="latest_hit" name="idx_latest_hit_xe_spamfilter_denied_word" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="regdate" name="idx_regdate_xe_spamfilter_denied_word" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                </constraints>
+            </table>
+            <table name="xe_spamfilter_log">
+                <columns>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="spamfilter_log_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="ipaddress" null="no" start="0" type="VARCHAR(250)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="regdate" null="yes" start="0" type="VARCHAR(14)"/>
+                </columns>
+                <constraints>
+                    <pk fields="spamfilter_log_srl"/>
+                    <index fields="ipaddress" name="idx_ipaddress_xe_spamfilter_log" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="regdate" name="idx_regdate_xe_spamfilter_log" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                </constraints>
+            </table>
+            <table name="xe_syndication_except_modules">
+                <columns>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="module_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="regdate" null="yes" start="0" type="VARCHAR(14)"/>
+                </columns>
+                <constraints>
+                    <pk fields="module_srl"/>
+                </constraints>
+            </table>
+            <table name="xe_syndication_logs">
+                <columns>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="log_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" default="0" increment="1" name="module_srl" null="yes" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" default="0" increment="1" name="document_srl" null="yes" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="title" null="yes" start="0" type="VARCHAR(765)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="summary" null="yes" start="0" type="VARCHAR(765)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="regdate" null="yes" start="0" type="VARCHAR(14)"/>
+                </columns>
+                <constraints>
+                    <index fields="log_srl" name="primary_key_xe_syndication_logs" order_rule="A" pre_fix="" reverse="no" unique="yes"/>
+                    <index fields="regdate" name="idx_regdate_xe_syndication_logs" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                </constraints>
+            </table>
+            <table name="xe_tags">
+                <columns>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="tag_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" default="0" increment="1" name="module_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" default="0" increment="1" name="document_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="tag" null="no" start="0" type="VARCHAR(240)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="regdate" null="yes" start="0" type="VARCHAR(14)"/>
+                </columns>
+                <constraints>
+                    <pk fields="tag_srl"/>
+                    <index fields="module_srl" name="idx_module_srl_xe_tags" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="document_srl" name="idx_document_srl_xe_tags" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="regdate" name="idx_regdate_xe_tags" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="document_srl,tag" name="idx_tag_xe_tags" order_rule="A,A" pre_fix="" reverse="no" unique="no"/>
+                </constraints>
+            </table>
+            <table name="xe_trackbacks">
+                <columns>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="trackback_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" default="0" increment="1" name="module_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="bigint" default="0" increment="1" name="document_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="url" null="no" start="0" type="VARCHAR(750)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="title" null="no" start="0" type="VARCHAR(750)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="blog_name" null="no" start="0" type="VARCHAR(750)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="excerpt" null="no" start="0" type="VARCHAR(65535)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="regdate" null="yes" start="0" type="VARCHAR(14)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="ipaddress" null="no" start="0" type="VARCHAR(128)"/>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="list_order" null="no" start="0" type="BIGINT"/>
+                </columns>
+                <constraints>
+                    <pk fields="trackback_srl"/>
+                    <index fields="module_srl" name="idx_module_srl_xe_trackbacks" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="document_srl" name="idx_document_srl_xe_trackbacks" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="regdate" name="idx_regdate_xe_trackbacks" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="ipaddress" name="idx_ipaddress_xe_trackbacks" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                    <index fields="list_order" name="idx_list_order_xe_trackbacks" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                </constraints>
+            </table>
+            <table name="xe_trash">
+                <columns>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="trash_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="title" null="yes" start="0" type="VARCHAR(750)"/>
+                    <column auto_increment="no" base_type="character varying" default="'document'" increment="1" name="origin_module" null="no" start="0" type="VARCHAR(250)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="serialized_object" null="no" start="0" type="STRING"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="description" null="yes" start="0" type="VARCHAR(65535)"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="ipaddress" null="no" start="0" type="VARCHAR(128)"/>
+                    <column auto_increment="no" base_type="bigint" increment="1" name="remover_srl" null="no" start="0" type="BIGINT"/>
+                    <column auto_increment="no" base_type="character varying" increment="1" name="regdate" null="yes" start="0" type="VARCHAR(14)"/>
+                </columns>
+                <constraints>
+                    <pk fields="trash_srl"/>
+                    <index fields="regdate" name="idx_regdate_xe_trash" order_rule="A" pre_fix="" reverse="no" unique="no"/>
+                </constraints>
+            </table>
+        </tables>
+        <views/>
+    </target>
+    <params commit_count="10000" export_thread="1" import_thread="5"/>
+</migration>

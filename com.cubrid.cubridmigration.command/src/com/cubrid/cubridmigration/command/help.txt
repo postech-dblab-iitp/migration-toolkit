@@ -1,0 +1,11 @@
+
+Usage in windows: migration.bat <utility-name> [options]
+Usage in linux: migration.sh <utility-name> [options]
+
+Available <utility-name> (Default is "start"):
+    start: Start a migration task.
+    log: Review a migration work's log.
+    report: Review a migration work's result.
+    script: Build a migration script with online source and default options.
+	
+Please visit http://www.cubrid.org for more information.

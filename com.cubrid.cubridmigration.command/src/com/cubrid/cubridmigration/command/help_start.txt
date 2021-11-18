@@ -1,0 +1,16 @@
+
+Usage in Windows: migration.bat start [options] [migration script file]
+Usage in Linux: migration.sh start [options] [migration script file]
+
+Available options:
+    -s,      Configuration Name of source in db.conf.
+    -t,      Configuration Name of target in db.conf.
+    -sd,     Full name of source database's JDBC driver file.
+    -td,     Full name of target database's JDBC driver file.
+    -tp,     Path to save exported files if the configuration is setting to export source DB to files.
+    -xml,    MySQL XML dump file.
+    -mm,     Monitor mode. The value should be one of [error,info,debug]
+    -rm,     Report mode. The value should be one of [error,info,debug]
+    -do,     CMT only migrates data. The value should be one of [yes,no]
+
+Please visit http://www.cubrid.org for more information.

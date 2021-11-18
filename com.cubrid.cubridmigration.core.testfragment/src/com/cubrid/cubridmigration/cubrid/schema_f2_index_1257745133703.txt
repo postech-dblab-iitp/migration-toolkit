@@ -1,0 +1,71 @@
+ALTER TABLE "bbb" ADD PRIMARY KEY("abab");
+
+CREATE  UNIQUE INDEX ON "child"("parent_id","parent_name");
+CREATE  INDEX ON "child"("parent_id");
+CREATE  INDEX ON "child"("parent_name");
+CREATE  INDEX ON "child"("id","parent_id","parent_name");
+CREATE  INDEX ON "child"("desc");
+
+ALTER TABLE "customer" ADD PRIMARY KEY("id");
+
+
+
+
+ALTER TABLE "parent" ADD PRIMARY KEY("id");
+
+ALTER TABLE "parent1" ADD PRIMARY KEY("name");
+
+ALTER TABLE "product" ADD PRIMARY KEY("category","id");
+
+ALTER TABLE "product_order" ADD PRIMARY KEY("no");
+CREATE  INDEX ON "product_order"("product_category","product_id");
+CREATE  INDEX ON "product_order"("customer_id");
+
+
+ALTER TABLE "tabc" ADD PRIMARY KEY("t1");
+
+ALTER TABLE "test123" ADD PRIMARY KEY("a","b","c");
+CREATE  UNIQUE INDEX ON "test123"("g");
+CREATE  INDEX ON "test123"("a");
+CREATE  INDEX ON "test123"("f");
+CREATE  INDEX ON "test123"("b");
+CREATE  INDEX ON "test123"("a","b");
+
+ALTER TABLE "testabc" ADD PRIMARY KEY("a","b","c");
+CREATE  UNIQUE INDEX ON "testabc"("g");
+CREATE  INDEX ON "testabc"("a");
+CREATE  INDEX ON "testabc"("f");
+
+ALTER TABLE "testf" ADD PRIMARY KEY("bb");
+CREATE  INDEX ON "testf"("cc");
+
+ALTER TABLE "testp" ADD PRIMARY KEY("aa");
+CREATE  UNIQUE INDEX ON "testp"("dd");
+CREATE  INDEX ON "testp"("bb");
+CREATE  INDEX ON "testp"("aa","bb");
+
+ALTER TABLE "tgt" ADD PRIMARY KEY("t1");
+CREATE  UNIQUE INDEX ON "tgt"("gsdf");
+CREATE  INDEX ON "tgt"("ff");
+CREATE  INDEX ON "tgt"("aa");
+
+
+
+
+
+
+
+
+
+
+ALTER TABLE "product_order" ADD FOREIGN KEY ("product_category","product_id") REFERENCES "product"("category","id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "product_order" ADD FOREIGN KEY ("customer_id") REFERENCES "customer"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+
+
+
+
+
+
+ALTER TABLE "tgt" ADD FOREIGN KEY ("aa") REFERENCES "testp"("aa") ON DELETE NO ACTION ON UPDATE NO ACTION;
+

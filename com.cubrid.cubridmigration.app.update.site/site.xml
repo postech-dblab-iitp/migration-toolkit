@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="features/com.cubrid.cubridmigration.app.feature_9.3.0.qualifier.jar" id="com.cubrid.cubridmigration.app.feature" version="9.3.0.qualifier">
+      <category name="com.cubrid.cubridmigration.category"/>
+   </feature>
+   <category-def name="com.cubrid.cubridmigration.category" label="CUBRID Migration Toolkit"/>
+</site>

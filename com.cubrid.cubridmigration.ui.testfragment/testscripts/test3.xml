@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<migration name="2014-07-29 18:00:54" version="9.3.0">
+    <source db_type="MYSQL" online="yes">
+        <jdbc charset="latin1" driver="D:\cubridmigration\jdbc\mysql-connector-java-5.1.22-bin.jar" host="192.168.64.220" name="test" password="migtestforhudson" port="3306" timezone="GMT+08:00" user="migtestforhudson" user_jdbc_url=""/>
+        <tables>
+            <table condition="" create="yes" exp_opt_col="yes" migrate_data="yes" name="test_set" owner="" partition="no" pk="no" replace="yes" sql_after="" sql_before="" start_target_max="no" target="test_set">
+                <columns>
+                    <column data_handler="" name="f1" rep_exp="" target="f1" trim="no"/>
+                    <column data_handler="" name="f2" rep_exp="" target="f2" trim="no"/>
+                </columns>
+            </table>
+        </tables>
+    </source>
+    <target db_type="cubrid" type="online" version="">
+        <jdbc charset="UTF-8" create_constraints_before_data="no" driver="D:\cubridmigration\jdbc\JDBC-9.2.0.0155.jar" host="192.168.64.220" name="mt" password="" port="33920" timezone="" user="dba" user_jdbc_url="" write_error_records="no"/>
+        <tables>
+            <table name="test_set" reuse_oid="no">
+                <columns>
+                    <column auto_increment="no" base_type="int" increment="1" name="f1" null="yes" shared="no" start="0" type="int" unique="no"/>
+                    <column auto_increment="no" base_type="varchar" increment="1" name="f2" null="yes" shared="no" start="0" type="varchar(255)" unique="no"/>
+                </columns>
+            </table>
+        </tables>
+        <views/>
+    </target>
+    <params commit_count="1000" export_thread="4" implicit_estimate_progress="no" import_thread="3" page_fetch_count="1000" replace_char0="' '" unparsed_date="0001-01-01" unparsed_time="00:00:00" unparsed_timestamp="1970-01-02 01:00:00.000" update_statistics="yes"/>
+</migration>

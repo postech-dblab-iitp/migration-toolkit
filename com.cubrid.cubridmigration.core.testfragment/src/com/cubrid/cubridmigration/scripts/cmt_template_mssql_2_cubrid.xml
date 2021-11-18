@@ -1,0 +1,650 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<migration name="test_hudson_mssql_cubrid" version="9.1.0">
+	<source db_type="MSSQL" online="yes">
+		<jdbc charset="GBK" driver="jtds-1.2.8.jar" host="test-dbtool-win"
+			name="migtestforhudson" password="cmt" port="1433" schema="dbo"
+			timezone="GMT+08:00" user="sa" user_jdbc_url="" />
+		<tables>
+			<table condition="" create="yes" migrate_data="yes" name="athlete"
+				partition="no" pk="yes" replace="yes" sql_after="" sql_before=""
+				target="athlete">
+				<columns>
+					<column data_handler="" name="code" rep_exp="" target="code"
+						trim="no" />
+					<column data_handler="" name="name" rep_exp="" target="name"
+						trim="no" />
+					<column data_handler="" name="gender" rep_exp="" target="gender"
+						trim="no" />
+					<column data_handler="" name="nation_code" rep_exp=""
+						target="nation_code" trim="no" />
+					<column data_handler="" name="event" rep_exp="" target="event"
+						trim="no" />
+				</columns>
+				<constraints>
+					<index name="idx_athlete_code" target="idx_athlete_code" />
+					<index name="idx_athlete_name" target="idx_athlete_name" />
+				</constraints>
+			</table>
+			<table condition="" create="yes" migrate_data="yes" name="code"
+				partition="no" pk="no" replace="yes" sql_after="" sql_before=""
+				target="code">
+				<columns>
+					<column data_handler="" name="s_name" rep_exp="" target="s_name"
+						trim="no" />
+					<column data_handler="" name="f_name" rep_exp="" target="f_name"
+						trim="no" />
+				</columns>
+			</table>
+			<table condition="" create="yes" migrate_data="yes" name="event"
+				partition="no" pk="yes" replace="yes" sql_after="" sql_before=""
+				target="event">
+				<columns>
+					<column data_handler="" name="code" rep_exp="" target="code"
+						trim="no" />
+					<column data_handler="" name="sports" rep_exp="" target="sports"
+						trim="no" />
+					<column data_handler="" name="name" rep_exp="" target="name"
+						trim="no" />
+					<column data_handler="" name="gender" rep_exp="" target="gender"
+						trim="no" />
+					<column data_handler="" name="players" rep_exp="" target="players"
+						trim="no" />
+				</columns>
+			</table>
+			<table condition="" create="yes" migrate_data="yes" name="game"
+				partition="no" pk="yes" replace="yes" sql_after="" sql_before=""
+				target="game">
+				<columns>
+					<column data_handler="" name="host_year" rep_exp="" target="host_year"
+						trim="no" />
+					<column data_handler="" name="event_code" rep_exp=""
+						target="event_code" trim="no" />
+					<column data_handler="" name="athlete_code" rep_exp=""
+						target="athlete_code" trim="no" />
+					<column data_handler="" name="stadium_code" rep_exp=""
+						target="stadium_code" trim="no" />
+					<column data_handler="" name="nation_code" rep_exp=""
+						target="nation_code" trim="no" />
+					<column data_handler="" name="medal" rep_exp="" target="medal"
+						trim="no" />
+					<column data_handler="" name="game_date" rep_exp="" target="game_date"
+						trim="no" />
+				</columns>
+				<constraints>
+					<fk name="fk_game_athlete_code" target="fk_game_athlete_code" />
+					<fk name="fk_game_event_code" target="fk_game_event_code" />
+					<index name="idx_game_game_date" target="idx_game_game_date" />
+				</constraints>
+			</table>
+			<table condition="" create="yes" migrate_data="yes" name="history"
+				partition="no" pk="yes" replace="yes" sql_after="" sql_before=""
+				target="history">
+				<columns>
+					<column data_handler="" name="event_code" rep_exp=""
+						target="event_code" trim="no" />
+					<column data_handler="" name="athlete" rep_exp="" target="athlete"
+						trim="no" />
+					<column data_handler="" name="host_year" rep_exp="" target="host_year"
+						trim="no" />
+					<column data_handler="" name="score" rep_exp="" target="score"
+						trim="no" />
+					<column data_handler="" name="unit" rep_exp="" target="unit"
+						trim="no" />
+				</columns>
+			</table>
+			<table condition="" create="yes" migrate_data="yes" name="nation"
+				partition="no" pk="yes" replace="yes" sql_after="" sql_before=""
+				target="nation">
+				<columns>
+					<column data_handler="" name="code" rep_exp="" target="code"
+						trim="no" />
+					<column data_handler="" name="name" rep_exp="" target="name"
+						trim="no" />
+					<column data_handler="" name="continent" rep_exp="" target="continent"
+						trim="no" />
+					<column data_handler="" name="capital" rep_exp="" target="capital"
+						trim="no" />
+				</columns>
+			</table>
+			<table condition="" create="yes" migrate_data="yes" name="olympic"
+				partition="no" pk="yes" replace="yes" sql_after="" sql_before=""
+				target="olympic">
+				<columns>
+					<column data_handler="" name="host_year" rep_exp="" target="host_year"
+						trim="no" />
+					<column data_handler="" name="host_nation" rep_exp=""
+						target="host_nation" trim="no" />
+					<column data_handler="" name="host_city" rep_exp="" target="host_city"
+						trim="no" />
+					<column data_handler="" name="opening_date" rep_exp=""
+						target="opening_date" trim="no" />
+					<column data_handler="" name="closing_date" rep_exp=""
+						target="closing_date" trim="no" />
+					<column data_handler="" name="mascot" rep_exp="" target="mascot"
+						trim="no" />
+					<column data_handler="" name="slogan" rep_exp="" target="slogan"
+						trim="no" />
+					<column data_handler="" name="introduction" rep_exp=""
+						target="introduction" trim="no" />
+				</columns>
+			</table>
+			<table condition="" create="yes" migrate_data="yes" name="participant"
+				partition="no" pk="yes" replace="yes" sql_after="" sql_before=""
+				target="participant">
+				<columns>
+					<column data_handler="" name="host_year" rep_exp="" target="host_year"
+						trim="no" />
+					<column data_handler="" name="nation_code" rep_exp=""
+						target="nation_code" trim="no" />
+					<column data_handler="" name="gold" rep_exp="" target="gold"
+						trim="no" />
+					<column data_handler="" name="silver" rep_exp="" target="silver"
+						trim="no" />
+					<column data_handler="" name="bronze" rep_exp="" target="bronze"
+						trim="no" />
+				</columns>
+				<constraints>
+					<fk name="fk_participant_nation_code" target="fk_participant_nation_code" />
+					<fk name="fk_participant_host_year" target="fk_participant_host_year" />
+				</constraints>
+			</table>
+			<table condition="" create="yes" migrate_data="yes" name="record"
+				partition="no" pk="yes" replace="yes" sql_after="" sql_before=""
+				target="record">
+				<columns>
+					<column data_handler="" name="host_year" rep_exp="" target="host_year"
+						trim="no" />
+					<column data_handler="" name="event_code" rep_exp=""
+						target="event_code" trim="no" />
+					<column data_handler="" name="athlete_code" rep_exp=""
+						target="athlete_code" trim="no" />
+					<column data_handler="" name="medal" rep_exp="" target="medal"
+						trim="no" />
+					<column data_handler="" name="score" rep_exp="" target="score"
+						trim="no" />
+					<column data_handler="" name="unit" rep_exp="" target="unit"
+						trim="no" />
+				</columns>
+			</table>
+			<table condition="" create="yes" migrate_data="yes" name="stadium"
+				partition="no" pk="yes" replace="yes" sql_after="" sql_before=""
+				target="stadium">
+				<columns>
+					<column data_handler="" name="code" rep_exp="" target="code"
+						trim="no" />
+					<column data_handler="" name="nation_code" rep_exp=""
+						target="nation_code" trim="no" />
+					<column data_handler="" name="name" rep_exp="" target="name"
+						trim="no" />
+					<column data_handler="" name="area" rep_exp="" target="area"
+						trim="no" />
+					<column data_handler="" name="seats" rep_exp="" target="seats"
+						trim="no" />
+					<column data_handler="" name="address" rep_exp="" target="address"
+						trim="no" />
+				</columns>
+			</table>
+			<table condition="" create="yes" migrate_data="yes" name="test_binary"
+				partition="no" pk="no" replace="yes" sql_after="" sql_before=""
+				target="test_binary">
+				<columns>
+					<column data_handler="" name="f1" rep_exp="" target="f1"
+						trim="no" />
+					<column data_handler="" name="f2" rep_exp="" target="f2"
+						trim="no" />
+					<column data_handler="" name="f3" rep_exp="" target="f3"
+						trim="no" />
+					<column data_handler="" name="f4" rep_exp="" target="f4"
+						trim="no" />
+				</columns>
+			</table>
+			<table condition="" create="yes" migrate_data="yes" name="test_number"
+				partition="no" pk="yes" replace="yes" sql_after="" sql_before=""
+				target="test_number">
+				<columns>
+					<column data_handler="" name="id" rep_exp="" target="id"
+						trim="no" />
+					<column data_handler="" name="f1" rep_exp="" target="f1"
+						trim="no" />
+					<column data_handler="" name="f2" rep_exp="" target="f2"
+						trim="no" />
+					<column data_handler="" name="f3" rep_exp="" target="f3"
+						trim="no" />
+					<column data_handler="" name="f4" rep_exp="" target="f4"
+						trim="no" />
+					<column data_handler="" name="f5" rep_exp="" target="f5"
+						trim="no" />
+					<column data_handler="" name="f6" rep_exp="" target="f6"
+						trim="no" />
+					<column data_handler="" name="f7" rep_exp="" target="f7"
+						trim="no" />
+					<column data_handler="" name="f8" rep_exp="" target="f8"
+						trim="no" />
+					<column data_handler="" name="f9" rep_exp="" target="f9"
+						trim="no" />
+					<column data_handler="" name="f10" rep_exp="" target="f10"
+						trim="no" />
+					<column data_handler="" name="f11" rep_exp="" target="f11"
+						trim="no" />
+				</columns>
+			</table>
+			<table condition="" create="yes" migrate_data="yes" name="test_string"
+				partition="no" pk="yes" replace="yes" sql_after="" sql_before=""
+				target="test_string">
+				<columns>
+					<column data_handler="" name="id" rep_exp="" target="id"
+						trim="no" />
+					<column data_handler="" name="f1" rep_exp="" target="f1"
+						trim="no" />
+					<column data_handler="" name="f2" rep_exp="" target="f2"
+						trim="no" />
+					<column data_handler="" name="f3" rep_exp="" target="f3"
+						trim="no" />
+					<column data_handler="" name="f4" rep_exp="" target="f4"
+						trim="no" />
+					<column data_handler="" name="f5" rep_exp="" target="f5"
+						trim="no" />
+					<column data_handler="" name="f6" rep_exp="" target="f6"
+						trim="no" />
+					<column data_handler="" name="f7" rep_exp="" target="f7"
+						trim="no" />
+					<column data_handler="" name="f8" rep_exp="" target="f8"
+						trim="no" />
+				</columns>
+			</table>
+			<table condition="" create="yes" migrate_data="yes" name="test_time"
+				partition="no" pk="no" replace="yes" sql_after="" sql_before=""
+				target="test_time">
+				<columns>
+					<column data_handler="" name="f1" rep_exp="" target="f1"
+						trim="no" />
+					<column data_handler="" name="f2" rep_exp="" target="f2"
+						trim="no" />
+					<column data_handler="" name="f3" rep_exp="" target="f3"
+						trim="no" />
+				</columns>
+			</table>
+		</tables>
+		<views>
+			<view name="game_view" target="game_view" />
+			<view name="participant_view" target="participant_view" />
+		</views>
+	</source>
+	<target db_type="cubrid" type="online" version="">
+		<jdbc charset="UTF-8" create_constraints_before_data="no"
+			driver="JDBC-9.2.0.0155-cubrid.jar" host="test-dbtool2" name="mt_mssql"
+			password="" port="30920" schema="mt_mssql" timezone="GMT+08:00" user="dba"
+			user_jdbc_url="" write_error_records="no" />
+		<tables>
+			<table name="athlete" reuse_oid="no">
+				<columns>
+					<column auto_increment="yes" base_type="integer" increment="1"
+						name="code" null="no" shared="no" start="0" type="integer" unique="yes" />
+					<column auto_increment="no" base_type="varchar" increment="1"
+						name="name" null="no" shared="no" start="0" type="varchar(120)"
+						unique="no" />
+					<column auto_increment="no" base_type="char" increment="1"
+						name="gender" null="yes" shared="no" start="0" type="char(3)"
+						unique="no" />
+					<column auto_increment="no" base_type="char" increment="1"
+						name="nation_code" null="yes" shared="no" start="0" type="char(9)"
+						unique="no" />
+					<column auto_increment="no" base_type="varchar" increment="1"
+						name="event" null="yes" shared="no" start="0" type="varchar(90)"
+						unique="no" />
+				</columns>
+				<constraints>
+					<pk fields="code" />
+					<index fields="nation_code" name="idx_athlete_code"
+						order_rule="A" pre_fix="" reverse="no" unique="no" />
+					<index fields="name" name="idx_athlete_name" order_rule="A"
+						pre_fix="" reverse="no" unique="no" />
+				</constraints>
+			</table>
+			<table name="code" reuse_oid="no">
+				<columns>
+					<column auto_increment="no" base_type="char" increment="1"
+						name="s_name" null="yes" shared="no" start="0" type="char(3)"
+						unique="no" />
+					<column auto_increment="no" base_type="varchar" increment="1"
+						name="f_name" null="yes" shared="no" start="0" type="varchar(18)"
+						unique="no" />
+				</columns>
+			</table>
+			<table name="event" reuse_oid="no">
+				<columns>
+					<column auto_increment="no" base_type="integer" increment="1"
+						name="code" null="no" shared="no" start="0" type="integer" unique="yes" />
+					<column auto_increment="no" base_type="varchar" increment="1"
+						name="sports" null="yes" shared="no" start="0" type="varchar(150)"
+						unique="no" />
+					<column auto_increment="no" base_type="varchar" increment="1"
+						name="name" null="yes" shared="no" start="0" type="varchar(150)"
+						unique="no" />
+					<column auto_increment="no" base_type="char" increment="1"
+						name="gender" null="yes" shared="no" start="0" type="char(3)"
+						unique="no" />
+					<column auto_increment="no" base_type="integer" increment="1"
+						name="players" null="yes" shared="no" start="0" type="integer"
+						unique="no" />
+				</columns>
+				<constraints>
+					<pk fields="code" />
+				</constraints>
+			</table>
+			<table name="game" reuse_oid="no">
+				<columns>
+					<column auto_increment="no" base_type="integer" increment="1"
+						name="host_year" null="no" shared="no" start="0" type="integer"
+						unique="no" />
+					<column auto_increment="no" base_type="integer" increment="1"
+						name="event_code" null="no" shared="no" start="0" type="integer"
+						unique="no" />
+					<column auto_increment="no" base_type="integer" increment="1"
+						name="athlete_code" null="no" shared="no" start="0" type="integer"
+						unique="no" />
+					<column auto_increment="no" base_type="integer" increment="1"
+						name="stadium_code" null="no" shared="no" start="0" type="integer"
+						unique="no" />
+					<column auto_increment="no" base_type="char" increment="1"
+						name="nation_code" null="yes" shared="no" start="0" type="char(9)"
+						unique="no" />
+					<column auto_increment="no" base_type="char" increment="1"
+						name="medal" null="yes" shared="no" start="0" type="char(3)"
+						unique="no" />
+					<column auto_increment="no" base_type="date" increment="1"
+						name="game_date" null="yes" shared="no" start="0" type="date"
+						unique="no" />
+				</columns>
+				<constraints>
+					<pk fields="host_year,event_code,athlete_code" />
+					<fk fields="athlete_code" name="fk_game_athlete_code"
+						on_cache_object="" on_delete="RESTRICT" on_update="RESTRICT"
+						ref_fields="code" ref_table="athlete" />
+					<fk fields="event_code" name="fk_game_event_code"
+						on_cache_object="" on_delete="RESTRICT" on_update="RESTRICT"
+						ref_fields="code" ref_table="event" />
+					<index fields="game_date" name="idx_game_game_date"
+						order_rule="D" pre_fix="" reverse="no" unique="no" />
+				</constraints>
+			</table>
+			<table name="history" reuse_oid="no">
+				<columns>
+					<column auto_increment="no" base_type="integer" increment="1"
+						name="event_code" null="no" shared="no" start="0" type="integer"
+						unique="no" />
+					<column auto_increment="no" base_type="varchar" increment="1"
+						name="athlete" null="no" shared="no" start="0" type="varchar(120)"
+						unique="no" />
+					<column auto_increment="no" base_type="integer" increment="1"
+						name="host_year" null="yes" shared="no" start="0" type="integer"
+						unique="no" />
+					<column auto_increment="no" base_type="varchar" increment="1"
+						name="score" null="yes" shared="no" start="0" type="varchar(30)"
+						unique="no" />
+					<column auto_increment="no" base_type="varchar" increment="1"
+						name="unit" null="yes" shared="no" start="0" type="varchar(15)"
+						unique="no" />
+				</columns>
+				<constraints>
+					<pk fields="event_code,athlete" />
+				</constraints>
+			</table>
+			<table name="nation" reuse_oid="no">
+				<columns>
+					<column auto_increment="no" base_type="char" increment="1"
+						name="code" null="no" shared="no" start="0" type="char(9)" unique="yes" />
+					<column auto_increment="no" base_type="varchar" increment="1"
+						name="name" null="no" shared="no" start="0" type="varchar(120)"
+						unique="no" />
+					<column auto_increment="no" base_type="varchar" increment="1"
+						name="continent" null="yes" shared="no" start="0" type="varchar(30)"
+						unique="no" />
+					<column auto_increment="no" base_type="varchar" increment="1"
+						name="capital" null="yes" shared="no" start="0" type="varchar(90)"
+						unique="no" />
+				</columns>
+				<constraints>
+					<pk fields="code" />
+				</constraints>
+			</table>
+			<table name="olympic" reuse_oid="no">
+				<columns>
+					<column auto_increment="no" base_type="integer" increment="1"
+						name="host_year" null="no" shared="no" start="0" type="integer"
+						unique="yes" />
+					<column auto_increment="no" base_type="varchar" increment="1"
+						name="host_nation" null="no" shared="no" start="0" type="varchar(120)"
+						unique="no" />
+					<column auto_increment="no" base_type="varchar" increment="1"
+						name="host_city" null="no" shared="no" start="0" type="varchar(60)"
+						unique="no" />
+					<column auto_increment="no" base_type="date" increment="1"
+						name="opening_date" null="no" shared="no" start="0" type="date"
+						unique="no" />
+					<column auto_increment="no" base_type="date" increment="1"
+						name="closing_date" null="no" shared="no" start="0" type="date"
+						unique="no" />
+					<column auto_increment="no" base_type="varchar" increment="1"
+						name="mascot" null="yes" shared="no" start="0" type="varchar(60)"
+						unique="no" />
+					<column auto_increment="no" base_type="varchar" increment="1"
+						name="slogan" null="yes" shared="no" start="0" type="varchar(120)"
+						unique="no" />
+					<column auto_increment="no" base_type="varchar" increment="1"
+						name="introduction" null="yes" shared="no" start="0" type="varchar(4500)"
+						unique="no" />
+				</columns>
+				<constraints>
+					<pk fields="host_year" />
+				</constraints>
+			</table>
+			<table name="participant" reuse_oid="no">
+				<columns>
+					<column auto_increment="no" base_type="integer" increment="1"
+						name="host_year" null="no" shared="no" start="0" type="integer"
+						unique="no" />
+					<column auto_increment="no" base_type="char" increment="1"
+						name="nation_code" null="no" shared="no" start="0" type="char(9)"
+						unique="no" />
+					<column auto_increment="no" base_type="integer" default="0"
+						expression_default="no" increment="1" name="gold" null="yes"
+						shared="no" start="0" type="integer" unique="no" />
+					<column auto_increment="no" base_type="integer" default="0"
+						expression_default="no" increment="1" name="silver" null="yes"
+						shared="no" start="0" type="integer" unique="no" />
+					<column auto_increment="no" base_type="integer" default="0"
+						expression_default="no" increment="1" name="bronze" null="yes"
+						shared="no" start="0" type="integer" unique="no" />
+				</columns>
+				<constraints>
+					<pk fields="host_year,nation_code" />
+					<fk fields="nation_code" name="fk_participant_nation_code"
+						on_cache_object="" on_delete="RESTRICT" on_update="RESTRICT"
+						ref_fields="code" ref_table="nation" />
+					<fk fields="host_year" name="fk_participant_host_year"
+						on_cache_object="" on_delete="RESTRICT" on_update="RESTRICT"
+						ref_fields="host_year" ref_table="olympic" />
+				</constraints>
+			</table>
+			<table name="record" reuse_oid="no">
+				<columns>
+					<column auto_increment="no" base_type="integer" increment="1"
+						name="host_year" null="no" shared="no" start="0" type="integer"
+						unique="no" />
+					<column auto_increment="no" base_type="integer" increment="1"
+						name="event_code" null="no" shared="no" start="0" type="integer"
+						unique="no" />
+					<column auto_increment="no" base_type="integer" increment="1"
+						name="athlete_code" null="no" shared="no" start="0" type="integer"
+						unique="no" />
+					<column auto_increment="no" base_type="char" increment="1"
+						name="medal" null="no" shared="no" start="0" type="char(3)"
+						unique="no" />
+					<column auto_increment="no" base_type="varchar" increment="1"
+						name="score" null="yes" shared="no" start="0" type="varchar(60)"
+						unique="no" />
+					<column auto_increment="no" base_type="varchar" increment="1"
+						name="unit" null="yes" shared="no" start="0" type="varchar(15)"
+						unique="no" />
+				</columns>
+				<constraints>
+					<pk fields="host_year,event_code,athlete_code,medal" />
+				</constraints>
+			</table>
+			<table name="stadium" reuse_oid="no">
+				<columns>
+					<column auto_increment="no" base_type="integer" increment="1"
+						name="code" null="no" shared="no" start="0" type="integer" unique="yes" />
+					<column auto_increment="no" base_type="char" increment="1"
+						name="nation_code" null="no" shared="no" start="0" type="char(9)"
+						unique="no" />
+					<column auto_increment="no" base_type="varchar" increment="1"
+						name="name" null="no" shared="no" start="0" type="varchar(150)"
+						unique="no" />
+					<column auto_increment="no" base_type="numeric" increment="1"
+						name="area" null="yes" shared="no" start="0" type="numeric(10,2)"
+						unique="no" />
+					<column auto_increment="no" base_type="integer" increment="1"
+						name="seats" null="yes" shared="no" start="0" type="integer"
+						unique="no" />
+					<column auto_increment="no" base_type="varchar" increment="1"
+						name="address" null="yes" shared="no" start="0" type="varchar(300)"
+						unique="no" />
+				</columns>
+				<constraints>
+					<pk fields="code" />
+				</constraints>
+			</table>
+			<table name="test_binary" reuse_oid="no">
+				<columns>
+					<column auto_increment="no" base_type="blob" increment="1"
+						name="f1" null="yes" shared="no" start="0" type="blob" unique="no" />
+					<column auto_increment="no" base_type="bit" increment="1"
+						name="f2" null="yes" shared="no" start="0" type="bit(64000)"
+						unique="no" />
+					<column auto_increment="no" base_type="bit varying" increment="1"
+						name="f3" null="yes" shared="no" start="0" type="bit varying(64000)"
+						unique="no" />
+					<column auto_increment="no" base_type="smallint" increment="1"
+						name="f4" null="yes" shared="no" start="0" type="smallint" unique="no" />
+				</columns>
+			</table>
+			<table name="test_number" reuse_oid="no">
+				<columns>
+					<column auto_increment="yes" base_type="integer" increment="1"
+						name="id" null="no" shared="no" start="0" type="integer" unique="yes" />
+					<column auto_increment="no" base_type="smallint" increment="1"
+						name="f1" null="yes" shared="no" start="0" type="smallint" unique="no" />
+					<column auto_increment="no" base_type="smallint" increment="1"
+						name="f2" null="yes" shared="no" start="0" type="smallint" unique="no" />
+					<column auto_increment="no" base_type="integer" increment="1"
+						name="f3" null="yes" shared="no" start="0" type="integer" unique="no" />
+					<column auto_increment="no" base_type="bigint" increment="1"
+						name="f4" null="yes" shared="no" start="0" type="bigint" unique="no" />
+					<column auto_increment="no" base_type="double" increment="1"
+						name="f5" null="yes" shared="no" start="0" type="double" unique="no" />
+					<column auto_increment="no" base_type="numeric" increment="1"
+						name="f6" null="yes" shared="no" start="0" type="numeric(19,4)"
+						unique="no" />
+					<column auto_increment="no" base_type="numeric" increment="1"
+						name="f7" null="yes" shared="no" start="0" type="numeric(10,4)"
+						unique="no" />
+					<column auto_increment="no" base_type="numeric" increment="1"
+						name="f8" null="yes" shared="no" start="0" type="numeric(18,0)"
+						unique="no" />
+					<column auto_increment="no" base_type="numeric" increment="1"
+						name="f9" null="yes" shared="no" start="0" type="numeric(38,2)"
+						unique="no" />
+					<column auto_increment="no" base_type="numeric" increment="1"
+						name="f10" null="yes" shared="no" start="0" type="numeric(18,0)"
+						unique="no" />
+					<column auto_increment="no" base_type="float" increment="1"
+						name="f11" null="yes" shared="no" start="0" type="float" unique="no" />
+				</columns>
+				<constraints>
+					<pk fields="id" />
+				</constraints>
+			</table>
+			<table name="test_string" reuse_oid="no">
+				<columns>
+					<column auto_increment="no" base_type="varchar" increment="1"
+						name="id" null="no" shared="no" start="0" type="varchar(384)"
+						unique="yes" />
+					<column auto_increment="no" base_type="char" increment="1"
+						name="f1" null="yes" shared="no" start="0" type="char(3)" unique="no" />
+					<column auto_increment="no" base_type="char" increment="1"
+						name="f2" null="yes" shared="no" start="0" type="char(6)" unique="no" />
+					<column auto_increment="no" base_type="char" increment="1"
+						name="f3" null="yes" shared="no" start="0" type="char(765)"
+						unique="no" />
+					<column auto_increment="no" base_type="varchar" increment="1"
+						name="f4" null="yes" shared="no" start="0" type="varchar(3)"
+						unique="no" />
+					<column auto_increment="no" base_type="varchar" increment="1"
+						name="f5" null="yes" shared="no" start="0" type="varchar(6)"
+						unique="no" />
+					<column auto_increment="no" base_type="varchar" increment="1"
+						name="f6" null="yes" shared="no" start="0" type="varchar(12288)"
+						unique="no" />
+					<column auto_increment="no" base_type="clob" increment="1"
+						name="f7" null="yes" shared="no" start="0" type="clob" unique="no" />
+					<column auto_increment="no" base_type="clob" increment="1"
+						name="f8" null="yes" shared="no" start="0" type="clob" unique="no" />
+				</columns>
+				<constraints>
+					<pk fields="id" />
+				</constraints>
+			</table>
+			<table name="test_time" reuse_oid="no">
+				<columns>
+					<column auto_increment="no" base_type="datetime" increment="1"
+						name="f1" null="yes" shared="no" start="0" type="datetime" unique="no" />
+					<column auto_increment="no" base_type="time" increment="1"
+						name="f2" null="yes" shared="no" start="0" type="time" unique="no" />
+					<column auto_increment="no" base_type="datetime" increment="1"
+						name="f3" null="yes" shared="no" start="0" type="datetime" unique="no" />
+				</columns>
+			</table>
+		</tables>
+		<views>
+			<view name="game_view">
+				<viewQuerySQL>select a.* from game a, event b where
+					a.event_code=b.code;</viewQuerySQL>
+				<createViewSQL>CREATE VIEW "game_view" as&#13;
+					select a.* from game
+					a, event b where a.event_code=b.code;
+				</createViewSQL>
+				<viewColumns>
+					<viewColumn base_type="integer" name="host_year" type="integer" />
+					<viewColumn base_type="integer" name="event_code" type="integer" />
+					<viewColumn base_type="integer" name="athlete_code"
+						type="integer" />
+					<viewColumn base_type="integer" name="stadium_code"
+						type="integer" />
+					<viewColumn base_type="char" name="nation_code" type="char(6)" />
+					<viewColumn base_type="char" name="medal" type="char(3)" />
+					<viewColumn base_type="date" name="game_date" type="date" />
+				</viewColumns>
+			</view>
+			<view name="participant_view">
+				<viewQuerySQL>select a.* from participant a ,nation b where
+					a.nation_code=b.code;</viewQuerySQL>
+				<createViewSQL>CREATE VIEW participant_view&#13;
+					AS &#13;
+					select a.*
+					from participant a ,nation b where a.nation_code=b.code;
+				</createViewSQL>
+				<viewColumns>
+					<viewColumn base_type="integer" name="host_year" type="integer" />
+					<viewColumn base_type="char" name="nation_code" type="char(6)" />
+					<viewColumn base_type="integer" name="gold" type="integer" />
+					<viewColumn base_type="integer" name="silver" type="integer" />
+					<viewColumn base_type="integer" name="bronze" type="integer" />
+				</viewColumns>
+			</view>
+		</views>
+	</target>
+	<params commit_count="1000" export_thread="3"
+		implicit_estimate_progress="no" import_thread="3" page_fetch_count="1000" />
+</migration>

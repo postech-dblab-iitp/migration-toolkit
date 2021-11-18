@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Common Configration Manager
+Bundle-SymbolicName: com.cubrid.common.configuration;singleton:=true
+Bundle-Version: 9.2.0.qualifier
+Bundle-Activator: com.cubrid.common.configuration.Activator
+Bundle-Vendor: CUBRID
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Import-Package: org.osgi.framework;version="1.3.0"
+Bundle-ActivationPolicy: lazy
+Export-Package: com.cubrid.common.configuration.classloader,
+ com.cubrid.common.configuration.jdbc,
+ com.cubrid.common.configuration
+Bundle-ClassPath: .,
+ lib/commons-lang-2.6.jar

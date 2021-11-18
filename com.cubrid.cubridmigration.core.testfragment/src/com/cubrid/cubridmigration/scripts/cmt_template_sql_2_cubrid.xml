@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<migration version="9.1.0">
+	<source db_type="sql" online="no">
+		<sql_source charset="UTF-8">
+			<sql_file location="athlete.sql" />
+			<sql_file location="code.sql" />
+			<sql_file location="event.sql" />
+			<sql_file location="game.sql" />
+			<sql_file location="history.sql" />
+			<sql_file location="nation.sql" />
+			<sql_file location="olympic.sql" />
+			<sql_file location="participant.sql" />
+			<sql_file location="record.sql" />
+			<sql_file location="stadium.sql" />
+			<sql_file location="test_binary.sql" />
+			<sql_file location="test_hash_partition.sql" />
+			<sql_file location="test_list_partition.sql" />
+			<sql_file location="test_range_partition.sql" />
+			<sql_file location="test_set.sql" />
+		</sql_source>
+	</source>
+	<target db_type="cubrid" type="online" version="">
+		<jdbc charset="UTF-8" create_constraints_before_data="yes"
+			driver="JDBC-9.2.0.0155-cubrid.jar" host="test-dbtool2" name="mt_cubrid"
+			password="" port="30920" timezone="GMT+08:00" user="dba"
+			user_jdbc_url="" write_error_records="yes" />
+		<tables />
+		<views />
+	</target>
+	<params commit_count="1000" export_thread="2"
+		implicit_estimate_progress="no" import_thread="2" />
+</migration>

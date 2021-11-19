@@ -1,3 +1,8 @@
+## GDBMS Migration Toolkit for TurboGraph++
+
+IITP-차세대 DBMS 과제 중 TurboGraph++ 를 위한 이관 도구를 개발하기를 위하여 CUBRID Migration Toolkit [11.0.0.0002 버전] (https://github.com/cubrid/cubrid-migration) 을 Clone 하였습니다. 본 도구는 CUBRID에서 TurboGraph++ 로 이관하는 기능을 주목적으로 합니다.
+
+---
 CUBRID Migration Toolkit (CMT) is a software tool that allows migrating data from MySQL/Oracle/CUBRID to CUBRID Database Server.
 
 The data and schema in the source database can be as sophisticated as possible. CMT provides the default settings to cast native MySQL and other DBMS data types to native CUBRID data types. However, most of them will overlap as CUBRID provides over 90% MySQL compatibility. If it is necessary to have the destination column data type different from the default settings, it can be easily customized before the migration process starts.

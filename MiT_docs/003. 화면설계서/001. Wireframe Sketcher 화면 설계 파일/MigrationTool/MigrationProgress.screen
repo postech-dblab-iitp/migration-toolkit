@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model:Screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:model="http://wireframesketcher.com/1.0/model.ecore">
+  <widgets xsi:type="model:Group" id="3" x="40" y="1096" width="896" height="233" text="Vertices" measuredWidth="896" measuredHeight="233">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Image" id="1" x="40" y="16" measuredWidth="1008" measuredHeight="965" src="assets/MigrationProgress_image.png"/>
+  <widgets xsi:type="model:Table" id="2" x="72" y="1128" width="817" height="169" text="Table name, Total records, Exported records, Imported records&#xD;&#xA;t1, 1000, 50, -&#xD;&#xA;t2, 1000, 50, -&#xD;&#xA;t3, 1000, 50, -&#xD;&#xA;" measuredWidth="817" measuredHeight="169" alternative="#eee">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Group" id="4" x="40" y="1344" width="896" height="233" text="Edges" measuredWidth="896" measuredHeight="233">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Table" id="5" x="72" y="1376" width="817" height="169" text="Table name, Total records, Exported records, Imported records&#xD;&#xA;t1, 1000, 50, -&#xD;&#xA;t2, 1000, 50, -&#xD;&#xA;t3, 1000, 50, -&#xD;&#xA;" measuredWidth="817" measuredHeight="169" alternative="#eee">
+    <font/>
+  </widgets>
+  <hRuler/>
+  <vRuler/>
+  <font size="12px"/>
+</model:Screen>

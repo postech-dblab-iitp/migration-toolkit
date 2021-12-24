@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model:Screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:model="http://wireframesketcher.com/1.0/model.ecore" theme="clean" minVersion="4.2.0">
+  <widgets xsi:type="model:WidgetGroup" id="26" x="32" y="24" measuredWidth="337" measuredHeight="153" name="Information Dialog">
+    <widgets xsi:type="model:Alert" id="22" width="337" height="153" text="Information&#xA;This is an information message&#xA;OK" measuredWidth="337" measuredHeight="153" icon="info (large)">
+      <items x="242" y="114" width="80" height="24" text="OK"/>
+    </widgets>
+  </widgets>
+  <widgets xsi:type="model:WidgetGroup" id="28" x="400" y="24" measuredWidth="337" measuredHeight="153" name="Error Dialog">
+    <widgets xsi:type="model:Alert" id="23" width="337" height="153" text="Error&#xA;This is an error message&#xA;OK" measuredWidth="337" measuredHeight="153" icon="error (large)">
+      <items x="242" y="114" width="80" height="24" text="OK"/>
+    </widgets>
+  </widgets>
+  <widgets xsi:type="model:WidgetGroup" id="27" x="32" y="200" measuredWidth="337" measuredHeight="153" name="Warning Dialog">
+    <widgets xsi:type="model:Alert" id="24" width="337" height="153" text="Warning&#xA;This is a warning message&#xA;OK" measuredWidth="337" measuredHeight="153" icon="warning (large)">
+      <items x="242" y="114" width="80" height="24" text="OK"/>
+    </widgets>
+  </widgets>
+  <widgets xsi:type="model:WidgetGroup" id="29" x="400" y="200" measuredWidth="337" measuredHeight="153" name="Question Dialog">
+    <widgets xsi:type="model:Alert" id="25" width="337" height="153" text="Question&#xA;This is a question&#xA;Yes, No" measuredWidth="337" measuredHeight="153" icon="help (large)">
+      <items x="147" y="114" width="80" height="24" text="Yes"/>
+      <items x="242" y="114" width="80" height="24" text="No"/>
+    </widgets>
+  </widgets>
+  <hRuler/>
+  <vRuler/>
+  <font size="12px"/>
+</model:Screen>

@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model:Screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:model="http://wireframesketcher.com/1.0/model.ecore">
+  <widgets xsi:type="model:Image" id="2" x="40" y="40" measuredWidth="457" measuredHeight="328" src="assets/NewScreen_image_2.png"/>
+  <widgets xsi:type="model:Image" id="3" x="512" y="56" measuredWidth="384" measuredHeight="284" src="assets/NewScreen_image_3.png"/>
+  <widgets xsi:type="model:Image" id="4" x="40" y="427" measuredWidth="908" measuredHeight="428" src="assets/NewScreen_image_4.png"/>
+  <widgets xsi:type="model:WidgetGroup" id="10" x="563" y="494" measuredWidth="326" measuredHeight="343">
+    <widgets xsi:type="model:VScrollbar" id="5" x="309" y="3" height="324" measuredWidth="17" measuredHeight="324"/>
+    <widgets xsi:type="model:HScrollbar" id="6" x="1" y="326" width="309" measuredWidth="309" measuredHeight="17"/>
+    <widgets xsi:type="model:HLine" id="7" x="2" width="308" measuredWidth="308" measuredHeight="6"/>
+    <widgets xsi:type="model:VLine" id="8" y="3" height="324" measuredWidth="6" measuredHeight="324"/>
+  </widgets>
+  <widgets xsi:type="model:TextField" id="9" x="280" y="469" width="73" text="Label name :" measuredWidth="73" measuredHeight="21">
+    <font size="11px" bold="true"/>
+  </widgets>
+  <widgets xsi:type="model:WidgetGroup" id="12" x="24" y="3960" measuredWidth="908" measuredHeight="428">
+    <widgets xsi:type="model:Image" id="13" measuredWidth="908" measuredHeight="428" src="assets/NewScreen_image_4.png"/>
+    <widgets xsi:type="model:WidgetGroup" id="14" x="523" y="67" measuredWidth="326" measuredHeight="343">
+      <widgets xsi:type="model:VScrollbar" id="15" x="309" y="3" height="324" measuredWidth="17" measuredHeight="324"/>
+      <widgets xsi:type="model:HScrollbar" id="16" x="1" y="326" width="309" measuredWidth="309" measuredHeight="17"/>
+      <widgets xsi:type="model:HLine" id="17" x="2" width="308" measuredWidth="308" measuredHeight="6"/>
+      <widgets xsi:type="model:VLine" id="18" y="3" height="324" measuredWidth="6" measuredHeight="324"/>
+    </widgets>
+    <widgets xsi:type="model:TextField" id="19" x="240" y="42" width="73" text="Node name :" measuredWidth="73" measuredHeight="21">
+      <font size="11px" bold="true"/>
+    </widgets>
+  </widgets>
+  <widgets xsi:type="model:Image" id="20" x="40" y="904" measuredWidth="908" measuredHeight="428" src="assets/NewScreen_image_4.png"/>
+  <widgets xsi:type="model:WidgetGroup" id="21" x="563" y="971" measuredWidth="326" measuredHeight="343">
+    <widgets xsi:type="model:VScrollbar" id="22" x="309" y="3" height="324" measuredWidth="17" measuredHeight="324"/>
+    <widgets xsi:type="model:HScrollbar" id="23" x="1" y="326" width="309" measuredWidth="309" measuredHeight="17"/>
+    <widgets xsi:type="model:HLine" id="24" x="2" width="308" measuredWidth="308" measuredHeight="6"/>
+    <widgets xsi:type="model:VLine" id="25" y="3" height="324" measuredWidth="6" measuredHeight="324"/>
+  </widgets>
+  <widgets xsi:type="model:TextField" id="26" x="280" y="946" width="73" text="Label name :" measuredWidth="73" measuredHeight="21">
+    <font size="11px" bold="true"/>
+  </widgets>
+  <widgets xsi:type="model:Tabs" id="27" x="277" y="915" text="Vertex, Edge" measuredWidth="102" measuredHeight="23" selection="0">
+    <items x="1" y="0" width="53" height="23" text="Vertex"/>
+    <items x="54" y="0" width="47" height="23" text="Edge"/>
+    <font size="11px"/>
+  </widgets>
+  <widgets xsi:type="model:Image" id="36" x="40" y="1408" measuredWidth="908" measuredHeight="428" src="assets/NewScreen_image_4.png"/>
+  <widgets xsi:type="model:WidgetGroup" id="37" x="563" y="1475" measuredWidth="326" measuredHeight="343">
+    <widgets xsi:type="model:VScrollbar" id="38" x="309" y="3" height="324" measuredWidth="17" measuredHeight="324"/>
+    <widgets xsi:type="model:HScrollbar" id="39" x="1" y="326" width="309" measuredWidth="309" measuredHeight="17"/>
+    <widgets xsi:type="model:HLine" id="40" x="2" width="308" measuredWidth="308" measuredHeight="6"/>
+    <widgets xsi:type="model:VLine" id="41" y="3" height="324" measuredWidth="6" measuredHeight="324"/>
+  </widgets>
+  <widgets xsi:type="model:TextField" id="42" x="280" y="1450" width="73" text="Entity name :" measuredWidth="73" measuredHeight="21">
+    <font size="11px" bold="true"/>
+  </widgets>
+  <widgets xsi:type="model:Tabs" id="43" x="277" y="1419" text="Vertex, Edge" measuredWidth="102" measuredHeight="23" selection="0">
+    <items x="1" y="0" width="53" height="23" text="Vertex"/>
+    <items x="54" y="0" width="47" height="23" text="Edge"/>
+    <font size="11px"/>
+  </widgets>
+  <widgets xsi:type="model:Table" id="44" x="280" y="1477" width="280" height="339" text="{checked},Property name,Data type&#xA;{checked},code,String&#xA;{checked},state,String&#xA;{checked},city,String&#xA;&#xA;" measuredWidth="280" measuredHeight="339" alternative="#eee">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Image" id="45" x="48" y="1888" measuredWidth="908" measuredHeight="428" src="assets/NewScreen_image_4.png"/>
+  <widgets xsi:type="model:WidgetGroup" id="46" x="571" y="1955" measuredWidth="326" measuredHeight="343">
+    <widgets xsi:type="model:VScrollbar" id="47" x="309" y="3" height="324" measuredWidth="17" measuredHeight="324"/>
+    <widgets xsi:type="model:HScrollbar" id="48" x="1" y="326" width="309" measuredWidth="309" measuredHeight="17"/>
+    <widgets xsi:type="model:HLine" id="49" x="2" width="308" measuredWidth="308" measuredHeight="6"/>
+    <widgets xsi:type="model:VLine" id="50" y="3" height="324" measuredWidth="6" measuredHeight="324"/>
+  </widgets>
+  <widgets xsi:type="model:TextField" id="51" x="288" y="1930" width="73" text="Entity name :" measuredWidth="73" measuredHeight="21">
+    <font size="11px" bold="true"/>
+  </widgets>
+  <widgets xsi:type="model:Tabs" id="52" x="285" y="1899" text="Vertex, Edge" measuredWidth="102" measuredHeight="23" selection="1">
+    <items x="1" y="0" width="53" height="23" text="Vertex"/>
+    <items x="54" y="0" width="47" height="23" text="Edge"/>
+    <font size="11px"/>
+  </widgets>
+  <widgets xsi:type="model:Table" id="53" x="288" y="1957" width="280" height="339" text="{checked},Entity name,Start node, End node&#xA;{checked},code1,A, B&#xA;{checked},code2,B,C&#xA;{checked},code3,C, D&#xA;&#xA;" measuredWidth="280" measuredHeight="339" alternative="#eee">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Panel" id="56" x="32" y="2344" width="924" height="463" measuredWidth="924" measuredHeight="463"/>
+  <widgets xsi:type="model:Image" id="59" x="40" y="3368" measuredWidth="702" measuredHeight="550" src="assets/DataMapping_image_Select_tables_.png"/>
+  <widgets xsi:type="model:Tabs" id="61" x="64" y="2382" text="Vertex,Edge" measuredWidth="104" measuredHeight="27" selection="0">
+    <items x="1" y="0" width="55" height="27" text="Vertex"/>
+    <items x="56" y="0" width="47" height="27" text="Edge"/>
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:WidgetGroup" id="62" x="61" y="2412" measuredWidth="326" measuredHeight="343">
+    <widgets xsi:type="model:VScrollbar" id="63" x="309" y="3" height="324" measuredWidth="17" measuredHeight="324"/>
+    <widgets xsi:type="model:HScrollbar" id="64" x="1" y="326" width="309" measuredWidth="309" measuredHeight="17"/>
+    <widgets xsi:type="model:HLine" id="65" x="2" width="308" measuredWidth="308" measuredHeight="6"/>
+    <widgets xsi:type="model:VLine" id="66" y="3" height="324" measuredWidth="6" measuredHeight="324"/>
+  </widgets>
+  <widgets xsi:type="model:Image" id="68" x="87" y="2440" measuredWidth="266" measuredHeight="288" src="assets/DataMapping_image_graph.png"/>
+  <widgets xsi:type="model:Table" id="69" x="416" y="2448" height="307" text="[x], Column name,Data type,Property name, TurboGraph++ type&#xA;[x], a,VARCHAR,a,String{desc}&#xA;[x], b,VARCHAR,b,String{desc}&#xA;[x], c,VARCHAR,c,String{desc}&#xA;[x], d,VARCHAR,d,String{desc}" measuredWidth="388" measuredHeight="307" alternative="#eee">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Image" id="70" x="992" y="2024" width="505" height="249" measuredWidth="505" measuredHeight="249" src="assets/DataMapping_image_AS_IS_TO_BE.png"/>
+  <widgets xsi:type="model:TextField" id="71" x="416" y="2412" width="73" text="Entity name :" measuredWidth="73" measuredHeight="21">
+    <font size="11px" bold="true"/>
+  </widgets>
+  <widgets xsi:type="model:TextField" id="72" x="496" y="2412" width="246" text="vertex1" measuredWidth="246" measuredHeight="23">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Checkbox" id="73" x="762" y="2411" text="skip" measuredWidth="42" measuredHeight="23">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Panel" id="86" x="32" y="2848" width="924" height="463" measuredWidth="924" measuredHeight="463"/>
+  <widgets xsi:type="model:Tabs" id="87" x="64" y="2886" text="Vertex,Edge" measuredWidth="104" measuredHeight="27" selection="1">
+    <items x="1" y="0" width="55" height="27" text="Vertex"/>
+    <items x="56" y="0" width="47" height="27" text="Edge"/>
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:WidgetGroup" id="88" x="61" y="2916" measuredWidth="326" measuredHeight="343">
+    <widgets xsi:type="model:VScrollbar" id="89" x="309" y="3" height="324" measuredWidth="17" measuredHeight="324"/>
+    <widgets xsi:type="model:HScrollbar" id="90" x="1" y="326" width="309" measuredWidth="309" measuredHeight="17"/>
+    <widgets xsi:type="model:HLine" id="91" x="2" width="308" measuredWidth="308" measuredHeight="6"/>
+    <widgets xsi:type="model:VLine" id="92" y="3" height="324" measuredWidth="6" measuredHeight="324"/>
+  </widgets>
+  <widgets xsi:type="model:Image" id="93" x="87" y="2944" measuredWidth="266" measuredHeight="288" src="assets/DataMapping_image_graph.png"/>
+  <widgets xsi:type="model:Table" id="94" x="416" y="3012" width="393" height="243" text="[x], Column name,Data type,Property name, TurboGraph++ type&#xA;[x], a,VARCHAR,a,String{desc}&#xA;[x], b,VARCHAR,b,String{desc}&#xA;[x], c,VARCHAR,c,String{desc}&#xA;[x], d,VARCHAR,d,String{desc}" measuredWidth="393" measuredHeight="243" alternative="#eee">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:TextField" id="95" x="416" y="2916" width="73" text="Entity name :" measuredWidth="73" measuredHeight="21">
+    <font size="11px" bold="true"/>
+  </widgets>
+  <widgets xsi:type="model:TextField" id="96" x="496" y="2916" width="246" text="edge1" measuredWidth="246" measuredHeight="23">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Checkbox" id="97" x="762" y="2915" text="skip" measuredWidth="42" measuredHeight="23">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:TextField" id="98" x="416" y="2944" width="73" text="Start node" measuredWidth="73" measuredHeight="21">
+    <font size="11px" bold="true"/>
+  </widgets>
+  <widgets xsi:type="model:TextField" id="99" x="496" y="2944" width="246" text="v1 {edit}" measuredWidth="246" measuredHeight="23">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:TextField" id="100" x="416" y="2976" width="73" text="End node" measuredWidth="73" measuredHeight="21">
+    <font size="11px" bold="true"/>
+  </widgets>
+  <widgets xsi:type="model:TextField" id="101" x="496" y="2976" width="246" text="v2 {edit}" measuredWidth="246" measuredHeight="23">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Panel" id="102" x="984" y="2848" width="385" height="201" measuredWidth="385" measuredHeight="201"/>
+  <widgets xsi:type="model:TextField" id="103" x="1016" y="2876" width="73" text="Entity name :" measuredWidth="73" measuredHeight="21">
+    <font size="11px" bold="true"/>
+  </widgets>
+  <widgets xsi:type="model:TextField" id="104" x="1096" y="2876" width="246" text="edge1" measuredWidth="246" measuredHeight="23">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:TextField" id="105" x="1016" y="2904" width="73" text="Start node" measuredWidth="73" measuredHeight="21">
+    <font size="11px" bold="true"/>
+  </widgets>
+  <widgets xsi:type="model:TextField" id="106" x="1096" y="2904" width="246" text="v1 {edit}" measuredWidth="246" measuredHeight="23">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:TextField" id="107" x="1016" y="2936" width="73" text="End node" measuredWidth="73" measuredHeight="21">
+    <font size="11px" bold="true"/>
+  </widgets>
+  <widgets xsi:type="model:TextField" id="108" x="1096" y="2936" width="246" text="v2 {edit}" measuredWidth="246" measuredHeight="23">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Button" id="110" x="1228" y="2993" text="OK" measuredWidth="36" measuredHeight="25">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Button" id="111" x="1272" y="2993" text="Cancel" measuredWidth="56" measuredHeight="25">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Table" id="112" x="980" y="3080" width="393" height="243" text="[x], Column name,Data type,Property name, TurboGraph++ type&#xA;[x], a,VARCHAR,a,String{desc}&#xA;[x], b,VARCHAR,b,String{desc}&#xA;[x], c,VARCHAR,c,String{desc}&#xA;[x], d,VARCHAR,d,String{desc}" measuredWidth="393" measuredHeight="243" alternative="#eee">
+    <font/>
+  </widgets>
+  <hRuler/>
+  <vRuler/>
+  <font size="12px"/>
+</model:Screen>

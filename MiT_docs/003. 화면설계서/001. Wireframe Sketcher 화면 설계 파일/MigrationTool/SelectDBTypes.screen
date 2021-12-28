@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model:Screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:model="http://wireframesketcher.com/1.0/model.ecore">
+  <widgets xsi:type="model:Image" id="5" x="32" y="24" measuredWidth="852" measuredHeight="795" src="assets/CommonUI_image_1.png"/>
+  <widgets xsi:type="model:RadioButton" id="4" x="55" y="424" text="온라인 TurboGraph++ 데이터베이스" measuredWidth="215" measuredHeight="23">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:RadioButton" id="6" x="466" y="229" text="온라인 TurboGraph++ 데이터베이스" measuredWidth="215" measuredHeight="23">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:TextArea" id="9" x="72" y="446" width="369" height="43" text="GraphDB Driver 연결로 원본 데이터를 가져옵니다. 네트워크 및 원본 서버의 상태에 따라 성능의 영향을 받습니다." measuredWidth="369" measuredHeight="43">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:TextArea" id="10" x="486" y="253" width="369" height="43" text="GraphDB Driver 연결로 원본 데이터를 가져옵니다. 네트워크 및 원본 서버의 상태에 따라 성능의 영향을 받습니다." measuredWidth="369" measuredHeight="43">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:RadioButton" id="11" x="464" y="594" text="로컬 CSV 파일 for TurboGraph++" measuredWidth="201" measuredHeight="23">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:TextArea" id="12" x="480" y="616" width="369" height="43" text="GraphDB Driver 연결로 원본 데이터를 가져옵니다. 네트워크 및 원본 서버의 상태에 따라 성능의 영향을 받습니다." measuredWidth="369" measuredHeight="43">
+    <font/>
+  </widgets>
+  <hRuler/>
+  <vRuler/>
+  <font size="12px"/>
+</model:Screen>

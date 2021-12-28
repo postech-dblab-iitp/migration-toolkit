@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model:Screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:model="http://wireframesketcher.com/1.0/model.ecore">
+  <widgets xsi:type="model:Image" id="1" x="32" y="24" measuredWidth="852" measuredHeight="664" src="assets/MigrationWizard_Connection_for_source_image_1.png"/>
+  <widgets xsi:type="model:Image" id="2" x="32" y="712" measuredWidth="511" measuredHeight="429" src="assets/MigrationWizard_Connection_for_source_image_2.png"/>
+  <widgets xsi:type="model:Combo" id="3" x="150" y="852" width="307" text="Gremlin Java Driver 선택" measuredWidth="307" measuredHeight="23">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Combo" id="4" x="150" y="824" width="307" text="TurboGraph++" measuredWidth="307" measuredHeight="23">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:WidgetGroup" id="9" x="32" y="1176" measuredWidth="852" measuredHeight="664">
+    <widgets xsi:type="model:Image" id="5" measuredWidth="852" measuredHeight="664" src="assets/MigrationWizard_Connection_for_source_image_3.png"/>
+    <widgets xsi:type="model:TextField" id="6" x="323" y="145" width="110" text="xxx.xxx.xxx.xxx" measuredWidth="110" measuredHeight="23" borderColor="#fff">
+      <font/>
+    </widgets>
+    <widgets xsi:type="model:TextField" id="7" x="518" y="147" width="123" text="TurboGraph++" measuredWidth="123" measuredHeight="23" borderColor="#fff">
+      <font/>
+    </widgets>
+    <widgets xsi:type="model:TextField" id="8" x="432" y="145" width="87" text="xxxxx" measuredWidth="87" measuredHeight="23" borderColor="#fff">
+      <font/>
+    </widgets>
+  </widgets>
+  <hRuler/>
+  <vRuler/>
+  <font size="12px"/>
+</model:Screen>

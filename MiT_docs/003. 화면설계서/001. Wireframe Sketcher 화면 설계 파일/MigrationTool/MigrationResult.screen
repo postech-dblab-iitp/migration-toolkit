@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model:Screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:model="http://wireframesketcher.com/1.0/model.ecore">
+  <widgets xsi:type="model:Image" id="1" x="24" y="24" measuredWidth="1118" measuredHeight="519" src="assets/Result_image.png"/>
+  <widgets xsi:type="model:Tabs" id="2" x="317" y="172" width="172" text="요약,로그,설정 정보 " measuredWidth="172" measuredHeight="27" selection="0">
+    <items x="1" y="0" width="45" height="27" text="요약"/>
+    <items x="46" y="0" width="45" height="27" text="로그"/>
+    <items x="91" y="0" width="77" height="27" text="설정 정보 "/>
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Table" id="3" x="320" y="232" width="553" height="233" text="객체,(align:center).대상으로 입력 개수,(align:center).실패,(align:center).진행률&#xA;Vertex type,(align:right).100,0,100%&#xA;Edge type,(align:right).50,0,100%&#xA;Indexes,(align:right).15,0,100%&#xA;Records,(align:right).50000,0,100%" measuredWidth="553" measuredHeight="233" alternative="#eee">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Image" id="4" x="24" y="568" measuredWidth="1118" measuredHeight="519" src="assets/Result_image.png"/>
+  <widgets xsi:type="model:Tabs" id="5" x="312" y="718" text="요약,로그,설정 정보" measuredWidth="165" measuredHeight="27" customId="selection" customData="2" selection="1">
+    <items x="1" y="0" width="45" height="27" text="요약"/>
+    <items x="46" y="0" width="45" height="27" text="로그"/>
+    <items x="91" y="0" width="73" height="27" text="설정 정보"/>
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Image" id="9" x="26" y="1136" measuredWidth="1118" measuredHeight="519" src="assets/Result_image.png"/>
+  <widgets xsi:type="model:Tabs" id="10" x="314" y="1285" text="요약,로그,설정 정보" measuredWidth="165" measuredHeight="27" selection="2">
+    <items x="1" y="0" width="45" height="27" text="요약"/>
+    <items x="46" y="0" width="45" height="27" text="로그"/>
+    <items x="91" y="0" width="73" height="27" text="설정 정보"/>
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:TextArea" id="14" x="320" y="1344" width="801" height="233" text="*원본 데이터베이스* :&#xA;- 유형 :Online&#xA;- 호스트 주소 :  localhost&#xA;- 데이터베이스 이름 :  northwind&#xA;- 포트 :  1433&#xA;- DB 사용자 :  sa&#xA;- 문자집합 :  EUC-KR&#xA;- 시간대 :  GMT+09:00&#xA;&#xA;*대상 데이터베이스* :&#xA;- 유형 :Online&#xA;- 호스트 주소 :  218.233.240.77&#xA;- 데이터베이스 이름 :  demodb&#xA;- 포트 :  33011&#xA;- 문자집합 :  UTF-8&#xA;- 시간대 :  Default" measuredWidth="801" measuredHeight="233">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:TextArea" id="15" x="317" y="775" width="804" height="242" text="2021-11-01 11:04:58.029 Migration started at 2021-11-01 11:04:58 &#xD;&#xA;..&#xD;&#xA;2021-11-01 11:05:01.940 Exported 53 records from table [Territories] successfully. &#xD;&#xA;2021-11-01 11:05:01.971 Imported 29 records from [Suppliers] to table [suppliers] successfully. &#xD;&#xA;2021-11-01 11:05:02.013 Imported 53 records from [Territories] to table [territories] successfully. &#xD;&#xA;..&#xD;&#xA;2021-11-01 11:05:04.353 Create index[companyname] successfully. &#xD;&#xA;2021-11-01 11:05:04.387 Create index[postalcode] successfully. &#xD;&#xA;..&#xD;&#xA;2021-11-01 11:05:05.583 Migration is finished. " measuredWidth="804" measuredHeight="242">
+    <font/>
+    <items x="322" y="34" width="52" height="15" text="Territories"/>
+    <items x="294" y="49" width="49" height="15" text="Suppliers"/>
+    <items x="392" y="49" width="47" height="15" text="suppliers"/>
+    <items x="294" y="64" width="52" height="15" text="Territories"/>
+    <items x="395" y="64" width="50" height="15" text="territories"/>
+    <items x="217" y="94" width="80" height="15" text="companyname"/>
+    <items x="217" y="109" width="58" height="15" text="postalcode"/>
+  </widgets>
+  <hRuler/>
+  <vRuler/>
+  <font size="12px"/>
+</model:Screen>

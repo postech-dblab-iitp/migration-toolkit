@@ -53,6 +53,9 @@ public class Table extends
 	private String createSql;
 	private boolean isReuseOID = false;
 
+	private int importedKeysCount;
+	private int exportedKeysCount;
+
 	public boolean isReuseOID() {
 		return isReuseOID;
 	}
@@ -309,5 +312,41 @@ public class Table extends
 	 */
 	public boolean hasPK() {
 		return pk != null && CollectionUtils.isNotEmpty(pk.getPkColumns());
+	}
+
+	/**
+	 * getImportedKeysCount
+	 *
+	 * @return the importedKeysCount
+	 */
+	public int getImportedKeysCount() {
+		return importedKeysCount;
+	}
+
+	/**
+	 * setImportedKeysCount
+	 *
+	 * @param importedKeysCount
+	 */
+	public void setImportedKeysCount(int importedKeysCount) {
+		this.importedKeysCount = importedKeysCount;
+	}
+
+	/**
+	 * getExportedKeysCount
+	 *
+	 * @return the exportedKeysCount
+	 */
+	public int getExportedKeysCount() {
+		return exportedKeysCount;
+	}
+
+	/**
+	 * setExportedKeysCount
+	 *
+	 * @param exportedKeysCount
+	 */
+	public void setExportedKeysCount(int exportedKeysCount) {
+		this.exportedKeysCount = exportedKeysCount;
 	}
 }

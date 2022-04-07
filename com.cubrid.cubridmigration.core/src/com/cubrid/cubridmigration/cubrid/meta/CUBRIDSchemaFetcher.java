@@ -1036,6 +1036,63 @@ public final class CUBRIDSchemaFetcher extends
 		buildCUBRIDTablePKs(conn, tables);
 		buildCUBRIDTableFKs(conn, tables, schema, catalog);
 		buildCUBRIDTableIndexes(conn, tables);
+
+		for (Table table : tables.values()) {
+			setImportedKeysCount(conn, catalog, schema, table);
+			setExportedKeysCount(conn, catalog, schema, table);
+		}
+	}
+
+	/**
+	 * setImportedKeysCount
+	 *
+	 * @param conn
+	 * @param catalog
+	 * @param schema
+	 * @param table
+	 * @throws SQLException
+	 */
+	protected void setImportedKeysCount(final Connection conn, final Catalog catalog, final Schema schema,
+			Table table) throws SQLException {
+
+		int importedKeysCount = 0;
+
+		ResultSet rs = null;
+		try {
+			rs = conn.getMetaData().getImportedKeys(getCatalogName(catalog), getSchemaName(schema), table.getName());
+			while (rs.next()) {
+				importedKeysCount++;
+			}
+			table.setImportedKeysCount(importedKeysCount);
+		} finally {
+			Closer.close(rs);
+		}
+	}
+
+	/**
+	 * setExportedKeysCount
+	 *
+	 * @param conn
+	 * @param catalog
+	 * @param schema
+	 * @param table
+	 * @throws SQLException
+	 */
+	protected void setExportedKeysCount(final Connection conn, final Catalog catalog, final Schema schema,
+			Table table) throws SQLException {
+
+		int exportedKeysCount = 0;
+
+		ResultSet rs = null;
+		try {
+			rs = conn.getMetaData().getExportedKeys(getCatalogName(catalog), getSchemaName(schema), table.getName());
+			while (rs.next()) {
+				exportedKeysCount++;
+			}
+			table.setExportedKeysCount(exportedKeysCount);
+		} finally {
+			Closer.close(rs);
+		}
 	}
 
 	/**

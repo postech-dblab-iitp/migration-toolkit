@@ -50,6 +50,7 @@ import com.cubrid.cubridmigration.core.dbtype.DatabaseType;
 import com.cubrid.cubridmigration.core.engine.config.MigrationConfiguration;
 import com.cubrid.cubridmigration.core.engine.template.MigrationTemplateParser;
 import com.cubrid.cubridmigration.cubrid.CUBRIDTimeUtil;
+import com.cubrid.cubridmigration.graph.dbobj.GraphDictionary;
 import com.cubrid.cubridmigration.ui.common.UICommonTool;
 import com.cubrid.cubridmigration.ui.common.navigator.event.CubridNodeManager;
 import com.cubrid.cubridmigration.ui.common.navigator.node.DatabaseNode;
@@ -63,6 +64,8 @@ import com.cubrid.cubridmigration.ui.wizard.page.CSVImportConfirmPage;
 import com.cubrid.cubridmigration.ui.wizard.page.CSVSelectPage;
 import com.cubrid.cubridmigration.ui.wizard.page.CSVTargetDBSelectPage;
 import com.cubrid.cubridmigration.ui.wizard.page.ConfirmationPage;
+import com.cubrid.cubridmigration.ui.wizard.page.GraphMappingPage;
+import com.cubrid.cubridmigration.ui.wizard.page.GraphTableSelectPage;
 import com.cubrid.cubridmigration.ui.wizard.page.ObjectMappingPage;
 import com.cubrid.cubridmigration.ui.wizard.page.SQLMigrationConfirmPage;
 import com.cubrid.cubridmigration.ui.wizard.page.SQLSelectPage;
@@ -88,6 +91,10 @@ public class MigrationWizard extends
 	private static final int[] IDX_SQL = new int[] {0, 5, 6, 7};
 
 	private static final int[] IDX_ONLINE = new int[] {0, 1, 2, 3, 4};
+	
+	//GDB index of GraphDB
+	//maybe need graph only confirmation page (idx no. 13)
+	private static final int[] IDX_GRAPH = new int[] {0, 1, 2, 12, 13};
 
 	//private static final int[] IDX_OFFLINE = new int[]{0, 1, 2, 11, 3, 4 };
 
@@ -100,11 +107,12 @@ public class MigrationWizard extends
 	 * @return Set<Integer> of database type ids
 	 */
 	public static Set<Integer> getSupportedSrcDBTypes() {
-		Set<Integer> supportedDBs = new HashSet<Integer>(4);
+		Set<Integer> supportedDBs = new HashSet<Integer>(5);
 		supportedDBs.add(DatabaseType.MYSQL.getID());
 		supportedDBs.add(DatabaseType.ORACLE.getID());
 		supportedDBs.add(DatabaseType.CUBRID.getID());
 		supportedDBs.add(DatabaseType.MSSQL.getID());
+		supportedDBs.add(DatabaseType.GRAPH.getID());
 		return supportedDBs;
 	}
 
@@ -116,6 +124,7 @@ public class MigrationWizard extends
 	public static Set<Integer> getSupportedTarDBTypes() {
 		Set<Integer> supportedDBs = new HashSet<Integer>(4);
 		supportedDBs.add(DatabaseType.CUBRID.getID());
+		supportedDBs.add(DatabaseType.GRAPH.getID());
 		return supportedDBs;
 	}
 
@@ -129,6 +138,8 @@ public class MigrationWizard extends
 	protected Catalog sourceCatalog;
 
 	protected Catalog targetCatalog;
+	
+	protected GraphDictionary graphDict = new GraphDictionary();
 
 	protected DatabaseNode sourceDBNode;
 
@@ -202,8 +213,13 @@ public class MigrationWizard extends
 		addPage(new CSVTargetDBSelectPage("8"));
 		addPage(new CSVSelectPage("9"));
 		addPage(new CSVImportConfirmPage("10"));
-
+		
+		//GDB graph mapping page
+		addPage(new GraphTableSelectPage("12"));
+		addPage(new GraphMappingPage("13"));
+		
 		//addPage(new SelectOfflineDest2Page("11"));
+		
 	}
 
 	/**
@@ -257,6 +273,9 @@ public class MigrationWizard extends
 	 * @return int[]
 	 */
 	private int[] getPageNOs() {
+		if (migrationConfig.targetIsGraph()){
+			return IDX_GRAPH;
+		}
 		if (migrationConfig.sourceIsOnline() || migrationConfig.sourceIsXMLDump()) {
 			//			if (migrationConfig.targetIsOffline()) {
 			//				return IDX_OFFLINE;
@@ -332,6 +351,10 @@ public class MigrationWizard extends
 	 */
 	public Catalog getTargetCatalog() {
 		return targetCatalog;
+	}
+	
+	public GraphDictionary getGraphDictionary(){
+		return graphDict;
 	}
 
 	public boolean isLoadMigrationScript() {
@@ -495,6 +518,10 @@ public class MigrationWizard extends
 		this.targetCatalog = targetCatalog;
 	}
 
+	public void setGraphDict(GraphDictionary graphDict){
+		this.graphDict = graphDict;
+	}
+	
 	/**
 	 * Close the configuration wizard and start migration.
 	 * 

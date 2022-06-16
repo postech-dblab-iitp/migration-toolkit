@@ -64,6 +64,7 @@ public class SelectSrcTarTypesView {
 	private static final String SOURCE_TYPE_KEY = "source_type";
 
 	private Button btnOnlineTar;
+	private Button btnOnlineGraph;
 	//private Button btnOfflineTar;
 	private Button btnDumpTar;
 	private Button btnSQLTar;
@@ -142,6 +143,13 @@ public class SelectSrcTarTypesView {
 				Messages.btnDestOnlineCUBRIDDBDes);
 		btnOnlineTar.setData(MigrationConfiguration.DEST_ONLINE);
 		tarButtons.add(btnOnlineTar);
+		
+		//GDB online neo4j target connect button
+		btnOnlineGraph = createSrcTarTypeBtn(grpTar, Messages.btnDestOnlineGraph, Messages.btnDestOnlineGraphes);
+		btnOnlineGraph.setData(MigrationConfiguration.DEST_GRAPH);
+		tarButtons.add(btnOnlineGraph);
+		
+		
 
 		//		btnOfflineTar = createSrcTarTypeBtn(grpTar,
 		//				Messages.btnDestOfflineCUBRIDDB,

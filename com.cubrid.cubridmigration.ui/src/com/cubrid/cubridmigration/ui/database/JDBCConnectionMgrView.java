@@ -593,6 +593,11 @@ public class JDBCConnectionMgrView {
 			cpm.updateCatalog(dbID, catalog);
 			return;
 		}
+		//GDB if database type is graph, catalog is not need... maybe?
+		if (cp.getDbType() == 4) {
+			return;
+		}
+		
 		//Cache catalog for mapping
 		final Catalog oldCatalog;
 		String errorMsg = fetcher.getErrorMessage() == null ? ""

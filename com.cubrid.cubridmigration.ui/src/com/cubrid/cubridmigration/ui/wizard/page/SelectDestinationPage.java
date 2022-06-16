@@ -31,6 +31,7 @@ package com.cubrid.cubridmigration.ui.wizard.page;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -379,12 +380,14 @@ public class SelectDestinationPage extends
 			conMgrView = new JDBCConnectionMgrView(MigrationWizard.getSupportedTarDBTypes(),
 					new IJDBCConnectionFilter() {
 
+						//GDB filter source online. need rewrite
 						public boolean doFilter(ConnParameters cp) {
 							final MigrationConfiguration cfg = getMigrationWizard().getMigrationConfig();
-							if (cfg.sourceIsOnline()) {
+							/* if (cfg.targetIsOnline()) {
 								return cfg.getSourceConParams().isSameDB(cp);
 							}
-							return false;
+							return false; */
+							return cfg.getDestType() != cp.getDatabaseType().getID();
 						}
 					});
 		}
@@ -436,6 +439,9 @@ public class SelectDestinationPage extends
 					+ Messages.msgDestSelectOnlineCUBRIDDB);
 			setDescription(Messages.msgDestSelectOnlineCUBRIDDBDes);
 			final MigrationConfiguration config = getMigrationWizard().getMigrationConfig();
+			List<Integer> dts = new ArrayList<Integer>();
+			dts.add(config.getDestType());
+			conMgrView.setSupportedDBType(dts);
 			conMgrView.init(config.getTargetConParams(), null);
 			btnWriteErrorRecords.setSelection(config.isWriteErrorRecords());
 			btnCreateConstrainsNow.setSelection(config.isCreateConstrainsBeforeData());

@@ -95,11 +95,14 @@ public class MigrationConfiguration {
 	public static final int XLS_MAX_COUNT = 65536;
 	public static final char CSV_NO_CHAR = '\u0000';
 
+	//GDB need remapping code
 	public static final int DEST_DB_UNLOAD = 0;
-	public static final int DEST_CSV = 1;
+	public static final int DEST_CSV = 5;
 	public static final int DEST_SQL = 2;
 	public static final int DEST_XLS = 3;
-	public static final int DEST_ONLINE = 4;
+	//GDB dest_online is cubrid.
+	public static final int DEST_ONLINE = 1;
+	public static final int DEST_GRAPH = 4;
 
 	public static final int SOURCE_TYPE_CUBRID = DatabaseType.CUBRID.getID();
 	public static final int SOURCE_TYPE_MYSQL = DatabaseType.MYSQL.getID();
@@ -122,8 +125,7 @@ public class MigrationConfiguration {
 	public static final int RPT_LEVEL_INFO = 2;
 	public static final int RPT_LEVEL_DEBUG = 3;
 
-	private static final String[] DATA_FORMAT_EXT = new String[] { ".txt", ".csv", ".sql", ".xls",
-			"", "" };
+	private static final String[] DATA_FORMAT_EXT = new String[] { ".txt", ".csv", ".sql", ".xls", "", "" };
 	private static final String[] DATA_FORMAT_LABEL = new String[] { "LoadDB", "CSV", "SQL", "XLS" };
 
 	/**
@@ -3133,6 +3135,8 @@ public class MigrationConfiguration {
 	public void setDestTypeName(String destName) {
 		if (destName.equalsIgnoreCase("cubrid")) {
 			setDestType(MigrationConfiguration.DEST_ONLINE);
+		} else if (destName.equalsIgnoreCase("graph")) { 
+			setDestType(MigrationConfiguration.DEST_GRAPH);
 		} else if (destName.equalsIgnoreCase("csv")) {
 			setDestType(MigrationConfiguration.DEST_CSV);
 		} else if (destName.equalsIgnoreCase("sql")) {
@@ -3480,7 +3484,7 @@ public class MigrationConfiguration {
 	 * @return the targetDBIsOnline
 	 */
 	public boolean targetIsOnline() {
-		return destType == DEST_ONLINE;
+		return (destType == DEST_ONLINE) || (destType == DEST_GRAPH);
 	}
 
 	/**
@@ -3499,6 +3503,10 @@ public class MigrationConfiguration {
 	 */
 	public boolean targetIsXLS() {
 		return destType == DEST_XLS;
+	}
+	
+	public boolean targetIsGraph() {
+		return destType == DEST_GRAPH;
 	}
 
 	/**

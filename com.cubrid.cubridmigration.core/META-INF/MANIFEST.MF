@@ -301,6 +301,7 @@ Export-Package:
    com.cubrid.cubridmigration.core.trans,
    com.cubrid.cubridmigration.core.mapping.model",
  com.cubrid.cubridmigration.cubrid.trans.converter;uses:="com.cubrid.cubridmigration.core.engine.config,com.cubrid.cubridmigration.core.trans",
+ com.cubrid.cubridmigration.graph.dbobj,
  com.cubrid.cubridmigration.mssql;
   uses:="com.cubrid.cubridmigration.core.dbobject,
    com.cubrid.cubridmigration.core.dbtype,

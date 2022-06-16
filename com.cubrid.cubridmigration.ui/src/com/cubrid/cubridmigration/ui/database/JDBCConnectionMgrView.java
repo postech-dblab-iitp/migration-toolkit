@@ -593,7 +593,7 @@ public class JDBCConnectionMgrView {
 			cpm.updateCatalog(dbID, catalog);
 			return;
 		}
-		//GDB if database type is graph, catalog is not need... maybe?
+		//GDB if database type is graph, maybe catalog is not need?
 		if (cp.getDbType() == 4) {
 			return;
 		}

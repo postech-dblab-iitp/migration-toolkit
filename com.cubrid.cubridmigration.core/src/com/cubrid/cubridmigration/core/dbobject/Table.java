@@ -56,6 +56,17 @@ public class Table extends
 	private int importedKeysCount;
 	private int exportedKeysCount;
 
+	//GDB for checkbox
+	private boolean isSelected = true;
+	
+	public boolean isSelected() {
+		return isSelected;
+	}
+
+	public void setSelected(boolean isSelected) {
+		this.isSelected = isSelected;
+	}
+
 	public boolean isReuseOID() {
 		return isReuseOID;
 	}

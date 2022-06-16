@@ -94,7 +94,7 @@ public class MigrationWizard extends
 	
 	//GDB index of GraphDB
 	//maybe need graph only confirmation page (idx no. 13)
-	private static final int[] IDX_GRAPH = new int[] {0, 1, 2/*, 12, 13 */};
+	private static final int[] IDX_GRAPH = new int[] {0, 1, 2, 12, 13};
 
 	//private static final int[] IDX_OFFLINE = new int[]{0, 1, 2, 11, 3, 4 };
 
@@ -215,8 +215,8 @@ public class MigrationWizard extends
 		addPage(new CSVImportConfirmPage("10"));
 		
 		//GDB graph mapping page
-//		addPage(new GraphTableSelectPage("12"));
-//		addPage(new GraphMappingPage("13"));
+		addPage(new GraphTableSelectPage("12"));
+		addPage(new GraphMappingPage("13"));
 		
 		//addPage(new SelectOfflineDest2Page("11"));
 		

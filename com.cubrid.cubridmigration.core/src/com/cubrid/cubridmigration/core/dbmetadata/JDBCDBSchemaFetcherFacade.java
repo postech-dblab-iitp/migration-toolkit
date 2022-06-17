@@ -75,6 +75,13 @@ public class JDBCDBSchemaFetcherFacade implements
 			};
 			try {
 				DatabaseType dt = cp.getDatabaseType();
+				
+				//TODO: catalog setting (for now, it's null)
+				if (dt.getID() == 4) {
+					Catalog catalog = null;
+					return catalog;
+				}
+				
 				AbstractJDBCSchemaFetcher builder = dt.getMetaDataBuilder();
 				Catalog catalog = builder.buildCatalog(conn, cp, filter);
 

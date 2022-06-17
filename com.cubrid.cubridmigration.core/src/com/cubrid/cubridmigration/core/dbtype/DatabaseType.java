@@ -45,6 +45,7 @@ import com.cubrid.cubridmigration.core.dbmetadata.AbstractJDBCSchemaFetcher;
 import com.cubrid.cubridmigration.core.export.DBExportHelper;
 import com.cubrid.cubridmigration.core.sql.SQLHelper;
 import com.cubrid.cubridmigration.cubrid.CUBRIDDatabase;
+import com.cubrid.cubridmigration.graph.GraphDatabase;
 import com.cubrid.cubridmigration.mssql.MSSQLDatabase;
 import com.cubrid.cubridmigration.mysql.MySQLDatabase;
 import com.cubrid.cubridmigration.oracle.OracleDatabase;
@@ -67,8 +68,10 @@ public abstract class DatabaseType {
 	public static final DatabaseType MSSQL = new MSSQLDatabase();
 
 	public static final DatabaseType ORACLE = new OracleDatabase();
+	//GDB add graph Database into DB types
+	public static final DatabaseType GRAPH = new GraphDatabase();
 
-	private static final DatabaseType[] DTS = new DatabaseType[] {MYSQL, CUBRID, ORACLE, MSSQL};
+	private static final DatabaseType[] DTS = new DatabaseType[] {MYSQL, CUBRID, ORACLE, MSSQL, GRAPH};
 
 	/**
 	 * Retrieves all Database types

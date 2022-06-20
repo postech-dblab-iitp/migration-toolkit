@@ -13,8 +13,8 @@ import com.cubrid.cubridmigration.graph.dbobj.GraphDictionary;
 
 public class GraphSchemaFetcher extends AbstractJDBCSchemaFetcher {
 
-	//GDB schemafetcher buildNodes
-	private GraphDictionary buildNodes() {
+	//GDB schemafetcher buildVertexes
+	private GraphDictionary buildVertexes() {
 		return null;
 	}
 	

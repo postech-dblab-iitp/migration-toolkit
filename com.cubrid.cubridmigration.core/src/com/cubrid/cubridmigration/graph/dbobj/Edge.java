@@ -13,19 +13,19 @@ public class Edge {
 	private boolean isSelected;
 	
 	private String edgeLabel;
-	private Node startNode;
-	private List<Node> endNode;
+	private Vertex startVertex;
+	private List<Vertex> endVertex;
 	
-	private String startNodeName;
-	private List<String> endNodeName;
+	private String startVertexName;
+	private List<String> endVertexName;
 	
 	private List<Column> columnList;
 	
 	private Map<String, String> edgeProperties;
 	
 	public Edge() {
-		this.endNode = new ArrayList<Node>();
-		this.endNodeName = new ArrayList<String>();
+		this.endVertex = new ArrayList<Vertex>();
+		this.endVertexName = new ArrayList<String>();
 	}
 	
 	public List<Column> getColumnList() {
@@ -55,29 +55,29 @@ public class Edge {
 	public void setEdgeLabel(String edgeLabel) {
 		this.edgeLabel = edgeLabel;
 	}
-	public Node getStartNode() {
-		return startNode;
+	public Vertex getStartVertex() {
+		return startVertex;
 	}
-	public void setStartNode(Node startNode) {
-		this.startNode = startNode;
+	public void setStartVertex(Vertex startVertex) {
+		this.startVertex = startVertex;
 	}
-	public List<Node> getEndNode() {
-		return endNode;
+	public List<Vertex> getEndVertex() {
+		return endVertex;
 	}
-	public void setEndNode(Node endNode) {
-		this.endNode.add(endNode);
+	public void setEndVertex(Vertex endVertex) {
+		this.endVertex.add(endVertex);
 	}
-	public String getStartNodeName() {
-		return startNodeName;
+	public String getStartVertexName() {
+		return startVertexName;
 	}
-	public void setStartNodeName(String startNodeName) {
-		this.startNodeName = startNodeName;
+	public void setStartVertexName(String startVertexName) {
+		this.startVertexName = startVertexName;
 	}
-	public List<String> getEndNodeName() {
-		return endNodeName;
+	public List<String> getEndVertexName() {
+		return endVertexName;
 	}
-	public void setEndNodeName(String endNodeName) {
-		this.endNodeName.add(endNodeName);
+	public void setEndVertexName(String endVertexName) {
+		this.endVertexName.add(endVertexName);
 	}
 	public Map<String, String> getEdgeProperties() {
 		return edgeProperties;

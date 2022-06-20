@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.eclipse.jface.dialogs.PageChangedEvent;
 import org.eclipse.jface.viewers.ColumnWeightData;
+import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
@@ -30,11 +31,12 @@ import org.eclipse.zest.core.viewers.EntityConnectionData;
 import org.eclipse.zest.core.viewers.GraphViewer;
 import org.eclipse.zest.core.viewers.IGraphEntityContentProvider;
 import org.eclipse.zest.layouts.algorithms.GridLayoutAlgorithm;
+import org.eclipse.zest.layouts.algorithms.SpringLayoutAlgorithm;
 
 import com.cubrid.cubridmigration.core.dbobject.Catalog;
 import com.cubrid.cubridmigration.core.dbobject.Column;
 import com.cubrid.cubridmigration.graph.dbobj.GraphDictionary;
-import com.cubrid.cubridmigration.graph.dbobj.Node;
+import com.cubrid.cubridmigration.graph.dbobj.Vertex;
 import com.cubrid.cubridmigration.ui.message.Messages;
 import com.cubrid.cubridmigration.ui.wizard.MigrationWizard;
 
@@ -43,6 +45,9 @@ public class GraphMappingPage extends MigrationWizardPage {
 
 	private GraphViewer graphViewer;
 	private TableViewer columnViewer;
+	
+	private TableViewer gdbTable;
+	private TableViewer rdbTable;
 	
 	public GraphMappingPage(String pageName) {
 		super(pageName);
@@ -70,32 +75,25 @@ public class GraphMappingPage extends MigrationWizardPage {
 		setControl(container);
 	}
 	
-	//GDB this will show right side widget. show node list and edge list
+	//GDB this will show right side widget. show vertex list and edge list
 	public void createGraphView(SashForm parent) {
 		
 		Group groupContainer1 = new Group(parent, SWT.NONE);
 		groupContainer1.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		groupContainer1.setLayout(new GridLayout());
-		groupContainer1.setText("sash 1");
+		groupContainer1.setText(Messages.msgGraph);
 		
 		TabFolder tabFolder = new TabFolder(groupContainer1, SWT.NONE);
 		tabFolder.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		
-		Group groupContainer3 = new Group(tabFolder, SWT.NONE);
-		groupContainer3.setText("group 3");
-		
 		createGraph(tabFolder);
 		
-		Group groupContainer4 = new Group(tabFolder, SWT.NONE);
-		groupContainer4.setText("group 4");
-		
 		TabItem folder1 = new TabItem(tabFolder, SWT.NONE);
-		folder1.setText("Node");
+		folder1.setText("Vertex");
 		folder1.setControl(graphViewer.getControl());
 		
 		TabItem folder2 = new TabItem(tabFolder, SWT.NONE);
 		folder2.setText("Edge");
-		folder2.setControl(groupContainer4);
 		
 	}
 	
@@ -107,9 +105,9 @@ public class GraphMappingPage extends MigrationWizardPage {
 			@SuppressWarnings("unchecked")
 			public Object[] getElements(Object inputElement) {
 				if (inputElement instanceof List) {
-					List<Node> nodeList = (ArrayList<Node>) inputElement;
+					List<Vertex> vertexList = (ArrayList<Vertex>) inputElement;
 					
-					return nodeList.toArray();
+					return vertexList.toArray();
 				} else {
 					return new Object[0];
 				}
@@ -117,15 +115,15 @@ public class GraphMappingPage extends MigrationWizardPage {
 			
 			@Override
 			public Object[] getConnectedTo(Object entity) {
-				if (entity instanceof Node) {
-					Node nodeList = (Node) entity;
+				if (entity instanceof Vertex) {
+					Vertex vertexList = (Vertex) entity;
 					
-					List<Node> list = nodeList.getEndNodes();
+					List<Vertex> list = vertexList.getEndVertexes();
 					
 					if (list == null) {
 						return new Object[0];
 					} else {
-						return nodeList.getEndNodes().toArray();
+						return vertexList.getEndVertexes().toArray();
 					}
 				} else {
 					return new Object[0];
@@ -143,16 +141,16 @@ public class GraphMappingPage extends MigrationWizardPage {
 		graphViewer.setLabelProvider(new LabelProvider() {
 			@Override
 			public String getText(Object element) {
-				if (element instanceof Node) {
-					Node node = (Node) element;
-					return node.getNodeLabel();
+				if (element instanceof Vertex) {
+					Vertex vertex = (Vertex) element;
+					return vertex.getVertexLabel();
 					
 				} if (element instanceof EntityConnectionData) {
 					EntityConnectionData test = (EntityConnectionData) element;
-					Node startNode = (Node) test.source;
-					Node endNode = (Node) test.dest;
+					Vertex startVertex = (Vertex) test.source;
+					Vertex endVertex = (Vertex) test.dest;
 					
-					return "" + startNode.getNodeLabel() + "_" + endNode.getNodeLabel();
+					return "" + startVertex.getVertexLabel() + "_" + endVertex.getVertexLabel();
 				}
 				
 				return null;
@@ -160,7 +158,7 @@ public class GraphMappingPage extends MigrationWizardPage {
 		
 		});
 		
-		graphViewer.setLayoutAlgorithm(new GridLayoutAlgorithm());
+		graphViewer.setLayoutAlgorithm(new SpringLayoutAlgorithm());
 		graphViewer.addSelectionChangedListener(new ISelectionChangedListener() {
 			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
@@ -176,36 +174,188 @@ public class GraphMappingPage extends MigrationWizardPage {
 		if (data == null) {
 			return;
 		}
-		Node node = (Node) data;
-		List<Column> columnList = node.getColumnList();
+		Vertex vertex = (Vertex) data;
+		List<Column> columnList = vertex.getColumnList();
 		
-		columnViewer.setInput(columnList);
-		columnViewer.refresh();
+		gdbTable.setInput(columnList);
+		rdbTable.setInput(columnList);
+		
+		gdbTable.refresh();
+		rdbTable.refresh();
 		
 	}
 	
 	public void createTableView(Composite parent) {
+		SashForm sashContainer = new SashForm(parent, SWT.HORIZONTAL);
+		sashContainer.setLayout(new FillLayout());
+		sashContainer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		
+		Group leftSash = new Group(sashContainer, SWT.NONE);
+		leftSash.setLayout(new FillLayout());
+		leftSash.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		leftSash.setText("RDB column");
+		
+		Group rightSash = new Group(sashContainer, SWT.NONE);
+		rightSash.setLayout(new FillLayout());
+		rightSash.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		rightSash.setText("GDB column");
+		
+		rdbTable = new TableViewer(leftSash, SWT.NONE);
+		rdbTable.setContentProvider(new IStructuredContentProvider() {
+			@Override
+			@SuppressWarnings("unchecked")
+			public Object[] getElements(Object inputElement) {
+				if (inputElement instanceof ArrayList) {
+					List<Column> columnList = (ArrayList<Column>) inputElement;
+					
+					return columnList.toArray();
+				} else {
+					return new Object[0];
+				}
+			}
+						
+			@Override
+			public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {}		
+			@Override
+			public void dispose() {}
+		});
+		
+		rdbTable.setLabelProvider(new ITableLabelProvider() {
+			@Override
+			public String getColumnText(Object element, int columnIndex) {
+				Column column = (Column) element;
+				
+				switch (columnIndex) {
+				case 0:
+					return null;
+				case 1:
+					return column.getName();
+				case 2:
+					return column.getDataType();
+					
+				default :
+					return null;
+				}
+			}
+			
+			@Override
+			public Image getColumnImage(Object element, int columnIndex) {
+				return null;
+			}
+			
+			@Override
+			public void removeListener(ILabelProviderListener listener) {}
+			
+			@Override
+			public boolean isLabelProperty(Object element, String property) {return false;}
+			
+			@Override
+			public void dispose() {}
+			
+			@Override
+			public void addListener(ILabelProviderListener listener) {}
+			
+		});
+		
+		TableLayout tableLayout1 = new TableLayout();
+		
+		tableLayout1.addColumnData(new ColumnWeightData(10, true));
+		tableLayout1.addColumnData(new ColumnWeightData(45, true));
+		tableLayout1.addColumnData(new ColumnWeightData(45, true));
+		
+		rdbTable.getTable().setLayout(tableLayout1);
+		rdbTable.getTable().setLinesVisible(true);
+		rdbTable.getTable().setHeaderVisible(true);
+		
+		TableColumn rdbColumn1 = new TableColumn(rdbTable.getTable(), SWT.LEFT);
+		TableColumn rdbColumn2 = new TableColumn(rdbTable.getTable(), SWT.LEFT);
+		TableColumn rdbColumn3 = new TableColumn(rdbTable.getTable(), SWT.LEFT);
+		
+		rdbColumn2.setText("Column Name");
+		rdbColumn3.setText("Data Type");
+		
+		
+		gdbTable = new TableViewer(rightSash, SWT.NONE);
+		gdbTable.setContentProvider(new IStructuredContentProvider() {
+			
+			@Override
+			@SuppressWarnings("unchecked")
+			public Object[] getElements(Object inputElement) {
+				if (inputElement instanceof ArrayList) {
+					List<Column> columnList = (ArrayList<Column>) inputElement;
+					
+					return columnList.toArray();
+				} else {
+					return new Object[0];
+				}
+			}
+			
+			@Override
+			public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {}
+			
+			@Override
+			public void dispose() {}
+			
+		});
+		
+		gdbTable.setLabelProvider(new ITableLabelProvider() {
+			
+			@Override
+			public String getColumnText(Object element, int columnIndex) {
+				// TODO Auto-generated method stub
+				
+				Column column = (Column) element;
+				
+				switch (columnIndex) {
+				case 0:
+					return column.getName();
+					
+				default:
+					return null;
+				}
+			}
+			
+			@Override
+			public Image getColumnImage(Object element, int columnIndex) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+			
+			@Override
+			public void removeListener(ILabelProviderListener listener) {}
+			
+			@Override
+			public boolean isLabelProperty(Object element, String property) {return false;}
+			
+			@Override
+			public void dispose() {}
+			
+			@Override
+			public void addListener(ILabelProviderListener listener) {}
+			
+		});
+		
+		TableLayout tableLayout2 = new TableLayout();
+		
+		tableLayout2.addColumnData(new ColumnWeightData(50, true));
+		tableLayout2.addColumnData(new ColumnWeightData(50, true));
+		
+		gdbTable.getTable().setLayout(tableLayout2);
+		gdbTable.getTable().setLinesVisible(true);
+		gdbTable.getTable().setHeaderVisible(true);
+		
+		TableColumn gdbColumn1 = new TableColumn(gdbTable.getTable(), SWT.LEFT);
+		TableColumn gdbColumn2 = new TableColumn(gdbTable.getTable(), SWT.LEFT);
+		
+		gdbColumn1.setText("Property Name");
+		gdbColumn2.setText("GDB Types");
+		
+		
+		/*
 		Group groupContainer = new Group(parent, SWT.NONE);
 		groupContainer.setLayout(new FillLayout());
 		groupContainer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		groupContainer.setText("sash 2");
-		
-//		TabFolder tabFolder = new TabFolder(groupContainer, SWT.NONE);
-//		tabFolder.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-//		
-//		Group groupContainer3 = new Group(tabFolder, SWT.NONE);
-//		groupContainer3.setText("group 3");
-//		
-//		Group groupContainer4 = new Group(tabFolder, SWT.NONE);
-//		groupContainer3.setText("group 4");
-//		
-//		TabItem folder1 = new TabItem(tabFolder, SWT.NONE);
-//		folder1.setText("Node");
-//		folder1.setControl(groupContainer3);
-//		
-//		TabItem folder2 = new TabItem(tabFolder, SWT.NONE);
-//		folder2.setText("Edge");
-//		folder2.setControl(groupContainer4);
 		
 		columnViewer = new TableViewer(groupContainer, SWT.FULL_SELECTION);
 		columnViewer.setContentProvider(new IStructuredContentProvider() {
@@ -295,10 +445,11 @@ public class GraphMappingPage extends MigrationWizardPage {
 		col3.setText("Data Type");
 		col4.setText("Property Name");
 		col5.setText("Graph Type");
+		*/
 	}
 	
-	public void showGraphData(List<Node> nodeList) {
-		graphViewer.setInput(nodeList);
+	public void showGraphData(List<Vertex> vertexList) {
+		graphViewer.setInput(vertexList);
 	}
 	
 	//GDB GraphMappingPage -> afterShowCurrentPage
@@ -313,12 +464,12 @@ public class GraphMappingPage extends MigrationWizardPage {
 	
 		GraphDictionary gdbDict = mw.getGraphDictionary();
 		
-		gdbDict.printNodeAndEdge();
+		gdbDict.printVertexAndEdge();
 		
 		
 //		showTableInformationForGdbms(sourceCatalog);
 		
-		showGraphData(gdbDict.getMigratedNodeList());
+		showGraphData(gdbDict.getMigratedVertexList());
 	}
 	
 //	private void showTableInformationForGdbms(Catalog sourceCatalog) {
@@ -329,9 +480,9 @@ public class GraphMappingPage extends MigrationWizardPage {
 //		List<Schema> schemas = sourceCatalog.getSchemas();
 //
 //		List<Table> joinTablesEdgesList = new ArrayList<Table>();
-//		List<Table> intermediateNodesList = new ArrayList<Table>();
-//		List<Table> firstNodesList = new ArrayList<Table>();
-//		List<Table> secondNodesList = new ArrayList<Table>();
+//		List<Table> intermediateVertexesList = new ArrayList<Table>();
+//		List<Table> firstVertexesList = new ArrayList<Table>();
+//		List<Table> secondVertexesList = new ArrayList<Table>();
 //		List<Table> recursiveEdgesList = new ArrayList<Table>();
 //
 //		for (Schema schema : schemas) {
@@ -344,11 +495,11 @@ public class GraphMappingPage extends MigrationWizardPage {
 //				if (importedKeysCount == 2 && exportedKeysCount == 0) {
 //					joinTablesEdgesList.add(table);
 //				} else if (importedKeysCount >= 3) {
-//					intermediateNodesList.add(table);
+//					intermediateVertexesList.add(table);
 //				} else if (importedKeysCount == 0) {
-//					firstNodesList.add(table);
+//					firstVertexesList.add(table);
 //				} else if (importedKeysCount > 0 || exportedKeysCount > 0) {
-//					secondNodesList.add(table);
+//					secondVertexesList.add(table);
 //				}
 //
 //				List<FK> fks = table.getFks();
@@ -362,18 +513,18 @@ public class GraphMappingPage extends MigrationWizardPage {
 //		}
 //
 //		printTableElement("JoinTables Edges", joinTablesEdgesList);
-//		printTableElement("Intermediate Nodes", intermediateNodesList);
-//		printTableElement("First Nodes", firstNodesList);
-//		printTableElement("Second Nodes", secondNodesList);
+//		printTableElement("Intermediate Vertexes", intermediateVertexesList);
+//		printTableElement("First Vertexes", firstVertexesList);
+//		printTableElement("Second Vertexes", secondVertexesList);
 //		printTableElement("Recursive Edges", recursiveEdgesList);
 //		
-//		migrateFirstNode(firstNodesList, gdbDict);
-//		migrateSecondNodes(secondNodesList, gdbDict);
-//		migrateIntermediateNodes(intermediateNodesList, gdbDict);
+//		migrateFirstVertex(firstVertexesList, gdbDict);
+//		migrateSecondVertexes(secondVertexesList, gdbDict);
+//		migrateIntermediateVertexes(intermediateVertexesList, gdbDict);
 //		migrateJoinTablesEdges(joinTablesEdgesList, gdbDict);
 //		migrateRecursiveRelationship(recursiveEdgesList, gdbDict);
 //		
-//		gdbDict.printNodeAndEdge();
+//		gdbDict.printVertexAndEdge();
 //	}
 //
 //	/**
@@ -392,63 +543,63 @@ public class GraphMappingPage extends MigrationWizardPage {
 //		System.out.println();
 //	}
 //	
-//	//GDB first node
-//	private void migrateFirstNode(List<Table> firstNodeList, GraphDictionary gdbDict) {
-//		for (Table table : firstNodeList) {
-//			Node node = new Node();
-//			node.setNodeLabel(table.getName());
+//	//GDB first vertex
+//	private void migrateFirstVertex(List<Table> firstVertexList, GraphDictionary gdbDict) {
+//		for (Table table : firstVertexList) {
+//			Vertex vertex = new Vertex();
+//			vertex.setVertexLabel(table.getName());
 //			
-//			gdbDict.setMigratedNodeList(node);
+//			gdbDict.setMigratedVertexList(vertex);
 //		}
 //	}
 //	
-//	//GDB second node
-//	private void migrateSecondNodes(List<Table> secondNodeList, GraphDictionary gdbDict) {
-//		for (Table table : secondNodeList) {
-//			Node startNode = new Node();
+//	//GDB second vertex
+//	private void migrateSecondVertexes(List<Table> secondVertexList, GraphDictionary gdbDict) {
+//		for (Table table : secondVertexList) {
+//			Vertex startVertex = new Vertex();
 //			Edge edge = new Edge();
-//			startNode.setNodeLabel(table.getName());
+//			startVertex.setVertexLabel(table.getName());
 //			
-//			gdbDict.setMigratedNodeList(startNode);
-//			edge.setStartNodeName(startNode.getNodeLabel());
+//			gdbDict.setMigratedVertexList(startVertex);
+//			edge.setStartVertexName(startVertex.getVertexLabel());
 //			
 //			for (FK fk : table.getFks()) {
-//				String endNodeName = gdbDict.getMigratedNodeByName(fk.getReferencedTableName()).getNodeLabel();
+//				String endVertexName = gdbDict.getMigratedVertexByName(fk.getReferencedTableName()).getVertexLabel();
 //				
-//				if (endNodeName != null) {
-//					edge.setEndNodeName(endNodeName);
+//				if (endVertexName != null) {
+//					edge.setEndVertexName(endVertexName);
 //					gdbDict.setMigratedEdgeList(edge);
 //					
 //				} else {
-//					Node endNode = new Node();
-//					endNode.setNodeLabel(fk.getReferencedTableName());
-//					gdbDict.setMigratedNodeList(endNode);
+//					Vertex endVertex = new Vertex();
+//					endVertex.setVertexLabel(fk.getReferencedTableName());
+//					gdbDict.setMigratedVertexList(endVertex);
 //				}
 //			}
 //		}
 //	}
 //	
-//	//GDB intermediate node
-//	private void migrateIntermediateNodes(List<Table> intermediateNodeList, GraphDictionary gdbDict){
-//		for (Table table : intermediateNodeList) {
-//			Node startNode = new Node();
+//	//GDB intermediate vertex
+//	private void migrateIntermediateVertexes(List<Table> intermediateVertexList, GraphDictionary gdbDict){
+//		for (Table table : intermediateVertexList) {
+//			Vertex startVertex = new Vertex();
 //			Edge edge = new Edge();
-//			startNode.setNodeLabel(table.getName());
+//			startVertex.setVertexLabel(table.getName());
 //			
-//			gdbDict.setMigratedNodeList(startNode);
-//			edge.setStartNodeName(startNode.getNodeLabel());
+//			gdbDict.setMigratedVertexList(startVertex);
+//			edge.setStartVertexName(startVertex.getVertexLabel());
 //			
 //			for (FK fk : table.getFks()) {
-//				String endNodeName = gdbDict.getMigratedNodeByName(fk.getReferencedTableName()).getNodeLabel();
+//				String endVertexName = gdbDict.getMigratedVertexByName(fk.getReferencedTableName()).getVertexLabel();
 //				
-//				if (endNodeName != null) {
-//					edge.setEndNodeName(endNodeName);
+//				if (endVertexName != null) {
+//					edge.setEndVertexName(endVertexName);
 //					gdbDict.setMigratedEdgeList(edge);
 //					
 //				} else {
-//					Node endNode = new Node();
-//					endNode.setNodeLabel(fk.getReferencedTableName());
-//					gdbDict.setMigratedNodeList(endNode);
+//					Vertex endVertex = new Vertex();
+//					endVertex.setVertexLabel(fk.getReferencedTableName());
+//					gdbDict.setMigratedVertexList(endVertex);
 //				}
 //			}
 //		}
@@ -457,24 +608,24 @@ public class GraphMappingPage extends MigrationWizardPage {
 //	//GDB join table edges
 //	private void migrateJoinTablesEdges(List<Table> joinTablesEdges, GraphDictionary gdbDict) {
 //		for (Table table : joinTablesEdges) {
-//			Node startNode = new Node();
+//			Vertex startVertex = new Vertex();
 //			Edge edge = new Edge();
-//			startNode.setNodeLabel(table.getName());
+//			startVertex.setVertexLabel(table.getName());
 //			
-//			gdbDict.setMigratedNodeList(startNode);
-//			edge.setStartNodeName(startNode.getNodeLabel());
+//			gdbDict.setMigratedVertexList(startVertex);
+//			edge.setStartVertexName(startVertex.getVertexLabel());
 //			
 //			for (FK fk : table.getFks()) {
-//				String endNodeName = gdbDict.getMigratedNodeByName(fk.getReferencedTableName()).getNodeLabel();
+//				String endVertexName = gdbDict.getMigratedVertexByName(fk.getReferencedTableName()).getVertexLabel();
 //				
-//				if (endNodeName != null) {
-//					edge.setEndNodeName(endNodeName);
+//				if (endVertexName != null) {
+//					edge.setEndVertexName(endVertexName);
 //					gdbDict.setMigratedEdgeList(edge);
 //					
 //				} else {
-//					Node endNode = new Node();
-//					endNode.setNodeLabel(fk.getReferencedTableName());
-//					gdbDict.setMigratedNodeList(endNode);
+//					Vertex endVertex = new Vertex();
+//					endVertex.setVertexLabel(fk.getReferencedTableName());
+//					gdbDict.setMigratedVertexList(endVertex);
 //				}
 //			}
 //		}
@@ -483,24 +634,24 @@ public class GraphMappingPage extends MigrationWizardPage {
 //	//GDB recursive relationship
 //	private void migrateRecursiveRelationship(List<Table> recursiveEdges, GraphDictionary gdbDict){
 //		for (Table table : recursiveEdges) {
-//			Node startNode = new Node();
+//			Vertex startVertex = new Vertex();
 //			Edge edge = new Edge();
-//			startNode.setNodeLabel(table.getName());
+//			startVertex.setVertexLabel(table.getName());
 //			
-//			gdbDict.setMigratedNodeList(startNode);
-//			edge.setStartNodeName(startNode.getNodeLabel());
+//			gdbDict.setMigratedVertexList(startVertex);
+//			edge.setStartVertexName(startVertex.getVertexLabel());
 //			
 //			for (FK fk : table.getFks()) {
-//				String endNodeName = gdbDict.getMigratedNodeByName(fk.getReferencedTableName()).getNodeLabel();
+//				String endVertexName = gdbDict.getMigratedVertexByName(fk.getReferencedTableName()).getVertexLabel();
 //				
-//				if (endNodeName != null) {
-//					edge.setEndNodeName(endNodeName);
+//				if (endVertexName != null) {
+//					edge.setEndVertexName(endVertexName);
 //					gdbDict.setMigratedEdgeList(edge);
 //					
 //				} else {
-//					Node endNode = new Node();
-//					endNode.setNodeLabel(fk.getReferencedTableName());
-//					gdbDict.setMigratedNodeList(endNode);
+//					Vertex endVertex = new Vertex();
+//					endVertex.setVertexLabel(fk.getReferencedTableName());
+//					gdbDict.setMigratedVertexList(endVertex);
 //				}
 //			}
 //		}

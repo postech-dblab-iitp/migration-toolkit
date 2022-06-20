@@ -4,17 +4,17 @@ import java.util.List;
 
 import com.cubrid.cubridmigration.core.sql.SQLHelper;
 import com.cubrid.cubridmigration.graph.dbobj.Edge;
-import com.cubrid.cubridmigration.graph.dbobj.Node;
+import com.cubrid.cubridmigration.graph.dbobj.Vertex;
 
 public class GraphSQLHelper extends SQLHelper {
-	private List<Node> migratedNodeList;
+	private List<Vertex> migratedVertexList;
 	private List<Edge> migratedEdgeList;
 	
-	public List<Node> getMigratedNodeList() {
-		return migratedNodeList;
+	public List<Vertex> getMigratedVertexList() {
+		return migratedVertexList;
 	}
-	public void setMigratedNodeList(List<Node> migratedNodeList) {
-		this.migratedNodeList = migratedNodeList;
+	public void setMigratedVertexList(List<Vertex> migratedVertexList) {
+		this.migratedVertexList = migratedVertexList;
 	}
 	public List<Edge> getMigratedEdgeList() {
 		return migratedEdgeList;

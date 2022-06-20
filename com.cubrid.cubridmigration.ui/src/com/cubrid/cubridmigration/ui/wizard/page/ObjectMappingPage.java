@@ -72,7 +72,7 @@ import com.cubrid.cubridmigration.core.dbtype.DatabaseType;
 import com.cubrid.cubridmigration.core.engine.config.MigrationConfiguration;
 import com.cubrid.cubridmigration.graph.dbobj.Edge;
 import com.cubrid.cubridmigration.graph.dbobj.GraphDictionary;
-import com.cubrid.cubridmigration.graph.dbobj.Node;
+import com.cubrid.cubridmigration.graph.dbobj.Vertex;
 import com.cubrid.cubridmigration.ui.common.UICommonTool;
 import com.cubrid.cubridmigration.ui.common.dialog.DetailMessageDialog;
 import com.cubrid.cubridmigration.ui.common.navigator.node.ColumnNode;

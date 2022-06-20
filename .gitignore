@@ -1,3 +1,4 @@
 testd
 .metadata
 bin
+*/.classpath

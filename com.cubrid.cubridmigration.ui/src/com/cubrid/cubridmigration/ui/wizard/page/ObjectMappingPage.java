@@ -70,6 +70,9 @@ import com.cubrid.cubridmigration.core.dbobject.Schema;
 import com.cubrid.cubridmigration.core.dbobject.Table;
 import com.cubrid.cubridmigration.core.dbtype.DatabaseType;
 import com.cubrid.cubridmigration.core.engine.config.MigrationConfiguration;
+import com.cubrid.cubridmigration.graph.dbobj.Edge;
+import com.cubrid.cubridmigration.graph.dbobj.GraphDictionary;
+import com.cubrid.cubridmigration.graph.dbobj.Node;
 import com.cubrid.cubridmigration.ui.common.UICommonTool;
 import com.cubrid.cubridmigration.ui.common.dialog.DetailMessageDialog;
 import com.cubrid.cubridmigration.ui.common.navigator.node.ColumnNode;
@@ -125,7 +128,7 @@ public class ObjectMappingPage extends
 	private AbstractMappingView currentView;
 
 	private final MigrationCfgUtils util = new MigrationCfgUtils();
-
+	
 	/**
 	 * Create the wizard constructor
 	 */
@@ -167,7 +170,7 @@ public class ObjectMappingPage extends
 				showDetailMessageDialog(sourceCatalog);
 			}
 
-			showTableInformationForGdbms(sourceCatalog);
+			//GDB if targetIsGraph, draw new ui
 
 			showLobInfo(sourceCatalog);
 			cfg.setSrcCatalog(sourceCatalog, !mw.isLoadMigrationScript());
@@ -200,70 +203,6 @@ public class ObjectMappingPage extends
 			throw ex;
 		}
 
-	}
-
-	/**
-	 * showTableInformationForGdbms
-	 *
-	 * @param sourceCatalog
-	 */
-	private void showTableInformationForGdbms(Catalog sourceCatalog) {
-		List<Schema> schemas = sourceCatalog.getSchemas();
-
-		List<Table> joinTablesEdgesList = new ArrayList<Table>();
-		List<Table> intermediateNodesList = new ArrayList<Table>();
-		List<Table> firstNodesList = new ArrayList<Table>();
-		List<Table> secondNodesList = new ArrayList<Table>();
-		List<Table> recursiveEdgesList = new ArrayList<Table>();
-
-		for (Schema schema : schemas) {
-			List<Table> tables = schema.getTables();
-			for (Table table : tables) {
-
-				int importedKeysCount = table.getImportedKeysCount();
-				int exportedKeysCount = table.getExportedKeysCount();
-
-				if (importedKeysCount == 2 && exportedKeysCount == 0) {
-					joinTablesEdgesList.add(table);
-				} else if (importedKeysCount >= 3) {
-					intermediateNodesList.add(table);
-				} else if (importedKeysCount == 0) {
-					firstNodesList.add(table);
-				} else if (importedKeysCount > 0 || exportedKeysCount > 0) {
-					secondNodesList.add(table);
-				}
-
-				List<FK> fks = table.getFks();
-				for (FK fk : fks) {
-					String referencedTableName = fk.getReferencedTableName();
-					if (referencedTableName.equalsIgnoreCase(table.getName())) {
-						recursiveEdgesList.add(table);
-					}
-				}
-			}
-		}
-
-		printTableElement("JoinTables Edges", joinTablesEdgesList);
-		printTableElement("Intermediate Nodes", intermediateNodesList);
-		printTableElement("First Nodes", firstNodesList);
-		printTableElement("Second Nodes", secondNodesList);
-		printTableElement("Recursive Edges", recursiveEdgesList);
-	}
-
-	/**
-	 * printTableElement
-	 *
-	 * @param elementType
-	 * @param tableList
-	 */
-	private void printTableElement(String elementType, List<Table> tableList) {
-		System.out.println("==== " + elementType + " ==== ");
-
-		for (Table table : tableList) {
-			System.out.println("- " + table.getName());
-		}
-
-		System.out.println();
 	}
 
 	/**

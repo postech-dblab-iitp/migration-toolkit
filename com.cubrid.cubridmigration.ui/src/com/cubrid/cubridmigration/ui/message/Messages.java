@@ -90,6 +90,8 @@ public class Messages extends
 	public static String btnDestLocalDumpDes;
 	public static String btnDestOnlineCUBRIDDB;
 	public static String btnDestOnlineCUBRIDDBDes;
+	public static String btnDestOnlineGraph;
+	public static String btnDestOnlineGraphes;
 	public static String btnDestSQLFiles;
 	public static String btnDestSQLFilesDes;
 	public static String btnDestXLSFiles;

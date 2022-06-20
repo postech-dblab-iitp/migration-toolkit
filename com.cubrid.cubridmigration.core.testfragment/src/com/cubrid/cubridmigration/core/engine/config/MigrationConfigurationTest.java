@@ -344,8 +344,7 @@ public class MigrationConfigurationTest {
 		MigrationConfiguration.getDataFileFormatExts();
 
 		config.setExp2FileOuput("", PathUtils.getDefaultBaseTempDir(), "utf-8");
-		config.getTargetDataFileFormatLabel();
-		//TODO:
+		config.getTargetDataFileFormatLabel(); 
 		//config.repareN21MigrationSetting();
 		config.setOfflineSrcCatalog(null);
 		config.addExpSQLTableSchema(null);

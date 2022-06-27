@@ -35,7 +35,7 @@ import com.cubrid.cubridmigration.core.dbobject.Schema;
 import com.cubrid.cubridmigration.core.dbobject.Table;
 import com.cubrid.cubridmigration.graph.dbobj.Edge;
 import com.cubrid.cubridmigration.graph.dbobj.GraphDictionary;
-import com.cubrid.cubridmigration.graph.dbobj.Node;
+import com.cubrid.cubridmigration.graph.dbobj.Vertex;
 import com.cubrid.cubridmigration.ui.database.GraphContentProvider;
 import com.cubrid.cubridmigration.ui.database.GraphLabelProvider;
 import com.cubrid.cubridmigration.ui.message.Messages;
@@ -76,7 +76,7 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 	//GDB left side. table list. bottom select all, deselect all button
 	public void createTableView(SashForm sash) {
 		Group groupContainer1 = new Group(sash, SWT.NONE);
-		groupContainer1.setText("group container1");
+		groupContainer1.setText(Messages.msgTableList);
 		groupContainer1.setLayout(new FillLayout());
 		
 		tableViewer = new TableViewer(groupContainer1, SWT.FULL_SELECTION);
@@ -109,7 +109,7 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 	//GDB right side column info list. (column name, Data type) bottom Incremental Migration checkbox
 	public void createColumnView(SashForm sash) {
 		Group groupContainer2 = new Group(sash, SWT.NONE);
-		groupContainer2.setText("group container2");
+		groupContainer2.setText(Messages.msgColumnList);
 		groupContainer2.setLayout(new FillLayout());
 		
 		columnViewer = new TableViewer(groupContainer2, SWT.FULL_SELECTION);
@@ -276,7 +276,7 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 		}
 		
 		if (selectedTableList.isEmpty()) {
-			MessageDialog.openError(getShell(), "No table selected", "no table selected. please select more than one table");
+			MessageDialog.openError(getShell(), "No table selected", Messages.errNoTableSelected);
 			
 			return false;
 		} else {
@@ -293,9 +293,9 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 		gdbDict.clean();
 		
 		List<Table> joinTablesEdgesList = new ArrayList<Table>();
-		List<Table> intermediateNodesList = new ArrayList<Table>();
-		List<Table> firstNodesList = new ArrayList<Table>();
-		List<Table> secondNodesList = new ArrayList<Table>();
+		List<Table> intermediateVertexesList = new ArrayList<Table>();
+		List<Table> firstVertexesList = new ArrayList<Table>();
+		List<Table> secondVertexesList = new ArrayList<Table>();
 		List<Table> recursiveEdgesList = new ArrayList<Table>();
 
 		for (Table table : tables) {
@@ -306,31 +306,31 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 			if (importedKeysCount == 2 && exportedKeysCount == 0) {
 				joinTablesEdgesList.add(table);
 			} else if (importedKeysCount >= 3) {
-				intermediateNodesList.add(table);
+				intermediateVertexesList.add(table);
 			} else if (importedKeysCount == 0) {
-				firstNodesList.add(table);
+				firstVertexesList.add(table);
 			} else if (!isRecursive(table) && (importedKeysCount > 0 || exportedKeysCount > 0)) {
-				secondNodesList.add(table);
+				secondVertexesList.add(table);
 			} else if (isRecursive(table)) {
 				recursiveEdgesList.add(table);
 			}
 		}
 
 		printTableElement("JoinTables Edges", joinTablesEdgesList);
-		printTableElement("Intermediate Nodes", intermediateNodesList);
-		printTableElement("First Nodes", firstNodesList);
-		printTableElement("Second Nodes", secondNodesList);
+		printTableElement("Intermediate Vertexes", intermediateVertexesList);
+		printTableElement("First Vertexes", firstVertexesList);
+		printTableElement("Second Vertexes", secondVertexesList);
 		printTableElement("Recursive Edges", recursiveEdgesList);
 		
-		migrateFirstNode(firstNodesList, gdbDict);
-		migrateSecondNodes(secondNodesList, gdbDict);
+		migrateFirstVertex(firstVertexesList, gdbDict);
+		migrateSecondVertexes(secondVertexesList, gdbDict);
 		migrateRecursiveRelationship(recursiveEdgesList, gdbDict);
-		migrateIntermediateNodes(intermediateNodesList, gdbDict);
+		migrateIntermediateVertexes(intermediateVertexesList, gdbDict);
 		migrateJoinTablesEdges(joinTablesEdgesList, gdbDict);
 		
-		gdbDict.setNodeAndEdge();
+		gdbDict.setVertexAndEdge();
 		
-//		gdbDict.printNodeAndEdge();
+//		gdbDict.printVertexAndEdge();
 	}
 	
 	private boolean isRecursive(Table table){
@@ -360,120 +360,120 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 		System.out.println();
 	}
 	
-	//GDB first node
-	private void migrateFirstNode(List<Table> firstNodeList, GraphDictionary gdbDict) {
-		for (Table table : firstNodeList) {
-			Node node = new Node();
-			node.setNodeLabel(table.getName());
-			node.setColumnList(table.getColumns());
+	//GDB first vertex
+	private void migrateFirstVertex(List<Table> firstVertexList, GraphDictionary gdbDict) {
+		for (Table table : firstVertexList) {
+			Vertex vertex = new Vertex();
+			vertex.setVertexLabel(table.getName());
+			vertex.setColumnList(table.getColumns());
 			
-			gdbDict.setMigratedNodeList(node);
+			gdbDict.setMigratedVertexList(vertex);
 		}
 	}
 	
-	//GDB second node
-	private void migrateSecondNodes(List<Table> secondNodeList, GraphDictionary gdbDict) {
-		for (Table table : secondNodeList) {
-			Node startNode = new Node();
-			startNode.setNodeLabel(table.getName());
-			startNode.setColumnList(table.getColumns());
+	//GDB second vertex
+	private void migrateSecondVertexes(List<Table> secondVertexList, GraphDictionary gdbDict) {
+		for (Table table : secondVertexList) {
+			Vertex startVertex = new Vertex();
+			startVertex.setVertexLabel(table.getName());
+			startVertex.setColumnList(table.getColumns());
 			Edge edge = new Edge();
 
-			gdbDict.setMigratedNodeList(startNode);
+			gdbDict.setMigratedVertexList(startVertex);
 			
 			for (FK fk : table.getFks()) {
-				String endNodeName = null;
-				Node endNode = gdbDict.getMigratedNodeByName(fk.getReferencedTableName());
+				String endVertexName = null;
+				Vertex endVertex = gdbDict.getMigratedVertexByName(fk.getReferencedTableName());
 				
-				if (endNode != null) {
-					endNodeName = endNode.getNodeLabel();
+				if (endVertex != null) {
+					endVertexName = endVertex.getVertexLabel();
 				}
 				
-				if (endNodeName == null) {
+				if (endVertexName == null) {
 					for (Table selectedTable : selectedTableList) {
 						if (selectedTable.getName().equals(fk.getReferencedTableName())) {
-							Node migratedNode = new Node();
-							migratedNode.setNodeLabel(fk.getReferencedTableName());
-							migratedNode.setColumnList(selectedTable.getColumns());
+							Vertex migratedVertex = new Vertex();
+							migratedVertex.setVertexLabel(fk.getReferencedTableName());
+							migratedVertex.setColumnList(selectedTable.getColumns());
 							
-							gdbDict.setMigratedNodeList(migratedNode);
+							gdbDict.setMigratedVertexList(migratedVertex);
 						}
 					}
 					
 				} else {
-					edge.setEndNodeName(endNodeName);
+					edge.setEndVertexName(endVertexName);
 				}
 			}
 			
-			if (!edge.getEndNodeName().isEmpty()) {
-				edge.setStartNodeName(startNode.getNodeLabel());
+			if (!edge.getEndVertexName().isEmpty()) {
+				edge.setStartVertexName(startVertex.getVertexLabel());
 				gdbDict.setMigratedEdgeList(edge);
 			}
 		}
 	}
 	
-	//GDB intermediate node
-	private void migrateIntermediateNodes(List<Table> intermediateNodeList, GraphDictionary gdbDict){
-		for (Table table : intermediateNodeList) {
-			Node startNode = new Node();
-			startNode.setNodeLabel(table.getName());
-			startNode.setColumnList(table.getColumns());
+	//GDB intermediate vertex
+	private void migrateIntermediateVertexes(List<Table> intermediateVertexList, GraphDictionary gdbDict){
+		for (Table table : intermediateVertexList) {
+			Vertex startVertex = new Vertex();
+			startVertex.setVertexLabel(table.getName());
+			startVertex.setColumnList(table.getColumns());
 			Edge edge = new Edge();
 
-			gdbDict.setMigratedNodeList(startNode);
+			gdbDict.setMigratedVertexList(startVertex);
 			
 			for (FK fk : table.getFks()) {
-				String endNodeName = null;
-				Node endNode = gdbDict.getMigratedNodeByName(fk.getReferencedTableName());
+				String endVertexName = null;
+				Vertex endVertex = gdbDict.getMigratedVertexByName(fk.getReferencedTableName());
 				
-				if (endNode != null) {
-					endNodeName = endNode.getNodeLabel();
+				if (endVertex != null) {
+					endVertexName = endVertex.getVertexLabel();
 				}
 				
-				if (endNodeName == null) {
+				if (endVertexName == null) {
 					for (Table selectedTable : selectedTableList) {
 						if (selectedTable.getName().equals(fk.getReferencedTableName())) {
-							Node migratedNode = new Node();
-							migratedNode.setNodeLabel(fk.getReferencedTableName());
-							migratedNode.setColumnList(selectedTable.getColumns());
+							Vertex migratedVertex = new Vertex();
+							migratedVertex.setVertexLabel(fk.getReferencedTableName());
+							migratedVertex.setColumnList(selectedTable.getColumns());
 							
-							gdbDict.setMigratedNodeList(migratedNode);
+							gdbDict.setMigratedVertexList(migratedVertex);
 						}
 					}
 					
 				} else {
-					edge.setEndNodeName(endNodeName);
+					edge.setEndVertexName(endVertexName);
 				}
 			}
 			
-			if (!edge.getEndNodeName().isEmpty()) {
-				edge.setStartNodeName(startNode.getNodeLabel());
+			if (!edge.getEndVertexName().isEmpty()) {
+				edge.setStartVertexName(startVertex.getVertexLabel());
 				gdbDict.setMigratedEdgeList(edge);
 			}
 			
-//			Node startNode = new Node();
+//			Vertex startVertex = new Vertex();
 //			Edge edge = new Edge();
-//			startNode.setNodeLabel(table.getName());
+//			startVertex.setVertexLabel(table.getName());
 //			
-//			gdbDict.setMigratedNodeList(startNode);
-//			edge.setStartNodeName(startNode.getNodeLabel());
+//			gdbDict.setMigratedVertexList(startVertex);
+//			edge.setStartVertexName(startVertex.getVertexLabel());
 //			
 //			for (FK fk : table.getFks()) {
-//				String endNodeName;
-//				Node endNode = gdbDict.getMigratedNodeByName(fk.getReferencedTableName());
-//				if (endNode == null) {
-//					endNodeName = null;
+//				String endVertexName;
+//				Vertex endVertex = gdbDict.getMigratedVertexByName(fk.getReferencedTableName());
+//				if (endVertex == null) {
+//					endVertexName = null;
 //				} else {
-//					endNodeName = endNode.getNodeLabel();
+//					endVertexName = endVertex.getVertexLabel();
 //				}
 //				
-//				if (endNodeName != null) {
-//					edge.setEndNodeName(endNodeName);
+//				if (endVertexName != null) {
+//					edge.setEndVertexName(endVertexName);
 //					
 //				} else {
-//					Node migratedNode = new Node();
-//					migratedNode.setNodeLabel(fk.getReferencedTableName());
-//					gdbDict.setMigratedNodeList(migratedNode);
+//					Vertex migratedVertex = new Vertex();
+//					migratedVertex.setVertexLabel(fk.getReferencedTableName());
+//					gdbDict.setMigratedVertexList(migratedVertex);
 //				}
 //			}
 //			gdbDict.setMigratedEdgeList(edge);
@@ -481,7 +481,7 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 	}
 	
 	//GDB join table edges
-	//GDB if start node or end node is null?
+	//GDB if start vertex or end vertex is null?
 	private void migrateJoinTablesEdges(List<Table> joinTablesEdges, GraphDictionary gdbDict) {
 		for (Table table : joinTablesEdges) {
 			List<FK> fkList = table.getFks();
@@ -491,8 +491,8 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 			FK fk1 = fkList.get(0);
 			FK fk2 = fkList.get(1);
 			
-			edge.setStartNodeName(fk1.getReferencedTableName());
-			edge.setEndNodeName(fk2.getReferencedTableName());
+			edge.setStartVertexName(fk1.getReferencedTableName());
+			edge.setEndVertexName(fk2.getReferencedTableName());
 			edge.setColumnList(table.getColumns());
 			
 			gdbDict.setMigratedEdgeList(edge);
@@ -502,48 +502,48 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 	//GDB recursive relationship
 	private void migrateRecursiveRelationship(List<Table> recursiveEdges, GraphDictionary gdbDict){
 		for (Table table : recursiveEdges) {
-			Node startNode = new Node();
+			Vertex startVertex = new Vertex();
 			Edge edge = new Edge();
 			
-			startNode.setNodeLabel(table.getName());
-			startNode.setColumnList(table.getColumns());
+			startVertex.setVertexLabel(table.getName());
+			startVertex.setColumnList(table.getColumns());
 			
-			gdbDict.setMigratedNodeList(startNode);
+			gdbDict.setMigratedVertexList(startVertex);
 			
-			edge.setStartNodeName(table.getName());
-			edge.setEndNodeName(table.getName());
+			edge.setStartVertexName(table.getName());
+			edge.setEndVertexName(table.getName());
 			
-			Node node = gdbDict.getMigratedNodeByName(table.getName());
+			Vertex vertex = gdbDict.getMigratedVertexByName(table.getName());
 			
-			if (node == null) {
-				gdbDict.setMigratedNodeList(startNode);
+			if (vertex == null) {
+				gdbDict.setMigratedVertexList(startVertex);
 			}
 			
 			gdbDict.setMigratedEdgeList(edge);
 			
-//			Node startNode = new Node();
+//			Vertex startVertex = new Vertex();
 //			Edge edge = new Edge();
-//			startNode.setNodeLabel(table.getName());
+//			startVertex.setVertexLabel(table.getName());
 //			
-//			gdbDict.setMigratedNodeList(startNode);
-//			edge.setStartNodeName(startNode.getNodeLabel());
+//			gdbDict.setMigratedVertexList(startVertex);
+//			edge.setStartVertexName(startVertex.getVertexLabel());
 //			
 //			for (FK fk : table.getFks()) {
-//				String endNodeName;
-//				Node endNode = gdbDict.getMigratedNodeByName(fk.getReferencedTableName());
-//				if (endNode == null) {
-//					endNodeName = null;
+//				String endVertexName;
+//				Vertex endVertex = gdbDict.getMigratedVertexByName(fk.getReferencedTableName());
+//				if (endVertex == null) {
+//					endVertexName = null;
 //				} else {
-//					endNodeName = endNode.getNodeLabel();
+//					endVertexName = endVertex.getVertexLabel();
 //				}
 //				
-//				if (endNodeName != null) {
-//					edge.setEndNodeName(endNodeName);
+//				if (endVertexName != null) {
+//					edge.setEndVertexName(endVertexName);
 //					
 //				} else {
-//					Node migratedNode = new Node();
-//					migratedNode.setNodeLabel(fk.getReferencedTableName());
-//					gdbDict.setMigratedNodeList(migratedNode);
+//					Vertex migratedVertex = new Vertex();
+//					migratedVertex.setVertexLabel(fk.getReferencedTableName());
+//					gdbDict.setMigratedVertexList(migratedVertex);
 //				}
 //			}
 //			gdbDict.setMigratedEdgeList(edge);

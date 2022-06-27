@@ -4,27 +4,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GraphDictionary {
-	private List<Node> migratedNodeList;
+	private List<Vertex> migratedVertexList;
 	private List<Edge> migratedEdgeList;
 
 	public GraphDictionary() {
 		this.migratedEdgeList = new ArrayList<Edge>();
-		this.migratedNodeList = new ArrayList<Node>();
+		this.migratedVertexList = new ArrayList<Vertex>();
 	}
 	
-	public List<Node> getMigratedNodeList() {
-		return migratedNodeList;
+	public List<Vertex> getMigratedVertexList() {
+		return migratedVertexList;
 	}
-	public Node getMigratedNodeByName(String nodeLabel) {
-		for (Node tarNode : migratedNodeList) {
-			if (tarNode.getNodeLabel().equals(nodeLabel)) {
-				return tarNode;
+	public Vertex getMigratedVertexByName(String vertexLabel) {
+		for (Vertex tarVertex : migratedVertexList) {
+			if (tarVertex.getVertexLabel().equals(vertexLabel)) {
+				return tarVertex;
 			}
 		}
 		return null;
 	}
-	public void setMigratedNodeList(Node migratedNode) {
-		this.migratedNodeList.add(migratedNode);
+	public void setMigratedVertexList(Vertex migratedVertex) {
+		this.migratedVertexList.add(migratedVertex);
 	}
 	public List<Edge> getMigratedEdgeList() {
 		return migratedEdgeList;
@@ -33,47 +33,47 @@ public class GraphDictionary {
 		this.migratedEdgeList.add(migratedEdge);
 	}
 	
-	public void printNodeAndEdge(){
-		StringBuilder relationNodes = new StringBuilder();
+	public void printVertexAndEdge(){
+		StringBuilder relationVertexes = new StringBuilder();
 		
-		for (Node node : migratedNodeList) {
+		for (Vertex vertex : migratedVertexList) {
 			for (Edge edge : migratedEdgeList) {
-				if (edge.getStartNodeName() != null && edge.getStartNodeName().equals(node.getNodeLabel())) {
-					relationNodes.append("   " + edge.getEndNodeName() + "   ");
+				if (edge.getStartVertexName() != null && edge.getStartVertexName().equals(vertex.getVertexLabel())) {
+					relationVertexes.append("   " + edge.getEndVertexName() + "   ");
 				}
 			}
 			
-			System.out.println(node.getNodeLabel() + "----->" + relationNodes);
-			relationNodes.delete(0, relationNodes.length());
+			System.out.println(vertex.getVertexLabel() + "----->" + relationVertexes);
+			relationVertexes.delete(0, relationVertexes.length());
 		}
 	}
 	
 	public void clean() {
-		migratedNodeList.clear();
+		migratedVertexList.clear();
 		migratedEdgeList.clear();
 	}
 	
-	public void setNodeAndEdge() {
+	public void setVertexAndEdge() {
 		for (Edge edge : migratedEdgeList) {
-			for (Node node : migratedNodeList) {
-				String startNodeName = edge.getStartNodeName();
-				if (node.getNodeLabel().equals(startNodeName)) {
-					edge.setStartNode(node);
+			for (Vertex vertex : migratedVertexList) {
+				String startVertexName = edge.getStartVertexName();
+				if (vertex.getVertexLabel().equals(startVertexName)) {
+					edge.setStartVertex(vertex);
 				}
 				
-				for (String name : edge.getEndNodeName()) {
-					if (node.getNodeLabel().equals(name)) {
-						edge.setEndNode(node);
+				for (String name : edge.getEndVertexName()) {
+					if (vertex.getVertexLabel().equals(name)) {
+						edge.setEndVertex(vertex);
 					}
 				}
 			}
 		}
 		
-		for (Node node : migratedNodeList) {
-			String startNodeName = node.getNodeLabel();
+		for (Vertex vertex : migratedVertexList) {
+			String startVertexName = vertex.getVertexLabel();
 			for (Edge edge : migratedEdgeList) {
-				if (edge.getStartNodeName().equals(startNodeName)) {
-					node.setEndNodes(edge.getEndNode());
+				if (edge.getStartVertexName().equals(startVertexName)) {
+					vertex.setEndVertexes(edge.getEndVertex());
 				}
 			}
 		}

@@ -316,6 +316,7 @@ public class Messages extends
 	public static String errNoSQLSelected;
 	public static String errNoSQLTableSelected;
 	public static String errNoValidSQLFile;
+	public static String errNoTableSelected;
 	public static String errOtherMigrationRunning;
 	public static String errSequenceName;
 	public static String failedLogDialogSaveErrMsg;
@@ -473,6 +474,7 @@ public class Messages extends
 	public static String msgCfmDeleteSQL;
 	public static String msgCfmErrorSave;
 	public static String msgCheckCharset;
+	public static String msgColumnList;
 	public static String msgConfirmation;
 	public static String msgConfirmationChangedType;
 	public static String msgConfirmationTypeChanged;
@@ -556,6 +558,7 @@ public class Messages extends
 	public static String msgExportScriptSuccess;
 	public static String msgFetchingXMLSchema;
 	public static String msgFile;
+	public static String msgGraph;
 	public static String msgImplicitEstimate;
 	public static String msgInformation;
 	public static String msgInputJDBCURL;
@@ -597,6 +600,7 @@ public class Messages extends
 	public static String msgStartDownloadDrivers;
 	public static String msgStartMigrationFailed;
 	public static String msgStoppingMigration;
+	public static String msgTableList;
 	public static String msgTimeRemaining;
 	public static String msgTitleConfirmAutoChangeColumnSize;
 	public static String msgTitleDeleteSQL;

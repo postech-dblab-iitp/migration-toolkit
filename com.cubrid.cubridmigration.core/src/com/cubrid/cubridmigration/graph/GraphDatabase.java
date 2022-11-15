@@ -1,6 +1,7 @@
 package com.cubrid.cubridmigration.graph;
 
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.Driver;
 import java.sql.SQLException;
 import java.util.Properties;
@@ -43,9 +44,9 @@ public class GraphDatabase extends DatabaseType {
 
 		public String makeUrl(ConnParameters connParameters) {
 			//GDB GraphDatabase make URL
-			String neo4jUrlPattern = "jdbc:neo4j:bolt://%s:%s";
+			String neo4jUrlPattern = "jdbc:neo4j:bolt://%s:%s/?database=%s";
 			String url = String.format(neo4jUrlPattern,
-					connParameters.getHost(), connParameters.getPort());
+					connParameters.getHost(), connParameters.getPort(), connParameters.getDbName());
 			return url;
 		}
 
@@ -70,13 +71,31 @@ public class GraphDatabase extends DatabaseType {
 				
 				if (conn == null) {
 					throw new SQLException("Can't connect database server");
-				}			
+				}
+				
+                checkDatabase(conn);
+			    
 				return conn;
 			} catch (SQLException e) {
 				throw e;
 			} catch (Exception e) { 
 				throw new RuntimeException(e);
-			}
+			} 
+		}
+		
+		private void checkDatabase(Connection conn) 
+		        throws SQLException {
+            try {
+                DatabaseMetaData metaData = conn.getMetaData();
+                if (metaData != null) {
+                    String projectVersion= metaData.getDatabaseProductVersion();
+                    if (projectVersion.equals("Unknown")) {
+                        throw new SQLException("Unable to read database information., Please check name or all setting of database");
+                    }
+                }
+            } catch (SQLException e) {
+                throw e;
+            }
 		}
 	}
 }

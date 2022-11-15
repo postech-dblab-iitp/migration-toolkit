@@ -496,6 +496,8 @@ public class Messages extends
 	public static String msgDestOutputFilesSettingDes;
 	public static String msgDestSelectOnlineCUBRIDDB;
 	public static String msgDestSelectOnlineCUBRIDDBDes;
+	public static String msgDestSelectOnlineGRAPHDB;
+	public static String msgDestSelectOnlineGRAPHDBDes;
 	public static String msgDestType;
 	public static String msgDirectory;
 	public static String msgDoRemapColumns;

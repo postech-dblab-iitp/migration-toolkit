@@ -69,7 +69,7 @@ public class MigrationReportTest {
 		ExportRecordsEvent event = new ExportRecordsEvent(config.getExpEntryTableCfg(null, "game"),
 				100);
 		report.addExpMigRecResult(event);
-		Assert.assertNotNull(report.getRecMigResults("game", "game"));
+		Assert.assertNotNull(report.getRecMigResults(null, "game", "game"));
 
 		ImportRecordsEvent ire = new ImportRecordsEvent(config.getExpEntryTableCfg(null, "game"),
 				100);

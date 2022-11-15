@@ -121,7 +121,7 @@ public class CSVImportConfirmPage extends
 	protected void postMigrationData() {
 		MigrationConfiguration migration = getMigrationWizard().getMigrationConfig();
 		txtSummary.setText(getConfigSummary(migration));
-		setDDLText();
 		switchText(false);
+		setDDLText();
 	}
 }

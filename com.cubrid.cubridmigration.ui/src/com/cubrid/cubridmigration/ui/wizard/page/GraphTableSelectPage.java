@@ -366,6 +366,7 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 			Vertex vertex = new Vertex();
 			vertex.setVertexLabel(table.getName());
 			vertex.setColumnList(table.getColumns());
+			vertex.setVertexType(Vertex.FIRST_TYPE);
 			
 			gdbDict.setMigratedVertexList(vertex);
 		}
@@ -377,6 +378,7 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 			Vertex startVertex = new Vertex();
 			startVertex.setVertexLabel(table.getName());
 			startVertex.setColumnList(table.getColumns());
+			startVertex.setVertexType(Vertex.SECOND_TYPE);
 			Edge edge = new Edge();
 
 			gdbDict.setMigratedVertexList(startVertex);
@@ -407,6 +409,7 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 			
 			if (!edge.getEndVertexName().isEmpty()) {
 				edge.setStartVertexName(startVertex.getVertexLabel());
+				edge.setEdgeType(Edge.FK_TYPE);
 				gdbDict.setMigratedEdgeList(edge);
 			}
 		}

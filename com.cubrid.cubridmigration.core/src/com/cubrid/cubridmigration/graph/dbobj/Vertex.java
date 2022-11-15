@@ -7,6 +7,12 @@ import java.util.Map;
 import com.cubrid.cubridmigration.core.dbobject.Column;
 
 public class Vertex {
+    
+    public static final int NONE = 0;
+    public static final int FIRST_TYPE = 1;
+    public static final int SECOND_TYPE = 2;
+    public static final int INTERMEDIATE_TYPE = 3;
+    
 	private int id;
 
 	//GDB is selected for select page
@@ -16,6 +22,8 @@ public class Vertex {
 	private List<Vertex> endVertexes;
 	
 	private List<Column> columnList;
+	
+	private int vertexType = NONE;
 	
 	public Vertex() {
 		this.endVertexes = new ArrayList<Vertex>();
@@ -58,5 +66,13 @@ public class Vertex {
 		for (Vertex vertex : endVertexes) {
 			this.endVertexes.add(vertex);
 		}
+	}
+	
+	public void setVertexType(int type) {
+	    this.vertexType = type;
+	}
+	
+	public int getType() {
+	    return this.vertexType;
 	}
 }

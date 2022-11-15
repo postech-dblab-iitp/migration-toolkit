@@ -52,6 +52,18 @@
             id="com.cubrid.cubridmigration.ui.history.MigrationHistoryEditorPart"
             name="%migrationHistory">
       </editor>
+            <editor
+            class="com.cubrid.cubridmigration.ui.wizard.editor.R2GMigrationProgressEditorPart"
+            default="false"
+            id="com.cubrid.cubridmigration.ui.wizard.editor.R2GMigrationProgressEditorPart"
+            name="%migrationProgress">
+      </editor>
+      <editor
+            class="com.cubrid.cubridmigration.ui.history.R2GMigrationReportEditorPart"
+            default="false"
+            id="com.cubrid.cubridmigration.ui.history.R2GMigrationReportEditorPart"
+            name="%migrationReport">
+      </editor>
    </extension>
     <extension
          point="org.eclipse.ui.editors">

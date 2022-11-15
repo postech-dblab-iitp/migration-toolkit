@@ -109,6 +109,7 @@ public class BaseConfirmationPage extends
 			}
 		});
 
+		MigrationConfiguration cfg = getMigrationWizard().getMigrationConfig();
 		new ToolItem(tbTools, SWT.SEPARATOR);
 		btnPreviewDDL = new ToolItem(tbTools, SWT.CHECK);
 		btnPreviewDDL.setSelection(false);
@@ -235,7 +236,7 @@ public class BaseConfirmationPage extends
 	 */
 	protected void setDDLText() {
 		MigrationConfiguration cfg = getMigrationWizard().getMigrationConfig();
-		if (cfg.sourceIsSQL()) {
+		if (cfg.sourceIsSQL() || cfg.targetIsGraph()) {
 			btnPreviewDDL.setSelection(false);
 			btnPreviewDDL.setEnabled(false);
 			switchText(false);

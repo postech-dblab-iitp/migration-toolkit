@@ -30,8 +30,10 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.zest.core.viewers.EntityConnectionData;
 import org.eclipse.zest.core.viewers.GraphViewer;
 import org.eclipse.zest.core.viewers.IGraphEntityContentProvider;
+import org.eclipse.zest.layouts.LayoutStyles;
 import org.eclipse.zest.layouts.algorithms.GridLayoutAlgorithm;
 import org.eclipse.zest.layouts.algorithms.SpringLayoutAlgorithm;
+import org.eclipse.zest.layouts.algorithms.TreeLayoutAlgorithm;
 
 import com.cubrid.cubridmigration.core.dbobject.Catalog;
 import com.cubrid.cubridmigration.core.dbobject.Column;
@@ -158,7 +160,7 @@ public class GraphMappingPage extends MigrationWizardPage {
 		
 		});
 		
-		graphViewer.setLayoutAlgorithm(new SpringLayoutAlgorithm());
+		graphViewer.setLayoutAlgorithm(new GridLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING));;
 		graphViewer.addSelectionChangedListener(new ISelectionChangedListener() {
 			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
@@ -168,6 +170,7 @@ public class GraphMappingPage extends MigrationWizardPage {
 			}
 		});
 		graphViewer.applyLayout();
+		
 	}
 	
 	public void changeColumnData(Object data) {
@@ -309,7 +312,10 @@ public class GraphMappingPage extends MigrationWizardPage {
 				switch (columnIndex) {
 				case 0:
 					return column.getName();
-					
+				case 1:
+				    String rdbDataType = column.getDataType();
+				    column.setGraphDataType(changeDataType(rdbDataType));
+				    return column.getGraphDataType();
 				default:
 					return null;
 				}
@@ -656,4 +662,39 @@ public class GraphMappingPage extends MigrationWizardPage {
 //			}
 //		}
 //	}
+	
+	private String changeDataType(String type) {
+	    String retDataType;
+	    switch (type) {
+	    case "boolean" :
+            retDataType = "boolean";
+            break;
+        case "int" :
+            retDataType = "integer";
+            break;
+        case "varchar" :
+            retDataType = "string";
+            break;
+        case "char" :
+            retDataType = "string";
+            break;
+        case "datetime" :
+            retDataType = "datetime";
+            break;
+        case "numberic" :
+            retDataType = "integer";
+            break;
+        case "short" :
+            retDataType = "integer";
+            break;
+        case "float" :
+            retDataType = "float";
+            break;
+        default:
+            retDataType = "Not Support";
+            break;
+        }
+	    
+	    return retDataType;
+	}
 }

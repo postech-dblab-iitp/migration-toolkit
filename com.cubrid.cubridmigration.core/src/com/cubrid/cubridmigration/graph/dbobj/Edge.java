@@ -7,6 +7,12 @@ import java.util.Map;
 import com.cubrid.cubridmigration.core.dbobject.Column;
 
 public class Edge {
+    
+    public static final int NONE = 0;
+    public static final int RECURSIVE_TYPE = 1;
+    public static final int JOINTABLE_TYPE = 2;
+    public static final int FK_TYPE = 2;
+    
 	private int id;
 	
 	//GDB isSelected for check page
@@ -22,6 +28,8 @@ public class Edge {
 	private List<Column> columnList;
 	
 	private Map<String, String> edgeProperties;
+	
+	private int edgeType = NONE;
 	
 	public Edge() {
 		this.endVertex = new ArrayList<Vertex>();
@@ -86,4 +94,11 @@ public class Edge {
 		this.edgeProperties = edgeProperties;
 	}
 	
+	public void setEdgeType(int type) {
+	    this.edgeType = type;
+	}
+	
+	public int getEdgeType() {
+	    return this.edgeType;
+	}
 }

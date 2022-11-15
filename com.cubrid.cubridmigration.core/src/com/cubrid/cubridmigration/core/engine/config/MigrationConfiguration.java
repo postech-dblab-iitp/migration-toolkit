@@ -108,6 +108,7 @@ public class MigrationConfiguration {
 	public static final int SOURCE_TYPE_MYSQL = DatabaseType.MYSQL.getID();
 	public static final int SOURCE_TYPE_ORACLE = DatabaseType.ORACLE.getID();
 	public static final int SOURCE_TYPE_MSSQL = DatabaseType.MSSQL.getID();
+	public static final int SOURCE_TYPE_GRAPH = DatabaseType.GRAPH.getID();
 
 	public static final int SOURCE_TYPE_XML_1 = 101;
 	public static final int SOURCE_TYPE_SQL = 102;
@@ -119,6 +120,7 @@ public class MigrationConfiguration {
 	public static final String CUBRID = "cubrid";
 	public static final String MYSQL = "mysql";
 	public static final String ORACLE = "oracle";
+	public static final String GRAPH = "graph";
 
 	public static final int RPT_LEVEL_BRIEF = 0;
 	public static final int RPT_LEVEL_ERROR = 1;

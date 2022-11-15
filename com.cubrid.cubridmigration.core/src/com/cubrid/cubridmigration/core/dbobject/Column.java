@@ -93,6 +93,9 @@ public class Column extends
 	 */
 	private String enumElements = null;
 
+	
+	private String graphDataType = "";
+	
 	public Column() {
 		//do nothing
 	}
@@ -403,4 +406,13 @@ public class Column extends
 		}
 		return result;
 	}
+	
+	public void setGraphDataType(String type) {
+	    this.graphDataType = type;
+	}
+	
+	public String getGraphDataType() {
+        return this.graphDataType;
+    }
+	
 }

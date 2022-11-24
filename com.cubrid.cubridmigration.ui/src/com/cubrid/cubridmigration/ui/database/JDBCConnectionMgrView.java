@@ -594,7 +594,7 @@ public class JDBCConnectionMgrView {
 			return;
 		}
 		//GDB if database type is graph, maybe catalog is not need?
-		if (cp.getDbType() == 4) {
+		if (cp.getDbType() == DatabaseType.GRAPH.getID()) {
 			return;
 		}
 		

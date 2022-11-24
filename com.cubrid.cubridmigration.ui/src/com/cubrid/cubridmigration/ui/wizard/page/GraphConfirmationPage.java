@@ -204,105 +204,6 @@ public class GraphConfirmationPage extends
 					migration.getTargetFileTimeZone().substring(0, length)).append(lineSeparator);
 		}
 
-		//table
-		List<SourceEntryTableConfig> sourceTableConfigList = migration.getExpEntryTableCfg();
-		if (!sourceTableConfigList.isEmpty()) {
-			text.append(Messages.confrimExportTables).append(lineSeparator);
-			for (SourceTableConfig sourceTableConfig : sourceTableConfigList) {
-				if (!sourceTableConfig.isCreateNewTable() && !sourceTableConfig.isMigrateData()) {
-					continue;
-				}
-				text.append(tabSeparator).append(sourceTableConfig.getName()).append(tabSeparator).append(
-						" -> ").append(tabSeparator).append(sourceTableConfig.getTarget()).append(
-						lineSeparator);
-			}
-		}
-		//view
-		List<SourceViewConfig> sourceConfigViewList = migration.getExpViewCfg();
-		if (!sourceConfigViewList.isEmpty()) {
-			text.append(Messages.confrimExportViews).append(lineSeparator);
-			for (SourceConfig sourceConfig : sourceConfigViewList) {
-				if (!sourceConfig.isCreate()) {
-					continue;
-				}
-				text.append(tabSeparator).append(sourceConfig.getName()).append(tabSeparator).append(
-						" -> ").append(tabSeparator).append(sourceConfig.getTarget()).append(
-						lineSeparator);
-			}
-		}
-		//sql
-		List<SourceSQLTableConfig> sourceSQLTableConfigList = migration.getExpSQLCfg();
-		if (!sourceSQLTableConfigList.isEmpty()) {
-			text.append(Messages.confrimSQLTables).append(lineSeparator);
-			for (SourceSQLTableConfig sourceSQLTableConfig : sourceSQLTableConfigList) {
-				if (!sourceSQLTableConfig.isCreateNewTable()
-						&& !sourceSQLTableConfig.isMigrateData()) {
-					continue;
-				}
-				text.append(tabSeparator).append(sourceSQLTableConfig.getSql()).append(tabSeparator).append(
-						" -> ").append(tabSeparator).append(sourceSQLTableConfig.getTarget()).append(
-						lineSeparator);
-			}
-		}
-		//FK
-		if (migration.hasFKExports()) {
-			text.append(Messages.confrimExportFKs).append(lineSeparator);
-			for (SourceEntryTableConfig sourceEntryTableConfig : migration.getExpEntryTableCfg()) {
-				if (!sourceEntryTableConfig.isCreateNewTable()) {
-					continue;
-				}
-				List<SourceFKConfig> sourceFKConfigList = sourceEntryTableConfig.getFKConfigList();
-				if (!sourceTableConfigList.isEmpty()) {
-					for (SourceFKConfig sourceFKConfig : sourceFKConfigList) {
-						if (!sourceFKConfig.isCreate()) {
-							continue;
-						}
-						text.append(tabSeparator).append(sourceFKConfig.getName()).append(
-								tabSeparator).append(" -> ").append(tabSeparator).append(
-								sourceFKConfig.getTarget()).append(lineSeparator);
-					}
-				}
-			}
-		}
-		//index
-		if (migration.hasIndexExports()) {
-			StringBuilder indexText = new StringBuilder();
-
-			for (SourceEntryTableConfig sourceEntryTableConfig : migration.getExpEntryTableCfg()) {
-				if (!sourceEntryTableConfig.isCreateNewTable()) {
-					continue;
-				}
-				List<SourceIndexConfig> sourceIndexConfigList = sourceEntryTableConfig.getIndexConfigList();
-				if (!sourceTableConfigList.isEmpty()) {
-					for (SourceIndexConfig sourceIndexConfig : sourceIndexConfigList) {
-						if (!sourceIndexConfig.isCreate()) {
-							continue;
-						}
-						indexText.append(tabSeparator).append(sourceIndexConfig.getName()).append(
-								tabSeparator).append(" -> ").append(tabSeparator).append(
-								sourceIndexConfig.getTarget()).append(lineSeparator);
-					}
-				}
-			}
-
-			if (indexText.length() > 0) {
-				text.append(Messages.confrimExportIndexs).append(lineSeparator);
-				text.append(indexText);
-			}
-		}
-		//sequence
-		List<SourceSequenceConfig> sourceConfigSequencesList = migration.getExpSerialCfg();
-		if (!sourceConfigSequencesList.isEmpty()) {
-			text.append(Messages.confrimExportSerial).append(lineSeparator);
-			for (SourceConfig sourceConfig : sourceConfigSequencesList) {
-				if (!sourceConfig.isCreate()) {
-					continue;
-				}
-				text.append(tabSeparator).append(sourceConfig.getName()).append(tabSeparator).append(
-						" -> ").append(tabSeparator).append(sourceConfig.getTarget()).append(
-						lineSeparator);
-			}
-		}
 		return text.toString();
 	}
 
@@ -384,7 +285,7 @@ public class GraphConfirmationPage extends
 		MigrationConfiguration cfg = mw.getMigrationConfig();
 		
 		styleRanges.clear();
-		txtSummary.setText(getConfigSummary(cfg, styleRanges) + mw.getGraphDictionary().getPrintVertexAndEdgeInfo());
+		txtSummary.setText(getConfigSummary(cfg, styleRanges) + cfg.getGraphDictionary().getPrintVertexAndEdgeInfo());
 		for (StyleRange sr : styleRanges) {
 			txtSummary.setStyleRange(sr);
 		}

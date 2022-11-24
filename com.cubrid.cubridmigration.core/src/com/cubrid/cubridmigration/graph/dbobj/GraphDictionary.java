@@ -23,13 +23,13 @@ public class GraphDictionary {
 		}
 		return null;
 	}
-	public void setMigratedVertexList(Vertex migratedVertex) {
+	public void addMigratedVertexList(Vertex migratedVertex) {
 		this.migratedVertexList.add(migratedVertex);
 	}
 	public List<Edge> getMigratedEdgeList() {
 		return migratedEdgeList;
 	}
-	public void setMigratedEdgeList(Edge migratedEdge) {
+	public void addMigratedEdgeList(Edge migratedEdge) {
 		this.migratedEdgeList.add(migratedEdge);
 	}
 	

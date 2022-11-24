@@ -142,8 +142,6 @@ public class MigrationWizard extends
 
 	protected Catalog targetCatalog;
 	
-	protected GraphDictionary graphDict = new GraphDictionary();
-
 	protected DatabaseNode sourceDBNode;
 
 	private boolean saveSchema;
@@ -361,10 +359,6 @@ public class MigrationWizard extends
 		return targetCatalog;
 	}
 	
-	public GraphDictionary getGraphDictionary(){
-		return graphDict;
-	}
-
 	public boolean isLoadMigrationScript() {
 		return migrationConfigFileName != null;
 	}
@@ -528,10 +522,6 @@ public class MigrationWizard extends
 		this.targetCatalog = targetCatalog;
 	}
 
-	public void setGraphDict(GraphDictionary graphDict){
-		this.graphDict = graphDict;
-	}
-	
 	/**
 	 * Close the configuration wizard and start migration.
 	 * 

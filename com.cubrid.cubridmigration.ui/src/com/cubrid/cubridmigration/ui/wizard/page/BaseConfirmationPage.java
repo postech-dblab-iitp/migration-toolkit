@@ -235,7 +235,7 @@ public class BaseConfirmationPage extends
 	 */
 	protected void setDDLText() {
 		MigrationConfiguration cfg = getMigrationWizard().getMigrationConfig();
-		if (cfg.sourceIsSQL()) {
+		if (cfg.sourceIsSQL() || cfg.targetIsGraph()) {
 			btnPreviewDDL.setSelection(false);
 			btnPreviewDDL.setEnabled(false);
 			switchText(false);

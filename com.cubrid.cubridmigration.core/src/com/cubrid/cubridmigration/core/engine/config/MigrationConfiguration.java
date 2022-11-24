@@ -441,6 +441,10 @@ public class MigrationConfiguration {
 	 */
 	public void buildConfigAndTargetSchema(boolean isReset) {
 		//Reset schema information for building configuration.
+		if (srcCatalog == null) {
+			return;
+		}
+		
 		resetSchemaInfo();
 		buildTableCfg(isReset);
 		buildViewCfg(isReset);

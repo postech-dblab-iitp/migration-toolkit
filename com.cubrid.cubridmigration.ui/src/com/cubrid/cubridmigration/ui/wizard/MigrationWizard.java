@@ -131,6 +131,7 @@ public class MigrationWizard extends
 	}
 
 	private ObjectMappingPage objMapPage;
+	private GraphTableSelectPage graphTableSelPage;
 
 	protected MigrationScript migrationScript;
 
@@ -217,7 +218,9 @@ public class MigrationWizard extends
 		addPage(new CSVImportConfirmPage("10"));
 		
 		//GDB graph mapping page
-		addPage(new GraphTableSelectPage("12"));
+		graphTableSelPage = new GraphTableSelectPage("12");
+		addPage(graphTableSelPage);
+		
 		addPage(new GraphMappingPage("13"));
 		addPage(new GraphSelectDestinationPage("14"));
 		addPage(new GraphConfirmationPage("15"));
@@ -458,6 +461,8 @@ public class MigrationWizard extends
 	 */
 	public void resetBySourceDBChanged() {
 		objMapPage.setFirstVisible(true);
+		graphTableSelPage.setFirstVisible(true);
+		
 		if (isLoadMigrationScript()) {
 			//Reload the migration configuration file
 			MigrationConfiguration tempConfig = migrationConfig;

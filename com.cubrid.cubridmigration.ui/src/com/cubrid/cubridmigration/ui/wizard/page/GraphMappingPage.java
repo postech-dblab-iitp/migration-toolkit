@@ -30,8 +30,9 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.zest.core.viewers.EntityConnectionData;
 import org.eclipse.zest.core.viewers.GraphViewer;
 import org.eclipse.zest.core.viewers.IGraphEntityContentProvider;
+import org.eclipse.zest.core.widgets.ZestStyles;
+import org.eclipse.zest.layouts.LayoutStyles;
 import org.eclipse.zest.layouts.algorithms.GridLayoutAlgorithm;
-import org.eclipse.zest.layouts.algorithms.SpringLayoutAlgorithm;
 
 import com.cubrid.cubridmigration.core.dbobject.Catalog;
 import com.cubrid.cubridmigration.core.dbobject.Column;
@@ -99,6 +100,8 @@ public class GraphMappingPage extends MigrationWizardPage {
 	
 	public void createGraph(Composite parent) {
 		graphViewer = new GraphViewer(parent, SWT.BORDER);
+		graphViewer.setConnectionStyle(ZestStyles.CONNECTIONS_DIRECTED);
+		graphViewer.setLayoutAlgorithm(new GridLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING));;
 		graphViewer.setContentProvider(new IGraphEntityContentProvider() {
 
 			@Override
@@ -158,7 +161,6 @@ public class GraphMappingPage extends MigrationWizardPage {
 		
 		});
 		
-		graphViewer.setLayoutAlgorithm(new SpringLayoutAlgorithm());
 		graphViewer.addSelectionChangedListener(new ISelectionChangedListener() {
 			@Override
 			public void selectionChanged(SelectionChangedEvent event) {

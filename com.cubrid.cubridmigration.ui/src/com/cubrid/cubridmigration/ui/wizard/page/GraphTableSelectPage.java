@@ -50,7 +50,6 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 	private Map<String, List<Column>> columnData = new HashMap<String, List<Column>>();
 	private List<Table> tableList = new ArrayList<Table>();
 	private List<Table> selectedTableList = new ArrayList<Table>();
-	private boolean firstVisible = true;
 	
 	public GraphTableSelectPage(String pageName) {
 		super(pageName);
@@ -233,24 +232,25 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 	
 	@Override
 	protected void afterShowCurrentPage(PageChangedEvent event) {
-		if (firstVisible) {
+		if (isFirstVisible) {
 			final MigrationWizard mw = getMigrationWizard();
 			setTitle(mw.getStepNoMsg(GraphTableSelectPage.this) + Messages.objectMapPageTitle);
 			setDescription(Messages.objectMapPageDescription);
 			
 			setErrorMessage(null);
+            mw.refreshWizardStatus();
 			
 			Catalog sourceCatalog = mw.getSourceCatalog();
 			
 			List<Schema> schemaList = sourceCatalog.getSchemas();
 			
+			clearData();
 	//		showTableInformationForGdbms(schemaList);
-			
 			showTableViewerData(schemaList);
 			
 			makeColumnViewerData(schemaList);
 			
-			firstVisible = false;
+			isFirstVisible = false;
 		}
 	}
 	
@@ -557,5 +557,14 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 //			}
 //			gdbDict.setMigratedEdgeList(edge);
 		}
+	}
+	
+	public void setFirstVisible(boolean isFirstVisible) {
+		this.isFirstVisible = isFirstVisible;
+	}
+	
+	private void clearData() {
+		tableList.clear();
+		columnData.clear();
 	}
 }

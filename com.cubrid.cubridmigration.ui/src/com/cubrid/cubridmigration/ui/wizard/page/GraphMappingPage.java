@@ -36,6 +36,7 @@ import org.eclipse.zest.layouts.algorithms.GridLayoutAlgorithm;
 
 import com.cubrid.cubridmigration.core.dbobject.Catalog;
 import com.cubrid.cubridmigration.core.dbobject.Column;
+import com.cubrid.cubridmigration.core.engine.config.MigrationConfiguration;
 import com.cubrid.cubridmigration.graph.dbobj.GraphDictionary;
 import com.cubrid.cubridmigration.graph.dbobj.Vertex;
 import com.cubrid.cubridmigration.ui.message.Messages;
@@ -457,6 +458,7 @@ public class GraphMappingPage extends MigrationWizardPage {
 	//GDB GraphMappingPage -> afterShowCurrentPage
 	protected void afterShowCurrentPage(PageChangedEvent event) {
 		final MigrationWizard mw = getMigrationWizard();
+		MigrationConfiguration cfg = mw.getMigrationConfig();
 		setTitle(mw.getStepNoMsg(GraphMappingPage.this) + Messages.objectMapPageTitle);
 		setDescription(Messages.objectMapPageDescription);
 		
@@ -464,7 +466,7 @@ public class GraphMappingPage extends MigrationWizardPage {
 		
 		Catalog sourceCatalog = mw.getSourceCatalog();
 	
-		GraphDictionary gdbDict = mw.getGraphDictionary();
+		GraphDictionary gdbDict = cfg.getGraphDictionary();
 		
 		gdbDict.printVertexAndEdge();
 		

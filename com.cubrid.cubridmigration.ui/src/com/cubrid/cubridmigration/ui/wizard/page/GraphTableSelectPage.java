@@ -33,6 +33,7 @@ import com.cubrid.cubridmigration.core.dbobject.Column;
 import com.cubrid.cubridmigration.core.dbobject.FK;
 import com.cubrid.cubridmigration.core.dbobject.Schema;
 import com.cubrid.cubridmigration.core.dbobject.Table;
+import com.cubrid.cubridmigration.core.engine.config.MigrationConfiguration;
 import com.cubrid.cubridmigration.graph.dbobj.Edge;
 import com.cubrid.cubridmigration.graph.dbobj.GraphDictionary;
 import com.cubrid.cubridmigration.graph.dbobj.Vertex;
@@ -277,7 +278,6 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 		
 		if (selectedTableList.isEmpty()) {
 			MessageDialog.openError(getShell(), "No table selected", Messages.errNoTableSelected);
-			
 			return false;
 		} else {
 			showTableInformationForGdbms(selectedTableList);
@@ -288,8 +288,9 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 	
 	private void showTableInformationForGdbms(List<Table> tables) {
 		MigrationWizard mw = getMigrationWizard();
+		MigrationConfiguration cfg = mw.getMigrationConfig();
 		
-		GraphDictionary gdbDict = mw.getGraphDictionary();
+		GraphDictionary gdbDict = cfg.getGraphDictionary();
 		gdbDict.clean();
 		
 		List<Table> joinTablesEdgesList = new ArrayList<Table>();
@@ -367,7 +368,7 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 			vertex.setVertexLabel(table.getName());
 			vertex.setColumnList(table.getColumns());
 			
-			gdbDict.setMigratedVertexList(vertex);
+			gdbDict.addMigratedVertexList(vertex);
 		}
 	}
 	
@@ -378,7 +379,7 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 			startVertex.setVertexLabel(table.getName());
 			startVertex.setColumnList(table.getColumns());
 
-			gdbDict.setMigratedVertexList(startVertex);
+			gdbDict.addMigratedVertexList(startVertex);
 			
 			Edge edge;
 			for (FK fk : table.getFks()) {
@@ -399,7 +400,7 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 							migratedVertex.setVertexLabel(fk.getReferencedTableName());
 							migratedVertex.setColumnList(selectedTable.getColumns());
 							
-							gdbDict.setMigratedVertexList(migratedVertex);
+							gdbDict.addMigratedVertexList(migratedVertex);
 						}
 					}
 					
@@ -409,7 +410,7 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 				
 				if (!edge.getEndVertexName().isEmpty()) {
 					edge.setStartVertexName(startVertex.getVertexLabel());
-					gdbDict.setMigratedEdgeList(edge);
+					gdbDict.addMigratedEdgeList(edge);
 				}
 			}
 			
@@ -423,7 +424,7 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 			startVertex.setVertexLabel(table.getName());
 			startVertex.setColumnList(table.getColumns());
 
-			gdbDict.setMigratedVertexList(startVertex);
+			gdbDict.addMigratedVertexList(startVertex);
 			
 			Edge edge;
 			for (FK fk : table.getFks()) {
@@ -444,7 +445,7 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 							migratedVertex.setVertexLabel(fk.getReferencedTableName());
 							migratedVertex.setColumnList(selectedTable.getColumns());
 							
-							gdbDict.setMigratedVertexList(migratedVertex);
+							gdbDict.addMigratedVertexList(migratedVertex);
 						}
 					}
 					
@@ -454,7 +455,7 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 				
 				if (!edge.getEndVertexName().isEmpty()) {
 					edge.setStartVertexName(startVertex.getVertexLabel());
-					gdbDict.setMigratedEdgeList(edge);
+					gdbDict.addMigratedEdgeList(edge);
 				}
 			}
 			
@@ -503,7 +504,7 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 			edge.setColumnList(table.getColumns());
 			edge.setEdgeLabel(fk1.getReferencedTableName() + "_" + fk2.getReferencedTableName());
 			
-			gdbDict.setMigratedEdgeList(edge);
+			gdbDict.addMigratedEdgeList(edge);
 		}
 	}
 	
@@ -516,7 +517,7 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 			startVertex.setVertexLabel(table.getName());
 			startVertex.setColumnList(table.getColumns());
 			
-			gdbDict.setMigratedVertexList(startVertex);
+			gdbDict.addMigratedVertexList(startVertex);
 			
 			edge.setStartVertexName(table.getName());
 			edge.setEndVertexName(table.getName());
@@ -525,10 +526,10 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 			Vertex vertex = gdbDict.getMigratedVertexByName(table.getName());
 			
 			if (vertex == null) {
-				gdbDict.setMigratedVertexList(startVertex);
+				gdbDict.addMigratedVertexList(startVertex);
 			}
 			
-			gdbDict.setMigratedEdgeList(edge);
+			gdbDict.addMigratedEdgeList(edge);
 			
 //			Vertex startVertex = new Vertex();
 //			Edge edge = new Edge();

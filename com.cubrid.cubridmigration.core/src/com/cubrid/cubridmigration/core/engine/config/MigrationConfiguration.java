@@ -79,6 +79,7 @@ import com.cubrid.cubridmigration.core.trans.DBTransformHelper;
 import com.cubrid.cubridmigration.core.trans.MigrationTransFactory;
 import com.cubrid.cubridmigration.cubrid.CUBRIDDataTypeHelper;
 import com.cubrid.cubridmigration.cubrid.CUBRIDSQLHelper;
+import com.cubrid.cubridmigration.graph.dbobj.GraphDictionary;
 import com.cubrid.cubridmigration.mysql.MysqlXmlDumpSource;
 
 /**
@@ -155,6 +156,8 @@ public class MigrationConfiguration {
 	private final List<SourceViewConfig> expViews = new ArrayList<SourceViewConfig>();
 	private String fileRepositroyPath;
 	private final List<SourceCSVConfig> csvFiles = new ArrayList<SourceCSVConfig>();
+	
+	private GraphDictionary graphDict = new GraphDictionary();
 
 	private String targetSchemaFileName;
 	private String targetIndexFileName;
@@ -3579,5 +3582,13 @@ public class MigrationConfiguration {
 			return "";
 		}
 		return ".sql";
+	}
+	
+	public GraphDictionary getGraphDictionary(){
+		return graphDict;
+	}
+	
+	public void setGraphDict(GraphDictionary graphDict){
+		this.graphDict = graphDict;
 	}
 }

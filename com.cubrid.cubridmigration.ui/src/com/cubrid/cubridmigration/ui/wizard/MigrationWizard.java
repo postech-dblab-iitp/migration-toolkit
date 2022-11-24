@@ -533,9 +533,18 @@ public class MigrationWizard extends
 			if (!checkConnectionStatus()) {
 				return;
 			}
-			String id = MigrationWizardFactory.getProgressEditorPartID(migrationConfig.getSourceType());
-			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().openEditor(
-					new MigrationProgressEditorInput(getMigrationConfig(), migrationScript), id);
+			
+			String id;
+			if (migrationConfig.getDestType() == MigrationConfiguration.DEST_GRAPH) {
+				id = MigrationWizardFactory.getProgressEditorPartID(migrationConfig.getSourceType(), migrationConfig.getDestType());
+				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().openEditor(
+						new MigrationProgressEditorInput(getMigrationConfig(), migrationScript), id);
+			} else {
+				id = MigrationWizardFactory.getProgressEditorPartID(migrationConfig.getSourceType(), migrationConfig.getDestType());
+				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().openEditor(
+						new MigrationProgressEditorInput(getMigrationConfig(), migrationScript), id);
+			}
+			
 		} catch (PartInitException e) {
 			MessageDialog.openError(PlatformUI.getWorkbench().getDisplay().getActiveShell(),
 					Messages.msgError, Messages.msgStartMigrationFailed);

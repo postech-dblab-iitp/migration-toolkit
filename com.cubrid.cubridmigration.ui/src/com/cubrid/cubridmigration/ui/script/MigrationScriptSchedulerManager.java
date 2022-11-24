@@ -130,7 +130,7 @@ public class MigrationScriptSchedulerManager {
 						MigrationProgressEditorInput progressEditorInput = new MigrationProgressEditorInput(
 								config, script, MigrationBriefReport.SM_RESERVATION);
 
-						String epID = MigrationWizardFactory.getProgressEditorPartID(config.getSourceType());
+						String epID = MigrationWizardFactory.getProgressEditorPartID(config.getSourceType(), config.getDestType());
 						activePage.openEditor(progressEditorInput, epID);
 					} catch (Exception ex) {
 						LOG.error("Migration task error.", ex);

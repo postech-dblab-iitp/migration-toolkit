@@ -61,6 +61,7 @@ import com.cubrid.cubridmigration.ui.common.UICommonTool;
 import com.cubrid.cubridmigration.ui.history.CSVImportReportEditorPart;
 import com.cubrid.cubridmigration.ui.history.MigrationReportEditorPart;
 import com.cubrid.cubridmigration.ui.history.MigrationReporter;
+import com.cubrid.cubridmigration.ui.history.R2GMigrationReportEditorPart;
 import com.cubrid.cubridmigration.ui.history.SQLImportReportEditorPart;
 import com.cubrid.cubridmigration.ui.history.dialog.OpenWizardWithHistoryDialog;
 import com.cubrid.cubridmigration.ui.message.Messages;
@@ -68,6 +69,7 @@ import com.cubrid.cubridmigration.ui.script.MigrationScript;
 import com.cubrid.cubridmigration.ui.wizard.dialog.MigrationWizardDialog;
 import com.cubrid.cubridmigration.ui.wizard.editor.CSVProgressEditorPart;
 import com.cubrid.cubridmigration.ui.wizard.editor.MigrationProgressEditorPart;
+import com.cubrid.cubridmigration.ui.wizard.editor.R2GMigrationProgressEditorPart;
 import com.cubrid.cubridmigration.ui.wizard.editor.SQLProgressEditorPart;
 
 /**
@@ -435,12 +437,17 @@ public final class MigrationWizardFactory {
 	 * @param sourceType @see MigrationConfiguration.SOURCE_TYPE
 	 * @return editor part ID
 	 */
-	public static String getReportEditorPartID(int sourceType) {
+	public static String getReportEditorPartID(int sourceType, int destType) {
 		if (sourceType == MigrationConfiguration.SOURCE_TYPE_CSV) {
 			return CSVImportReportEditorPart.ID;
 		} else if (sourceType == MigrationConfiguration.SOURCE_TYPE_SQL) {
 			return SQLImportReportEditorPart.ID;
+		} 
+		
+		if (destType == MigrationConfiguration.DEST_GRAPH) {
+			return R2GMigrationReportEditorPart.ID;
 		}
+		
 		return MigrationReportEditorPart.ID;
 	}
 
@@ -450,12 +457,17 @@ public final class MigrationWizardFactory {
 	 * @param sourceType @see MigrationConfiguration.SOURCE_TYPE
 	 * @return editor part ID
 	 */
-	public static String getProgressEditorPartID(int sourceType) {
+	public static String getProgressEditorPartID(int sourceType, int targetType) {
 		if (sourceType == MigrationConfiguration.SOURCE_TYPE_CSV) {
 			return CSVProgressEditorPart.ID;
 		} else if (sourceType == MigrationConfiguration.SOURCE_TYPE_SQL) {
 			return SQLProgressEditorPart.ID;
 		}
+		
+		if (targetType == MigrationConfiguration.DEST_GRAPH) {
+			return R2GMigrationProgressEditorPart.ID;
+		}
+		
 		return MigrationProgressEditorPart.ID;
 	}
 }

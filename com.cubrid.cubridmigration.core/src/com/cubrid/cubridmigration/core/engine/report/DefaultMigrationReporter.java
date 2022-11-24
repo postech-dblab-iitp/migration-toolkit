@@ -99,6 +99,7 @@ public abstract class DefaultMigrationReporter implements
 		brief.setStartMode(startMode);
 		brief.setScriptName(config.getName());
 		brief.setSourceType(config.getSourceType());
+		brief.setDestType(config.getDestType());
 		//brief.setReportFile(fileName);
 		if (config.targetIsFile()) {
 			brief.setOutputDir(config.getFileRepositroyPath());

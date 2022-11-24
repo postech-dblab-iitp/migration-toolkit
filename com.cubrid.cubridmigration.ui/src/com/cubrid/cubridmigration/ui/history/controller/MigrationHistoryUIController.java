@@ -187,7 +187,7 @@ public class MigrationHistoryUIController {
 	 * @return String
 	 */
 	protected String getReportEditorPartID(final MigrationBriefReport mbr) {
-		return MigrationWizardFactory.getReportEditorPartID(mbr.getSourceType());
+		return MigrationWizardFactory.getReportEditorPartID(mbr.getSourceType(), mbr.getDestType());
 	}
 
 	/**

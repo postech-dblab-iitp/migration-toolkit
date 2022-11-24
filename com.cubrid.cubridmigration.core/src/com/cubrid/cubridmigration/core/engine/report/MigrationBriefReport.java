@@ -76,6 +76,7 @@ public class MigrationBriefReport {
 	private String outputDir;
 	private int startMode;
 	private int sourceType = MigrationConfiguration.SOURCE_TYPE_CUBRID;
+	private int destType = MigrationConfiguration.DEST_GRAPH;
 
 	public long getEndTime() {
 		return endTime;
@@ -282,5 +283,13 @@ public class MigrationBriefReport {
 
 	public void setSourceType(int sourceType) {
 		this.sourceType = sourceType;
+	}
+	
+	public int getDestType() {
+		return destType;
+	}
+
+	public void setDestType(int targetType) {
+		this.destType = targetType;
 	}
 }

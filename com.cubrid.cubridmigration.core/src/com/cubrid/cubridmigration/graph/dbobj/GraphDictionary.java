@@ -48,11 +48,46 @@ public class GraphDictionary {
 		}
 	}
 	
+	public String getPrintVertexAndEdgeInfo(){
+		StringBuilder retPrint = new StringBuilder();
+		StringBuilder relationVertexes = new StringBuilder();
+		StringBuilder vertexPrint = new StringBuilder();
+		StringBuilder edgePrint = new StringBuilder();
+		
+		vertexPrint.append("\n ----- < Vertex > ------- \n");
+		
+		edgePrint.append("\n ----- < Edge > ------- \n");
+			
+		for (Edge edge : migratedEdgeList) {
+			edgePrint.append(edge.getEdgeLabel()).append("\n");
+		}
+		
+		for (Vertex vertex : migratedVertexList) {
+			vertexPrint.append(vertex.getVertexLabel()).append("\n");
+			for (Edge edge : migratedEdgeList) {
+				if (edge.getStartVertexName() != null && edge.getStartVertexName().equals(vertex.getVertexLabel())) {
+					relationVertexes.append("   " + edge.getEndVertexName() + "   ");
+				}
+			}
+			
+			retPrint.append(vertex.getVertexLabel() + "----->" + relationVertexes + "\n");
+			relationVertexes.delete(0, relationVertexes.length());
+		}
+		
+		edgePrint.append("\n ----- < Graph Design > ------- \n");
+		
+		retPrint.insert(0, edgePrint.toString());
+		retPrint.insert(0, vertexPrint.toString());
+		
+		return retPrint.toString();
+	}
+	
 	public void clean() {
 		migratedVertexList.clear();
 		migratedEdgeList.clear();
 	}
 	
+	// For Zest Graph Lib
 	public void setVertexAndEdge() {
 		for (Edge edge : migratedEdgeList) {
 			for (Vertex vertex : migratedVertexList) {
@@ -61,10 +96,8 @@ public class GraphDictionary {
 					edge.setStartVertex(vertex);
 				}
 				
-				for (String name : edge.getEndVertexName()) {
-					if (vertex.getVertexLabel().equals(name)) {
-						edge.setEndVertex(vertex);
-					}
+				if (vertex.getVertexLabel().equals(edge.getEndVertexName())) {
+					edge.setEndVertex(vertex);
 				}
 			}
 		}
@@ -73,7 +106,7 @@ public class GraphDictionary {
 			String startVertexName = vertex.getVertexLabel();
 			for (Edge edge : migratedEdgeList) {
 				if (edge.getStartVertexName().equals(startVertexName)) {
-					vertex.setEndVertexes(edge.getEndVertex());
+					vertex.addEndVertexes(edge.getEndVertex());
 				}
 			}
 		}

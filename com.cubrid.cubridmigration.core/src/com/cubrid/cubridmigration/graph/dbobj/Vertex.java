@@ -59,4 +59,8 @@ public class Vertex {
 			this.endVertexes.add(vertex);
 		}
 	}
+	
+	public void addEndVertexes(Vertex endVertexes) {
+		this.endVertexes.add(endVertexes);
+	}
 }

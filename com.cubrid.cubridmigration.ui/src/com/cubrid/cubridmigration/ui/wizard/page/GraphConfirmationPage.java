@@ -384,7 +384,7 @@ public class GraphConfirmationPage extends
 		MigrationConfiguration cfg = mw.getMigrationConfig();
 		
 		styleRanges.clear();
-		txtSummary.setText(getConfigSummary(cfg, styleRanges));
+		txtSummary.setText(getConfigSummary(cfg, styleRanges) + mw.getGraphDictionary().getPrintVertexAndEdgeInfo());
 		for (StyleRange sr : styleRanges) {
 			txtSummary.setStyleRange(sr);
 		}

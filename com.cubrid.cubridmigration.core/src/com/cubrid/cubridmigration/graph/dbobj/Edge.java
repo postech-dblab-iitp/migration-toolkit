@@ -14,18 +14,17 @@ public class Edge {
 	
 	private String edgeLabel;
 	private Vertex startVertex;
-	private List<Vertex> endVertex;
+	private Vertex endVertex;
 	
 	private String startVertexName;
-	private List<String> endVertexName;
+	private String endVertexName;
 	
 	private List<Column> columnList;
 	
 	private Map<String, String> edgeProperties;
+	private String fkString;
 	
 	public Edge() {
-		this.endVertex = new ArrayList<Vertex>();
-		this.endVertexName = new ArrayList<String>();
 	}
 	
 	public List<Column> getColumnList() {
@@ -61,11 +60,11 @@ public class Edge {
 	public void setStartVertex(Vertex startVertex) {
 		this.startVertex = startVertex;
 	}
-	public List<Vertex> getEndVertex() {
+	public Vertex getEndVertex() {
 		return endVertex;
 	}
 	public void setEndVertex(Vertex endVertex) {
-		this.endVertex.add(endVertex);
+		this.endVertex = endVertex;
 	}
 	public String getStartVertexName() {
 		return startVertexName;
@@ -73,11 +72,11 @@ public class Edge {
 	public void setStartVertexName(String startVertexName) {
 		this.startVertexName = startVertexName;
 	}
-	public List<String> getEndVertexName() {
+	public String getEndVertexName() {
 		return endVertexName;
 	}
 	public void setEndVertexName(String endVertexName) {
-		this.endVertexName.add(endVertexName);
+		this.endVertexName = endVertexName;
 	}
 	public Map<String, String> getEdgeProperties() {
 		return edgeProperties;
@@ -86,4 +85,10 @@ public class Edge {
 		this.edgeProperties = edgeProperties;
 	}
 	
+	public String getFKString() {
+		return fkString;
+	}
+	public void setFKSring(String fkString) {
+		this.fkString = fkString;
+	}
 }

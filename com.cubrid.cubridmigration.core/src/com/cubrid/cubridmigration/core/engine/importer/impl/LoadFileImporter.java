@@ -32,6 +32,7 @@ package com.cubrid.cubridmigration.core.engine.importer.impl;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -39,6 +40,7 @@ import org.apache.log4j.Logger;
 import com.cubrid.cubridmigration.core.common.CUBRIDIOUtils;
 import com.cubrid.cubridmigration.core.common.PathUtils;
 import com.cubrid.cubridmigration.core.common.log.LogUtil;
+import com.cubrid.cubridmigration.core.dbobject.Record;
 import com.cubrid.cubridmigration.core.dbobject.Table;
 import com.cubrid.cubridmigration.core.engine.MigrationContext;
 import com.cubrid.cubridmigration.core.engine.MigrationDirAndFilesManager;
@@ -49,6 +51,7 @@ import com.cubrid.cubridmigration.core.engine.exception.NormalMigrationException
 import com.cubrid.cubridmigration.core.engine.task.FileMergeRunnable;
 import com.cubrid.cubridmigration.core.engine.task.RunnableResultHandler;
 import com.cubrid.cubridmigration.cubrid.Data2StrTranslator;
+import com.cubrid.cubridmigration.graph.dbobj.Vertex;
 
 /**
  * LoadDBImporter : Use LoadDB and CSQL commands to import database objects.
@@ -221,5 +224,9 @@ public class LoadFileImporter extends
 	 */
 	protected String getLOBDir(String tableName) {
 		return mrManager.getDirAndFilesMgr().getLobFilesDir() + tableName + File.separatorChar;
+	}
+
+	public int importVertex(Vertex e, List<Record> records) {
+		return 0;
 	}
 }

@@ -31,6 +31,7 @@ package com.cubrid.cubridmigration.core.engine.importer.impl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -50,10 +51,11 @@ import com.cubrid.cubridmigration.core.dbobject.View;
 import com.cubrid.cubridmigration.core.engine.JDBCConManager;
 import com.cubrid.cubridmigration.core.engine.MigrationContext;
 import com.cubrid.cubridmigration.core.engine.ThreadUtils;
+import com.cubrid.cubridmigration.core.engine.UserDefinedDataHandlerManager;
 import com.cubrid.cubridmigration.core.engine.config.MigrationConfiguration;
 import com.cubrid.cubridmigration.core.engine.config.SourceColumnConfig;
 import com.cubrid.cubridmigration.core.engine.config.SourceTableConfig;
-import com.cubrid.cubridmigration.core.engine.event.ImportRecordsEvent;
+import com.cubrid.cubridmigration.core.engine.event.ImportGraphRecordsEvent;
 import com.cubrid.cubridmigration.core.engine.event.SingleRecordErrorEvent;
 import com.cubrid.cubridmigration.core.engine.exception.JDBCConnectErrorException;
 import com.cubrid.cubridmigration.core.engine.exception.NormalMigrationException;
@@ -63,6 +65,7 @@ import com.cubrid.cubridmigration.core.engine.importer.Importer;
 import com.cubrid.cubridmigration.core.trans.DBTransformHelper;
 import com.cubrid.cubridmigration.cubrid.CUBRIDSQLHelper;
 import com.cubrid.cubridmigration.cubrid.stmt.CUBRIDParameterSetter;
+import com.cubrid.cubridmigration.graph.dbobj.Edge;
 import com.cubrid.cubridmigration.graph.dbobj.Vertex;
 
 /**
@@ -72,7 +75,7 @@ import com.cubrid.cubridmigration.graph.dbobj.Vertex;
  * @author Kevin Cao
  * @version 1.0 - 2011-8-3 created by Kevin Cao
  */
-public class JDBCImporter extends
+public class GraphJDBCImporter extends
 		Importer {
 
 	private final JDBCConManager connectionManager;
@@ -80,7 +83,7 @@ public class JDBCImporter extends
 	private final CUBRIDParameterSetter parameterSetter;
 	private final ErrorRecords2SQLFileWriter errorRecordsWriter;
 
-	public JDBCImporter(MigrationContext mrManager) {
+	public GraphJDBCImporter(MigrationContext mrManager) {
 		super(mrManager);
 		this.parameterSetter = mrManager.getParamSetter();
 		this.config = mrManager.getConfig();
@@ -88,195 +91,84 @@ public class JDBCImporter extends
 		this.errorRecordsWriter = new ErrorRecords2SQLFileWriter(mrManager);
 	}
 
-	/**
-	 * Execute DDL.
-	 * 
-	 * @param sql String
-	 */
-	public void executeDDL(String sql) {
-		Connection conn = connectionManager.getTargetConnection(); //NOPMD
-		Statement stmt = null; //NOPMD
-		try {
-			stmt = conn.createStatement();
-			stmt.execute(sql);
-		} catch (SQLException ex) {
-			throw new NormalMigrationException(ex);
-		} finally {
-			DBUtils.commit(conn);
-			Closer.close(stmt);
-			connectionManager.closeTar(conn);
-		}
-	}
-
-	/**
-	 * 
-	 * Create table
-	 * 
-	 * @param table Table
-	 */
-	public void createTable(Table table) {
-		String sql = CUBRIDSQLHelper.getInstance(null).getTableDDL(table);
-		table.setDDL(sql);
-		try {
-			executeDDL(sql);
-			createObjectSuccess(table);
-		} catch (RuntimeException e) {
-			createObjectFailed(table, e);
-			return;
-		}
-	}
-
-	/**
-	 * Create View
-	 * 
-	 * @param view View
-	 */
-	public void createView(View view) {
-		String viewDDL = CUBRIDSQLHelper.getInstance(null).getViewDDL(view);
-		view.setDDL(viewDDL);
-		try {
-			executeDDL(viewDDL);
-			createObjectSuccess(view);
-		} catch (RuntimeException e) {
-			createObjectFailed(view, e);
-		}
-	}
-
-	/**
-	 * Create primary key
-	 * 
-	 * @param pk primary key
-	 */
-	public void createPK(PK pk) {
-		String ddl = CUBRIDSQLHelper.getInstance(null).getPKDDL(pk.getTable().getName(),
-				pk.getName(), pk.getPkColumns());
-		pk.setDDL(ddl);
-		try {
-			executeDDL(ddl);
-			createObjectSuccess(pk);
-		} catch (RuntimeException e) {
-			createObjectFailed(pk, e);
-		}
-
-	}
-
-	/**
-	 * Create foreign key
-	 * 
-	 * @param fk foreign key
-	 */
-	public void createFK(FK fk) {
-		String ddl = CUBRIDSQLHelper.getInstance(null).getFKDDL(fk.getTable().getName(), fk);
-		fk.setDDL(ddl);
-		try {
-			executeDDL(ddl);
-			createObjectSuccess(fk);
-		} catch (RuntimeException e) {
-			createObjectFailed(fk, e);
-		}
-	}
-
-	/**
-	 * Create index
-	 * 
-	 * @param index Index
-	 */
-	public void createIndex(Index index) {
-		String ddl = CUBRIDSQLHelper.getInstance(null).getIndexDDL(index.getTable().getName(),
-				index, "");
-		index.setDDL(ddl);
-		try {
-			executeDDL(ddl);
-			createObjectSuccess(index);
-		} catch (RuntimeException e) {
-			createObjectFailed(index, e);
-		}
-
-	}
-
-	/**
-	 * Create sequence
-	 * 
-	 * @param sq sequence
-	 */
-	public void createSequence(Sequence sq) {
-		String ddl = CUBRIDSQLHelper.getInstance(null).getSequenceDDL(sq);
-		sq.setDDL(ddl);
-		try {
-			executeDDL(ddl);
-			createObjectSuccess(sq);
-		} catch (RuntimeException e) {
-			createObjectFailed(sq, e);
-		}
-	}
-
-	/**
-	 * Import records ,if connection lost, it will be retry 3 times.
-	 * 
-	 * @param stc Table
-	 * @param records List<Record>
-	 * @return success count
-	 */
-	public int importRecords(SourceTableConfig stc, List<Record> records) {
+	public int importEdge(Edge e, List<Record> records) {
 		int retryCount = 0;
-		mrManager.getStatusMgr().addImpCount(stc.getOwner(), stc.getName(), records.size());
+		mrManager.getStatusMgr().addImpCount(e.getOwner(), e.getEdgeLabel(), e.getFKColumnList().size());
 		while (true) {
 			try {
-				return simpleImportRecords(stc, records);
+				return createEdgeImport(e);
 			} catch (JDBCConnectErrorException ex) {
 				if (retryCount < 3) {
 					retryCount++;
 					ThreadUtils.threadSleep(2000, eventHandler);
 				} else {
-					eventHandler.handleEvent(new ImportRecordsEvent(stc, records.size(), ex, null));
+					eventHandler.handleEvent(new ImportGraphRecordsEvent(null, e, e.getFKColumnList().size(), ex, null));
 					return 0;
 				}
-			} catch (Exception e) {
-				eventHandler.handleEvent(new ImportRecordsEvent(stc, records.size(), e, null));
+			} catch (Exception exception) {
+				eventHandler.handleEvent(new ImportGraphRecordsEvent(null, e, e.getFKColumnList().size(), exception, null));
 				return 0;
 			}
 		}
 	}
-
-	/**
-	 * If database connect is closed by server, it needs retry 5 times
-	 * 
-	 * @param ex the exception raised.
-	 * @return true:need retry.
-	 */
-	private boolean isConnectionCutDown(SQLException ex) {
-		String message = ex.getMessage();
-		return message.indexOf("Connection or Statement might be closed") >= 0
-				|| message.indexOf("Cannot communicate with the broker") >= 0
-				|| ex.getErrorCode() == -2019 || ex.getErrorCode() == -21003
-				&& ex.getErrorCode() == -2003;
+	
+	private int createEdgeImport(Edge e) throws SQLException {
+		int result = 0;
+//		Connection conn = connectionManager.getTargetConnection(); //NOPMD
+//		conn.setAutoCommit(false);
+//		PreparedStatement stmt = null; //NOPMD
+//		int result = 0;
+//			try {
+//				for (int i=0 ; i < e.getFKColumnList().size(); i++) {
+//					String sql = getTargetInsertEdge(e, i);
+//					try {
+//						stmt = conn.prepareStatement(sql);
+//						int ret = stmt.executeUpdate();
+//						if (ret != -1) {
+//							result++;
+//						}
+//					} catch (SQLException ex) {
+//						if (isConnectionCutDown(ex)) {
+//							throw new JDBCConnectErrorException(ex);
+//						}
+//						DBUtils.rollback(conn);
+//					}
+//				}
+//			} finally {
+//				Closer.close(stmt);
+//				conn.setAutoCommit(true);
+//				connectionManager.closeTar(conn);
+//			}
+		return result;
+	}
+	
+	public String getTargetInsertEdge(Edge e, int idx) {
+		StringBuffer Buf = new StringBuffer("MATCH (n:").append(e.getStartVertexName()).append("),");
+		Buf.append("(m:").append(e.getEndVertexName()).append(")");
+		Buf.append("n.").append(e.getFKColumnList().get(idx)).append(" = ");
+		//Buf.append("m.")
+		return Buf.toString();
 	}
 
-	/**
-	 * get Insert DML
-	 * 
-	 * @param tt target table object
-	 * @return SQL string with parameters
-	 */
-	public String getTargetInsertDML(SourceTableConfig tt) {
-		StringBuffer nameBuf = new StringBuffer("insert into ").append(
-				CUBRIDSQLHelper.getInstance(null).getQuotedObjName(tt.getTarget())).append(" (");
-		StringBuffer valueBuf = new StringBuffer(" values (");
-		List<SourceColumnConfig> columns = tt.getColumnConfigList();
-		int len = columns.size();
-		for (int i = 0; i < len; i++) {
-			if (i > 0) {
-				nameBuf.append(", ");
-				valueBuf.append(", ");
+	public int importVertex(Vertex v, List<Record> records) {
+		int retryCount = 0;
+		mrManager.getStatusMgr().addImpCount(v.getOwner(), v.getVertexLabel(), records.size());
+		while (true) {
+			try {
+				return simpleVertexImportRecords(v, records);
+			} catch (JDBCConnectErrorException ex) {
+				if (retryCount < 3) {
+					retryCount++;
+					ThreadUtils.threadSleep(2000, eventHandler);
+				} else {
+					eventHandler.handleEvent(new ImportGraphRecordsEvent(v, null, records.size(), ex, null));
+					return 0;
+				}
+			} catch (Exception e) {
+				eventHandler.handleEvent(new ImportGraphRecordsEvent(v, null, records.size(), e, null));
+				return 0;
 			}
-			String columnName = columns.get(i).getTarget();
-			nameBuf.append('"').append(columnName).append('"');
-			valueBuf.append('?');
 		}
-		nameBuf.append(')');
-		valueBuf.append(')');
-		nameBuf.append(valueBuf);
-		return nameBuf.toString();
 	}
 
 	/**
@@ -287,18 +179,14 @@ public class JDBCImporter extends
 	 * @return success record count
 	 * @throws SQLException when SQL error
 	 */
-	private int simpleImportRecords(SourceTableConfig stc, List<Record> records) throws SQLException {
+	private int simpleVertexImportRecords(Vertex v, List<Record> records) throws SQLException {
 		//Auto commit is false by default.
 		Connection conn = connectionManager.getTargetConnection(); //NOPMD
+		conn.setAutoCommit(false);
 		PreparedStatement stmt = null; //NOPMD
 		int result = 0;
 		try {
-			//get target table
-			final Table tt = config.getTargetTableSchema(stc.getTarget());
-			if (tt == null) {
-				return 0;
-			}
-			String sql = getTargetInsertDML(stc);
+			String sql = getTargetInsertVertex(v);
 			try {
 				stmt = conn.prepareStatement(sql);
 
@@ -307,7 +195,7 @@ public class JDBCImporter extends
 						continue;
 					}
 					try {
-						Record trec = createTargetRecord(stc, tt, rc);
+						Record trec = createTargetRecord(v, rc);
 						parameterSetter.setRecord2Statement(trec, stmt);
 						stmt.addBatch();
 					} catch (SQLException ex) {
@@ -325,11 +213,11 @@ public class JDBCImporter extends
 					result += rs;
 				}
 				if (result != records.size()) {
-					eventHandler.handleEvent(new ImportRecordsEvent(stc, records.size() - result,
+					eventHandler.handleEvent(new ImportGraphRecordsEvent(v, null, records.size() - result,
 							new NormalMigrationException(ERROR_RECORD_MSG), null));
 				}
 				if (result > 0) {
-					eventHandler.handleEvent(new ImportRecordsEvent(stc, result));
+					eventHandler.handleEvent(new ImportGraphRecordsEvent(v, null, result));
 				}
 			} catch (SQLException ex) {
 				if (isConnectionCutDown(ex)) {
@@ -337,29 +225,63 @@ public class JDBCImporter extends
 				}
 				DBUtils.rollback(conn);
 				//If SQL has errors, write the records to a SQL files.
-				String file = null;
+				//String file = null;
 				if (config.isWriteErrorRecords()) {
 					List<Record> errorRecords = new ArrayList<Record>();
 					for (Record rc : records) {
 						if (rc == null) {
 							continue;
 						}
-						Record trec = createTargetRecord(stc, tt, rc);
+						Record trec = createTargetRecord(v, rc);
 						if (trec != null) {
 							errorRecords.add(trec);
 						}
 					}
-					file = errorRecordsWriter.writeSQLRecords(stc, errorRecords);
+					//file = errorRecordsWriter.writeSQLRecords(stc, errorRecords);
 				}
-				eventHandler.handleEvent(new ImportRecordsEvent(stc, records.size(), ex, file));
+				//eventHandler.handleEvent(new ImportGraphRecordsEvent(v, null, records.size(), ex, file));
 			}
 		} finally {
 			Closer.close(stmt);
+			conn.setAutoCommit(true);
 			connectionManager.closeTar(conn);
 		}
 		return result;
 	}
+	
+	public String getTargetInsertVertex(Vertex v) {
+		StringBuffer Buf = new StringBuffer("CREATE (n: ").append(v.getVertexLabel()).append(" {");
+		List<Column> columns = v.getColumnList();
+		int len = columns.size();
+		for (int i = 0; i < len; i++) {
+			if (i > 0) {
+				Buf.append(", ");
+			}
+			String columnName = columns.get(i).getName();
+			columnName = columnName.replaceAll("\"", "");
+			Buf.append(columnName).append(':');
+			Buf.append('?');
+		}
+		Buf.append("}");
+		Buf.append(")");
+		Buf.append(" return n");
+		return Buf.toString();
+	}
 
+	/**
+	 * If database connect is closed by server, it needs retry 5 times
+	 * 
+	 * @param ex the exception raised.
+	 * @return true:need retry.
+	 */
+	private boolean isConnectionCutDown(SQLException ex) {
+		String message = ex.getMessage();
+		return message.indexOf("Connection or Statement might be closed") >= 0
+				|| message.indexOf("Cannot communicate with the broker") >= 0
+				|| ex.getErrorCode() == -2019 || ex.getErrorCode() == -21003
+				&& ex.getErrorCode() == -2003;
+	}
+	
 	/**
 	 * Create a target record by source record
 	 * 
@@ -368,34 +290,69 @@ public class JDBCImporter extends
 	 * @param rrec source record
 	 * @return Target record
 	 */
-	private Record createTargetRecord(SourceTableConfig stc, Table tt, Record rrec) {
-		Record trec = new Record();
-		Map<String, Object> recordMap = rrec.getColumnValueMap();
-		DBTransformHelper dbHelper = config.getDBTransformHelper();
-		for (Record.ColumnValue cv : rrec.getColumnValueList()) {
-			SourceColumnConfig scc = stc.getColumnConfig(cv.getColumn().getName());
-			if (scc == null) {
-				continue;
-			}
-			Column targetColumn = tt.getColumnByName(scc.getTarget());
-			if (targetColumn == null) {
-				continue;
-			}
-			Object targetValue;
-			try {
-				targetValue = dbHelper.convertValueToTargetDBValue(config, recordMap, scc,
-						cv.getColumn(), targetColumn, cv.getValue());
-			} catch (UserDefinedHandlerException ex) {
-				targetValue = cv.getValue();
-				eventHandler.handleEvent(new SingleRecordErrorEvent(rrec, ex));
-			}
-			trec.addColumnValue(targetColumn, targetValue);
-		}
-		return trec;
+	private Record createTargetRecord(Vertex v, Record rrec) {
+//		Record trec = new Record();
+//		Map<String, Object> recordMap = rrec.getColumnValueMap();
+//		for (Record.ColumnValue cv : rrec.getColumnValueList()) {
+//			Column targetColumn = v.getColumnByName(cv.getColumn().getName());
+//			if (targetColumn == null) {
+//				continue;
+//			}
+//			Object targetValue;
+//			try {
+//				targetValue = convertValueToTargetDBValue(recordMap, v,
+//						cv.getColumn(), targetColumn, cv.getValue());
+//			} catch (UserDefinedHandlerException ex) {
+//				targetValue = cv.getValue();
+//				eventHandler.handleEvent(new SingleRecordErrorEvent(rrec, ex));
+//			}
+//			trec.addColumnValue(targetColumn, targetValue);
+//		}
+		return rrec;
 	}
 
-	public int importVertex(Vertex v, List<Record> records) {
+	public void executeDDL(String sql) {
+	}
+
+	public void createFK(FK fk) {
+	}
+
+	public void createIndex(Index index) {
+	}
+
+	public void createPK(PK pk) {
+	}
+
+	public void createSequence(Sequence sq) {
+	}
+
+	public void createTable(Table table) {
+	}
+
+	public void createView(View view) {
+	}
+
+	public int importRecords(SourceTableConfig stc, List<Record> records) {
 		return 0;
 	}
-
+	
+	public Object convertValueToTargetDBValue(Vertex v, Column srcColumn, Column toColumn, Object srcValue) {
+		if (srcValue == null) {
+			return null;
+		}
+		
+		Object result = null;
+//		if (srcColumn.getDataType() == )
+//
+//		Object result = convert(srcValue, toColumn.getGraphDataType());
+		
+		return result;
+	}
+	
+	private Object convert(Object srcValue, String graphDataType) {
+		Object result = null;
+		
+		
+		return result;
+	}
 }

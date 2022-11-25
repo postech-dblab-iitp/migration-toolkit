@@ -62,7 +62,9 @@ import com.cubrid.cubridmigration.core.engine.event.CreateObjectEvent;
 import com.cubrid.cubridmigration.core.engine.event.ExportCSVEvent;
 import com.cubrid.cubridmigration.core.engine.event.ExportRecordsEvent;
 import com.cubrid.cubridmigration.core.engine.event.ExportSQLEvent;
+import com.cubrid.cubridmigration.core.engine.event.ExportGraphRecordEvent;
 import com.cubrid.cubridmigration.core.engine.event.ImportCSVEvent;
+import com.cubrid.cubridmigration.core.engine.event.ImportGraphRecordsEvent;
 import com.cubrid.cubridmigration.core.engine.event.ImportRecordsEvent;
 import com.cubrid.cubridmigration.core.engine.event.ImportSQLsEvent;
 import com.cubrid.cubridmigration.core.engine.event.MigrationErrorEvent;
@@ -304,6 +306,9 @@ public class MigrationProgressUIController {
 		} else if (event instanceof ImportSQLsEvent) {
 			ImportSQLsEvent ire = (ImportSQLsEvent) event;
 			return !ire.isSuccess();
+		} else if (event instanceof ImportGraphRecordsEvent) {
+			ImportGraphRecordsEvent ire = (ImportGraphRecordsEvent) event;
+			return !ire.isSuccess();
 		}
 		return event instanceof MigrationErrorEvent;
 	}
@@ -317,7 +322,7 @@ public class MigrationProgressUIController {
 	 */
 	public boolean ifShouldUpdateExportStatus(MigrationEvent event) {
 		return (event instanceof ExportRecordsEvent) || (event instanceof ExportCSVEvent)
-				|| (event instanceof ExportSQLEvent);
+				|| (event instanceof ExportSQLEvent) || (event instanceof ExportGraphRecordEvent);
 	}
 
 	/**

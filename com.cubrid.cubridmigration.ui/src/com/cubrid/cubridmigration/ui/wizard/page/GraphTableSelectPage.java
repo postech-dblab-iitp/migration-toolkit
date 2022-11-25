@@ -235,13 +235,20 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 	protected void afterShowCurrentPage(PageChangedEvent event) {
 		if (isFirstVisible) {
 			final MigrationWizard mw = getMigrationWizard();
+			MigrationConfiguration cfg = mw.getMigrationConfig();
 			setTitle(mw.getStepNoMsg(GraphTableSelectPage.this) + Messages.objectMapPageTitle);
 			setDescription(Messages.objectMapPageDescription);
 			
 			setErrorMessage(null);
             mw.refreshWizardStatus();
 			
+            // Temp Code (should be rewritten for GraphDB.)
 			Catalog sourceCatalog = mw.getSourceCatalog();
+			cfg.setSrcCatalog(sourceCatalog, !mw.isLoadMigrationScript());
+			
+			if (!cfg.hasObjects2Export()) {
+				cfg.setAll(true);
+			}
 			
 			List<Schema> schemaList = sourceCatalog.getSchemas();
 			

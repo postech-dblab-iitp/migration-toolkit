@@ -39,6 +39,7 @@ import com.cubrid.cubridmigration.core.engine.event.MigrationEvent;
 import com.cubrid.cubridmigration.core.engine.executors.IRunnableExecutor;
 import com.cubrid.cubridmigration.core.engine.exporter.IMigrationExporter;
 import com.cubrid.cubridmigration.core.engine.task.exp.TableSchemaExportTask;
+import com.cubrid.cubridmigration.graph.dbobj.Vertex;
 
 public class ExportTaskTest {
 
@@ -113,6 +114,10 @@ public class ExportTaskTest {
 
 			}
 
+			public void exportGraphVertexRecords(Vertex v,
+					RecordExportedListener oneNewRecord) {
+				
+			}
 		});
 
 		task.run();

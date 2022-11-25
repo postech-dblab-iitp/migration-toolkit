@@ -34,12 +34,16 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.apache.commons.lang.StringUtils;
 
 import com.cubrid.cubridmigration.core.common.Closer;
 import com.cubrid.cubridmigration.core.connection.ConnParameters;
 import com.cubrid.cubridmigration.core.datatype.DataTypeConstant;
+import com.cubrid.cubridmigration.core.dbobject.Column;
 import com.cubrid.cubridmigration.core.dbobject.PK;
 import com.cubrid.cubridmigration.core.dbtype.DatabaseType;
 import com.cubrid.cubridmigration.core.engine.config.SourceEntryTableConfig;
@@ -54,6 +58,7 @@ import com.cubrid.cubridmigration.core.export.handler.NumberTypeHandler;
 import com.cubrid.cubridmigration.core.export.handler.TimeTypeHandler;
 import com.cubrid.cubridmigration.core.export.handler.TimestampTypeHandler;
 import com.cubrid.cubridmigration.cubrid.export.handler.CUBRIDSetTypeHandler;
+import com.cubrid.cubridmigration.graph.dbobj.Vertex;
 
 /**
  * a class help to export CUBRID data and verify CUBRID sql statement
@@ -230,5 +235,118 @@ public class CUBRIDExportHelper extends
 			Closer.close(conn);
 		}
 		return null;
+	}
+	
+	public String getGraphPagedSelectSQL(String sql, long pageSize,
+			long exportedRecords, PK pk) {
+		StringBuilder buf = new StringBuilder(sql.trim());
+		String cleanSql = sql.toUpperCase().trim();
+
+		Pattern pattern = Pattern.compile("GROUP\\s+BY", Pattern.MULTILINE
+				| Pattern.CASE_INSENSITIVE);
+		Pattern pattern2 = Pattern.compile("ORDER\\s+BY", Pattern.MULTILINE
+				| Pattern.CASE_INSENSITIVE);
+		Matcher matcher = pattern.matcher(cleanSql);
+		Matcher matcher2 = pattern2.matcher(cleanSql);
+		if (matcher.find()) {
+			//End with group by 
+			if (cleanSql.indexOf("HAVING") < 0) {
+				buf.append(" HAVING ");
+			} else {
+				buf.append(" AND ");
+			}
+			buf.append(" GROUPBY_NUM() ");
+		} else if (matcher2.find()) {
+			//End with order by 
+			buf.append(" FOR ORDERBY_NUM() ");
+		} else {
+			StringBuilder orderby = new StringBuilder();
+			if (pk != null) {
+				// if it has a pk, a pk scan is better than full range scan
+				for (String pkCol : pk.getPkColumns()) {
+					if (orderby.length() > 0) {
+						orderby.append(", ");
+					}
+					orderby.append("\"").append(pkCol).append("\"");
+				}
+			}
+			if (orderby.length() > 0) {
+				buf.append(" ORDER BY ");
+				buf.append(orderby);
+				buf.append(" FOR ORDERBY_NUM() ");
+			} else {
+				if (cleanSql.indexOf("WHERE") < 0) {
+					buf.append(" WHERE");
+				} else {
+					buf.append(" AND");
+				}
+				buf.append(" ROWNUM ");
+			}
+		}
+
+		buf.append(" BETWEEN ").append(exportedRecords + 1L);
+		buf.append(" AND ").append(exportedRecords + pageSize);
+
+		return buf.toString();
+	}
+	
+	public String getGraphSelectSQL(Vertex v) {
+		StringBuffer buf = new StringBuffer(256);
+		buf.append("SELECT ");
+		final List<Column> columnList = v.getColumnList();
+		for (int i = 0; i < columnList.size(); i++) {
+			if (i > 0) {
+				buf.append(',');
+			}
+			buf.append(getQuotedObjName(columnList.get(i).getName()));
+		}
+		buf.append(" FROM ");
+		// it will make a query with a schema and table name 
+		// if it required a schema name when there create sql such as SCOTT.EMP
+		addGraphSchemaPrefix(v, buf);
+		buf.append(getQuotedObjName(v.getVertexLabel()));
+
+//		String condition = setc.getCondition();
+//		if (StringUtils.isNotBlank(condition)) {
+//			condition = condition.trim();
+//			if (!condition.toLowerCase(Locale.US).startsWith("where")) {
+//				buf.append(" WHERE ");
+//			}
+//			if (condition.trim().endsWith(";")) {
+//				condition = condition.substring(0, condition.length() - 1);
+//			}
+//			buf.append(" ").append(condition);
+//		}
+		return buf.toString();
+		
+	}
+	
+	public String getGraphSelectCountSQL(final Vertex v) {
+		StringBuffer buf = new StringBuffer(256);
+		buf.append("SELECT COUNT(1) ");
+		buf.append(" FROM ");
+		// it will make a query with a schema and table name 
+		// if it required a schema name when there create sql such as SCOTT.EMP
+		addGraphSchemaPrefix(v, buf);
+		buf.append(getQuotedObjName(v.getVertexLabel()));
+
+//		String condition = v.getCondition();
+//		if (StringUtils.isNotBlank(condition)) {
+//			if (!condition.trim().toLowerCase(Locale.US).startsWith("where")) {
+//				buf.append(" WHERE ");
+//			}
+//			condition = condition.trim();
+//			if (condition.trim().endsWith(";")) {
+//				condition = condition.substring(0, condition.length() - 1);
+//			}
+//			buf.append(" ").append(condition);
+//		}
+		return buf.toString();
+	}
+	
+	protected void addGraphSchemaPrefix(Vertex v, StringBuffer buf) {
+		if (StringUtils.isNotBlank(v.getOwner())) {
+			buf.append(getQuotedObjName(v.getOwner())).append(".");
+		}
 	}
 }

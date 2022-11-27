@@ -365,8 +365,11 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 	private void migrateFirstVertex(List<Table> firstVertexList, GraphDictionary gdbDict) {
 		for (Table table : firstVertexList) {
 			Vertex vertex = new Vertex();
+			vertex.setOwner(table.getOwner());
 			vertex.setVertexLabel(table.getName());
 			vertex.setColumnList(table.getColumns());
+			vertex.setVertexType(Vertex.FIRST_TYPE);
+			vertex.setHasPK(table.hasPK());
 			
 			gdbDict.addMigratedVertexList(vertex);
 		}
@@ -376,16 +379,24 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 	private void migrateSecondVertexes(List<Table> secondVertexList, GraphDictionary gdbDict) {
 		for (Table table : secondVertexList) {
 			Vertex startVertex = new Vertex();
+			startVertex.setOwner(table.getOwner());
 			startVertex.setVertexLabel(table.getName());
 			startVertex.setColumnList(table.getColumns());
-
+			startVertex.setVertexType(Vertex.SECOND_TYPE);
+			startVertex.setHasPK(table.hasPK());
+			Edge edge = new Edge();
+			edge.setEdgeType(Edge.SECOND_FK_TYPE);
 			gdbDict.addMigratedVertexList(startVertex);
 			
-			Edge edge;
 			for (FK fk : table.getFks()) {
 				edge = new Edge();
 				edge.setEdgeLabel(fk.getName());
 				edge.setFKSring(fk.getFKString());
+
+                for (String columName : fk.getColumnNames()) {
+					edge.addFKColumnList(columName);
+				}
+                
 				String endVertexName = null;
 				Vertex endVertex = gdbDict.getMigratedVertexByName(fk.getReferencedTableName());
 				
@@ -409,6 +420,7 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 				}
 				
 				if (!edge.getEndVertexName().isEmpty()) {
+				    edge.setOwner(startVertex.getOwner());
 					edge.setStartVertexName(startVertex.getVertexLabel());
 					gdbDict.addMigratedEdgeList(edge);
 				}
@@ -421,14 +433,18 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 	private void migrateIntermediateVertexes(List<Table> intermediateVertexList, GraphDictionary gdbDict){
 		for (Table table : intermediateVertexList) {
 			Vertex startVertex = new Vertex();
+			startVertex.setOwner(table.getOwner());
 			startVertex.setVertexLabel(table.getName());
 			startVertex.setColumnList(table.getColumns());
+			startVertex.setVertexType(Vertex.INTERMEDIATE_TYPE);
+			startVertex.setHasPK(table.hasPK());
 
 			gdbDict.addMigratedVertexList(startVertex);
 			
 			Edge edge;
 			for (FK fk : table.getFks()) {
 				edge = new Edge();
+				edge.setEdgeType(Edge.INTERMEDIATE_FK_TYPE);
 				edge.setEdgeLabel(fk.getName());
 				edge.setFKSring(fk.getFKString());
 				String endVertexName = null;
@@ -442,6 +458,7 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 					for (Table selectedTable : selectedTableList) {
 						if (selectedTable.getName().equals(fk.getReferencedTableName())) {
 							Vertex migratedVertex = new Vertex();
+							migratedVertex.setOwner(table.getOwner());
 							migratedVertex.setVertexLabel(fk.getReferencedTableName());
 							migratedVertex.setColumnList(selectedTable.getColumns());
 							
@@ -454,6 +471,7 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 				}
 				
 				if (!edge.getEndVertexName().isEmpty()) {
+                    edge.setOwner(startVertex.getOwner());
 					edge.setStartVertexName(startVertex.getVertexLabel());
 					gdbDict.addMigratedEdgeList(edge);
 				}
@@ -499,10 +517,12 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 			FK fk1 = fkList.get(0);
 			FK fk2 = fkList.get(1);
 			
+			edge.setOwner(table.getOwner());
 			edge.setStartVertexName(fk1.getReferencedTableName());
 			edge.setEndVertexName(fk2.getReferencedTableName());
 			edge.setColumnList(table.getColumns());
 			edge.setEdgeLabel(fk1.getReferencedTableName() + "_" + fk2.getReferencedTableName());
+            edge.setEdgeType(Edge.JOINTABLE_TYPE);
 			
 			gdbDict.addMigratedEdgeList(edge);
 		}
@@ -514,14 +534,18 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 			Vertex startVertex = new Vertex();
 			Edge edge = new Edge();
 			
+			startVertex.setOwner(table.getOwner());
 			startVertex.setVertexLabel(table.getName());
 			startVertex.setColumnList(table.getColumns());
+			startVertex.setVertexType(Vertex.RECURSIVE_TYPE);
+			startVertex.setHasPK(table.hasPK());
 			
 			gdbDict.addMigratedVertexList(startVertex);
 			
+			edge.setOwner(table.getOwner());
 			edge.setStartVertexName(table.getName());
 			edge.setEndVertexName(table.getName());
-			edge.setEdgeLabel(table.getName());
+			edge.setEdgeType(Edge.RECURSIVE_TYPE);
 			
 			Vertex vertex = gdbDict.getMigratedVertexByName(table.getName());
 			

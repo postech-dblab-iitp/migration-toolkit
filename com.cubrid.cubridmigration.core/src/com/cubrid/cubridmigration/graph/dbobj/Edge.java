@@ -7,6 +7,13 @@ import java.util.Map;
 import com.cubrid.cubridmigration.core.dbobject.Column;
 
 public class Edge {
+    
+    public static final int NONE = 0;
+    public static final int SECOND_FK_TYPE = 1;
+    public static final int INTERMEDIATE_FK_TYPE = 2;
+    public static final int JOINTABLE_TYPE = 3;
+    public static final int RECURSIVE_TYPE = 4;
+    
 	private int id;
 	
 	//GDB isSelected for check page
@@ -21,8 +28,14 @@ public class Edge {
 	
 	private List<Column> columnList;
 	
+	private List<String> fkColumnList = new ArrayList<String>();
+	
 	private Map<String, String> edgeProperties;
+    
 	private String fkString;
+	
+	private int edgeType = NONE;
+	private String owner;
 	
 	public Edge() {
 	}
@@ -90,5 +103,29 @@ public class Edge {
 	}
 	public void setFKSring(String fkString) {
 		this.fkString = fkString;
+	}
+    
+	public void setEdgeType(int type) {
+	    this.edgeType = type;
+	}
+	
+	public int getEdgeType() {
+	    return this.edgeType;
+	}
+	
+	public void setOwner(String owner) {
+	    this.owner = owner;
+	}
+	
+	public String getOwner() {
+	    return this.owner;
+	}
+	
+	public void addFKColumnList(String id) {
+		fkColumnList.add(id);
+	}
+	
+	public List<String> getFKColumnList() {
+		return fkColumnList;
 	}
 }

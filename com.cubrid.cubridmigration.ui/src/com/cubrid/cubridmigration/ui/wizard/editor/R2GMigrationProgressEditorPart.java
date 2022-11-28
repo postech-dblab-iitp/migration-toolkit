@@ -63,7 +63,7 @@ import com.cubrid.cubridmigration.core.engine.IMigrationMonitor;
 import com.cubrid.cubridmigration.core.engine.ThreadUtils;
 import com.cubrid.cubridmigration.core.engine.config.MigrationConfiguration;
 import com.cubrid.cubridmigration.core.engine.event.ExportGraphRecordEvent;
-import com.cubrid.cubridmigration.core.engine.event.ImportRecordsEvent;
+import com.cubrid.cubridmigration.core.engine.event.ImportGraphRecordsEvent;
 import com.cubrid.cubridmigration.core.engine.event.MigrationEvent;
 import com.cubrid.cubridmigration.ui.MigrationUIPlugin;
 import com.cubrid.cubridmigration.ui.SWTResourceConstents;
@@ -472,9 +472,15 @@ public class R2GMigrationProgressEditorPart extends
 	 * @param event MigrationEvent
 	 */
 	protected void updateImportedCountInTableViewer(MigrationEvent event) {
-		ImportRecordsEvent ire = (ImportRecordsEvent) event;
-		String[] item = controller.updateTableImpData(ire.getSourceTable().getOwner(), ire.getSourceTable().getName(),
-				ire.getRecordCount());
+		ImportGraphRecordsEvent ire = (ImportGraphRecordsEvent) event;
+		String[] item = null;
+        if (ire.getVertex() != null) {
+			item = controller.updateTableImpData(ire.getVertex().getOwner(), ire.getVertex().getVertexLabel(),
+					ire.getRecordCount());
+		} else if (ire.getEdge() != null) {
+			item = controller.updateTableImpData(ire.getEdge().getOwner(), ire.getEdge().getEdgeLabel(),
+					ire.getRecordCount());
+		}
 		tvProgress.refresh(item);
 	}
 
@@ -482,7 +488,7 @@ public class R2GMigrationProgressEditorPart extends
 	 * @param event MigrationEvent
 	 */
 	protected void updateTotalImportedCount(MigrationEvent event) {
-		ImportRecordsEvent ire = (ImportRecordsEvent) event;
+		ImportGraphRecordsEvent ire = (ImportGraphRecordsEvent) event;
 		long imp = ire.getRecordCount();
 		if (imp > 0) {
 			lblTotalRecord.setText(Long.toString(Long.valueOf(lblTotalRecord.getText()) + imp));

@@ -27,62 +27,37 @@
  * OF SUCH DAMAGE. 
  *
  */
-package com.cubrid.cubridmigration.core.engine.task.exp;
+package com.cubrid.cubridmigration.core.engine.task.imp;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.cubrid.cubridmigration.core.dbobject.Record;
-import com.cubrid.cubridmigration.core.engine.MigrationContext;
-import com.cubrid.cubridmigration.core.engine.RecordExportedListener;
-import com.cubrid.cubridmigration.core.engine.event.ExportGraphRecordEvent;
-import com.cubrid.cubridmigration.core.engine.event.StartVertexTableEvent;
-import com.cubrid.cubridmigration.core.engine.task.ExportTask;
 import com.cubrid.cubridmigration.core.engine.task.ImportTask;
 import com.cubrid.cubridmigration.graph.dbobj.Vertex;
 
 /**
- * JDBCExportRecordTask responses to read records from source database through
- * JDBC driver.
+ * RecordImportTask responses to import records.
  * 
  * @author Kevin Cao
- * @version 1.0 - 2011-8-8 created by Kevin Cao
+ * @version 1.0 - 2011-8-5 created by Kevin Cao
  */
-public class GraphVertexExportTask extends
-		ExportTask {
+public class GraphVertexImportTask extends
+		ImportTask {
 
-	protected Vertex vertex;
-	protected final MigrationContext mrManager;
+	private final Vertex vertex;
+	private final List<Record> records;
 
-	public GraphVertexExportTask(MigrationContext mrManager, Vertex v) {
-		this.mrManager = mrManager;
+	public GraphVertexImportTask(Vertex v, List<Record> records) {
 		this.vertex = v;
+		this.records = new ArrayList<Record>(records);
 	}
 
 	/**
-	 * Export source table's records
+	 * Execute import operation
+	 * 
 	 */
-	protected void executeExportTask() {
-		exporter.exportGraphVertexRecords(vertex, new RecordExportedListener() {
-			public void processRecords(String sourceTableName, List<Record> records) {
-				eventHandler.handleEvent(new ExportGraphRecordEvent(vertex, records.size()));
-				ImportTask task = taskFactory.createImportVertexRecordsTask(vertex, records);
-
-				importTaskExecutor = mrManager.getImportRecordExecutor();
-				importTaskExecutor.execute((Runnable) task);
-				mrManager.getStatusMgr().addExpCount(null, vertex.getVertexLabel(), records.size());
-			}
-
-			public void startExportTable(String tableName) {
-				eventHandler.handleEvent(new StartVertexTableEvent(vertex));
-			}
-
-			public void endExportTable(String tableName) {
-				mrManager.getStatusMgr().setExpFinished(null, vertex.getVertexLabel());
-			}
-		});
-	}
-
-	public Vertex getVertex() {
-		return vertex;
+	protected void executeImport() {
+		importer.importVertex(vertex, records);
 	}
 }

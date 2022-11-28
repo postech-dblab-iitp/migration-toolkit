@@ -69,6 +69,7 @@ import com.cubrid.cubridmigration.core.engine.task.imp.CleanDBTask;
 import com.cubrid.cubridmigration.core.engine.task.imp.ExecuteSQLTask;
 import com.cubrid.cubridmigration.core.engine.task.imp.FKImportTask;
 import com.cubrid.cubridmigration.core.engine.task.imp.FunctionImportTask;
+import com.cubrid.cubridmigration.core.engine.task.imp.GraphVertexImportTask;
 import com.cubrid.cubridmigration.core.engine.task.imp.IndexImportTask;
 import com.cubrid.cubridmigration.core.engine.task.imp.PKImportTask;
 import com.cubrid.cubridmigration.core.engine.task.imp.ProcedureImportTask;
@@ -510,6 +511,12 @@ public class MigrationTaskFactory {
 		GraphVertexExportTask task = new GraphVertexExportTask(context, v);
 		initExportTask(task, true);
 		return task;
+	}
+	
+	public ImportTask createImportVertexRecordsTask(Vertex v, List<Record> recordsTobeImport) {
+		ImportTask task = new GraphVertexImportTask(v, recordsTobeImport);
+		initImportTask(task);
+		return new ImportDataTaskDecorator(context, task);
 	}
 	
 }

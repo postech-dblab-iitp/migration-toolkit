@@ -242,8 +242,8 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 			setErrorMessage(null);
             mw.refreshWizardStatus();
 			
-            // Temp Code (should be rewritten for GraphDB.)
 			Catalog sourceCatalog = mw.getSourceCatalog();
+			// Temp Code (should be rewritten for GraphDB.)
 			cfg.setSrcCatalog(sourceCatalog, !mw.isLoadMigrationScript());
 			
 			if (!cfg.hasObjects2Export()) {

@@ -68,13 +68,6 @@ import com.cubrid.cubridmigration.cubrid.stmt.CUBRIDParameterSetter;
 import com.cubrid.cubridmigration.graph.dbobj.Edge;
 import com.cubrid.cubridmigration.graph.dbobj.Vertex;
 
-/**
- * OnlineImporter responses to import database objects to target through JDBC
- * driver.
- * 
- * @author Kevin Cao
- * @version 1.0 - 2011-8-3 created by Kevin Cao
- */
 public class GraphJDBCImporter extends
 		Importer {
 
@@ -174,7 +167,7 @@ public class GraphJDBCImporter extends
 	/**
 	 * Import with no retry.
 	 * 
-	 * @param stc Table
+	 * @param Vertex Table List
 	 * @param records List<Record>
 	 * @return success record count
 	 * @throws SQLException when SQL error
@@ -285,8 +278,7 @@ public class GraphJDBCImporter extends
 	/**
 	 * Create a target record by source record
 	 * 
-	 * @param stc SourceTableConfig
-	 * @param tt Target Table
+	 * @param v Vertex
 	 * @param rrec source record
 	 * @return Target record
 	 */

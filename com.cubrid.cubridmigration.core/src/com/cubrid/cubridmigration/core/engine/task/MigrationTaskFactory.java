@@ -53,6 +53,7 @@ import com.cubrid.cubridmigration.core.engine.task.exp.CSVExportTask;
 import com.cubrid.cubridmigration.core.engine.task.exp.CSVTableSchemaExportTask;
 import com.cubrid.cubridmigration.core.engine.task.exp.FKExportTask;
 import com.cubrid.cubridmigration.core.engine.task.exp.FunctionExportTask;
+import com.cubrid.cubridmigration.core.engine.task.exp.GraphEdgeExportTask;
 import com.cubrid.cubridmigration.core.engine.task.exp.GraphVertexExportTask;
 import com.cubrid.cubridmigration.core.engine.task.exp.IndexExportTask;
 import com.cubrid.cubridmigration.core.engine.task.exp.PKExportTask;
@@ -69,6 +70,7 @@ import com.cubrid.cubridmigration.core.engine.task.imp.CleanDBTask;
 import com.cubrid.cubridmigration.core.engine.task.imp.ExecuteSQLTask;
 import com.cubrid.cubridmigration.core.engine.task.imp.FKImportTask;
 import com.cubrid.cubridmigration.core.engine.task.imp.FunctionImportTask;
+import com.cubrid.cubridmigration.core.engine.task.imp.GraphEdgeImportTask;
 import com.cubrid.cubridmigration.core.engine.task.imp.GraphVertexImportTask;
 import com.cubrid.cubridmigration.core.engine.task.imp.IndexImportTask;
 import com.cubrid.cubridmigration.core.engine.task.imp.PKImportTask;
@@ -81,6 +83,7 @@ import com.cubrid.cubridmigration.core.engine.task.imp.TriggerImportTask;
 import com.cubrid.cubridmigration.core.engine.task.imp.UpdateAutoIncColCurrentValueTask;
 import com.cubrid.cubridmigration.core.engine.task.imp.UpdateStatisticsTask;
 import com.cubrid.cubridmigration.core.engine.task.imp.ViewSchemaImportTask;
+import com.cubrid.cubridmigration.graph.dbobj.Edge;
 import com.cubrid.cubridmigration.graph.dbobj.Vertex;
 
 /**
@@ -519,4 +522,15 @@ public class MigrationTaskFactory {
 		return new ImportDataTaskDecorator(context, task);
 	}
 	
+	public GraphEdgeExportTask GraphEdgeExportTask(Edge e) {
+		GraphEdgeExportTask task = new GraphEdgeExportTask(context, e);
+		initExportTask(task, true);
+		return task;
+	}
+	
+	public ImportTask createImportEdgeRecordsTask(Edge e, List<Record> recordsTobeImport) {
+		ImportTask task = new GraphEdgeImportTask(e, recordsTobeImport);
+		initImportTask(task);
+		return new ImportDataTaskDecorator(context, task);
+	}
 }

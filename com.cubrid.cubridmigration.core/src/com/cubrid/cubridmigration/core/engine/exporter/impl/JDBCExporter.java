@@ -56,6 +56,7 @@ import com.cubrid.cubridmigration.core.engine.exception.NormalMigrationException
 import com.cubrid.cubridmigration.core.engine.exporter.MigrationExporter;
 import com.cubrid.cubridmigration.core.export.DBExportHelper;
 import com.cubrid.cubridmigration.cubrid.export.CUBRIDExportHelper;
+import com.cubrid.cubridmigration.graph.dbobj.Edge;
 import com.cubrid.cubridmigration.graph.dbobj.Vertex;
 
 /**
@@ -451,6 +452,19 @@ public class JDBCExporter extends
 		}
 	}
 
+	public void exportGraphEdgeRecords(Edge e, RecordExportedListener newRecordProcessor) {
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("[IN]exportGraphEdgeRecords()");
+		}
+		try {
+			newRecordProcessor.startExportTable(e.getEdgeLabel());
+			newRecordProcessor.processRecords(e.getEdgeLabel(), null);
+		} finally {
+			newRecordProcessor.endExportTable(e.getEdgeLabel());
+		}
+	}
+	
+	
 	protected long graphHandleSQL(Connection conn, String sql, Vertex vextex, Table sTable, List<Record> records,
 			RecordExportedListener newRecsHandler) {
 		JDBCObjContainer joc = new JDBCObjContainer();
@@ -489,13 +503,14 @@ public class JDBCExporter extends
 				Column cc = cols.get(ci - 1);
 				if (cc.getSupportGraphDataType()) {
 					Column sCol = st.getColumnByName(cc.getName());
-//					System.out.println(sCol.getName() + " : " + sCol.getDataType() 
-//							+ "|" + sCol.getGraphDataType());
+					System.out.println(sCol.getName() + " : " + sCol.getDataType() 
+							+ "|" + sCol.getGraphDataType());
 					Object value = srcDBExportHelper.getJdbcObject(rs, sCol);
 					record.addColumnValue(sCol, value);
 				} else {
-//					System.out.println("not support " + cc.getName() + " : " + cc.getDataType() 
-//							+ "|" + cc.getGraphDataType());
+					System.out.println("not support " + cc.getName() + " : " + cc.getDataType() 
+							+ "|" + cc.getGraphDataType());
+					return null;
 
 				}
 			}

@@ -50,8 +50,8 @@ public class StartVertexTableEvent extends
 	 * @return String
 	 */
 	public String toString() {
-		return "Begin to export records of table for GraphDB [" + vertex.getVertexLabel()
-				+ "].";
+		return "Begin to export records of table [" + vertex.getVertexLabel()
+				+ "] for GraphDB .";
 	}
 
 	/**

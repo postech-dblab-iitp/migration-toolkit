@@ -209,6 +209,18 @@ public class MigrationProgressUIController {
 					return factor;
 				}
 			}
+		} else if (event instanceof ImportGraphRecordsEvent) {
+			ImportGraphRecordsEvent ire = (ImportGraphRecordsEvent) event;
+			if (ire.isSuccess()) {
+				if (ire.getRecordCount() <= commitCount) {
+					impCountCache = impCountCache + ire.getRecordCount();
+				}
+				if (impCountCache >= commitCount) {
+					int factor = impCountCache / commitCount;
+					impCountCache = impCountCache % commitCount;
+					return factor;
+				}
+			}
 		}
 		return 0;
 	}
@@ -341,6 +353,9 @@ public class MigrationProgressUIController {
 		}
 		if (event instanceof ImportRecordsEvent) {
 			return ((ImportRecordsEvent) event).isSuccess();
+		}
+		if (event instanceof ImportGraphRecordsEvent) {
+			return ((ImportGraphRecordsEvent) event).isSuccess();
 		}
 		return false;
 	}

@@ -51,6 +51,7 @@ import com.cubrid.cubridmigration.core.engine.exception.NormalMigrationException
 import com.cubrid.cubridmigration.core.engine.task.FileMergeRunnable;
 import com.cubrid.cubridmigration.core.engine.task.RunnableResultHandler;
 import com.cubrid.cubridmigration.cubrid.Data2StrTranslator;
+import com.cubrid.cubridmigration.graph.dbobj.Edge;
 import com.cubrid.cubridmigration.graph.dbobj.Vertex;
 
 /**
@@ -229,4 +230,9 @@ public class LoadFileImporter extends
 	public int importVertex(Vertex e, List<Record> records) {
 		return 0;
 	}
+    
+    public int importEdge(Edge e, List<Record> records) {
+		return 0;
+	}
+
 }

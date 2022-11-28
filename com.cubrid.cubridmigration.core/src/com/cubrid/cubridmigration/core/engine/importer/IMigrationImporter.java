@@ -42,6 +42,7 @@ import com.cubrid.cubridmigration.core.dbobject.Table;
 import com.cubrid.cubridmigration.core.dbobject.Trigger;
 import com.cubrid.cubridmigration.core.dbobject.View;
 import com.cubrid.cubridmigration.core.engine.config.SourceTableConfig;
+import com.cubrid.cubridmigration.graph.dbobj.Edge;
 import com.cubrid.cubridmigration.graph.dbobj.Vertex;
 
 /**
@@ -133,5 +134,7 @@ public interface IMigrationImporter {
 	public int importRecords(SourceTableConfig stc, List<Record> records);
 	
 	public int importVertex(Vertex v, List<Record> records);
+    
+    public int importEdge(Edge e, List<Record> records);
 
 }

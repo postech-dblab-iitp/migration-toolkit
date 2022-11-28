@@ -53,6 +53,7 @@ import com.cubrid.cubridmigration.core.engine.task.exp.CSVExportTask;
 import com.cubrid.cubridmigration.core.engine.task.exp.CSVTableSchemaExportTask;
 import com.cubrid.cubridmigration.core.engine.task.exp.FKExportTask;
 import com.cubrid.cubridmigration.core.engine.task.exp.FunctionExportTask;
+import com.cubrid.cubridmigration.core.engine.task.exp.GraphVertexExportTask;
 import com.cubrid.cubridmigration.core.engine.task.exp.IndexExportTask;
 import com.cubrid.cubridmigration.core.engine.task.exp.PKExportTask;
 import com.cubrid.cubridmigration.core.engine.task.exp.ProcedureExportTask;
@@ -79,6 +80,7 @@ import com.cubrid.cubridmigration.core.engine.task.imp.TriggerImportTask;
 import com.cubrid.cubridmigration.core.engine.task.imp.UpdateAutoIncColCurrentValueTask;
 import com.cubrid.cubridmigration.core.engine.task.imp.UpdateStatisticsTask;
 import com.cubrid.cubridmigration.core.engine.task.imp.ViewSchemaImportTask;
+import com.cubrid.cubridmigration.graph.dbobj.Vertex;
 
 /**
  * TaskFactory responses to create migration tasks.
@@ -503,4 +505,11 @@ public class MigrationTaskFactory {
 		initImportTask(result);
 		return result;
 	}
+	
+	public GraphVertexExportTask createVertexExportTask(Vertex v) {
+		GraphVertexExportTask task = new GraphVertexExportTask(context, v);
+		initExportTask(task, true);
+		return task;
+	}
+	
 }

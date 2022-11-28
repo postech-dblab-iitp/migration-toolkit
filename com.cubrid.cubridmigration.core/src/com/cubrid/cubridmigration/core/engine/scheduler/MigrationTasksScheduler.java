@@ -51,6 +51,8 @@ import com.cubrid.cubridmigration.core.engine.config.SourceViewConfig;
 import com.cubrid.cubridmigration.core.engine.exception.BreakMigrationException;
 import com.cubrid.cubridmigration.core.engine.task.IMigrationTask;
 import com.cubrid.cubridmigration.core.engine.task.MigrationTaskFactory;
+import com.cubrid.cubridmigration.graph.dbobj.GraphDictionary;
+import com.cubrid.cubridmigration.graph.dbobj.Vertex;
 
 /**
  * MigrationTasksScheduler responses to schedule migration tasks.
@@ -74,6 +76,12 @@ public class MigrationTasksScheduler {
 	public void schedule() {
 		//Execute SQL tasks
 		MigrationConfiguration config = context.getConfig();
+		
+		if (config.targetIsGraph()) {
+			greaphSchedule();
+			return;
+		}
+		
 		if (config.sourceIsSQL()) {
 			List<String> files = config.getSqlFiles();
 			for (String file : files) {
@@ -116,6 +124,11 @@ public class MigrationTasksScheduler {
 		updateIndexStatistics();
 	}
 
+	private void greaphSchedule() {
+		createGrephStep1();
+		await();
+	}
+	
 	/**
 	 * Update auto_increment columns current values
 	 * 
@@ -456,7 +469,20 @@ public class MigrationTasksScheduler {
 		}
 		await();
 	}
-
+	
+	protected void createGrephStep1() {
+		MigrationConfiguration config = context.getConfig();
+		GraphDictionary gdict = config.getGraphDictionary();
+		List<Vertex> migratedVertexList = gdict.getMigratedVertexList();
+		
+		for ( Vertex v: migratedVertexList) {
+			if (v.getVertexType() <= Vertex.INTERMEDIATE_TYPE) {
+				if (v.getHasPK()) {
+					executeTask2(taskFactory.createVertexExportTask(v));
+				}
+			}
+		}
+	}
 	/**
 	 * Append update sql for updating statistics of all indexes
 	 */

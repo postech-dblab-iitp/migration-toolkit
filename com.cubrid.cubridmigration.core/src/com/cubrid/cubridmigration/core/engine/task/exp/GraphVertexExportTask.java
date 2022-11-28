@@ -27,62 +27,57 @@
  * OF SUCH DAMAGE. 
  *
  */
-package com.cubrid.cubridmigration.core.engine.exporter;
+package com.cubrid.cubridmigration.core.engine.task.exp;
 
-import com.cubrid.cubridmigration.core.dbobject.DBObject;
+import java.util.List;
+
+import com.cubrid.cubridmigration.core.dbobject.Record;
+import com.cubrid.cubridmigration.core.engine.MigrationContext;
 import com.cubrid.cubridmigration.core.engine.RecordExportedListener;
-import com.cubrid.cubridmigration.core.engine.config.SourceTableConfig;
+import com.cubrid.cubridmigration.core.engine.event.ExportGraphRecordEvent;
+import com.cubrid.cubridmigration.core.engine.event.StartVertexTableEvent;
+import com.cubrid.cubridmigration.core.engine.task.ExportTask;
+import com.cubrid.cubridmigration.core.engine.task.ImportTask;
 import com.cubrid.cubridmigration.graph.dbobj.Vertex;
 
 /**
- * IMigrationExporter Description
+ * JDBCExportRecordTask responses to read records from source database through
+ * JDBC driver.
  * 
  * @author Kevin Cao
- * @version 1.0 - 2011-8-9 created by Kevin Cao
+ * @version 1.0 - 2011-8-8 created by Kevin Cao
  */
-public interface IMigrationExporter {
+public class GraphVertexExportTask extends
+		ExportTask {
+
+	protected Vertex vertex;
+	protected final MigrationContext mrManager;
+
+	public GraphVertexExportTask(MigrationContext mrManager, Vertex v) {
+		this.mrManager = mrManager;
+		this.vertex = v;
+	}
 
 	/**
-	 * Export table records
-	 * 
-	 * @param st SourceTableConfig
-	 * @param oneNewRecord RecordExportedListener
+	 * Export source table's records
 	 */
-	public void exportTableRecords(SourceTableConfig st,
-			RecordExportedListener oneNewRecord);
+	protected void executeExportTask() {
+		exporter.exportGraphVertexRecords(vertex, new RecordExportedListener() {
+			public void processRecords(String sourceTableName, List<Record> records) {
+				eventHandler.handleEvent(new ExportGraphRecordEvent(vertex, records.size()));
+			}
 
-	/**
-	 * Export all tables
-	 * 
-	 * @param oneNewRecord RecordExportedListener
-	 */
-	public void exportAllRecords(RecordExportedListener oneNewRecord);
+			public void startExportTable(String tableName) {
+				eventHandler.handleEvent(new StartVertexTableEvent(vertex));
+			}
 
-	/**
-	 * Default return schema's DDL
-	 * 
-	 * @param ft function name with schema name :schema.function
-	 * @return schema's DDL
-	 */
-	public DBObject exportFunction(String ft);
+			public void endExportTable(String tableName) {
+				mrManager.getStatusMgr().setExpFinished(null, vertex.getVertexLabel());
+			}
+		});
+	}
 
-	/**
-	 * Default return schema's DDL
-	 * 
-	 * @param pd procedure name with schema name :schema.procedure
-	 * @return schema's DDL
-	 */
-	public DBObject exportProcedure(String pd);
-
-	/**
-	 * Default return schema's DDL
-	 * 
-	 * @param tg trigger name with schema name :schema.tigger
-	 * @return schema's DDL
-	 */
-	public DBObject exportTrigger(String tg);
-	
-	public void exportGraphVertexRecords(Vertex v, 
-			RecordExportedListener oneNewRecord);
-	
+	public Vertex getVertex() {
+		return vertex;
+	}
 }

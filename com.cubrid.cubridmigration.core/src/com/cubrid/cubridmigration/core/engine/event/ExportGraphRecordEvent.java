@@ -27,62 +27,77 @@
  * OF SUCH DAMAGE. 
  *
  */
-package com.cubrid.cubridmigration.core.engine.exporter;
+package com.cubrid.cubridmigration.core.engine.event;
 
-import com.cubrid.cubridmigration.core.dbobject.DBObject;
-import com.cubrid.cubridmigration.core.engine.RecordExportedListener;
 import com.cubrid.cubridmigration.core.engine.config.SourceTableConfig;
+import com.cubrid.cubridmigration.graph.dbobj.Edge;
 import com.cubrid.cubridmigration.graph.dbobj.Vertex;
 
 /**
- * IMigrationExporter Description
+ * 
+ * MigrationCreateObjectEvent Description
  * 
  * @author Kevin Cao
- * @version 1.0 - 2011-8-9 created by Kevin Cao
+ * @version 1.0 - 2011-8-11 created by Kevin Cao
  */
-public interface IMigrationExporter {
+public class ExportGraphRecordEvent extends
+		MigrationEvent {
 
-	/**
-	 * Export table records
-	 * 
-	 * @param st SourceTableConfig
-	 * @param oneNewRecord RecordExportedListener
-	 */
-	public void exportTableRecords(SourceTableConfig st,
-			RecordExportedListener oneNewRecord);
+	private final Vertex vertex;
+	private final Edge edge;
+	private final int recordCount;
 
-	/**
-	 * Export all tables
-	 * 
-	 * @param oneNewRecord RecordExportedListener
-	 */
-	public void exportAllRecords(RecordExportedListener oneNewRecord);
-
-	/**
-	 * Default return schema's DDL
-	 * 
-	 * @param ft function name with schema name :schema.function
-	 * @return schema's DDL
-	 */
-	public DBObject exportFunction(String ft);
-
-	/**
-	 * Default return schema's DDL
-	 * 
-	 * @param pd procedure name with schema name :schema.procedure
-	 * @return schema's DDL
-	 */
-	public DBObject exportProcedure(String pd);
-
-	/**
-	 * Default return schema's DDL
-	 * 
-	 * @param tg trigger name with schema name :schema.tigger
-	 * @return schema's DDL
-	 */
-	public DBObject exportTrigger(String tg);
+	public ExportGraphRecordEvent(Vertex vertex, int recordCount) {
+		this.vertex = vertex;
+		this.edge = null;
+		this.recordCount = recordCount;
+	}
 	
-	public void exportGraphVertexRecords(Vertex v, 
-			RecordExportedListener oneNewRecord);
+	public ExportGraphRecordEvent(Edge edge, int recordCount) {
+		this.edge = edge;
+		this.vertex = null;
+		this.recordCount = recordCount;
+	}
+
+	public Vertex getVertex() {
+		return vertex;
+	}
 	
+	public Edge getEdge() {
+		return edge;
+	}
+
+	public int getRecordCount() {
+		return recordCount;
+	}
+
+	/**
+	 * To String
+	 * 
+	 * @return String
+	 */
+	public String toString() {
+		String name;
+		if (vertex != null) {
+			name = vertex.getVertexLabel();
+		} else {
+			name = edge.getEdgeLabel();
+		}
+		
+		if (recordCount == 0) {
+			return "No record of table [" + name + "] to be exported.";
+		}
+		return new StringBuffer().append("Exported ").append(recordCount).append(
+				" records from table [").append(name).append(
+				"] successfully.").toString();
+	}
+
+	/**
+	 * The event's importance level
+	 * 
+	 * @return level
+	 */
+	public int getLevel() {
+		return 2;
+	}
 }

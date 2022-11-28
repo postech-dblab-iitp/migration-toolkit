@@ -55,6 +55,8 @@ import com.cubrid.cubridmigration.core.engine.event.MigrationErrorEvent;
 import com.cubrid.cubridmigration.core.engine.exception.NormalMigrationException;
 import com.cubrid.cubridmigration.core.engine.exporter.MigrationExporter;
 import com.cubrid.cubridmigration.core.export.DBExportHelper;
+import com.cubrid.cubridmigration.cubrid.export.CUBRIDExportHelper;
+import com.cubrid.cubridmigration.graph.dbobj.Vertex;
 
 /**
  * 
@@ -398,5 +400,143 @@ public class JDBCExporter extends
 		return recordCountOfCurrentPage == 0
 				|| recordCountOfCurrentPage < config.getPageFetchCount()
 				|| (!config.isImplicitEstimate() && exportedRecords >= sTable.getTableRowCount());
+	}
+
+	public void exportGraphVertexRecords(Vertex v, RecordExportedListener newRecordProcessor) {
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("[IN]exportGraphVertexRecords()");
+		}
+		Table sTable = config.getSrcTableSchema(v.getOwner(), v.getVertexLabel());
+		if (sTable == null) {
+			throw new NormalMigrationException("Table " + v.getVertexLabel() + " was not found.");
+		}
+		final PK srcPK = sTable.getPk();
+		Connection conn = connManager.getSourceConnection(); //NOPMD
+		try {
+			final DBExportHelper expHelper = getSrcDBExportHelper();
+			CUBRIDExportHelper graphExHelper = (CUBRIDExportHelper) expHelper;
+			PK pk = graphExHelper.supportFastSearchWithPK(conn) ? srcPK : null;
+			newRecordProcessor.startExportTable(v.getVertexLabel());
+			List<Record> records = new ArrayList<Record>();
+			long totalExported = 0L;
+			long intPageCount = config.getPageFetchCount();
+			String sql = graphExHelper.getGraphSelectSQL(v);
+			while (true) {
+				if (interrupted) {
+					return;
+				}
+				long realPageCount = intPageCount;
+				if (!config.isImplicitEstimate()) {
+					realPageCount = Math.min(sTable.getTableRowCount() - totalExported,
+							intPageCount);
+				}
+				String pagesql = graphExHelper.getPagedSelectSQL(sql, realPageCount, totalExported, pk);
+				if (LOG.isDebugEnabled()) {
+					LOG.debug("[SQL]PAGINATED=" + pagesql);
+				}
+				long recordCountOfQuery = graphHandleSQL(conn, pagesql, v, sTable,
+						records, newRecordProcessor);
+				totalExported = totalExported + recordCountOfQuery;
+				//Stop fetching condition: no result;less then fetching count;great then total count
+				if (isLatestPage(sTable, totalExported, recordCountOfQuery)) {
+					break;
+				}
+			}
+			if (!records.isEmpty()) {
+				newRecordProcessor.processRecords(v.getVertexLabel(), records);
+			}
+		} finally {
+			newRecordProcessor.endExportTable(v.getVertexLabel());
+			connManager.closeSrc(conn);
+		}
+	}
+
+	protected long graphHandleSQL(Connection conn, String sql, Vertex vextex, Table sTable, List<Record> records,
+			RecordExportedListener newRecsHandler) {
+		JDBCObjContainer joc = new JDBCObjContainer();
+		joc.setConn(conn);
+		try {
+			long totalExported = 0;
+			//Execute SQL with retry
+			joc = getResultSet(sql, null, joc);
+			if (joc.getRs() == null) {
+				return totalExported;
+			}
+			while (nextRecord(joc.getRs())) {
+				if (interrupted) {
+					return totalExported;
+				}
+				totalExported++;
+				Record record = createGraphNewRecord(sTable, vextex.getColumnList(), joc.getRs());
+				if (record == null) {
+					continue;
+				}
+				records.add(record);
+				handleGraphCommit(vextex, newRecsHandler, sTable, records);
+			}
+			return totalExported;
+		} finally {
+			Closer.close(joc.getRs());
+			Closer.close(joc.getStmt());
+		}
+	}
+	
+	protected Record createGraphNewRecord(Table st, List<Column> cols, ResultSet rs) {
+		try {
+			Record record = new Record();
+			final DBExportHelper srcDBExportHelper = getSrcDBExportHelper();
+			for (int ci = 1; ci <= cols.size(); ci++) {
+				Column cc = cols.get(ci - 1);
+				if (cc.getSupportGraphDataType()) {
+					Column sCol = st.getColumnByName(cc.getName());
+//					System.out.println(sCol.getName() + " : " + sCol.getDataType() 
+//							+ "|" + sCol.getGraphDataType());
+					Object value = srcDBExportHelper.getJdbcObject(rs, sCol);
+					record.addColumnValue(sCol, value);
+				} else {
+//					System.out.println("not support " + cc.getName() + " : " + cc.getDataType() 
+//							+ "|" + cc.getGraphDataType());
+
+				}
+			}
+			return record;
+		} catch (NormalMigrationException e) {
+			LOG.error("", e);
+			eventHandler.handleEvent(new MigrationErrorEvent(e));
+		} catch (SQLException e) {
+			LOG.error("", e);
+			eventHandler.handleEvent(new MigrationErrorEvent(new NormalMigrationException(
+					"Transform table [" + st.getName() + "] record error.", e)));
+		} catch (Exception e) {
+			LOG.error("", e);
+			eventHandler.handleEvent(new MigrationErrorEvent(new NormalMigrationException(
+					"Transform table [" + st.getName() + "] record error.", e)));
+		}
+		return null;
+	}
+	
+	protected void handleGraphCommit(Vertex v, RecordExportedListener newRecordProcessor,
+			Table sTable, List<Record> records) {
+		//Watching memory to avoid out of memory errors
+		int status = MigrationStatusManager.STATUS_WAITING;
+		int counter = 0;
+		while (true) {
+			status = msm.isCommitNow(sTable.getName(), records.size(), config.getCommitCount());
+			if (status == MigrationStatusManager.STATUS_WAITING) {
+				ThreadUtils.threadSleep(1000, null);
+				counter++;
+			} else {
+				break;
+			}
+			if (counter >= 10) {
+				status = MigrationStatusManager.STATUS_COMMIT;
+				break;
+			}
+		}
+		if (MigrationStatusManager.STATUS_COMMIT == status) {
+			newRecordProcessor.processRecords(v.getVertexLabel(), records);
+			// After records processed, clear it.
+			records.clear();
+		}
 	}
 }

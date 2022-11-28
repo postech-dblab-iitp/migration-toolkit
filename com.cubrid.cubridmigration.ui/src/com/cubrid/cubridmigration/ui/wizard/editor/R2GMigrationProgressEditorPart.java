@@ -62,7 +62,7 @@ import com.cubrid.cubridmigration.core.dbtype.DatabaseType;
 import com.cubrid.cubridmigration.core.engine.IMigrationMonitor;
 import com.cubrid.cubridmigration.core.engine.ThreadUtils;
 import com.cubrid.cubridmigration.core.engine.config.MigrationConfiguration;
-import com.cubrid.cubridmigration.core.engine.event.ExportRecordsEvent;
+import com.cubrid.cubridmigration.core.engine.event.ExportGraphRecordEvent;
 import com.cubrid.cubridmigration.core.engine.event.ImportRecordsEvent;
 import com.cubrid.cubridmigration.core.engine.event.MigrationEvent;
 import com.cubrid.cubridmigration.ui.MigrationUIPlugin;
@@ -451,8 +451,17 @@ public class R2GMigrationProgressEditorPart extends
 	 * @param event MigrationEvent
 	 */
 	protected void updateExportedCountInTableViewer(MigrationEvent event) {
-		ExportRecordsEvent ere = (ExportRecordsEvent) event;
-		String[] item = controller.updateTableExpData(ere.getSourceTable().getOwner(), ere.getSourceTable().getName(),
+		ExportGraphRecordEvent ere = (ExportGraphRecordEvent) event;
+		String owner, name;
+		if (ere.getVertex() != null) {
+			owner = ere.getVertex().getOwner();
+			name = ere.getVertex().getVertexLabel();
+		} else {
+			owner = ere.getEdge().getOwner();
+			name = ere.getEdge().getEdgeLabel();
+		}
+		
+		String[] item = controller.updateTableExpData(owner, name,
 				ere.getRecordCount());
 		tvProgress.refresh(item);
 	}

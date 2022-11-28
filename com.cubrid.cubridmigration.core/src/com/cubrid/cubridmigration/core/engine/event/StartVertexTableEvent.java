@@ -27,62 +27,39 @@
  * OF SUCH DAMAGE. 
  *
  */
-package com.cubrid.cubridmigration.core.engine.exporter;
+package com.cubrid.cubridmigration.core.engine.event;
 
-import com.cubrid.cubridmigration.core.dbobject.DBObject;
-import com.cubrid.cubridmigration.core.engine.RecordExportedListener;
-import com.cubrid.cubridmigration.core.engine.config.SourceTableConfig;
 import com.cubrid.cubridmigration.graph.dbobj.Vertex;
 
-/**
- * IMigrationExporter Description
- * 
- * @author Kevin Cao
- * @version 1.0 - 2011-8-9 created by Kevin Cao
- */
-public interface IMigrationExporter {
+public class StartVertexTableEvent extends
+		MigrationEvent {
+
+	private final Vertex vertex;
+
+	public StartVertexTableEvent(Vertex v) {
+		vertex = v;
+	}
+
+	public Vertex getVertex() {
+		return vertex;
+	}
 
 	/**
-	 * Export table records
+	 * To String
 	 * 
-	 * @param st SourceTableConfig
-	 * @param oneNewRecord RecordExportedListener
+	 * @return String
 	 */
-	public void exportTableRecords(SourceTableConfig st,
-			RecordExportedListener oneNewRecord);
+	public String toString() {
+		return "Begin to export records of table for GraphDB [" + vertex.getVertexLabel()
+				+ "].";
+	}
 
 	/**
-	 * Export all tables
+	 * The event's importance level
 	 * 
-	 * @param oneNewRecord RecordExportedListener
+	 * @return level
 	 */
-	public void exportAllRecords(RecordExportedListener oneNewRecord);
-
-	/**
-	 * Default return schema's DDL
-	 * 
-	 * @param ft function name with schema name :schema.function
-	 * @return schema's DDL
-	 */
-	public DBObject exportFunction(String ft);
-
-	/**
-	 * Default return schema's DDL
-	 * 
-	 * @param pd procedure name with schema name :schema.procedure
-	 * @return schema's DDL
-	 */
-	public DBObject exportProcedure(String pd);
-
-	/**
-	 * Default return schema's DDL
-	 * 
-	 * @param tg trigger name with schema name :schema.tigger
-	 * @return schema's DDL
-	 */
-	public DBObject exportTrigger(String tg);
-	
-	public void exportGraphVertexRecords(Vertex v, 
-			RecordExportedListener oneNewRecord);
-	
+	public int getLevel() {
+		return 2;
+	}
 }

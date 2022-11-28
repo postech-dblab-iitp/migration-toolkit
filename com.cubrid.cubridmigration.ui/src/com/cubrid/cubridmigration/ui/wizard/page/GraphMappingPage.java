@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.eclipse.jface.dialogs.PageChangedEvent;
 import org.eclipse.jface.viewers.ColumnWeightData;
-import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredContentProvider;

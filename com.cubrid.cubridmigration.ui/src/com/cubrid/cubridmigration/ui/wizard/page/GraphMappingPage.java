@@ -312,7 +312,8 @@ public class GraphMappingPage extends MigrationWizardPage {
 				switch (columnIndex) {
 				case 0:
 					return column.getName();
-					
+				case 1:
+				    return column.getGraphDataType();
 				default:
 					return null;
 				}

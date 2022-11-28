@@ -425,7 +425,6 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 					gdbDict.addMigratedEdgeList(edge);
 				}
 			}
-			
 		}
 	}
 	
@@ -546,6 +545,7 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 			edge.setStartVertexName(table.getName());
 			edge.setEndVertexName(table.getName());
 			edge.setEdgeType(Edge.RECURSIVE_TYPE);
+			edge.setEdgeLabel(table.getName());
 			
 			Vertex vertex = gdbDict.getMigratedVertexByName(table.getName());
 			

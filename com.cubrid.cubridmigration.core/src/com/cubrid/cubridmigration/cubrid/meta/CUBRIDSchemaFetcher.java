@@ -76,6 +76,7 @@ import com.cubrid.cubridmigration.core.export.DBExportHelper;
 import com.cubrid.cubridmigration.cubrid.CUBRIDDataTypeHelper;
 import com.cubrid.cubridmigration.cubrid.CUBRIDSQLHelper;
 import com.cubrid.cubridmigration.cubrid.dbobj.CUBRIDTrigger;
+import com.cubrid.cubridmigration.graph.GraphDataTypeHelper;
 
 /**
  * 
@@ -104,6 +105,7 @@ public final class CUBRIDSchemaFetcher extends
 			+ " ORDER BY a.class_name, c.class_type, a.def_order";
 
 	private CUBRIDDataTypeHelper cubDTHelper = CUBRIDDataTypeHelper.getInstance(null);
+	private GraphDataTypeHelper graphDTHelper = GraphDataTypeHelper.getInstance(null);
 
 	/**
 	 * Retrieves the lower case of type, and some type may be changed into stand
@@ -460,6 +462,8 @@ public final class CUBRIDSchemaFetcher extends
 					column.setDataType(standardDataType);
 					column.setJdbcIDOfDataType(cubDTHelper.getCUBRIDDataTypeID(standardDataType));
 				}
+				column.setGraphDataType(graphDTHelper.getGraphDataType(column.getDataType()));
+				column.setSupportGraphDataType(graphDTHelper.SupportDataType(column.getDataType()));
 				column.setPrecision(prec);
 				column.setScale(scale);
 
@@ -882,6 +886,8 @@ public final class CUBRIDSchemaFetcher extends
 					column.setDataType(standardDataType);
 					column.setJdbcIDOfDataType(cubDTHelper.getCUBRIDDataTypeID(standardDataType));
 				}
+				column.setGraphDataType(graphDTHelper.getGraphDataType(column.getDataType()));
+				column.setSupportGraphDataType(graphDTHelper.SupportDataType(column.getDataType()));
 
 				column.setPrecision(prec);
 				column.setScale(scale);

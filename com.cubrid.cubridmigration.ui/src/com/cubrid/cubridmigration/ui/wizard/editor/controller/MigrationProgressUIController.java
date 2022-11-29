@@ -70,6 +70,7 @@ import com.cubrid.cubridmigration.core.engine.event.ImportSQLsEvent;
 import com.cubrid.cubridmigration.core.engine.event.MigrationErrorEvent;
 import com.cubrid.cubridmigration.core.engine.event.MigrationEvent;
 import com.cubrid.cubridmigration.cubrid.CUBRIDTimeUtil;
+import com.cubrid.cubridmigration.graph.dbobj.Vertex;
 import com.cubrid.cubridmigration.ui.database.SchemaFetcherWithProgress;
 import com.cubrid.cubridmigration.ui.history.MigrationReporter;
 import com.cubrid.cubridmigration.ui.message.Messages;
@@ -239,6 +240,11 @@ public class MigrationProgressUIController {
 	 * @return the progress table viewer's input date
 	 */
 	public String[][] getProgressTableInput() {
+		//For GraphDB
+		if (config.getDestType() == MigrationConfiguration.DEST_GRAPH) {
+			return getGraphProgressTableInput();
+		}
+		
 		List<SourceTableConfig> expStcs = new ArrayList<SourceTableConfig>();
 		expStcs.addAll(config.getExpEntryTableCfg());
 		expStcs.addAll(config.getExpSQLCfg());
@@ -258,6 +264,29 @@ public class MigrationProgressUIController {
 			}
 			index++;
 		}
+		return tableItems;
+	}
+	
+	private String[][] getGraphProgressTableInput() {
+		List<Vertex> expStcs = new ArrayList<Vertex>();
+		expStcs.addAll(config.getGraphDictionary().getMigratedVertexList());
+		int index = 0;
+		tableItems = new String[expStcs.size()][6];
+		for (Vertex v : expStcs) {
+			Table tbl = config.getSrcTableSchema(v.getOwner(), v.getVertexLabel());
+			if (config.isImplicitEstimate()) {
+				tableItems[index] = new String[] {v.getVertexLabel(), NA_STRING, NA_STRING, NA_STRING,
+						NA_STRING, v.getOwner()};
+			} else if (tbl == null || tbl.getTableRowCount() == 0) {
+				tableItems[index] = new String[] {v.getVertexLabel(), NA_STRING, NA_STRING, NA_STRING,
+						NA_STRING, v.getOwner()};
+			} else {
+				tableItems[index] = new String[] {v.getVertexLabel(),
+						String.valueOf(tbl.getTableRowCount()), "0", "0", "0%", v.getOwner()};
+			}
+			index++;
+		}
+		
 		return tableItems;
 	}
 

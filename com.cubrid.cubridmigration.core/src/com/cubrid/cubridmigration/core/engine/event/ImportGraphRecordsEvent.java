@@ -95,7 +95,7 @@ public class ImportGraphRecordsEvent extends
 			tableName = edge.getEdgeLabel();
 		}
 		if (recordCount == 0) {
-			return "No record of table [" + tableName + "] to be imported.";
+			return "No record of table [" + tableName + "] for GraphDB to be imported.";
 		}
 		StringBuffer sb = new StringBuffer();
 

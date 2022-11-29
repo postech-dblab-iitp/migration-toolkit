@@ -58,11 +58,11 @@ public class GraphEdgeExportTask extends
 		exporter.exportGraphEdgeRecords(edge, new RecordExportedListener() {
 			public void processRecords(String sourceTableName, List<Record> records) {
 				eventHandler.handleEvent(new ExportGraphRecordEvent(edge, edge.getFKColumnList().size()));
-				ImportTask task = taskFactory.createImportEdgeRecordsTask(edge, null);
+				ImportTask task = taskFactory.createImportEdgeRecordsTask(edge);
 
 				importTaskExecutor = mrManager.getImportRecordExecutor();
 				importTaskExecutor.execute((Runnable) task);
-				mrManager.getStatusMgr().addExpCount(null, edge.getEdgeLabel(), records.size());
+				mrManager.getStatusMgr().addExpCount(null, edge.getEdgeLabel(), 0);
 			}
 
 			public void startExportTable(String tableName) {

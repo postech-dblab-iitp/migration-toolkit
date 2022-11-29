@@ -135,6 +135,11 @@ public class MigrationTasksScheduler {
 		await();
 		createGrephStep4();
 		await();
+		createGrephStep5();
+		createGrephStep6();
+		createGrephStep7();
+		createGrephStep8();
+		await();
 	}
 	
 	/**
@@ -511,6 +516,7 @@ public class MigrationTasksScheduler {
 		MigrationConfiguration config = context.getConfig();
 		GraphDictionary gdict = config.getGraphDictionary();
 		List<Vertex> migratedVertexList = gdict.getMigratedVertexList();
+		List<Edge> migratedEdgeList = gdict.getMigratedEdgeList();
 		
 		for ( Vertex v: migratedVertexList) {
 			if (v.getVertexType() == Vertex.SECOND_TYPE) {
@@ -520,11 +526,12 @@ public class MigrationTasksScheduler {
 			}
 		}
 		
-//		for ( Edge e : migratedEdgeList) {
-//			if (e.getEdgeType() == Edge.SECOND_FK_TYPE) {
-//				executeTask2(taskFactory.GraphEdgeExportTask(e));
-//			}
-//		}
+		for ( Edge e : migratedEdgeList) {
+			if (!e.isHavePKStartVertex()
+					&& e.getEdgeType() == Edge.SECOND_FK_TYPE) {
+				executeTask2(taskFactory.GraphEdgeExportTask(e));
+			}
+		}
 		
 	}
 	
@@ -532,6 +539,7 @@ public class MigrationTasksScheduler {
 		MigrationConfiguration config = context.getConfig();
 		GraphDictionary gdict = config.getGraphDictionary();
 		List<Vertex> migratedVertexList = gdict.getMigratedVertexList();
+		List<Edge> migratedEdgeList = gdict.getMigratedEdgeList();
 		
 		for ( Vertex v: migratedVertexList) {
 			if (v.getVertexType() == Vertex.INTERMEDIATE_TYPE) {
@@ -541,6 +549,70 @@ public class MigrationTasksScheduler {
 			}
 		}
 		
+		for ( Edge e : migratedEdgeList) {
+			if (!e.isHavePKStartVertex()
+					&& e.getEdgeType() == Edge.INTERMEDIATE_FK_TYPE) {
+				executeTask2(taskFactory.GraphEdgeExportTask(e));
+			}
+		}
+	}
+	
+	protected void createGrephStep5() {
+		MigrationConfiguration config = context.getConfig();
+		GraphDictionary gdict = config.getGraphDictionary();
+		List<Edge> migratedEdgeList = gdict.getMigratedEdgeList();
+		
+		for ( Edge e : migratedEdgeList) {
+			if (e.isHavePKStartVertex()
+					&& e.getEdgeType() == Edge.SECOND_FK_TYPE) {
+				executeTask2(taskFactory.GraphEdgeExportTask(e));
+			}
+		}
+	}
+	
+	protected void createGrephStep6() {
+		MigrationConfiguration config = context.getConfig();
+		GraphDictionary gdict = config.getGraphDictionary();
+		List<Edge> migratedEdgeList = gdict.getMigratedEdgeList();
+		
+		for ( Edge e : migratedEdgeList) {
+			if (e.isHavePKStartVertex()
+					&& e.getEdgeType() == Edge.INTERMEDIATE_FK_TYPE) {
+				executeTask2(taskFactory.GraphEdgeExportTask(e));
+			}
+		}
+	}
+	
+	protected void createGrephStep7() {
+		MigrationConfiguration config = context.getConfig();
+		GraphDictionary gdict = config.getGraphDictionary();
+		List<Edge> migratedEdgeList = gdict.getMigratedEdgeList();
+		
+		for ( Edge e : migratedEdgeList) {
+			if ( e.getEdgeType() == Edge.JOINTABLE_TYPE) {
+				executeTask2(taskFactory.GraphEdgeExportTask(e));
+			}
+		}
+	}
+	
+	protected void createGrephStep8() {
+		MigrationConfiguration config = context.getConfig();
+		GraphDictionary gdict = config.getGraphDictionary();
+		List<Vertex> migratedVertexList = gdict.getMigratedVertexList();
+		List<Edge> migratedEdgeList = gdict.getMigratedEdgeList();
+		
+		
+		for ( Vertex v: migratedVertexList) {
+			if (v.getVertexType() == Vertex.RECURSIVE_TYPE) {
+				executeTask2(taskFactory.createVertexExportTask(v));
+			}
+		}
+		
+		for ( Edge e : migratedEdgeList) {
+			if ( e.getEdgeType() == Edge.RECURSIVE_TYPE) {
+				executeTask2(taskFactory.GraphEdgeExportTask(e));
+			}
+		}
 	}
 	
 	/**

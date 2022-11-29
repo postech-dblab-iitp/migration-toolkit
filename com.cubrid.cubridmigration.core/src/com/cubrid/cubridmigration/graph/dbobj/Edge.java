@@ -37,6 +37,8 @@ public class Edge {
 	private int edgeType = NONE;
 	private String owner;
 	
+	boolean isHavePKStartVertex = false;
+	
 	public Edge() {
 	}
 	
@@ -127,5 +129,13 @@ public class Edge {
 	
 	public List<String> getFKColumnList() {
 		return fkColumnList;
+	}
+	
+	public void setHavePKStartVertex(boolean haved) {
+	    this.isHavePKStartVertex = haved;
+	}
+	
+	public boolean isHavePKStartVertex() {
+	    return this.isHavePKStartVertex;
 	}
 }

@@ -33,18 +33,10 @@ import com.cubrid.cubridmigration.core.engine.config.SourceTableConfig;
 import com.cubrid.cubridmigration.graph.dbobj.Edge;
 import com.cubrid.cubridmigration.graph.dbobj.Vertex;
 
-/**
- * 
- * MigrationCreateObjectEvent Description
- * 
- * @author Kevin Cao
- * @version 1.0 - 2011-8-11 created by Kevin Cao
- */
 public class ImportGraphRecordsEvent extends
 		MigrationEvent implements
 		IMigrateDataErrorEvent {
 
-	private final SourceTableConfig sourceTable;
 	private final Vertex vertex;
 	private final Edge edge;
 	private final int recordCount;
@@ -52,29 +44,7 @@ public class ImportGraphRecordsEvent extends
 	private final Throwable error;
 	private final String errorFile;
 
-	public ImportGraphRecordsEvent(SourceTableConfig tt, int recordCount) {
-		this.sourceTable = tt;
-		this.recordCount = recordCount;
-		this.success = true;
-		this.error = null;
-		this.errorFile = null;
-		this.vertex = null;
-		this.edge = null;
-	}
-
-	public ImportGraphRecordsEvent(SourceTableConfig tt, int recordCount,
-			Exception error, String errorFile) {
-		this.sourceTable = tt;
-		this.recordCount = recordCount;
-		this.success = false;
-		this.error = error;
-		this.errorFile = errorFile;
-		this.vertex = null;
-		this.edge = null;
-	}
-	
 	public ImportGraphRecordsEvent(Vertex v, Edge e, int recordCount) {
-		this.sourceTable = null;
 		this.recordCount = recordCount;
 		this.success = true;
 		this.error = null;
@@ -85,7 +55,6 @@ public class ImportGraphRecordsEvent extends
 	
 	public ImportGraphRecordsEvent(Vertex v, Edge e, int recordCount, 
 			Exception error, String errorFile) {
-		this.sourceTable = null;
 		this.recordCount = recordCount;
 		this.success = true;
 		this.error = error;
@@ -94,10 +63,6 @@ public class ImportGraphRecordsEvent extends
 		this.edge = e;
 	}
 
-	public SourceTableConfig getSourceTable() {
-		return sourceTable;
-	}
-	
 	public Vertex getVertex() {
 		return vertex;
 	}
@@ -123,19 +88,21 @@ public class ImportGraphRecordsEvent extends
 	 * @return String
 	 */
 	public String toString() {
+		String tableName = "";
+		if (vertex != null) {
+			tableName = vertex.getVertexLabel();
+		} else if (edge != null){
+			tableName = edge.getEdgeLabel();
+		}
 		if (recordCount == 0) {
-			return "No record of table [" + sourceTable.getTarget()
-					+ "] to be imported.";
+			return "No record of table [" + tableName + "] to be imported.";
 		}
 		StringBuffer sb = new StringBuffer();
 
 		String name = "";
 		String target = "";
 		
-		if (sourceTable != null) {
-			name = sourceTable.getName();
-			target = sourceTable.getTarget();
-		} else if (vertex != null) {
+		if (vertex != null) {
 			name = vertex.getVertexLabel() + "(type" + vertex.getVertexType() + ")";
 			target = vertex.getVertexLabel();
 		} else if (edge != null) {

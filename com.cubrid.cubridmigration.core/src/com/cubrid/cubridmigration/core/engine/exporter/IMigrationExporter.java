@@ -32,6 +32,7 @@ package com.cubrid.cubridmigration.core.engine.exporter;
 import com.cubrid.cubridmigration.core.dbobject.DBObject;
 import com.cubrid.cubridmigration.core.engine.RecordExportedListener;
 import com.cubrid.cubridmigration.core.engine.config.SourceTableConfig;
+import com.cubrid.cubridmigration.graph.dbobj.Edge;
 import com.cubrid.cubridmigration.graph.dbobj.Vertex;
 
 /**
@@ -85,4 +86,6 @@ public interface IMigrationExporter {
 	public void exportGraphVertexRecords(Vertex v, 
 			RecordExportedListener oneNewRecord);
 	
+	public void exportGraphEdgeRecords(Edge e, 
+			RecordExportedListener oneNewRecord);
 }

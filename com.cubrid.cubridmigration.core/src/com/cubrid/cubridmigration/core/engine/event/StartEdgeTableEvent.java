@@ -27,45 +27,39 @@
  * OF SUCH DAMAGE. 
  *
  */
-package com.cubrid.cubridmigration.core.engine.task.exp;
+package com.cubrid.cubridmigration.core.engine.event;
 
-import com.cubrid.cubridmigration.core.dbobject.FK;
-import com.cubrid.cubridmigration.core.dbobject.Table;
-import com.cubrid.cubridmigration.core.engine.config.MigrationConfiguration;
-import com.cubrid.cubridmigration.core.engine.config.SourceTableConfig;
-import com.cubrid.cubridmigration.core.engine.task.ExportTask;
+import com.cubrid.cubridmigration.graph.dbobj.Edge;
 
-/**
- * 
- * FKExportTask Description
- * 
- * @author Kevin Cao
- * @version 1.0 - 2011-8-10 created by Kevin Cao
- */
-public class FKExportTask extends
-		ExportTask {
-	protected MigrationConfiguration config;
-	protected SourceTableConfig sourceTableConfig;
+public class StartEdgeTableEvent extends
+		MigrationEvent {
 
-	public FKExportTask(MigrationConfiguration config, SourceTableConfig tf) {
-		this.config = config;
-		this.sourceTableConfig = tf;
+	private final Edge edge;
+
+	public StartEdgeTableEvent(Edge e) {
+		edge = e;
+	}
+
+	public Edge getEdge() {
+		return edge;
 	}
 
 	/**
-	 * Execute export operation
+	 * To String
 	 * 
+	 * @return String
 	 */
-	protected void executeExportTask() {
-		Table tt = config.getTargetTableSchema(sourceTableConfig.getTarget());
-		
-		if (tt == null) {
-			return;
-		}
-		
-		for (FK fk : tt.getFks()) {
-			importTaskExecutor.execute((Runnable) taskFactory.createImportFKTask(fk));
-		}
+	public String toString() {
+		return "Begin to export records of table[" + edge.getEdgeLabel()
+				+ "].";
 	}
 
+	/**
+	 * The event's importance level
+	 * 
+	 * @return level
+	 */
+	public int getLevel() {
+		return 2;
+	}
 }

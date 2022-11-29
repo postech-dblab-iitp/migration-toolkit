@@ -51,6 +51,7 @@ import com.cubrid.cubridmigration.core.engine.config.SourceViewConfig;
 import com.cubrid.cubridmigration.core.engine.exception.BreakMigrationException;
 import com.cubrid.cubridmigration.core.engine.task.IMigrationTask;
 import com.cubrid.cubridmigration.core.engine.task.MigrationTaskFactory;
+import com.cubrid.cubridmigration.graph.dbobj.Edge;
 import com.cubrid.cubridmigration.graph.dbobj.GraphDictionary;
 import com.cubrid.cubridmigration.graph.dbobj.Vertex;
 
@@ -125,7 +126,14 @@ public class MigrationTasksScheduler {
 	}
 
 	private void greaphSchedule() {
+		
 		createGrephStep1();
+		await();
+		createGrephStep2();
+		await();
+		createGrephStep3();
+		await();
+		createGrephStep4();
 		await();
 	}
 	
@@ -483,6 +491,58 @@ public class MigrationTasksScheduler {
 			}
 		}
 	}
+	
+	protected void createGrephStep2() {
+		MigrationConfiguration config = context.getConfig();
+		GraphDictionary gdict = config.getGraphDictionary();
+		List<Vertex> migratedVertexList = gdict.getMigratedVertexList();
+		
+		for ( Vertex v: migratedVertexList) {
+			if (v.getVertexType() == Vertex.FIRST_TYPE) {
+				if (!v.getHasPK()) {
+					executeTask2(taskFactory.createVertexExportTask(v));
+				}
+			}
+		}
+		
+	}
+	
+	protected void createGrephStep3() {
+		MigrationConfiguration config = context.getConfig();
+		GraphDictionary gdict = config.getGraphDictionary();
+		List<Vertex> migratedVertexList = gdict.getMigratedVertexList();
+		
+		for ( Vertex v: migratedVertexList) {
+			if (v.getVertexType() == Vertex.SECOND_TYPE) {
+				if (!v.getHasPK()) {
+					executeTask2(taskFactory.createVertexExportTask(v));
+				}
+			}
+		}
+		
+//		for ( Edge e : migratedEdgeList) {
+//			if (e.getEdgeType() == Edge.SECOND_FK_TYPE) {
+//				executeTask2(taskFactory.GraphEdgeExportTask(e));
+//			}
+//		}
+		
+	}
+	
+	protected void createGrephStep4() {
+		MigrationConfiguration config = context.getConfig();
+		GraphDictionary gdict = config.getGraphDictionary();
+		List<Vertex> migratedVertexList = gdict.getMigratedVertexList();
+		
+		for ( Vertex v: migratedVertexList) {
+			if (v.getVertexType() == Vertex.INTERMEDIATE_TYPE) {
+				if (!v.getHasPK()) {
+					executeTask2(taskFactory.createVertexExportTask(v));
+				}
+			}
+		}
+		
+	}
+	
 	/**
 	 * Append update sql for updating statistics of all indexes
 	 */

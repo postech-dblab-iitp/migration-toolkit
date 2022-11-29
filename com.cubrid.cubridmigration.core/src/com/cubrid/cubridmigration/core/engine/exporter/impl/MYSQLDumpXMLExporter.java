@@ -49,6 +49,7 @@ import com.cubrid.cubridmigration.core.engine.event.MigrationErrorEvent;
 import com.cubrid.cubridmigration.core.engine.exception.BreakMigrationException;
 import com.cubrid.cubridmigration.core.engine.exporter.MigrationExporter;
 import com.cubrid.cubridmigration.core.io.RmInvalidXMLCharReader;
+import com.cubrid.cubridmigration.graph.dbobj.Edge;
 import com.cubrid.cubridmigration.graph.dbobj.Vertex;
 
 /**
@@ -300,4 +301,8 @@ public class MYSQLDumpXMLExporter extends
 		
 	}
 
+	public void exportGraphEdgeRecords(Edge e,
+			RecordExportedListener oneNewRecord) {
+		
+	}
 }

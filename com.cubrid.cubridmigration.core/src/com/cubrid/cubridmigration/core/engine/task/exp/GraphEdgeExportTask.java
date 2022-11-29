@@ -29,43 +29,53 @@
  */
 package com.cubrid.cubridmigration.core.engine.task.exp;
 
-import com.cubrid.cubridmigration.core.dbobject.FK;
-import com.cubrid.cubridmigration.core.dbobject.Table;
-import com.cubrid.cubridmigration.core.engine.config.MigrationConfiguration;
-import com.cubrid.cubridmigration.core.engine.config.SourceTableConfig;
+import java.util.List;
+
+import com.cubrid.cubridmigration.core.dbobject.Record;
+import com.cubrid.cubridmigration.core.engine.MigrationContext;
+import com.cubrid.cubridmigration.core.engine.RecordExportedListener;
+import com.cubrid.cubridmigration.core.engine.event.ExportGraphRecordEvent;
+import com.cubrid.cubridmigration.core.engine.event.StartEdgeTableEvent;
 import com.cubrid.cubridmigration.core.engine.task.ExportTask;
+import com.cubrid.cubridmigration.core.engine.task.ImportTask;
+import com.cubrid.cubridmigration.graph.dbobj.Edge;
 
-/**
- * 
- * FKExportTask Description
- * 
- * @author Kevin Cao
- * @version 1.0 - 2011-8-10 created by Kevin Cao
- */
-public class FKExportTask extends
+public class GraphEdgeExportTask extends
 		ExportTask {
-	protected MigrationConfiguration config;
-	protected SourceTableConfig sourceTableConfig;
 
-	public FKExportTask(MigrationConfiguration config, SourceTableConfig tf) {
-		this.config = config;
-		this.sourceTableConfig = tf;
+	protected Edge edge;
+	protected final MigrationContext mrManager;
+
+	public GraphEdgeExportTask(MigrationContext mrManager, Edge e) {
+		this.mrManager = mrManager;
+		this.edge = e;
 	}
 
 	/**
-	 * Execute export operation
-	 * 
+	 * Export source table's records
 	 */
 	protected void executeExportTask() {
-		Table tt = config.getTargetTableSchema(sourceTableConfig.getTarget());
-		
-		if (tt == null) {
-			return;
-		}
-		
-		for (FK fk : tt.getFks()) {
-			importTaskExecutor.execute((Runnable) taskFactory.createImportFKTask(fk));
-		}
+		exporter.exportGraphEdgeRecords(edge, new RecordExportedListener() {
+			public void processRecords(String sourceTableName, List<Record> records) {
+				eventHandler.handleEvent(new ExportGraphRecordEvent(edge, edge.getFKColumnList().size()));
+				ImportTask task = taskFactory.createImportEdgeRecordsTask(edge, null);
+
+				importTaskExecutor = mrManager.getImportRecordExecutor();
+				importTaskExecutor.execute((Runnable) task);
+				mrManager.getStatusMgr().addExpCount(null, edge.getEdgeLabel(), records.size());
+			}
+
+			public void startExportTable(String tableName) {
+				eventHandler.handleEvent(new StartEdgeTableEvent(edge));
+			}
+
+			public void endExportTable(String tableName) {
+				mrManager.getStatusMgr().setExpFinished(null, edge.getEdgeLabel());
+			}
+		});
 	}
 
+	public Edge getEdge() {
+		return edge;
+	}
 }

@@ -27,45 +27,37 @@
  * OF SUCH DAMAGE. 
  *
  */
-package com.cubrid.cubridmigration.core.engine.task.exp;
+package com.cubrid.cubridmigration.core.engine.task.imp;
 
-import com.cubrid.cubridmigration.core.dbobject.FK;
-import com.cubrid.cubridmigration.core.dbobject.Table;
-import com.cubrid.cubridmigration.core.engine.config.MigrationConfiguration;
-import com.cubrid.cubridmigration.core.engine.config.SourceTableConfig;
-import com.cubrid.cubridmigration.core.engine.task.ExportTask;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.cubrid.cubridmigration.core.dbobject.Record;
+import com.cubrid.cubridmigration.core.engine.task.ImportTask;
+import com.cubrid.cubridmigration.graph.dbobj.Edge;
 
 /**
- * 
- * FKExportTask Description
+ * RecordImportTask responses to import records.
  * 
  * @author Kevin Cao
- * @version 1.0 - 2011-8-10 created by Kevin Cao
+ * @version 1.0 - 2011-8-5 created by Kevin Cao
  */
-public class FKExportTask extends
-		ExportTask {
-	protected MigrationConfiguration config;
-	protected SourceTableConfig sourceTableConfig;
+public class GraphEdgeImportTask extends
+		ImportTask {
 
-	public FKExportTask(MigrationConfiguration config, SourceTableConfig tf) {
-		this.config = config;
-		this.sourceTableConfig = tf;
+	private final Edge edge;
+	private final List<Record> records;
+
+	public GraphEdgeImportTask(Edge e, List<Record> records) {
+		this.edge = e;
+		this.records = new ArrayList<Record>(records);
 	}
 
 	/**
-	 * Execute export operation
+	 * Execute import operation
 	 * 
 	 */
-	protected void executeExportTask() {
-		Table tt = config.getTargetTableSchema(sourceTableConfig.getTarget());
-		
-		if (tt == null) {
-			return;
-		}
-		
-		for (FK fk : tt.getFks()) {
-			importTaskExecutor.execute((Runnable) taskFactory.createImportFKTask(fk));
-		}
+	protected void executeImport() {
+		importer.importEdge(edge, records);
 	}
-
 }

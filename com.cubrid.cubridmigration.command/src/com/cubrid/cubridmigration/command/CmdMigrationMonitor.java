@@ -41,6 +41,7 @@ import com.cubrid.cubridmigration.core.engine.config.SourceEntryTableConfig;
 import com.cubrid.cubridmigration.core.engine.config.SourceSQLTableConfig;
 import com.cubrid.cubridmigration.core.engine.event.CreateObjectEvent;
 import com.cubrid.cubridmigration.core.engine.event.ImportCSVEvent;
+import com.cubrid.cubridmigration.core.engine.event.ImportGraphRecordsEvent;
 import com.cubrid.cubridmigration.core.engine.event.ImportRecordsEvent;
 import com.cubrid.cubridmigration.core.engine.event.ImportSQLsEvent;
 import com.cubrid.cubridmigration.core.engine.event.MigrationEvent;
@@ -166,7 +167,16 @@ public class CmdMigrationMonitor implements
 			if (!ev.isSuccess()) {
 				isError = true;
 			}
+		} else if (event instanceof ImportGraphRecordsEvent) {
+			final ImportGraphRecordsEvent ImportGraphRecordsEvent = (ImportGraphRecordsEvent) event;
+			if (ImportGraphRecordsEvent.isSuccess()) {
+				currentProgress = currentProgress
+						+ ImportGraphRecordsEvent.getRecordCount();
+			} else {
+				isError = true;
+			}
 		}
+		
 		hasError = isError;
 		boolean isNewLine = false;
 		if (event.getLevel() <= monitorMode) {

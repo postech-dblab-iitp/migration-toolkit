@@ -501,18 +501,12 @@ public class JDBCExporter extends
 			final DBExportHelper srcDBExportHelper = getSrcDBExportHelper();
 			for (int ci = 1; ci <= cols.size(); ci++) {
 				Column cc = cols.get(ci - 1);
-				if (cc.getSupportGraphDataType()) {
-					Column sCol = st.getColumnByName(cc.getName());
-					System.out.println(sCol.getName() + " : " + sCol.getDataType() 
-							+ "|" + sCol.getGraphDataType());
-					Object value = srcDBExportHelper.getJdbcObject(rs, sCol);
-					record.addColumnValue(sCol, value);
-				} else {
-					System.out.println("not support " + cc.getName() + " : " + cc.getDataType() 
-							+ "|" + cc.getGraphDataType());
-					return null;
-
+				if (!cc.getSupportGraphDataType()) {
+					continue;
 				}
+				Column sCol = st.getColumnByName(cc.getName());
+				Object value = srcDBExportHelper.getJdbcObject(rs, sCol);
+				record.addColumnValue(sCol, value);
 			}
 			return record;
 		} catch (NormalMigrationException e) {

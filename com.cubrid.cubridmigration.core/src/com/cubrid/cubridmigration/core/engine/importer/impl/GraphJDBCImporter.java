@@ -183,6 +183,15 @@ public class GraphJDBCImporter extends
 			try {
 				stmt = conn.prepareStatement(sql);
 
+				if (sql == null) {
+					try {
+						Exception e = new Exception("There is not a single supported column in the table.");
+						throw e;
+					} catch (Exception e) {
+						eventHandler.handleEvent(new SingleRecordErrorEvent(null, e));
+					}
+				}
+				
 				for (Record rc : records) {
 					if (rc == null) {
 						continue;
@@ -243,10 +252,16 @@ public class GraphJDBCImporter extends
 	}
 	
 	public String getTargetInsertVertex(Vertex v) {
+		int supportColumCount = 0;
 		StringBuffer Buf = new StringBuffer("CREATE (n: ").append(v.getVertexLabel()).append(" {");
 		List<Column> columns = v.getColumnList();
 		int len = columns.size();
 		for (int i = 0; i < len; i++) {
+			if (!columns.get(i).getSupportGraphDataType()) {
+				continue;
+			}
+			supportColumCount++;
+			
 			if (i > 0) {
 				Buf.append(", ");
 			}
@@ -255,6 +270,11 @@ public class GraphJDBCImporter extends
 			Buf.append(columnName).append(':');
 			Buf.append('?');
 		}
+		
+		if (supportColumCount == 0) {
+			return null;
+		}
+		
 		Buf.append("}");
 		Buf.append(")");
 		Buf.append(" return n");

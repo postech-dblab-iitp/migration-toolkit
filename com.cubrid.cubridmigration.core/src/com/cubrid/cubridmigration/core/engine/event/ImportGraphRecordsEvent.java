@@ -29,7 +29,6 @@
  */
 package com.cubrid.cubridmigration.core.engine.event;
 
-import com.cubrid.cubridmigration.core.engine.config.SourceTableConfig;
 import com.cubrid.cubridmigration.graph.dbobj.Edge;
 import com.cubrid.cubridmigration.graph.dbobj.Vertex;
 
@@ -107,14 +106,19 @@ public class ImportGraphRecordsEvent extends
 			target = vertex.getVertexLabel();
 		} else if (edge != null) {
 			name = edge.getEdgeLabel() + "(type" + edge.getEdgeType() + ")";
-			target = edge.getEdgeLabel();
+			target = edge.getStartVertexName();
 		} else {
 			return sb.append(" unsuccessfully. Error:").append(
 					error.getMessage()).toString();
 		}
 		
-		sb.append("Imported ").append(recordCount).append(" records from [")
-		.append(name).append("] to table [").append(target).append("]");
+		if (vertex != null) {
+			sb.append("Imported ").append(recordCount).append(" from [")
+			.append(target).append("] to Vertexs [").append(name).append("]");
+		} else {
+			sb.append("Imported ").append(recordCount).append(" from [")
+			.append(target).append("] to Edges [").append(name).append("]");
+		}
 		if (success) {
 			return sb.append(" successfully.").toString();
 		} else {

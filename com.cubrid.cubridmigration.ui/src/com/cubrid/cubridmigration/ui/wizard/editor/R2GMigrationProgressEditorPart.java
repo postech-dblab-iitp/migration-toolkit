@@ -72,20 +72,10 @@ import com.cubrid.cubridmigration.ui.message.Messages;
 import com.cubrid.cubridmigration.ui.script.MigrationScriptManager;
 import com.cubrid.cubridmigration.ui.wizard.editor.controller.MigrationProgressUIController;
 
-/**
- * MigrationProgressEditorPart responses to monitor the migration progress.
- * 
- * @author Kevin Cao
- * @version 1.0 - 2011-11-1 created by Kevin Cao
- */
 public class R2GMigrationProgressEditorPart extends
 		EditorPart implements
 		ISaveablePart2 {
-	/**
-	 * MigrationMonitor responses to monitor the progress of migration
-	 * 
-	 * @author Kevin Cao
-	 */
+
 	protected class MigrationMonitor implements
 			IMigrationMonitor {
 		private long startTime = 0;

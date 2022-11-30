@@ -62,12 +62,6 @@ import com.cubrid.cubridmigration.ui.message.Messages;
 import com.cubrid.cubridmigration.ui.preference.MigrationConfigPage;
 import com.cubrid.cubridmigration.ui.wizard.MigrationWizard;
 
-/**
- * 
- * new wizard step 5. Confirm Migration Settings
- * 
- * @author fulei,Kevin Cao
- */
 public class GraphConfirmationPage extends
 		BaseConfirmationPage {
 	private static final Logger LOG = LogUtil.getLogger(GraphConfirmationPage.class);

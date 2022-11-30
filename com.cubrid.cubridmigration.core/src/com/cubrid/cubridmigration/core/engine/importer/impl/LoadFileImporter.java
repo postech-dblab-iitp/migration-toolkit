@@ -231,7 +231,7 @@ public class LoadFileImporter extends
 		return 0;
 	}
     
-    public int importEdge(Edge e, List<Record> records) {
+    public int importEdge(Edge e) {
 		return 0;
 	}
 

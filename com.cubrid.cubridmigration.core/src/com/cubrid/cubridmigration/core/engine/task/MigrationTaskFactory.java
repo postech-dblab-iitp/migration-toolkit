@@ -528,8 +528,8 @@ public class MigrationTaskFactory {
 		return task;
 	}
 	
-	public ImportTask createImportEdgeRecordsTask(Edge e, List<Record> recordsTobeImport) {
-		ImportTask task = new GraphEdgeImportTask(e, recordsTobeImport);
+	public ImportTask createImportEdgeRecordsTask(Edge e) {
+		ImportTask task = new GraphEdgeImportTask(e);
 		initImportTask(task);
 		return new ImportDataTaskDecorator(context, task);
 	}

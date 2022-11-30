@@ -391,12 +391,12 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 			startVertex.setColumnList(table.getColumns());
 			startVertex.setVertexType(Vertex.SECOND_TYPE);
 			startVertex.setHasPK(table.hasPK());
-			Edge edge = new Edge();
-			edge.setEdgeType(Edge.SECOND_FK_TYPE);
+			Edge edge;
 			gdbDict.addMigratedVertexList(startVertex);
 			
 			for (FK fk : table.getFks()) {
 				edge = new Edge();
+				edge.setEdgeType(Edge.SECOND_FK_TYPE);
 				edge.setEdgeLabel(fk.getName());
 				edge.setFKSring(fk.getFKString());
 
@@ -429,6 +429,7 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 				if (!edge.getEndVertexName().isEmpty()) {
 				    edge.setOwner(startVertex.getOwner());
 					edge.setStartVertexName(startVertex.getVertexLabel());
+					edge.setHavePKStartVertex(startVertex.getHasPK());
 					gdbDict.addMigratedEdgeList(edge);
 				}
 			}
@@ -453,6 +454,11 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 				edge.setEdgeType(Edge.INTERMEDIATE_FK_TYPE);
 				edge.setEdgeLabel(fk.getName());
 				edge.setFKSring(fk.getFKString());
+				
+				for (String columName : fk.getColumnNames()) {
+					edge.addFKColumnList(columName);
+				}
+				
 				String endVertexName = null;
 				Vertex endVertex = gdbDict.getMigratedVertexByName(fk.getReferencedTableName());
 				
@@ -479,6 +485,7 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 				if (!edge.getEndVertexName().isEmpty()) {
                     edge.setOwner(startVertex.getOwner());
 					edge.setStartVertexName(startVertex.getVertexLabel());
+					edge.setHavePKStartVertex(startVertex.getHasPK());
 					gdbDict.addMigratedEdgeList(edge);
 				}
 			}
@@ -529,6 +536,10 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 			edge.setColumnList(table.getColumns());
 			edge.setEdgeLabel(fk1.getReferencedTableName() + "_" + fk2.getReferencedTableName());
             edge.setEdgeType(Edge.JOINTABLE_TYPE);
+            
+			for (String columName : fk1.getColumnNames()) {
+				edge.addFKColumnList(columName);
+			}
 			
 			gdbDict.addMigratedEdgeList(edge);
 		}
@@ -550,12 +561,21 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 			
 			edge.setOwner(table.getOwner());
 			edge.setStartVertexName(table.getName());
+			edge.setHavePKStartVertex(startVertex.getHasPK());
 			edge.setEndVertexName(table.getName());
 			edge.setEdgeType(Edge.RECURSIVE_TYPE);
 			edge.setEdgeLabel(table.getName());
+
+			for (FK fk : table.getFks()) {
+				edge.setFKSring(fk.getFKString());
+	
+				for (String columName : fk.getColumnNames()) {
+					edge.addFKColumnList(columName);
+				}
+			}
 			
 			Vertex vertex = gdbDict.getMigratedVertexByName(table.getName());
-			
+
 			if (vertex == null) {
 				gdbDict.addMigratedVertexList(startVertex);
 			}

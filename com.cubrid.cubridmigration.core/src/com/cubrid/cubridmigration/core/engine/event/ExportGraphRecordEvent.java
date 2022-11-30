@@ -85,7 +85,7 @@ public class ExportGraphRecordEvent extends
 		}
 		
 		if (recordCount == 0) {
-			return "No record of table [" + name + "] to be exported.";
+			return "No record of table [" + name + "] For Graphdb to be exported.";
 		}
 		return new StringBuffer().append("Exported ").append(recordCount).append(
 				" records from table [").append(name).append(

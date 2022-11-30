@@ -84,7 +84,7 @@ public class GraphJDBCImporter extends
 		this.errorRecordsWriter = new ErrorRecords2SQLFileWriter(mrManager);
 	}
 
-	public int importEdge(Edge e, List<Record> records) {
+	public int importEdge(Edge e) {
 		int retryCount = 0;
 		mrManager.getStatusMgr().addImpCount(e.getOwner(), e.getEdgeLabel(), e.getFKColumnList().size());
 		while (true) {
@@ -107,40 +107,41 @@ public class GraphJDBCImporter extends
 	
 	private int createEdgeImport(Edge e) throws SQLException {
 		int result = 0;
-//		Connection conn = connectionManager.getTargetConnection(); //NOPMD
-//		conn.setAutoCommit(false);
-//		PreparedStatement stmt = null; //NOPMD
-//		int result = 0;
-//			try {
-//				for (int i=0 ; i < e.getFKColumnList().size(); i++) {
-//					String sql = getTargetInsertEdge(e, i);
-//					try {
-//						stmt = conn.prepareStatement(sql);
-//						int ret = stmt.executeUpdate();
-//						if (ret != -1) {
-//							result++;
-//						}
-//					} catch (SQLException ex) {
-//						if (isConnectionCutDown(ex)) {
-//							throw new JDBCConnectErrorException(ex);
-//						}
-//						DBUtils.rollback(conn);
-//					}
-//				}
-//			} finally {
-//				Closer.close(stmt);
-//				conn.setAutoCommit(true);
-//				connectionManager.closeTar(conn);
-//			}
+		Connection conn = connectionManager.getTargetConnection(); //NOPMD
+		conn.setAutoCommit(false);
+		PreparedStatement stmt = null; //NOPMD
+			try {
+				for (int i=0 ; i < e.getFKColumnList().size(); i++) {
+					String sql = getTargetInsertEdge(e, i);
+					try {
+						stmt = conn.prepareStatement(sql);
+						int ret = stmt.executeUpdate();
+						if (ret != -1) {
+							result++;
+						}
+					} catch (SQLException ex) {
+						if (isConnectionCutDown(ex)) {
+							throw new JDBCConnectErrorException(ex);
+						}
+						DBUtils.rollback(conn);
+					}
+				}
+			} finally {
+				Closer.close(stmt);
+				conn.setAutoCommit(true);
+				connectionManager.closeTar(conn);
+			}
 		return result;
 	}
 	
 	public String getTargetInsertEdge(Edge e, int idx) {
-		StringBuffer Buf = new StringBuffer("MATCH (n:").append(e.getStartVertexName()).append("),");
-		Buf.append("(m:").append(e.getEndVertexName()).append(")");
-		Buf.append("n.").append(e.getFKColumnList().get(idx)).append(" = ");
-		//Buf.append("m.")
-		return Buf.toString();
+		StringBuffer buf = new StringBuffer("MATCH (n:").append(e.getStartVertexName()).append("),");
+		buf.append("(m:").append(e.getEndVertexName()).append(")");
+		buf.append(" where ");
+		buf.append("n.").append(e.getFKColumnList().get(idx)).append(" = ");
+		buf.append("m.").append(e.getFKColumnList().get(idx)).append(" ");
+		buf.append("create (n)-[r:").append(e.getEdgeLabel()).append("]->(m) return type(r)");
+		return buf.toString();
 	}
 
 	public int importVertex(Vertex v, List<Record> records) {

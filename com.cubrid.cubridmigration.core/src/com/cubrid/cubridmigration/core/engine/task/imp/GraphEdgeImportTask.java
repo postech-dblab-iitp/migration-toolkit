@@ -46,11 +46,9 @@ public class GraphEdgeImportTask extends
 		ImportTask {
 
 	private final Edge edge;
-	private final List<Record> records;
 
-	public GraphEdgeImportTask(Edge e, List<Record> records) {
+	public GraphEdgeImportTask(Edge e) {
 		this.edge = e;
-		this.records = new ArrayList<Record>(records);
 	}
 
 	/**
@@ -58,6 +56,6 @@ public class GraphEdgeImportTask extends
 	 * 
 	 */
 	protected void executeImport() {
-		importer.importEdge(edge, records);
+		importer.importEdge(edge);
 	}
 }

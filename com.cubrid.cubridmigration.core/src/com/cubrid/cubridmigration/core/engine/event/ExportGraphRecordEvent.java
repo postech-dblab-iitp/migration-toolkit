@@ -29,17 +29,9 @@
  */
 package com.cubrid.cubridmigration.core.engine.event;
 
-import com.cubrid.cubridmigration.core.engine.config.SourceTableConfig;
 import com.cubrid.cubridmigration.graph.dbobj.Edge;
 import com.cubrid.cubridmigration.graph.dbobj.Vertex;
 
-/**
- * 
- * MigrationCreateObjectEvent Description
- * 
- * @author Kevin Cao
- * @version 1.0 - 2011-8-11 created by Kevin Cao
- */
 public class ExportGraphRecordEvent extends
 		MigrationEvent {
 
@@ -81,15 +73,22 @@ public class ExportGraphRecordEvent extends
 		if (vertex != null) {
 			name = vertex.getVertexLabel();
 		} else {
-			name = edge.getEdgeLabel();
+			name = edge.getStartVertexName();
 		}
 		
 		if (recordCount == 0) {
 			return "No record of table [" + name + "] For Graphdb to be exported.";
 		}
-		return new StringBuffer().append("Exported ").append(recordCount).append(
-				" records from table [").append(name).append(
-				"] successfully.").toString();
+		
+		if (vertex != null) {
+			return new StringBuffer().append("Exported ").append(recordCount).append(
+					" Vertex records from table [").append(name).append(
+					"] successfully.").toString();
+		} else {
+			return new StringBuffer().append("Exported ").append(recordCount).append(
+					" Edge records(FK) from table [").append(name).append(
+					"] successfully.").toString();
+		}
 	}
 
 	/**

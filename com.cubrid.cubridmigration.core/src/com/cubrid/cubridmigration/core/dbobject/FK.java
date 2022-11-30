@@ -255,6 +255,10 @@ public class FK extends
 	public Map<String, String> getColumns() {
 		return new TreeMap<String, String>(col2RefMapping);
 	}
+	
+	public String getRefColumns(String fkColumn) {
+		return col2RefMapping.get(fkColumn);
+	}
 
 	/**
 	 * Copy attributes from source

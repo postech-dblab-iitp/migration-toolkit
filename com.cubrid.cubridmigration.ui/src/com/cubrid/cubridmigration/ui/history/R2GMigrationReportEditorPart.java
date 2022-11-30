@@ -76,11 +76,6 @@ import com.cubrid.cubridmigration.ui.history.tableviewer.ObjectMigrationResultTa
 import com.cubrid.cubridmigration.ui.history.tableviewer.RecordMigrationResultTableLabelProvider;
 import com.cubrid.cubridmigration.ui.message.Messages;
 
-/**
- * MigrationReportEditorPart responses to show migration report
- * 
- * @author Kevin Cao
- */
 public class R2GMigrationReportEditorPart extends
 		EditorPart {
 

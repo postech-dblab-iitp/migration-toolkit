@@ -29,19 +29,9 @@
  */
 package com.cubrid.cubridmigration.core.engine.task.imp;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.cubrid.cubridmigration.core.dbobject.Record;
 import com.cubrid.cubridmigration.core.engine.task.ImportTask;
 import com.cubrid.cubridmigration.graph.dbobj.Edge;
 
-/**
- * RecordImportTask responses to import records.
- * 
- * @author Kevin Cao
- * @version 1.0 - 2011-8-5 created by Kevin Cao
- */
 public class GraphEdgeImportTask extends
 		ImportTask {
 
@@ -51,10 +41,6 @@ public class GraphEdgeImportTask extends
 		this.edge = e;
 	}
 
-	/**
-	 * Execute import operation
-	 * 
-	 */
 	protected void executeImport() {
 		importer.importEdge(edge);
 	}

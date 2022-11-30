@@ -3,6 +3,7 @@ package com.cubrid.cubridmigration.graph.dbobj;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import com.cubrid.cubridmigration.core.dbobject.Column;
 
@@ -28,7 +29,7 @@ public class Edge {
 	
 	private List<Column> columnList;
 	
-	private List<String> fkColumnList = new ArrayList<String>();
+	private final Map<String, String> fkCol2RefMapping = new TreeMap<String, String>();
 	
 	private Map<String, String> edgeProperties;
     
@@ -123,19 +124,35 @@ public class Edge {
 	    return this.owner;
 	}
 	
-	public void addFKColumnList(String id) {
-		fkColumnList.add(id);
-	}
-	
-	public List<String> getFKColumnList() {
-		return fkColumnList;
-	}
-	
 	public void setHavePKStartVertex(boolean haved) {
 	    this.isHavePKStartVertex = haved;
 	}
 	
 	public boolean isHavePKStartVertex() {
 	    return this.isHavePKStartVertex;
+	}
+	
+	public void clearFKCol2Ref() {
+		fkCol2RefMapping.clear();
+	}
+	
+	public void addFKCol2Ref(String fkColumnName, String refColumName) {
+		fkCol2RefMapping.put(fkColumnName, refColumName);
+	}
+	
+	public Map<String, String> getfkCol2RefMapping() {
+		return fkCol2RefMapping;
+	}
+	
+	public int getfkCol2RefMappingSize() {
+		return fkCol2RefMapping.size();
+	}
+	
+	public List<String> getFKColumnNames() {
+		return new ArrayList<String>(fkCol2RefMapping.keySet());
+	}
+	
+	public String getREFColumnNames(String columnName) {
+		return fkCol2RefMapping.get(columnName);
 	}
 }

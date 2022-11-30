@@ -36,12 +36,6 @@ import com.cubrid.cubridmigration.core.dbobject.Record;
 import com.cubrid.cubridmigration.core.engine.task.ImportTask;
 import com.cubrid.cubridmigration.graph.dbobj.Vertex;
 
-/**
- * RecordImportTask responses to import records.
- * 
- * @author Kevin Cao
- * @version 1.0 - 2011-8-5 created by Kevin Cao
- */
 public class GraphVertexImportTask extends
 		ImportTask {
 
@@ -53,10 +47,6 @@ public class GraphVertexImportTask extends
 		this.records = new ArrayList<Record>(records);
 	}
 
-	/**
-	 * Execute import operation
-	 * 
-	 */
 	protected void executeImport() {
 		importer.importVertex(vertex, records);
 	}

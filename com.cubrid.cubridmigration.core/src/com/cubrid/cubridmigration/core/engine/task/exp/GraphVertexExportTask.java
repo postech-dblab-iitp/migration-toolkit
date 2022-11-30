@@ -40,13 +40,6 @@ import com.cubrid.cubridmigration.core.engine.task.ExportTask;
 import com.cubrid.cubridmigration.core.engine.task.ImportTask;
 import com.cubrid.cubridmigration.graph.dbobj.Vertex;
 
-/**
- * JDBCExportRecordTask responses to read records from source database through
- * JDBC driver.
- * 
- * @author Kevin Cao
- * @version 1.0 - 2011-8-8 created by Kevin Cao
- */
 public class GraphVertexExportTask extends
 		ExportTask {
 
@@ -69,6 +62,7 @@ public class GraphVertexExportTask extends
 
 				importTaskExecutor = mrManager.getImportRecordExecutor();
 				importTaskExecutor.execute((Runnable) task);
+				//mrManager.getStatusMgr().addExpCount(null, vertex.getVertexLabel(), records.size());
 				mrManager.getStatusMgr().addExpCount(null, vertex.getVertexLabel(), records.size());
 			}
 

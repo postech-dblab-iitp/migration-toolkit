@@ -33,10 +33,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import com.cubrid.cubridmigration.core.common.Closer;
 import com.cubrid.cubridmigration.core.common.DBUtils;
@@ -51,19 +49,14 @@ import com.cubrid.cubridmigration.core.dbobject.View;
 import com.cubrid.cubridmigration.core.engine.JDBCConManager;
 import com.cubrid.cubridmigration.core.engine.MigrationContext;
 import com.cubrid.cubridmigration.core.engine.ThreadUtils;
-import com.cubrid.cubridmigration.core.engine.UserDefinedDataHandlerManager;
 import com.cubrid.cubridmigration.core.engine.config.MigrationConfiguration;
-import com.cubrid.cubridmigration.core.engine.config.SourceColumnConfig;
 import com.cubrid.cubridmigration.core.engine.config.SourceTableConfig;
 import com.cubrid.cubridmigration.core.engine.event.ImportGraphRecordsEvent;
 import com.cubrid.cubridmigration.core.engine.event.SingleRecordErrorEvent;
 import com.cubrid.cubridmigration.core.engine.exception.JDBCConnectErrorException;
 import com.cubrid.cubridmigration.core.engine.exception.NormalMigrationException;
-import com.cubrid.cubridmigration.core.engine.exception.UserDefinedHandlerException;
 import com.cubrid.cubridmigration.core.engine.importer.ErrorRecords2SQLFileWriter;
 import com.cubrid.cubridmigration.core.engine.importer.Importer;
-import com.cubrid.cubridmigration.core.trans.DBTransformHelper;
-import com.cubrid.cubridmigration.cubrid.CUBRIDSQLHelper;
 import com.cubrid.cubridmigration.cubrid.stmt.CUBRIDParameterSetter;
 import com.cubrid.cubridmigration.graph.dbobj.Edge;
 import com.cubrid.cubridmigration.graph.dbobj.Vertex;
@@ -86,7 +79,6 @@ public class GraphJDBCImporter extends
 
 	public int importEdge(Edge e) {
 		int retryCount = 0;
-		mrManager.getStatusMgr().addImpCount(e.getOwner(), e.getEdgeLabel(), e.getFKColumnList().size());
 		while (true) {
 			try {
 				return createEdgeImport(e);
@@ -95,11 +87,11 @@ public class GraphJDBCImporter extends
 					retryCount++;
 					ThreadUtils.threadSleep(2000, eventHandler);
 				} else {
-					eventHandler.handleEvent(new ImportGraphRecordsEvent(null, e, e.getFKColumnList().size(), ex, null));
+					eventHandler.handleEvent(new ImportGraphRecordsEvent(null, e, e.getfkCol2RefMappingSize(), ex, null));
 					return 0;
 				}
 			} catch (Exception exception) {
-				eventHandler.handleEvent(new ImportGraphRecordsEvent(null, e, e.getFKColumnList().size(), exception, null));
+				eventHandler.handleEvent(new ImportGraphRecordsEvent(null, e, e.getfkCol2RefMappingSize(), exception, null));
 				return 0;
 			}
 		}
@@ -111,14 +103,19 @@ public class GraphJDBCImporter extends
 		conn.setAutoCommit(false);
 		PreparedStatement stmt = null; //NOPMD
 			try {
-				for (int i=0 ; i < e.getFKColumnList().size(); i++) {
+				for (int i=0 ; i < e.getfkCol2RefMappingSize(); i++) {
 					String sql = getTargetInsertEdge(e, i);
 					try {
 						stmt = conn.prepareStatement(sql);
-						int ret = stmt.executeUpdate();
-						if (ret != -1) {
-							result++;
+						//int ret = stmt.executeUpdate();
+						ResultSet rs = stmt.executeQuery();
+						if (rs.next()) {
+							result += rs.getInt("count(r)");
 						}
+						if (result > 0) {
+							eventHandler.handleEvent(new ImportGraphRecordsEvent(null, e, result));
+						}
+						
 					} catch (SQLException ex) {
 						if (isConnectionCutDown(ex)) {
 							throw new JDBCConnectErrorException(ex);
@@ -138,9 +135,9 @@ public class GraphJDBCImporter extends
 		StringBuffer buf = new StringBuffer("MATCH (n:").append(e.getStartVertexName()).append("),");
 		buf.append("(m:").append(e.getEndVertexName()).append(")");
 		buf.append(" where ");
-		buf.append("n.").append(e.getFKColumnList().get(idx)).append(" = ");
-		buf.append("m.").append(e.getFKColumnList().get(idx)).append(" ");
-		buf.append("create (n)-[r:").append(e.getEdgeLabel()).append("]->(m) return type(r)");
+		buf.append("n.").append(e.getFKColumnNames().get(idx)).append(" = ");
+		buf.append("m.").append(e.getREFColumnNames(e.getFKColumnNames().get(idx))).append(" ");
+		buf.append("create (n)-[r:").append(e.getEdgeLabel()).append("]->(m) return count(r)");
 		return buf.toString();
 	}
 

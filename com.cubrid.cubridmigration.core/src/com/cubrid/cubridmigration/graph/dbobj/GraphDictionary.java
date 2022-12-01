@@ -53,28 +53,35 @@ public class GraphDictionary {
 		StringBuilder relationVertexes = new StringBuilder();
 		StringBuilder vertexPrint = new StringBuilder();
 		StringBuilder edgePrint = new StringBuilder();
+		String lineSeparator = System.getProperty("line.separator");
 		
-		vertexPrint.append("\n ----- < Vertex > ------- \n");
+		vertexPrint.append(lineSeparator);
+		vertexPrint.append(" ----- < Vertex > ------- ");
+		vertexPrint.append(lineSeparator);
 		
-		edgePrint.append("\n ----- < Edge > ------- \n");
+		edgePrint.append(lineSeparator);
+		edgePrint.append(" ----- < Edge > ------- ");
+		edgePrint.append(lineSeparator);
 			
 		for (Edge edge : migratedEdgeList) {
-			edgePrint.append(edge.getEdgeLabel()).append("\n");
+			edgePrint.append(edge.getEdgeLabel()).append(lineSeparator);
 		}
 		
 		for (Vertex vertex : migratedVertexList) {
-			vertexPrint.append(vertex.getVertexLabel()).append("\n");
+			vertexPrint.append(vertex.getVertexLabel()).append(lineSeparator);
 			for (Edge edge : migratedEdgeList) {
 				if (edge.getStartVertexName() != null && edge.getStartVertexName().equals(vertex.getVertexLabel())) {
 					relationVertexes.append("   " + edge.getEndVertexName() + "   ");
 				}
 			}
 			
-			retPrint.append(vertex.getVertexLabel() + "----->" + relationVertexes + "\n");
+			retPrint.append(vertex.getVertexLabel() + "----->" + relationVertexes).append(lineSeparator);
 			relationVertexes.delete(0, relationVertexes.length());
 		}
 		
-		edgePrint.append("\n ----- < Graph Design > ------- \n");
+		edgePrint.append(lineSeparator);
+		edgePrint.append(" ----- < Graph Design > ------- ");
+		edgePrint.append(lineSeparator);
 		
 		retPrint.insert(0, edgePrint.toString());
 		retPrint.insert(0, vertexPrint.toString());

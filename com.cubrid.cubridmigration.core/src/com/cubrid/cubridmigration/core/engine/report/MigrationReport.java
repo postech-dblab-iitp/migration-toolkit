@@ -55,8 +55,10 @@ import com.cubrid.cubridmigration.core.engine.config.SourceEntryTableConfig;
 import com.cubrid.cubridmigration.core.engine.config.SourceSQLTableConfig;
 import com.cubrid.cubridmigration.core.engine.config.SourceTableConfig;
 import com.cubrid.cubridmigration.core.engine.event.ExportCSVEvent;
+import com.cubrid.cubridmigration.core.engine.event.ExportGraphRecordEvent;
 import com.cubrid.cubridmigration.core.engine.event.ExportRecordsEvent;
 import com.cubrid.cubridmigration.core.engine.event.ImportCSVEvent;
+import com.cubrid.cubridmigration.core.engine.event.ImportGraphRecordsEvent;
 import com.cubrid.cubridmigration.core.engine.event.ImportRecordsEvent;
 import com.cubrid.cubridmigration.core.engine.event.ImportSQLsEvent;
 
@@ -76,6 +78,10 @@ public class MigrationReport implements
 			DBObject.OBJ_TYPE_VIEW, DBObject.OBJ_TYPE_PK, DBObject.OBJ_TYPE_FK,
 			DBObject.OBJ_TYPE_INDEX, DBObject.OBJ_TYPE_SEQUENCE, DBObject.OBJ_TYPE_TRIGGER,
 			DBObject.OBJ_TYPE_FUNCTION, DBObject.OBJ_TYPE_PROCEDURE, DBObject.OBJ_TYPE_RECORD};
+	
+	private final static String[] OVERVIEW_GRAPH_TYPES = new String[] {
+		DBObject.OBJ_GRAPH_TYPE_VERTEX, DBObject.OBJ_GRAPH_TYPE_EDGE};
+	
 
 	/**
 	 * get DBObj Name
@@ -138,6 +144,7 @@ public class MigrationReport implements
 	 * @param event ExportRecordsEvent
 	 */
 	public void addExpMigRecResult(ExportRecordsEvent event) {
+		System.out.println("addExpMigRecResult ExportRecordsEvent");
 		RecordMigrationResult result = getRecMigResults(event.getSourceTable().getOwner(), 
 				event.getSourceTable().getName(),
 				event.getSourceTable().getTarget());
@@ -156,10 +163,62 @@ public class MigrationReport implements
 	 * @param event ImportRecordsEvent
 	 */
 	public void addImpMigRecResult(ImportRecordsEvent event) {
+		System.out.println("addImpMigRecResult ImportRecordsEvent");
 		RecordMigrationResult result = getRecMigResults(event.getSourceTable().getOwner(), 
 				event.getSourceTable().getName(),
 				event.getSourceTable().getTarget());
 		if (event.isSuccess()) {
+			result.setImpCount(result.getImpCount() + event.getRecordCount());
+		}
+		if (result.getStartImportTime() == 0) {
+			result.setStartImportTime(event.getEventTime().getTime());
+		}
+		if (result.getEndImportTime() < event.getEventTime().getTime()) {
+			result.setEndImportTime(event.getEventTime().getTime());
+		}
+		if (StringUtils.isNotBlank(event.getErrorFile())) {
+			addErrorSQLFile(event.getErrorFile());
+		}
+	}
+	
+	/**
+	 * add Export Migration Record Result
+	 * 
+	 * @param event ExportRecordsEvent
+	 */
+	public void addGraphExpMigRecResult(ExportGraphRecordEvent event) {
+		if (event.getVertex() != null) {
+			RecordMigrationResult result = getRecMigResults(null, DBObject.OBJ_GRAPH_TYPE_VERTEX, null);
+			result.setExpCount(result.getExpCount() + event.getRecordCount());
+			if (result.getTotalCount() < result.getExpCount()) {
+				result.setTotalCount(result.getExpCount());
+			}
+			if (result.getEndExportTime() < event.getEventTime().getTime()) {
+				result.setEndExportTime(event.getEventTime().getTime());
+			}
+		} 
+		return;
+	}
+
+	/**
+	 * add Import Migration Record Result
+	 * 
+	 * @param event ImportRecordsEvent
+	 */
+	public void addGraphImpMigRecResult(ImportGraphRecordsEvent event) {
+		RecordMigrationResult result;
+		if (event.getEdge() != null) {
+			result = getRecMigResults(null, DBObject.OBJ_GRAPH_TYPE_EDGE, null);
+		} else {
+			result = getRecMigResults(null, DBObject.OBJ_GRAPH_TYPE_VERTEX, null);
+		}
+
+		if (event.isSuccess()) {
+			//Temp
+			if (result.getSource() == DBObject.OBJ_GRAPH_TYPE_EDGE) {
+				result.setExpCount(result.getExpCount() + event.getRecordCount());
+				result.setTotalCount(result.getExpCount());
+			}
 			result.setImpCount(result.getImpCount() + event.getRecordCount());
 		}
 		if (result.getStartImportTime() == 0) {
@@ -226,7 +285,7 @@ public class MigrationReport implements
 		objResult.setObjType(dbo.getObjType());
 		dbObjectsResult.add(objResult);
 	}
-
+	
 	public String getConfigSummary() {
 		return configSummary;
 	}
@@ -306,6 +365,58 @@ public class MigrationReport implements
 		//build result list by a order.
 		List<MigrationOverviewResult> result = new ArrayList<MigrationOverviewResult>();
 		for (String type : OVERVIEW_TYPES) {
+			MigrationOverviewResult mor = map.get(type);
+			if (mor == null) {
+				mor = new MigrationOverviewResult();
+				mor.setObjType(type);
+				mor.setExpCount(0);
+				mor.setImpCount(0);
+				mor.setTotalCount(0);
+			}
+			result.add(mor);
+		}
+		return result;
+	}
+	
+	/**
+	 * Sum the overview results of migration
+	 * 
+	 * @return List of MigrationOverviewResult
+	 */
+	public List<MigrationOverviewResult> getGraphOverviewResults() {
+		Map<String, MigrationOverviewResult> map = new HashMap<String, MigrationOverviewResult>();
+		//Records overview
+		MigrationOverviewResult vRecMor = map.get(DBObject.OBJ_GRAPH_TYPE_VERTEX);
+		if (vRecMor == null) {
+			vRecMor = new MigrationOverviewResult();
+			map.put(DBObject.OBJ_GRAPH_TYPE_VERTEX, vRecMor);
+			vRecMor.setObjType(DBObject.OBJ_GRAPH_TYPE_VERTEX);
+		}
+		for (RecordMigrationResult rs : recMigResults) {
+			if (rs.getSource() == DBObject.OBJ_GRAPH_TYPE_VERTEX) {
+				vRecMor.incExpCount(rs.getExpCount());
+				vRecMor.incImpCount(rs.getImpCount());
+				vRecMor.incTotalCount(rs.getTotalCount());
+			}
+		}
+		
+		MigrationOverviewResult eRecMor = map.get(DBObject.OBJ_GRAPH_TYPE_EDGE);
+		if (eRecMor == null) {
+			eRecMor = new MigrationOverviewResult();
+			map.put(DBObject.OBJ_GRAPH_TYPE_EDGE, eRecMor);
+			eRecMor.setObjType(DBObject.OBJ_GRAPH_TYPE_EDGE);
+		}
+		for (RecordMigrationResult rs : recMigResults) {
+			if (rs.getSource() == DBObject.OBJ_GRAPH_TYPE_EDGE) {
+				eRecMor.incExpCount(rs.getExpCount());
+				eRecMor.incImpCount(rs.getImpCount());
+				eRecMor.incTotalCount(rs.getTotalCount());
+			}
+		}
+		
+		//build result list by a order.
+		List<MigrationOverviewResult> result = new ArrayList<MigrationOverviewResult>();
+		for (String type : OVERVIEW_GRAPH_TYPES) {
 			MigrationOverviewResult mor = map.get(type);
 			if (mor == null) {
 				mor = new MigrationOverviewResult();
@@ -407,6 +518,24 @@ public class MigrationReport implements
 		totalStartTime = 0L;
 		totalEndTime = 0L;
 
+		if (config.targetIsGraph()) {
+			RecordMigrationResult vResult = new RecordMigrationResult();
+			vResult.setSource(DBObject.OBJ_GRAPH_TYPE_VERTEX);
+			vResult.setExpCount(0);
+			vResult.setImpCount(0);
+			vResult.setTotalCount(0);
+			recMigResults.add(vResult);
+			
+			RecordMigrationResult eResult = new RecordMigrationResult();
+			eResult.setExpCount(0);
+			eResult.setImpCount(0);
+			eResult.setSource(DBObject.OBJ_GRAPH_TYPE_EDGE);
+			eResult.setTotalCount(0);
+			recMigResults.add(eResult);
+
+			return;
+		}
+		
 		if (config.sourceIsSQL()) {
 			List<String> files = config.getSqlFiles();
 			for (String fl : files) {

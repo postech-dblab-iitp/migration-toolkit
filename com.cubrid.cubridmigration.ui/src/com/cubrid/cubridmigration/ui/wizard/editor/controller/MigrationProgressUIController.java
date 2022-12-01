@@ -70,6 +70,7 @@ import com.cubrid.cubridmigration.core.engine.event.ImportSQLsEvent;
 import com.cubrid.cubridmigration.core.engine.event.MigrationErrorEvent;
 import com.cubrid.cubridmigration.core.engine.event.MigrationEvent;
 import com.cubrid.cubridmigration.cubrid.CUBRIDTimeUtil;
+import com.cubrid.cubridmigration.graph.dbobj.Edge;
 import com.cubrid.cubridmigration.graph.dbobj.Vertex;
 import com.cubrid.cubridmigration.ui.database.SchemaFetcherWithProgress;
 import com.cubrid.cubridmigration.ui.history.MigrationReporter;
@@ -90,6 +91,7 @@ public class MigrationProgressUIController {
 	protected MigrationProcessManager mpm;
 
 	protected String[][] tableItems;
+	protected String[][] edgeItems;
 
 	protected int expCountCache = 0;
 
@@ -240,11 +242,6 @@ public class MigrationProgressUIController {
 	 * @return the progress table viewer's input date
 	 */
 	public String[][] getProgressTableInput() {
-		//For GraphDB
-		if (config.getDestType() == MigrationConfiguration.DEST_GRAPH) {
-			return getGraphProgressTableInput();
-		}
-		
 		List<SourceTableConfig> expStcs = new ArrayList<SourceTableConfig>();
 		expStcs.addAll(config.getExpEntryTableCfg());
 		expStcs.addAll(config.getExpSQLCfg());
@@ -267,7 +264,7 @@ public class MigrationProgressUIController {
 		return tableItems;
 	}
 	
-	private String[][] getGraphProgressTableInput() {
+	public String[][] getGraphVertexProgressTableInput() {
 		List<Vertex> expStcs = new ArrayList<Vertex>();
 		expStcs.addAll(config.getGraphDictionary().getMigratedVertexList());
 		int index = 0;
@@ -288,6 +285,26 @@ public class MigrationProgressUIController {
 		}
 		
 		return tableItems;
+	}
+	
+	public String[][] getGraphEdgeProgressTableInput() {
+		List<Edge> expStcs = new ArrayList<Edge>();
+		expStcs.addAll(config.getGraphDictionary().getMigratedEdgeList());
+		int index = 0;
+		edgeItems = new String[expStcs.size()][5];
+		for (Edge e : expStcs) {
+			Table tbl = config.getSrcTableSchema(e.getOwner(), e.getStartVertexName());
+			if (config.isImplicitEstimate()) {
+				edgeItems[index] = new String[] {e.getStartVertexName(), e.getEndVertexName(), e.getEdgeLabel(), NA_STRING, e.getOwner()};
+			} else if (tbl == null || tbl.getTableRowCount() == 0) {
+				edgeItems[index] = new String[] {e.getStartVertexName(), e.getEndVertexName(), e.getEdgeLabel(), NA_STRING, e.getOwner()};
+			} else {
+				edgeItems[index] = new String[] {e.getStartVertexName(), e.getEndVertexName(), e.getEdgeLabel(), "0", e.getOwner()};
+			}
+			index++;
+		}
+		
+		return edgeItems;
 	}
 
 	/**
@@ -535,6 +552,48 @@ public class MigrationProgressUIController {
 		return item;
 	}
 	
+	public String[] updateEdgeExpData(String tableName, long exp) {
+		if (exp <= 0) {
+			return new String[] {};
+		}
+		for (String[] item : edgeItems) {
+			if (item[0].equals(tableName)) {
+				return getEdgeItemForExpData(exp, item);
+			}
+		}
+		return new String[] {};
+	}
+	
+	public String[] updateEdgeExpData(String owner, String tableName, long exp) {
+		if (exp <= 0) {
+			return new String[] {};
+		}
+		for (String[] item : edgeItems) {
+			
+			// for Single Schema 
+			if (item[3] == null || "null".equalsIgnoreCase(item[3])) {
+				return updateEdgeExpData(tableName, exp);
+			}
+			
+			if (item[0].equals(tableName) && item[3].equalsIgnoreCase(owner)) {
+				return getEdgeItemForExpData(exp, item);
+			}
+		}
+		return new String[] {};
+	}
+	
+	private String[] getEdgeItemForExpData(long exp, String[] item) {
+		long newExp = getCellValue(item[2]) + exp;
+		item[2] = String.valueOf(newExp);
+		if (!config.isImplicitEstimate()) {
+			long oldimp = getCellValue(item[3]);
+			item[4] = String.valueOf(Math.round(100 * (newExp + oldimp)
+					/ (2 * getCellValue(item[1]))))
+					+ "%";
+		}
+		return item;
+	}
+	
 	/**
 	 * Update import count of table
 	 * 
@@ -575,6 +634,35 @@ public class MigrationProgressUIController {
 					/ (2 * getCellValue(item[1]))))
 					+ "%";
 		}
+		return item;
+	}
+	
+	public String[] updateEdgeImpData(String EdgeFKName, long imp) {
+		for (String[] item : edgeItems) {
+			if (item[2].equals(EdgeFKName)) {
+				return getEdgeItemForImpData(imp, item);
+			}
+		}
+		return new String[] {};
+	}
+	
+	public String[] updateEdgeImpData(String owner, String EdgeFKName, long imp) {
+		
+		for (String[] item : edgeItems) {
+			// for Single Schema
+			if (item[4] == null || "null".equalsIgnoreCase(item[4])) {
+				return updateEdgeImpData(EdgeFKName, imp);
+			}
+			if (item[0].equals(EdgeFKName) && item[3].equalsIgnoreCase(owner)) {
+				return getEdgeItemForImpData(imp, item);
+			}
+		}
+		return new String[] {};
+	}
+	
+	private String[] getEdgeItemForImpData(long imp, String[] item) {
+		long newImp = getCellValue(item[3]) + imp;
+		item[3] = String.valueOf(newImp);
 		return item;
 	}
 

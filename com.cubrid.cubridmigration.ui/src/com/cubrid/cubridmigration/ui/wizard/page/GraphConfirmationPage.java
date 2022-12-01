@@ -198,6 +198,8 @@ public class GraphConfirmationPage extends
 					migration.getTargetFileTimeZone().substring(0, length)).append(lineSeparator);
 		}
 
+		text.append(migration.getGraphDictionary().getPrintVertexAndEdgeInfo());
+		
 		return text.toString();
 	}
 
@@ -279,7 +281,7 @@ public class GraphConfirmationPage extends
 		MigrationConfiguration cfg = mw.getMigrationConfig();
 		
 		styleRanges.clear();
-		txtSummary.setText(getConfigSummary(cfg, styleRanges) + cfg.getGraphDictionary().getPrintVertexAndEdgeInfo());
+		txtSummary.setText(getConfigSummary(cfg, styleRanges));
 		for (StyleRange sr : styleRanges) {
 			txtSummary.setStyleRange(sr);
 		}

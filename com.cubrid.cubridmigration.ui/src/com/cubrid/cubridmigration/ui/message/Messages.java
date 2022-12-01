@@ -214,6 +214,10 @@ public class Messages extends
 	public static String colTotalElapsed;
 	public static String colType;
 	public static String colVersion;
+	public static String colEdgeSource;
+	public static String colEdgeTarget;
+	public static String colEdgeName;
+	public static String colEdgeImportCount;
 	public static String commonToolMysqlMsg1;
 	public static String commonToolMysqlMsg2;
 	public static String commonToolMysqlMsg3;

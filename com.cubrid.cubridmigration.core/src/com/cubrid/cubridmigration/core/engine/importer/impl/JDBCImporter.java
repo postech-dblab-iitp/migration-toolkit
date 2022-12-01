@@ -399,7 +399,7 @@ public class JDBCImporter extends
 		return 0;
 	}
     
-	public int importEdge(Edge e) {
+	public int importEdge(Edge e, List<Record> records) {
 		return 0;
 	}
 

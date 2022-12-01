@@ -278,7 +278,7 @@ public class R2GMigrationReportEditorPart extends
 		}
 
 		TableViewerBuilder tvBuilder = new TableViewerBuilder();
-		tvBuilder.setColumnNames(MigrationReportUIController.TABLE_HEADER_OVERVIEW);
+		tvBuilder.setColumnNames(MigrationReportUIController.GRAPH_TABLE_HEADER_OVERVIEW);
 		tvBuilder.setColumnWidths(new int[] {150, 150, 150, 150, 150});
 		tvBuilder.setColumnStyles(new int[] {SWT.LEFT, SWT.RIGHT, SWT.RIGHT, SWT.RIGHT, SWT.LEFT});
 		tvBuilder.setContentProvider(new ArrayContentProvider());
@@ -286,20 +286,21 @@ public class R2GMigrationReportEditorPart extends
 		tvOverview = tvBuilder.buildTableViewer(comOverview, SWT.BORDER | SWT.FULL_SELECTION
 				| SWT.H_SCROLL | SWT.V_SCROLL);
 
-		tvOverview.addDoubleClickListener(new IDoubleClickListener() {
-
-			public void doubleClick(DoubleClickEvent event) {
-				if (event.getSelection().isEmpty()) {
-					return;
-				}
-				R2GMigrationReportEditorPart.this.tfReport.setSelection(1);
-				if (tvOverview.getTable().getSelectionIndex() == tvOverview.getTable().getItemCount() - 1) {
-					tfDetail.setSelection(1);
-				} else {
-					tfDetail.setSelection(0);
-				}
-			}
-		});
+		// Specifications need to be checked.
+//		tvOverview.addDoubleClickListener(new IDoubleClickListener() {
+//
+//			public void doubleClick(DoubleClickEvent event) {
+//				if (event.getSelection().isEmpty()) {
+//					return;
+//				}
+//				R2GMigrationReportEditorPart.this.tfReport.setSelection(1);
+//				if (tvOverview.getTable().getSelectionIndex() == tvOverview.getTable().getItemCount() - 1) {
+//					tfDetail.setSelection(1);
+//				} else {
+//					tfDetail.setSelection(0);
+//				}
+//			}
+//		});
 
 	}
 
@@ -320,8 +321,8 @@ public class R2GMigrationReportEditorPart extends
 		tfReport.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
 		createOverviewPage(tfReport);
-		createDetailPage(tfReport);
-		createNonsupportPage(tfReport);
+		//createDetailPage(tfReport);
+		//createNonsupportPage(tfReport);
 		createLogPage(tfReport);
 		createConfigSummaryPage();
 		setContent2Tables();
@@ -468,11 +469,11 @@ public class R2GMigrationReportEditorPart extends
 	private void setContent2Tables() {
 		MigrationReporter reporter = getReporter();
 		MigrationReport report = reporter.getReport();
-		tvOverview.setInput(report.getOverviewResults());
-		tvObjDetails.setInput(report.getDbObjectsResult());
-		tvTableRecords.setInput(report.getRecMigResults());
+		tvOverview.setInput(report.getGraphOverviewResults());
+		//tvObjDetails.setInput(report.getDbObjectsResult());
+		//tvTableRecords.setInput(report.getRecMigResults());
 		txtConfigSummary.setText(report.getConfigSummary());
-		controller.loadNonSupportedObjectText(reporter, noSupportedAppender);
+		//controller.loadNonSupportedObjectText(reporter, noSupportedAppender);
 		controller.loadLogText(reporter, logAppender);
 	}
 

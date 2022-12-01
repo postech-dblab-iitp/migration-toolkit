@@ -165,6 +165,11 @@ public class ConsoleMigrationReporter extends
 			text.append(config.getTargetFileTimeZone().substring(0, length)).append(lineSeparator);
 		}
 
+		if (config.targetIsGraph()) {
+			report.setConfigSummary(text.toString());
+			return;
+		}
+		
 		//table
 		List<SourceEntryTableConfig> sourceTableConfigList = config.getExpEntryTableCfg();
 		if (!sourceTableConfigList.isEmpty()) {

@@ -135,6 +135,6 @@ public interface IMigrationImporter {
 	
 	public int importVertex(Vertex v, List<Record> records);
     
-    public int importEdge(Edge e);
+    public int importEdge(Edge e, List<Record> records);
 
 }

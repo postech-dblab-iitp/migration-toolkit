@@ -50,6 +50,15 @@ public class Edge {
 		this.columnList = columnList;
 	}
 	
+	public Column getColumnbyName(String columnName) {
+		for (Column column : columnList) {
+			if (column.getName().equals(columnName)) {
+				return column;
+			}
+		}
+		return null;
+	}
+	
 	public int getId() {
 		return id;
 	}

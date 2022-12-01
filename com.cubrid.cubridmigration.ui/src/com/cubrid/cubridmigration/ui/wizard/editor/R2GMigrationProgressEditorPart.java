@@ -67,7 +67,7 @@ import com.cubrid.cubridmigration.core.engine.event.ImportGraphRecordsEvent;
 import com.cubrid.cubridmigration.core.engine.event.MigrationEvent;
 import com.cubrid.cubridmigration.ui.MigrationUIPlugin;
 import com.cubrid.cubridmigration.ui.SWTResourceConstents;
-import com.cubrid.cubridmigration.ui.history.MigrationReportEditorPart;
+import com.cubrid.cubridmigration.ui.history.R2GMigrationReportEditorPart;
 import com.cubrid.cubridmigration.ui.message.Messages;
 import com.cubrid.cubridmigration.ui.script.MigrationScriptManager;
 import com.cubrid.cubridmigration.ui.wizard.editor.controller.MigrationProgressUIController;
@@ -165,7 +165,8 @@ public class R2GMigrationProgressEditorPart extends
 	protected Button btnStop;
 	protected Button btnReport;
 	protected StyledText txtProgress;
-	protected TableViewer tvProgress;
+	protected TableViewer tvVertexProgress;
+	protected TableViewer tvEdgeProgress;
 
 	protected Label lblTotalTime;
 	protected Label lblTotalRecord;
@@ -184,7 +185,8 @@ public class R2GMigrationProgressEditorPart extends
 		pnlBackTop.setLayout(new GridLayout());
 		pnlBackTop.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
-		createProgressTableViewer(pnlBackTop);
+		createVertexProgressTableViewer(pnlBackTop);
+		createEdgeProgressTableViewer(pnlBackTop);
 
 		Composite textControlPanel = new Composite(pnlBackTop, SWT.NONE);
 		GridData gd = new GridData(SWT.FILL, SWT.BOTTOM, false, false);
@@ -246,7 +248,10 @@ public class R2GMigrationProgressEditorPart extends
 	/**
 	 * @param pnlBackTop Composite
 	 */
-	protected void createProgressTableViewer(final Composite pnlBackTop) {
+	protected void createVertexProgressTableViewer(final Composite pnlBackTop) {
+		
+		Label vLabel = new Label(pnlBackTop, SWT.LEFT);
+		vLabel.setText("[Vertex]");
 		TableViewerBuilder tvBuilder = new TableViewerBuilder();
 		tvBuilder.setColumnNames(new String[] {Messages.colTable, Messages.colRecordCount,
 				Messages.colExportedCount, Messages.colImportedCount, Messages.colProgressPercent, Messages.colOwnerName});
@@ -259,7 +264,28 @@ public class R2GMigrationProgressEditorPart extends
 		tvBuilder.setColumnStyles(new int[] {SWT.LEFT, SWT.RIGHT, SWT.RIGHT, SWT.RIGHT, SWT.CENTER, SWT.CENTER});
 		tvBuilder.setContentProvider(new ArrayContentProvider());
 		tvBuilder.setLabelProvider(new ObjectArrayRowTableLabelProvider());
-		tvProgress = tvBuilder.buildTableViewer(pnlBackTop, SWT.BORDER | SWT.FULL_SELECTION);
+		tvVertexProgress = tvBuilder.buildTableViewer(pnlBackTop, SWT.BORDER | SWT.FULL_SELECTION);
+	}
+	
+	/**
+	 * @param pnlBackTop Composite
+	 */
+	protected void createEdgeProgressTableViewer(final Composite pnlBackTop) {
+		Label eLabel = new Label(pnlBackTop, SWT.LEFT);
+		eLabel.setText("[Edge]");
+		TableViewerBuilder tvBuilder = new TableViewerBuilder();
+		tvBuilder.setColumnNames(new String[] {Messages.colEdgeSource, Messages.colEdgeTarget, Messages.colEdgeName, 
+				Messages.colImportedCount, Messages.colOwnerName});
+		int[] columnWidths = new int[] { 200, 200, 250, 120, 120};
+		DatabaseType dbType = cf.getSourceDBType();
+		if (dbType != null && !dbType.isSupportMultiSchema()) {
+			columnWidths[4] = 0;
+		}
+		tvBuilder.setColumnWidths(columnWidths);
+		tvBuilder.setColumnStyles(new int[] {SWT.LEFT, SWT.LEFT, SWT.LEFT, SWT.CENTER, SWT.LEFT});
+		tvBuilder.setContentProvider(new ArrayContentProvider());
+		tvBuilder.setLabelProvider(new ObjectArrayRowTableLabelProvider());
+		tvEdgeProgress = tvBuilder.buildTableViewer(pnlBackTop, SWT.BORDER | SWT.FULL_SELECTION);
 	}
 
 	/**
@@ -359,7 +385,7 @@ public class R2GMigrationProgressEditorPart extends
 	protected void initUIController(MigrationConfiguration cf) {
 		controller = new MigrationProgressUIController();
 		controller.setConfig(cf);
-		controller.setReportEditorPartId(MigrationReportEditorPart.ID);
+		controller.setReportEditorPartId(R2GMigrationReportEditorPart.ID);
 	}
 
 	/**
@@ -367,7 +393,8 @@ public class R2GMigrationProgressEditorPart extends
 	 * 
 	 */
 	protected void intiTableView() {
-		tvProgress.setInput(controller.getProgressTableInput());
+		tvVertexProgress.setInput(controller.getGraphVertexProgressTableInput());
+		tvEdgeProgress.setInput(controller.getGraphEdgeProgressTableInput());
 	}
 
 	/**
@@ -446,14 +473,10 @@ public class R2GMigrationProgressEditorPart extends
 		if (ere.getVertex() != null) {
 			owner = ere.getVertex().getOwner();
 			name = ere.getVertex().getVertexLabel();
-		} else {
-			owner = ere.getEdge().getOwner();
-			name = ere.getEdge().getEdgeLabel();
-		}
-		
-		String[] item = controller.updateTableExpData(owner, name,
-				ere.getRecordCount());
-		tvProgress.refresh(item);
+			String[] item = controller.updateTableExpData(owner, name,
+					ere.getRecordCount());
+			tvVertexProgress.refresh(item);
+		} 
 	}
 
 	/**
@@ -467,11 +490,12 @@ public class R2GMigrationProgressEditorPart extends
         if (ire.getVertex() != null) {
 			item = controller.updateTableImpData(ire.getVertex().getOwner(), ire.getVertex().getVertexLabel(),
 					ire.getRecordCount());
+			tvVertexProgress.refresh(item);
 		} else if (ire.getEdge() != null) {
-			item = controller.updateTableImpData(ire.getEdge().getOwner(), ire.getEdge().getEdgeLabel(),
+			item = controller.updateEdgeImpData(ire.getEdge().getOwner(), ire.getEdge().getEdgeLabel(),
 					ire.getRecordCount());
+			tvEdgeProgress.refresh(item);
 		}
-		tvProgress.refresh(item);
 	}
 
 	/**

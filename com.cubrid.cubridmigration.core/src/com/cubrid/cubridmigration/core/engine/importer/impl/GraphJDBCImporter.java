@@ -77,11 +77,15 @@ public class GraphJDBCImporter extends
 		this.errorRecordsWriter = new ErrorRecords2SQLFileWriter(mrManager);
 	}
 
-	public int importEdge(Edge e) {
+	public int importEdge(Edge e, List<Record> records) {
 		int retryCount = 0;
 		while (true) {
 			try {
-				return createEdgeImport(e);
+				if (e.getEdgeType() == Edge.JOINTABLE_TYPE) {
+					return createJoinEdgeImport(e, records);
+				} else {
+					return createEdgeImport(e);
+				}
 			} catch (JDBCConnectErrorException ex) {
 				if (retryCount < 3) {
 					retryCount++;
@@ -99,8 +103,12 @@ public class GraphJDBCImporter extends
 	
 	private int createEdgeImport(Edge e) throws SQLException {
 		int result = 0;
+		boolean isAutoCommit = false;
 		Connection conn = connectionManager.getTargetConnection(); //NOPMD
-		conn.setAutoCommit(false);
+		if (conn.getAutoCommit()) {
+			isAutoCommit = true;
+			conn.setAutoCommit(false);
+		}
 		PreparedStatement stmt = null; //NOPMD
 			try {
 				for (int i=0 ; i < e.getfkCol2RefMappingSize(); i++) {
@@ -125,7 +133,88 @@ public class GraphJDBCImporter extends
 				}
 			} finally {
 				Closer.close(stmt);
-				conn.setAutoCommit(true);
+				if (isAutoCommit) {
+					conn.setAutoCommit(true);
+				}
+				connectionManager.closeTar(conn);
+			}
+		return result;
+	}
+	
+	private int createJoinEdgeImport(Edge e, List<Record> records) throws SQLException {
+		int result = 0;
+		boolean isAutoCommit = false;
+		Connection conn = connectionManager.getTargetConnection();
+		if (conn.getAutoCommit()) {
+			conn.setAutoCommit(false);
+		}
+		PreparedStatement stmt = null;
+		String sql = getTargetInsertJoinEdge(e);
+			try {
+				stmt = conn.prepareStatement(sql);
+
+				if (sql == null) {
+					try {
+						Exception ex = new Exception("There is not a single supported column in the table.");
+						throw ex;
+					} catch (Exception ex) {
+						eventHandler.handleEvent(new SingleRecordErrorEvent(null, ex));
+					}
+				}
+				
+				for (Record rc : records) {
+					if (rc == null) {
+						continue;
+					}
+					try {
+						Record trec = createTargetRecord(e, rc);
+						parameterSetter.setRecord2Statement(trec, stmt);
+						stmt.addBatch();
+					} catch (SQLException ex) {
+						if (isConnectionCutDown(ex)) {
+							throw new JDBCConnectErrorException(ex);
+						}
+						eventHandler.handleEvent(new SingleRecordErrorEvent(rc, ex));
+					} catch (Exception ex) {
+						eventHandler.handleEvent(new SingleRecordErrorEvent(rc, ex));
+					}
+				}
+				int[] exers = stmt.executeBatch();
+				DBUtils.commit(conn);
+				for (int rs : exers) {
+					result += rs;
+				}
+				
+				if (result > 0) {
+					eventHandler.handleEvent(new ImportGraphRecordsEvent(null, e, result));
+				}
+				
+			} catch (SQLException ex) {
+				if (isConnectionCutDown(ex)) {
+					throw new JDBCConnectErrorException(ex);
+				}
+				DBUtils.rollback(conn);
+				//If SQL has errors, write the records to a SQL files.
+				//String file = null;
+				if (config.isWriteErrorRecords()) {
+					List<Record> errorRecords = new ArrayList<Record>();
+					for (Record rc : records) {
+						if (rc == null) {
+							continue;
+						}
+						Record trec = createTargetRecord(e, rc);
+						if (trec != null) {
+							errorRecords.add(trec);
+						}
+					}
+					//file = errorRecordsWriter.writeSQLRecords(stc, errorRecords);
+				}
+				//eventHandler.handleEvent(new ImportGraphRecordsEvent(v, null, records.size(), ex, file));
+			} finally {
+				Closer.close(stmt);
+				if (isAutoCommit) {
+					conn.setAutoCommit(true);
+				}
 				connectionManager.closeTar(conn);
 			}
 		return result;
@@ -173,7 +262,10 @@ public class GraphJDBCImporter extends
 	private int simpleVertexImportRecords(Vertex v, List<Record> records) throws SQLException {
 		//Auto commit is false by default.
 		Connection conn = connectionManager.getTargetConnection(); //NOPMD
-		conn.setAutoCommit(false);
+		boolean isAutoCommit = false;
+		if (conn.getAutoCommit()) {
+			conn.setAutoCommit(false);
+		}
 		PreparedStatement stmt = null; //NOPMD
 		int result = 0;
 		try {
@@ -243,10 +335,33 @@ public class GraphJDBCImporter extends
 			}
 		} finally {
 			Closer.close(stmt);
-			conn.setAutoCommit(true);
+			if (isAutoCommit) {
+				conn.setAutoCommit(true);
+			}
 			connectionManager.closeTar(conn);
 		}
 		return result;
+	}
+	
+	public String getTargetInsertJoinEdge(Edge e) {
+		
+		if (!e.getColumnbyName(e.getFKColumnNames().get(0)).getSupportGraphDataType()
+				|| !e.getColumnbyName(e.getREFColumnNames(e.getFKColumnNames().get(0))).getSupportGraphDataType()) {
+			return null;
+		}
+		
+		StringBuffer Buf = new StringBuffer();
+		Buf.append("Match (n:").append(e.getStartVertexName());
+		Buf.append("), (m:").append(e.getEndVertexName());
+		Buf.append(")");
+		Buf.append(" where n.").append(e.getFKColumnNames().get(0)).append(" = ");
+		Buf.append("?");
+		Buf.append(" and m.").append(e.getREFColumnNames(e.getFKColumnNames().get(0))).append(" = ");
+		Buf.append("? ");
+		Buf.append("create (n)-[r:").append(e.getEdgeLabel().replaceAll(" ", "-")).append("]");
+		Buf.append("->(m) ");
+		Buf.append("return count(r)");
+		return Buf.toString();
 	}
 	
 	public String getTargetInsertVertex(Vertex v) {
@@ -320,6 +435,35 @@ public class GraphJDBCImporter extends
 //		}
 		return rrec;
 	}
+	
+	/**
+	 * Create a target record by source record
+	 * 
+	 * @param v Vertex
+	 * @param rrec source record
+	 * @return Target record
+	 */
+	private Record createTargetRecord(Edge e, Record rrec) {
+//		Record trec = new Record();
+//		Map<String, Object> recordMap = rrec.getColumnValueMap();
+//		for (Record.ColumnValue cv : rrec.getColumnValueList()) {
+//			Column targetColumn = v.getColumnByName(cv.getColumn().getName());
+//			if (targetColumn == null) {
+//				continue;
+//			}
+//			Object targetValue;
+//			try {
+//				targetValue = convertValueToTargetDBValue(recordMap, v,
+//						cv.getColumn(), targetColumn, cv.getValue());
+//			} catch (UserDefinedHandlerException ex) {
+//				targetValue = cv.getValue();
+//				eventHandler.handleEvent(new SingleRecordErrorEvent(rrec, ex));
+//			}
+//			trec.addColumnValue(targetColumn, targetValue);
+//		}
+		return rrec;
+	}
+	
 
 	public void executeDDL(String sql) {
 	}

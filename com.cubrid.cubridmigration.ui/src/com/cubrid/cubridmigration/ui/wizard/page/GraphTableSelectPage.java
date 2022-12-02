@@ -539,7 +539,8 @@ public class GraphTableSelectPage extends MigrationWizardPage {
             
             String col1 = fk1.getColumnNames().get(0);
             String col2 = fk2.getColumnNames().get(0);
-            edge.addFKCol2Ref(col1, col2);
+            edge.addFKCol2Ref(col1, fk1.getRefColumns(col1));
+            edge.addFKCol2Ref(col2, fk2.getRefColumns(col2));
 			gdbDict.addMigratedEdgeList(edge);
 		}
 	}

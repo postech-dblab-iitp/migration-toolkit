@@ -29,6 +29,10 @@
  */
 package com.cubrid.cubridmigration.core.engine.task.imp;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.cubrid.cubridmigration.core.dbobject.Record;
 import com.cubrid.cubridmigration.core.engine.task.ImportTask;
 import com.cubrid.cubridmigration.graph.dbobj.Edge;
 
@@ -36,12 +40,18 @@ public class GraphEdgeImportTask extends
 		ImportTask {
 
 	private final Edge edge;
+	private final List<Record> records;
 
-	public GraphEdgeImportTask(Edge e) {
+	public GraphEdgeImportTask(Edge e, List<Record> records) {
 		this.edge = e;
+		if (records != null) {
+			this.records = new ArrayList<Record>(records);
+		} else {
+			this.records = null;
+		}
 	}
 
 	protected void executeImport() {
-		importer.importEdge(edge);
+		importer.importEdge(edge, records);
 	}
 }

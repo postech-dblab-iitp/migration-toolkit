@@ -54,6 +54,10 @@ public abstract class DBObject implements
 	public final static String OBJ_TYPE_PROCEDURE = "procedure";
 	public final static String OBJ_TYPE_FUNCTION = "function";
 	public final static String OBJ_TYPE_RECORD = "record";
+	
+	public final static String OBJ_GRAPH_TYPE_VERTEX = "Vertex";
+	public final static String OBJ_GRAPH_TYPE_EDGE = "Edge";
+	public final static String OBJ_GRAPH_TYPE_INDEX= "Index";
 
 	/**
 	 * Retrieves the Object's name

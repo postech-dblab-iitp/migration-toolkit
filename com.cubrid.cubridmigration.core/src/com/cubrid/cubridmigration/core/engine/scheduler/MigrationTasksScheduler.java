@@ -607,6 +607,7 @@ public class MigrationTasksScheduler {
 				executeTask2(taskFactory.createVertexExportTask(v));
 			}
 		}
+		await();
 		
 		for ( Edge e : migratedEdgeList) {
 			if ( e.getEdgeType() == Edge.RECURSIVE_TYPE) {

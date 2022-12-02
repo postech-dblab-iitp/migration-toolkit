@@ -42,6 +42,7 @@ import com.cubrid.cubridmigration.core.engine.report.MigrationReport;
 import com.cubrid.cubridmigration.ui.message.Messages;
 import com.cubrid.cubridmigration.ui.wizard.page.CSVImportConfirmPage;
 import com.cubrid.cubridmigration.ui.wizard.page.ConfirmationPage;
+import com.cubrid.cubridmigration.ui.wizard.page.GraphConfirmationPage;
 import com.cubrid.cubridmigration.ui.wizard.page.SQLMigrationConfirmPage;
 
 /**
@@ -66,7 +67,9 @@ public class MigrationReporter extends
 	 */
 	protected void getSummary() {
 		//Summary
-		if (config.sourceIsSQL()) {
+		if (config.targetIsGraph()) {
+			report.setConfigSummary(GraphConfirmationPage.getConfigSummary(config, null));
+		} else if (config.sourceIsSQL()) {
 			report.setConfigSummary(SQLMigrationConfirmPage.getConfigSummary(config));
 		} else if (config.sourceIsCSV()) {
 			report.setConfigSummary(CSVImportConfirmPage.getConfigSummary(config));

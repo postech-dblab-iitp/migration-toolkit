@@ -456,6 +456,12 @@ public class JDBCExporter extends
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("[IN]exportGraphEdgeRecords()");
 		}
+		
+		if (e.getEdgeType() == Edge.JOINTABLE_TYPE) {
+			exportGraphJoinEdgeRecords(e, newRecordProcessor);
+			return;
+		}
+		
 		try {
 			newRecordProcessor.startExportTable(e.getEdgeLabel());
 			newRecordProcessor.processRecords(e.getEdgeLabel(), null);
@@ -464,6 +470,55 @@ public class JDBCExporter extends
 		}
 	}
 	
+	
+	protected void exportGraphJoinEdgeRecords(Edge e, RecordExportedListener newRecordProcessor) { 
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("[IN]exportGraphVertexRecords()");
+		}
+		Table sTable = config.getSrcTableSchema(e.getOwner(), e.getEdgeLabel());
+		if (sTable == null) {
+			throw new NormalMigrationException("Table " + e.getEdgeLabel() + " was not found.");
+		}
+		final PK srcPK = sTable.getPk();
+		Connection conn = connManager.getSourceConnection(); //NOPMD
+		try {
+			final DBExportHelper expHelper = getSrcDBExportHelper();
+			CUBRIDExportHelper graphExHelper = (CUBRIDExportHelper) expHelper;
+			PK pk = graphExHelper.supportFastSearchWithPK(conn) ? srcPK : null;
+			newRecordProcessor.startExportTable(e.getEdgeLabel());
+			List<Record> records = new ArrayList<Record>();
+			long totalExported = 0L;
+			long intPageCount = config.getPageFetchCount();
+			String sql = graphExHelper.getGraphSelectSQL(e);
+			while (true) {
+				if (interrupted) {
+					return;
+				}
+				long realPageCount = intPageCount;
+				if (!config.isImplicitEstimate()) {
+					realPageCount = Math.min(sTable.getTableRowCount() - totalExported,
+							intPageCount);
+				}
+				String pagesql = graphExHelper.getPagedSelectSQL(sql, realPageCount, totalExported, pk);
+				if (LOG.isDebugEnabled()) {
+					LOG.debug("[SQL]PAGINATED=" + pagesql);
+				}
+				long recordCountOfQuery = graphEdgeHandleSQL(conn, pagesql, e, sTable,
+						records, newRecordProcessor);
+				totalExported = totalExported + recordCountOfQuery;
+				//Stop fetching condition: no result;less then fetching count;great then total count
+				if (isLatestPage(sTable, totalExported, recordCountOfQuery)) {
+					break;
+				}
+			}
+			if (!records.isEmpty()) {
+				newRecordProcessor.processRecords(e.getEdgeLabel(), records);
+			}
+		} finally {
+			newRecordProcessor.endExportTable(e.getEdgeLabel());
+			connManager.closeSrc(conn);
+		}
+	}
 	
 	protected long graphHandleSQL(Connection conn, String sql, Vertex vextex, Table sTable, List<Record> records,
 			RecordExportedListener newRecsHandler) {
@@ -486,7 +541,37 @@ public class JDBCExporter extends
 					continue;
 				}
 				records.add(record);
-				handleGraphCommit(vextex, newRecsHandler, sTable, records);
+				handleGraphCommit(vextex.getVertexLabel(), newRecsHandler, sTable, records);
+			}
+			return totalExported;
+		} finally {
+			Closer.close(joc.getRs());
+			Closer.close(joc.getStmt());
+		}
+	}
+	
+	protected long graphEdgeHandleSQL(Connection conn, String sql, Edge edge, Table sTable, List<Record> records,
+			RecordExportedListener newRecsHandler) {
+		JDBCObjContainer joc = new JDBCObjContainer();
+		joc.setConn(conn);
+		try {
+			long totalExported = 0;
+			//Execute SQL with retry
+			joc = getResultSet(sql, null, joc);
+			if (joc.getRs() == null) {
+				return totalExported;
+			}
+			while (nextRecord(joc.getRs())) {
+				if (interrupted) {
+					return totalExported;
+				}
+				totalExported++;
+				Record record = createGraphNewRecord(sTable, edge.getColumnList(), joc.getRs());
+				if (record == null) {
+					continue;
+				}
+				records.add(record);
+				handleGraphCommit(edge.getEdgeLabel(), newRecsHandler, sTable, records);
 			}
 			return totalExported;
 		} finally {
@@ -524,7 +609,7 @@ public class JDBCExporter extends
 		return null;
 	}
 	
-	protected void handleGraphCommit(Vertex v, RecordExportedListener newRecordProcessor,
+	protected void handleGraphCommit(String tableName, RecordExportedListener newRecordProcessor,
 			Table sTable, List<Record> records) {
 		//Watching memory to avoid out of memory errors
 		int status = MigrationStatusManager.STATUS_WAITING;
@@ -543,7 +628,7 @@ public class JDBCExporter extends
 			}
 		}
 		if (MigrationStatusManager.STATUS_COMMIT == status) {
-			newRecordProcessor.processRecords(v.getVertexLabel(), records);
+			newRecordProcessor.processRecords(tableName, records);
 			// After records processed, clear it.
 			records.clear();
 		}

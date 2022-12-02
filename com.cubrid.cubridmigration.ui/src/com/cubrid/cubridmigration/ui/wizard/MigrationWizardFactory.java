@@ -438,15 +438,15 @@ public final class MigrationWizardFactory {
 	 * @return editor part ID
 	 */
 	public static String getReportEditorPartID(int sourceType, int destType) {
+		if (destType == MigrationConfiguration.DEST_GRAPH) {
+			return R2GMigrationReportEditorPart.ID;
+		}
+		
 		if (sourceType == MigrationConfiguration.SOURCE_TYPE_CSV) {
 			return CSVImportReportEditorPart.ID;
 		} else if (sourceType == MigrationConfiguration.SOURCE_TYPE_SQL) {
 			return SQLImportReportEditorPart.ID;
 		} 
-		
-		if (destType == MigrationConfiguration.DEST_GRAPH) {
-			return R2GMigrationReportEditorPart.ID;
-		}
 		
 		return MigrationReportEditorPart.ID;
 	}
@@ -458,14 +458,14 @@ public final class MigrationWizardFactory {
 	 * @return editor part ID
 	 */
 	public static String getProgressEditorPartID(int sourceType, int targetType) {
+		if (targetType == MigrationConfiguration.DEST_GRAPH) {
+			return R2GMigrationProgressEditorPart.ID;
+		}
+
 		if (sourceType == MigrationConfiguration.SOURCE_TYPE_CSV) {
 			return CSVProgressEditorPart.ID;
 		} else if (sourceType == MigrationConfiguration.SOURCE_TYPE_SQL) {
 			return SQLProgressEditorPart.ID;
-		}
-		
-		if (targetType == MigrationConfiguration.DEST_GRAPH) {
-			return R2GMigrationProgressEditorPart.ID;
 		}
 		
 		return MigrationProgressEditorPart.ID;

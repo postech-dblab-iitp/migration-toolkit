@@ -58,6 +58,7 @@ import com.cubrid.cubridmigration.core.export.handler.NumberTypeHandler;
 import com.cubrid.cubridmigration.core.export.handler.TimeTypeHandler;
 import com.cubrid.cubridmigration.core.export.handler.TimestampTypeHandler;
 import com.cubrid.cubridmigration.cubrid.export.handler.CUBRIDSetTypeHandler;
+import com.cubrid.cubridmigration.graph.dbobj.Edge;
 import com.cubrid.cubridmigration.graph.dbobj.Vertex;
 
 /**
@@ -321,6 +322,37 @@ public class CUBRIDExportHelper extends
 		
 	}
 	
+	public String getGraphSelectSQL(Edge e) {
+		StringBuffer buf = new StringBuffer(256);
+		buf.append("SELECT ");
+		final List<Column> columnList = e.getColumnList();
+		for (int i = 0; i < columnList.size(); i++) {
+			if (i > 0) {
+				buf.append(',');
+			}
+			buf.append(getQuotedObjName(columnList.get(i).getName()));
+		}
+		buf.append(" FROM ");
+		// it will make a query with a schema and table name 
+		// if it required a schema name when there create sql such as SCOTT.EMP
+		addGraphSchemaPrefix(e, buf);
+		buf.append(getQuotedObjName(e.getEdgeLabel()));
+
+//		String condition = setc.getCondition();
+//		if (StringUtils.isNotBlank(condition)) {
+//			condition = condition.trim();
+//			if (!condition.toLowerCase(Locale.US).startsWith("where")) {
+//				buf.append(" WHERE ");
+//			}
+//			if (condition.trim().endsWith(";")) {
+//				condition = condition.substring(0, condition.length() - 1);
+//			}
+//			buf.append(" ").append(condition);
+//		}
+		return buf.toString();
+		
+	}
+	
 	public String getGraphSelectCountSQL(final Vertex v) {
 		StringBuffer buf = new StringBuffer(256);
 		buf.append("SELECT COUNT(1) ");
@@ -347,6 +379,12 @@ public class CUBRIDExportHelper extends
 	protected void addGraphSchemaPrefix(Vertex v, StringBuffer buf) {
 		if (StringUtils.isNotBlank(v.getOwner())) {
 			buf.append(getQuotedObjName(v.getOwner())).append(".");
+		}
+	}
+	
+	protected void addGraphSchemaPrefix(Edge e, StringBuffer buf) {
+		if (StringUtils.isNotBlank(e.getOwner())) {
+			buf.append(getQuotedObjName(e.getOwner())).append(".");
 		}
 	}
 }

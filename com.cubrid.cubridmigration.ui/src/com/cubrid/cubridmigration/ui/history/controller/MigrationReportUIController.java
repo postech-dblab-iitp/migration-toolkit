@@ -87,6 +87,9 @@ public class MigrationReportUIController {
 			Messages.colTotal, Messages.colExpCount, Messages.colExpTime, Messages.colImpCount,
 			Messages.colImpTime, Messages.colCompleted, Messages.colTotalElapsed, Messages.colOwnerName};
 
+	public static final String[] GRAPH_TABLE_HEADER_OVERVIEW = new String[] {Messages.colObjects,
+		Messages.colExpCount, Messages.colImpCount, Messages.colFailed, Messages.colProgress};
+	
 	/**
 	 * @param reporter MigrationReporter
 	 * @param noSupportedFile String

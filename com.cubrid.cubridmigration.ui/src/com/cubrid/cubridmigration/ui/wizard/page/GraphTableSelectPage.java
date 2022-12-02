@@ -534,13 +534,12 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 			edge.setStartVertexName(fk1.getReferencedTableName());
 			edge.setEndVertexName(fk2.getReferencedTableName());
 			edge.setColumnList(table.getColumns());
-			edge.setEdgeLabel(fk1.getReferencedTableName() + "_" + fk2.getReferencedTableName());
+			edge.setEdgeLabel(table.getName());
             edge.setEdgeType(Edge.JOINTABLE_TYPE);
             
-			for (String columName : fk1.getColumnNames()) {
-				edge.addFKCol2Ref(columName, fk1.getRefColumns(columName));
-			}
-			
+            String col1 = fk1.getColumnNames().get(0);
+            String col2 = fk2.getColumnNames().get(0);
+            edge.addFKCol2Ref(col1, col2);
 			gdbDict.addMigratedEdgeList(edge);
 		}
 	}

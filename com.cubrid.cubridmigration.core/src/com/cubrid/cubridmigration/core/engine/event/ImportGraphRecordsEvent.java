@@ -43,22 +43,41 @@ public class ImportGraphRecordsEvent extends
 	private final Throwable error;
 	private final String errorFile;
 
-	public ImportGraphRecordsEvent(Vertex v, Edge e, int recordCount) {
+	public ImportGraphRecordsEvent(Vertex v, int recordCount) {
 		this.recordCount = recordCount;
 		this.success = true;
 		this.error = null;
 		this.errorFile = null;
 		this.vertex = v;
+		this.edge = null;
+	}
+	
+	public ImportGraphRecordsEvent(Edge e, int recordCount) {
+		this.recordCount = recordCount;
+		this.success = true;
+		this.error = null;
+		this.errorFile = null;
+		this.vertex = null;
 		this.edge = e;
 	}
 	
-	public ImportGraphRecordsEvent(Vertex v, Edge e, int recordCount, 
+	public ImportGraphRecordsEvent(Vertex v, int recordCount, 
 			Exception error, String errorFile) {
 		this.recordCount = recordCount;
 		this.success = true;
 		this.error = error;
 		this.errorFile = errorFile;
 		this.vertex = v;
+		this.edge = null;
+	}
+	
+	public ImportGraphRecordsEvent(Edge e, int recordCount, 
+			Exception error, String errorFile) {
+		this.recordCount = recordCount;
+		this.success = true;
+		this.error = error;
+		this.errorFile = errorFile;
+		this.vertex = null;
 		this.edge = e;
 	}
 

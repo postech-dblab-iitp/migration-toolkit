@@ -60,11 +60,8 @@ public class GraphEdgeExportTask extends
 				int reccordCount = 0;
 				if (edge.getEdgeType() == Edge.JOINTABLE_TYPE) {
 					reccordCount = records.size();
-				} else {
-					//reccordCount = edge.getfkCol2RefMappingSize();
-					reccordCount = 0;
-				}
-				eventHandler.handleEvent(new ExportGraphRecordEvent(edge, reccordCount));
+					eventHandler.handleEvent(new ExportGraphRecordEvent(edge, reccordCount));
+				} 
 				ImportTask task = taskFactory.createImportEdgeRecordsTask(edge, records);
 
 				importTaskExecutor = mrManager.getImportRecordExecutor();

@@ -1,0 +1,72 @@
+{% extends "!layout.html" %}
+
+  {%- block sidebar2 %}
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+
+          {%- block sidebartoc %}
+              <h3><a href="{{ pathto(master_doc) }}">{{ _('Table Of Contents') }}</a></h3>
+              {{ toctree(maxdepth=3) }}
+          {%- endblock %}
+          
+          {%- block sidebarrel %}
+          {%- include "relations.html" %}
+          {%- endblock %}
+          {%- block sidebarsourcelink %}
+          {%- include "sourcelink.html" %}
+          {%- endblock %}
+          
+          {%- block sidebarsearch %}
+          <h3 style="margin-top: 1.5em;">{{ _('Manual Search') }}</h3>
+          <form class="search" action="{{ pathto('search') }}" method="get">
+            <input type="text" name="q" size="18" />
+            <input type="submit" value="{{ _('Go') }}" />
+            <input type="hidden" name="check_keywords" value="yes" />
+            <input type="hidden" name="area" value="default" />
+          </form>
+          <p class="searchtip" style="font-size: 90%">
+            {{ _('Search Area: Manual. Enter only one keyword.') }}
+          </p>
+
+          <h3 style="margin-top: 1.5em;">{{ _('Site Search') }}</h3>
+          <form class="search" action="http://www.cubrid.org/?" method="get">
+            <input type="text" name="is_keyword" size="18" />
+            <input type="submit" value="{{ _('Go') }}" />
+            <input type="hidden" name="act" value="IS" />
+            <input type="hidden" name="search_target" value="title_content" />
+          </form>
+          <p class="searchtip" style="font-size: 90%">
+            {{ _('Search Area: cubrid.org Site. You can enter several keywords.') }}
+          </p>
+          
+          {%- endblock %}
+       </div> 
+    </div>
+  {% endblock %}
+
+{%- block extrahead %}
+
+    <!-- meta-tags -->
+      {% set my_keys = title + ', ' + docstitle %}
+      {% set my_desc = title + ' &mdash; ' + docstitle + '.' %}
+      {% if meta is defined %}
+        {% set meta_keys = meta.keys() %}
+        {% if 'meta-keywords' in meta_keys %}
+          {% set my_keys = my_keys + ', ' + meta.get('meta-keywords') %}
+        {% endif %}
+        {% if 'meta-description' in meta_keys %}
+          {% set my_desc = my_desc + ' ' + meta.get('meta-description') %}
+        {% endif %}
+      {% endif %}
+
+      <!-- keywords & description -->
+      <meta name="keywords" content="{{ my_keys }}" />
+      <meta name="description" content = "{{ my_desc }} " />
+    
+      <!-- og -->
+      <meta property="og:title" content="{{ title }} &mdash; {{ docstitle }}"/>
+      <meta property="og:keywords" content="{{ my_keys }}" />
+      <meta property="og:description" content = "{{ my_desc }} " />
+      <meta property="og:type" content="website"/>
+      <meta property="og:site" content="{{ title }} &mdash; {{ docstitle }}"/>
+{% endblock %}

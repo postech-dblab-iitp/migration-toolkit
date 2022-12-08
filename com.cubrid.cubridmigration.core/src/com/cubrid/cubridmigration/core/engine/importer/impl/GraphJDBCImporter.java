@@ -154,7 +154,8 @@ public class GraphJDBCImporter extends
 			conn.setAutoCommit(false);
 		}
 		PreparedStatement stmt = null;
-		ResultSet rs = null;
+		ResultSet rs1 = null;
+		ResultSet rs2 = null;
 		String sql = getTargetInsertJoinEdge(e);
 			try {
 				if (sql == null) {
@@ -175,11 +176,21 @@ public class GraphJDBCImporter extends
 					List<ColumnValue> colVal = getRecord2FKValue(e, rc);
 					stmt.setString(1, colVal.get(0).getValue().toString());
 					stmt.setString(2, colVal.get(1).getValue().toString());
-					rs = stmt.executeQuery();
+					rs1 = stmt.executeQuery();
 					
-					if (rs.next()) {
-						result = rs.getInt("count(r)");
+					stmt.clearParameters();
+					
+					stmt.setString(1, colVal.get(0).getValue().toString());
+					stmt.setString(2, colVal.get(1).getValue().toString());
+					rs2 = stmt.executeQuery();
+					
+					if (rs1.next()) {
+						result = rs1.getInt("count(r)");
 						resultTotal += result;
+					}
+					
+					if (rs2.next()) {
+						resultTotal += rs1.getInt("count(r)");
 					}
 					
 					stmt.clearParameters();

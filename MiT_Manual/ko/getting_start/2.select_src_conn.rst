@@ -1,0 +1,20 @@
+:meta-keywords: guide tool
+:meta-description: Introducing the features of select src page
+
+
+****************************
+원본DB 연결 선택 페이지
+****************************
+
+원본DB의 connection을 관리한다.
+
+.. image:: .\\image\\select_src_conn_page.png
+
+
+=============
+연결 생성
+=============
+
+connection을 생성한다
+
+.. image:: .\\image\\select_src_conn_page_create_conn.png

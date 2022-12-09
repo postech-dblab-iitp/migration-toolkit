@@ -1,0 +1,15 @@
+:meta-keywords: guide tool
+:meta-description: Introducing the features of first page
+
+
+*******************
+첫 화면
+*******************
+
+프로그램의 첫 화면에 있는 기능들을 설명한다.
+
+.. image:: .\\image\\first_page.png
+
+===============
+새 마이그레이션
+===============

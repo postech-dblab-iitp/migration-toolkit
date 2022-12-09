@@ -1,0 +1,11 @@
+:meta-keywords: guide tool
+:meta-description: Introducing the features of select src and tar page
+
+
+****************************
+원본, 목표 DB 선택 페이지
+****************************
+
+원본, 목표 DB 선택 페이지에 대해 설명한다.
+
+.. image:: .\\image\\select_src_tar_page.png

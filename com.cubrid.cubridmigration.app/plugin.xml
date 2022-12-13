@@ -44,15 +44,15 @@
          <property name="preferenceCustomization" value="plugin_customization.ini" />
          <property
                name="startupProgressRect"
-               value="5,380,557,15">
+               value="5,290,490,15">
          </property>
          <property
                name="startupForegroundColor"
-               value="C0C0C0">
+               value="000000">
          </property>
          <property
                name="startupMessageRect"
-               value="230,280,557,15">
+               value="5,270,557,15">
          </property>
 
       </product>

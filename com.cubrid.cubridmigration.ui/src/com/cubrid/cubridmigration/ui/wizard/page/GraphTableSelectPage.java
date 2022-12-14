@@ -426,7 +426,7 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 					edge.setEndVertexName(endVertexName);
 				}
 				
-				if (!edge.getEndVertexName().isEmpty()) {
+				if (edge.getEndVertexName() != null) {
 				    edge.setOwner(startVertex.getOwner());
 					edge.setStartVertexName(startVertex.getVertexLabel());
 					edge.setHavePKStartVertex(startVertex.getHasPK());
@@ -482,7 +482,7 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 					edge.setEndVertexName(endVertexName);
 				}
 				
-				if (!edge.getEndVertexName().isEmpty()) {
+				if (edge.getEndVertexName() != null) {
                     edge.setOwner(startVertex.getOwner());
 					edge.setStartVertexName(startVertex.getVertexLabel());
 					edge.setHavePKStartVertex(startVertex.getHasPK());

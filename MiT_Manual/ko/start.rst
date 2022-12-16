@@ -10,6 +10,8 @@
 
 
 .. toctree::
+    :titlesonly:
+
     getting_start/0.start_view.rst
     getting_start/1.select_src_tar.rst
     getting_start/2.select_src_conn.rst

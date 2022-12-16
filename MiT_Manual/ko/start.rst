@@ -14,4 +14,7 @@
     getting_start/1.select_src_tar.rst
     getting_start/2.select_src_conn.rst
     getting_start/3.select_tar_conn.rst
-
+    getting_start/4.object_mapping.rst
+    getting_start/5.migration_check.rst
+    getting_start/6.migration_progress.rst
+    getting_start/7.migration_report.rst

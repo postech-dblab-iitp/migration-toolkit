@@ -310,7 +310,7 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 
 			int importedKeysCount = table.getImportedKeysCount();
 			int exportedKeysCount = table.getExportedKeysCount();
-
+			
 			if (importedKeysCount == 2 && exportedKeysCount == 0) {
 				joinTablesEdgesList.add(table);
 			} else if (importedKeysCount >= 3) {
@@ -412,16 +412,18 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 				}
 				
 				if (endVertexName == null) {
+					Vertex migratedVertex = new Vertex();
 					for (Table selectedTable : selectedTableList) {
 						if (selectedTable.getName().equals(fk.getReferencedTableName())) {
-							Vertex migratedVertex = new Vertex();
 							migratedVertex.setVertexLabel(fk.getReferencedTableName());
 							migratedVertex.setColumnList(selectedTable.getColumns());
 							
-							gdbDict.addMigratedVertexList(migratedVertex);
+							if (gdbDict.getMigratedVertexByName(migratedVertex.getVertexLabel()) != null) {
+								gdbDict.addMigratedVertexList(migratedVertex);
+							}
 						}
 					}
-					
+					edge.setEndVertexName(migratedVertex.getVertexLabel());
 				} else {
 					edge.setEndVertexName(endVertexName);
 				}
@@ -474,7 +476,9 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 							migratedVertex.setVertexLabel(fk.getReferencedTableName());
 							migratedVertex.setColumnList(selectedTable.getColumns());
 							
-							gdbDict.addMigratedVertexList(migratedVertex);
+							if (gdbDict.getMigratedVertexByName(migratedVertex.getVertexLabel()) != null) {
+								gdbDict.addMigratedVertexList(migratedVertex);
+							}
 						}
 					}
 					
@@ -556,7 +560,7 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 			startVertex.setVertexType(Vertex.RECURSIVE_TYPE);
 			startVertex.setHasPK(table.hasPK());
 			
-			gdbDict.addMigratedVertexList(startVertex);
+//			gdbDict.addMigratedVertexList(startVertex);
 			
 			Edge edge;
 			for (FK fk : table.getFks()) {

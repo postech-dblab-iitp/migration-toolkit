@@ -526,6 +526,8 @@ public class MigrationTasksScheduler {
 			}
 		}
 		
+		await();
+		
 		for ( Edge e : migratedEdgeList) {
 			if (!e.isHavePKStartVertex()
 					&& e.getEdgeType() == Edge.SECOND_FK_TYPE) {
@@ -548,6 +550,8 @@ public class MigrationTasksScheduler {
 				}
 			}
 		}
+		
+		await();
 		
 		for ( Edge e : migratedEdgeList) {
 			if (!e.isHavePKStartVertex()

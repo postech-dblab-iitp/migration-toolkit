@@ -180,8 +180,8 @@ public class GraphJDBCImporter extends
 					
 					stmt.clearParameters();
 					
-					stmt.setString(1, colVal.get(0).getValue().toString());
-					stmt.setString(2, colVal.get(1).getValue().toString());
+					stmt.setString(1, colVal.get(1).getValue().toString());
+					stmt.setString(2, colVal.get(0).getValue().toString());
 					rs2 = stmt.executeQuery();
 					
 					if (rs1.next()) {

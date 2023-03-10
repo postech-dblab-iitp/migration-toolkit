@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.eclipse.jface.dialogs.PageChangedEvent;
 import org.eclipse.jface.viewers.ColumnWeightData;
+import org.eclipse.jface.viewers.IContentProvider;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
@@ -17,18 +18,23 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.zest.core.viewers.EntityConnectionData;
 import org.eclipse.zest.core.viewers.GraphViewer;
 import org.eclipse.zest.core.viewers.IGraphEntityContentProvider;
+import org.eclipse.zest.core.viewers.IGraphEntityRelationshipContentProvider;
 import org.eclipse.zest.core.widgets.ZestStyles;
 import org.eclipse.zest.layouts.LayoutStyles;
 import org.eclipse.zest.layouts.algorithms.GridLayoutAlgorithm;
@@ -40,15 +46,22 @@ import com.cubrid.cubridmigration.graph.dbobj.GraphDictionary;
 import com.cubrid.cubridmigration.graph.dbobj.Vertex;
 import com.cubrid.cubridmigration.ui.message.Messages;
 import com.cubrid.cubridmigration.ui.wizard.MigrationWizard;
+import com.cubrid.cubridmigration.ui.wizard.dialog.GraphEdgeSettingDialog;
 
 //GDB override ObjectMappingPage. GraphMappingPage seems to have a similar structure to ObjectMappingPage
 public class GraphMappingPage extends MigrationWizardPage {
 
 	private GraphViewer graphViewer;
-	private TableViewer columnViewer;
 	
+	private Vertex selectedVertex;
+	private Vertex startVertex;
+	private Vertex endVertex;
+	
+	private TableViewer columnViewer;
 	private TableViewer gdbTable;
 	private TableViewer rdbTable;
+	
+	private Menu popupMenu;
 	
 	public GraphMappingPage(String pageName) {
 		super(pageName);
@@ -99,11 +112,15 @@ public class GraphMappingPage extends MigrationWizardPage {
 	}
 	
 	public void createGraph(Composite parent) {
-		graphViewer = new GraphViewer(parent, SWT.BORDER);
+		setPopupMenu(parent);
+	
+		graphViewer = new GraphViewer(parent, SWT.BORDER);	
 		graphViewer.setConnectionStyle(ZestStyles.CONNECTIONS_DIRECTED);
-		graphViewer.setLayoutAlgorithm(new GridLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING));;
+		graphViewer.setLayoutAlgorithm(new GridLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING));
+		
+		graphViewer.getGraphControl().setMenu(popupMenu);
+				
 		graphViewer.setContentProvider(new IGraphEntityContentProvider() {
-
 			@Override
 			@SuppressWarnings("unchecked")
 			public Object[] getElements(Object inputElement) {
@@ -115,6 +132,7 @@ public class GraphMappingPage extends MigrationWizardPage {
 					return new Object[0];
 				}
 			}
+			
 			
 			@Override
 			public Object[] getConnectedTo(Object entity) {
@@ -141,6 +159,7 @@ public class GraphMappingPage extends MigrationWizardPage {
 					Object newInput) {}
 
 		});
+
 		graphViewer.setLabelProvider(new LabelProvider() {
 			@Override
 			public String getText(Object element) {
@@ -161,15 +180,148 @@ public class GraphMappingPage extends MigrationWizardPage {
 		
 		});
 		
+//		graphViewer.setContentProvider(new IGraphEntityRelationshipContentProvider() {
+//		
+//		@Override
+//		public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
+//			// TODO Auto-generated method stub
+//			
+//		}
+//		
+//		@Override
+//		public void dispose() {
+//			// TODO Auto-generated method stub
+//			
+//		}
+//		
+//		@Override
+//		public Object[] getElements(Object inputElement) {
+//			// TODO Auto-generated method stub
+//			return null;
+//		}
+//		
+//		@Override
+//		public Object[] getRelationships(Object source, Object dest) {
+//			// TODO Auto-generated method stub
+//			return null;
+//		}
+//	});
+	
+		
 		graphViewer.addSelectionChangedListener(new ISelectionChangedListener() {
 			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
 				IStructuredSelection selection = (IStructuredSelection) event.getSelection();
 				changeColumnData(selection.getFirstElement());
 				
+				if(selection.getFirstElement() instanceof Vertex) {
+					selectedVertex = (Vertex) selection.getFirstElement();
+					
+					menuHandler();
+				}
+				
+				System.out.println("select vertex: " + selectedVertex.getVertexLabel());
 			}
 		});
+
 		graphViewer.applyLayout();
+	}
+	
+	public void setPopupMenu(Composite parent) {
+		popupMenu = new Menu(parent);
+		
+		//TODO setting message
+		MenuItem item1 = new MenuItem(popupMenu, SWT.POP_UP);
+		item1.setText("select as start vertex");
+		
+		item1.addSelectionListener(new SelectionListener() {
+			
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				// TODO Auto-generated method stub
+				if (startVertex != null) {
+					startVertex = null;
+				}
+				
+				startVertex = selectedVertex;
+				
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {}
+		});
+		
+		MenuItem item2 = new MenuItem(popupMenu, SWT.POP_UP);
+		item2.setText("select as end vertex");
+		
+		item2.addSelectionListener(new SelectionListener() {
+			
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				
+				if (endVertex != null) {
+					endVertex = null;
+				}
+				
+				endVertex = selectedVertex;
+				
+				GraphEdgeSettingDialog edgeSettingDialog = new GraphEdgeSettingDialog(getShell(), startVertex, endVertex);
+				edgeSettingDialog.open();
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {}
+		});
+		
+		MenuItem item3 = new MenuItem(popupMenu, SWT.POP_UP);
+		item3.setText("cancel");
+		
+		item3.addSelectionListener(new SelectionListener() {
+			
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				// TODO Auto-generated method stub
+				if (startVertex != null) {
+					startVertex = null;
+				}
+				
+				if (endVertex != null) {
+					endVertex = null;
+				}
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {}
+		});
+		
+		item1.setEnabled(false);
+		item2.setEnabled(false);
+		item3.setEnabled(false);
+	}
+	
+	public void menuHandler() {
+		MenuItem[] items = popupMenu.getItems();
+		
+		if (selectedVertex != null) {
+			items[0].setEnabled(true);
+			items[1].setEnabled(false);
+			items[2].setEnabled(false);
+			
+		} else {
+			for (MenuItem item : popupMenu.getItems()) {
+				item.setEnabled(false);
+			}
+		}
+		
+		if (startVertex != null) {
+			popupMenu.getItem(0).setEnabled(true);
+			popupMenu.getItem(1).setEnabled(true);
+			popupMenu.getItem(2).setEnabled(true);
+		}
+		
+		if (endVertex != null) {
+			//do nothing?
+		}
 	}
 	
 	public void changeColumnData(Object data) {
@@ -453,6 +605,10 @@ public class GraphMappingPage extends MigrationWizardPage {
 	
 	public void showGraphData(List<Vertex> vertexList) {
 		graphViewer.setInput(vertexList);
+	}
+	
+	public void createEdgeView() {
+		
 	}
 	
 	//GDB GraphMappingPage -> afterShowCurrentPage

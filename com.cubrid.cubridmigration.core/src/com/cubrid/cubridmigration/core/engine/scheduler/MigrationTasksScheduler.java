@@ -140,6 +140,8 @@ public class MigrationTasksScheduler {
 		createGrephStep8();
 		createGrephStep7();
 		await();
+		createGraphStep9();
+		await();
 	}
 	
 	/**
@@ -616,6 +618,19 @@ public class MigrationTasksScheduler {
 		for ( Edge e : migratedEdgeList) {
 			if ( e.getEdgeType() == Edge.RECURSIVE_TYPE) {
 				executeTask2(taskFactory.GraphEdgeExportTask(e));
+			}
+		}
+	}
+	
+	protected void createGraphStep9() {
+		//create custom edge
+		MigrationConfiguration cfg = context.getConfig();
+		GraphDictionary gdbDict = cfg.getGraphDictionary();
+		List<Edge> migratedEdgeList = gdbDict.getMigratedEdgeList();
+		
+		for (Edge edge : migratedEdgeList) {
+			if (edge.getEdgeType() == Edge.CUSTOM_TYPE) {
+				executeTask2(taskFactory.GraphEdgeExportTask(edge));
 			}
 		}
 	}

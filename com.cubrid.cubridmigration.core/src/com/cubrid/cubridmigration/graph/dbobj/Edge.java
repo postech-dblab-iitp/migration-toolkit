@@ -14,6 +14,7 @@ public class Edge {
     public static final int INTERMEDIATE_FK_TYPE = 2;
     public static final int JOINTABLE_TYPE = 3;
     public static final int RECURSIVE_TYPE = 4;
+    public static final int CUSTOM_TYPE = 5;
     
 	private int id;
 	

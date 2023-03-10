@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.ComboBoxCellEditor;
@@ -30,17 +31,23 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
 import com.cubrid.cubridmigration.core.dbobject.Column;
+import com.cubrid.cubridmigration.graph.dbobj.Edge;
+import com.cubrid.cubridmigration.graph.dbobj.GraphDictionary;
 import com.cubrid.cubridmigration.graph.dbobj.Vertex;
 
 public class GraphEdgeSettingDialog extends Dialog {
+	
+	private GraphDictionary gdbDict;
 	
 	private Vertex startVertex;
 	private Vertex endVertex;
 	
 	private	TableViewer edgeTable;
 	
-	private ArrayList<ColumnData> columnDataList = new ArrayList<ColumnData>();
+	private Text txtEdgeName;
 	
+	private ArrayList<ColumnData> columnDataList = new ArrayList<ColumnData>();
+
 	private class ColumnData {
 		private String startColumnName;
 		private String startColumnType;
@@ -92,8 +99,9 @@ public class GraphEdgeSettingDialog extends Dialog {
 			"Column Type"
 	};
 
-	public GraphEdgeSettingDialog(Shell parentShell, Vertex startVertex, Vertex endVertex) {
+	public GraphEdgeSettingDialog(Shell parentShell, GraphDictionary gdbDict, Vertex startVertex, Vertex endVertex) {
 		super(parentShell);
+		this.gdbDict = gdbDict;
 		this.startVertex = startVertex;
 		this.endVertex = endVertex;
 	}
@@ -147,7 +155,7 @@ public class GraphEdgeSettingDialog extends Dialog {
 		lblEdgeName.setLayoutData(new GridData(SWT.RIGHT, SWT.FILL, true, false));
 		lblEdgeName.setText("set edge name: ");
 		
-		Text txtEdgeName = new Text(edgeNameContainer, SWT.BORDER);
+		txtEdgeName = new Text(edgeNameContainer, SWT.BORDER);
 		txtEdgeName.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		txtEdgeName.setText("");
 		
@@ -249,67 +257,6 @@ public class GraphEdgeSettingDialog extends Dialog {
 		edgeColumn3.setText(propertyList[2]);
 		edgeColumn4.setText(propertyList[3]);
 		
-//		TableViewer edgeTable2 = new TableViewer(tableContainer, SWT.NONE);
-//		
-//		edgeTable2.setLabelProvider(new ITableLabelProvider() {
-//			
-//			@Override
-//			public String getColumnText(Object element, int columnIndex) {
-//				Column column = (Column) element;
-//				
-//				switch (columnIndex) {
-//				case 0:
-//					
-//				case 1:
-//					
-//				case 2:
-//					
-//				case 3:
-//					
-//					
-//				default:
-//					return null;
-//				}
-//			}
-//			
-//			@Override
-//			public void removeListener(ILabelProviderListener listener) {}
-//			
-//			@Override
-//			public boolean isLabelProperty(Object element, String property) {return false;}
-//			
-//			@Override
-//			public void dispose() {}
-//			
-//			@Override
-//			public void addListener(ILabelProviderListener listener) {}
-//			
-//			@Override
-//			public Image getColumnImage(Object element, int columnIndex) {return null;}
-//		});
-//		
-//		
-//		TableLayout tableLayout2 = new TableLayout();
-//		
-//		tableLayout2.addColumnData(new ColumnWeightData(1000));
-//		tableLayout2.addColumnData(new ColumnWeightData(1000));
-//		tableLayout1.addColumnData(new ColumnWeightData(1000));
-//		tableLayout1.addColumnData(new ColumnWeightData(1000));
-//		
-//		edgeTable2.getTable().setLayout(tableLayout2);
-//		edgeTable2.getTable().setLinesVisible(true);
-//		edgeTable2.getTable().setHeaderVisible(true);
-//		
-//		TableColumn edgeColumn3 = new TableColumn(edgeTable2.getTable(), SWT.LEFT);
-//		TableColumn edgeColumn4 = new TableColumn(edgeTable2.getTable(), SWT.LEFT);
-//		TableColumn edgeColumn3 = new TableColumn(edgeTable.getTable(), SWT.LEFT);
-//		TableColumn edgeColumn4 = new TableColumn(edgeTable.getTable(), SWT.LEFT);
-//		
-//		edgeColumn3.setText("End Vertex Column");
-//		edgeColumn4.setText("Column Type");
-//		edgeColumn3.setText("End Vertex Column");
-//		edgeColumn4.setText("Column Type");
-		
 		makeData();
 		
 		ComboBoxCellEditor startVertexComboBox = new ComboBoxCellEditor(edgeTable.getTable(), startVertexColumnList);
@@ -346,8 +293,12 @@ public class GraphEdgeSettingDialog extends Dialog {
 				}
 				
 				
-				edgeTable.refresh();
+				if (!(colData.getStartColumnType().equals(colData.getEndColumnType()))
+						&& !(colData.getEndColumnType().equals("") || colData.getStartColumnType().equals(""))) {
+					MessageDialog.openError(getShell(), "warning", "both of column type must be same");
+				}
 				
+				edgeTable.refresh();
 			}
 			
 			@Override
@@ -435,8 +386,6 @@ public class GraphEdgeSettingDialog extends Dialog {
 				
 				return "";
 			}
-			
-			
 		});
 	}
 	
@@ -469,12 +418,46 @@ public class GraphEdgeSettingDialog extends Dialog {
 		endVertexColumnList = (String[]) endVertexColumn.toArray(new String[0]);
 	}
 	
-
-
+	private boolean checkStatus() {
+		
+		return true;
+	}
+	
+	private void saveData() {
+		for (ColumnData col : columnDataList) {
+			if (col.getEndColumnName().equals("")) {
+				continue;
+			}
+			
+			Edge newEdge = new Edge();
+			
+			newEdge.setEdgeLabel(txtEdgeName.getText());
+			
+			newEdge.setStartVertex(startVertex);
+			newEdge.setStartVertexName(startVertex.getVertexLabel());
+			
+			newEdge.setEndVertex(endVertex);
+			newEdge.setEndVertexName(endVertex.getVertexLabel());
+			
+			newEdge.addFKCol2Ref(col.getStartColumnName(), col.getEndColumnName());
+			
+			newEdge.setEdgeType(Edge.CUSTOM_TYPE);
+			
+			startVertex.getEndVertexes().add(endVertex);
+			
+			gdbDict.addMigratedEdgeList(newEdge);
+		}
+	}
+	
 	@Override
 	protected void okPressed() {
 		// TODO Auto-generated method stub
 		// return edge to graph view
-		super.okPressed();
+		
+		boolean flag = checkStatus();
+		saveData();
+		if (flag) {
+			super.okPressed();
+		}
 	}
 }

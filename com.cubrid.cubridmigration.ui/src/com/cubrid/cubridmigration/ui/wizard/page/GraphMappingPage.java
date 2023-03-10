@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.eclipse.jface.dialogs.PageChangedEvent;
 import org.eclipse.jface.viewers.ColumnWeightData;
-import org.eclipse.jface.viewers.IContentProvider;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
@@ -34,7 +33,6 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.zest.core.viewers.EntityConnectionData;
 import org.eclipse.zest.core.viewers.GraphViewer;
 import org.eclipse.zest.core.viewers.IGraphEntityContentProvider;
-import org.eclipse.zest.core.viewers.IGraphEntityRelationshipContentProvider;
 import org.eclipse.zest.core.widgets.ZestStyles;
 import org.eclipse.zest.layouts.LayoutStyles;
 import org.eclipse.zest.layouts.algorithms.GridLayoutAlgorithm;
@@ -42,20 +40,26 @@ import org.eclipse.zest.layouts.algorithms.GridLayoutAlgorithm;
 import com.cubrid.cubridmigration.core.dbobject.Catalog;
 import com.cubrid.cubridmigration.core.dbobject.Column;
 import com.cubrid.cubridmigration.core.engine.config.MigrationConfiguration;
+import com.cubrid.cubridmigration.graph.dbobj.Edge;
 import com.cubrid.cubridmigration.graph.dbobj.GraphDictionary;
 import com.cubrid.cubridmigration.graph.dbobj.Vertex;
 import com.cubrid.cubridmigration.ui.message.Messages;
 import com.cubrid.cubridmigration.ui.wizard.MigrationWizard;
 import com.cubrid.cubridmigration.ui.wizard.dialog.GraphEdgeSettingDialog;
+import com.cubrid.cubridmigration.ui.wizard.dialog.GraphRenamingDialog;
 
 //GDB override ObjectMappingPage. GraphMappingPage seems to have a similar structure to ObjectMappingPage
 public class GraphMappingPage extends MigrationWizardPage {
 
+	private GraphDictionary gdbDict;
+	
 	private GraphViewer graphViewer;
 	
 	private Vertex selectedVertex;
 	private Vertex startVertex;
 	private Vertex endVertex;
+	
+	private Object selectedObject;
 	
 	private TableViewer columnViewer;
 	private TableViewer gdbTable;
@@ -172,6 +176,15 @@ public class GraphMappingPage extends MigrationWizardPage {
 					Vertex startVertex = (Vertex) test.source;
 					Vertex endVertex = (Vertex) test.dest;
 					
+					ArrayList<Edge> edgeList = (ArrayList<Edge>) gdbDict.getMigratedEdgeList();
+					
+					for (Edge edge : edgeList) {
+						if (edge.getStartVertexName().equalsIgnoreCase(startVertex.getVertexLabel()) && 
+								edge.getEndVertexName().equalsIgnoreCase(endVertex.getVertexLabel())) {
+							return edge.getEdgeLabel();
+						}
+					}
+					
 					return "" + startVertex.getVertexLabel() + "_" + endVertex.getVertexLabel();
 				}
 				
@@ -179,34 +192,6 @@ public class GraphMappingPage extends MigrationWizardPage {
 			}
 		
 		});
-		
-//		graphViewer.setContentProvider(new IGraphEntityRelationshipContentProvider() {
-//		
-//		@Override
-//		public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-//			// TODO Auto-generated method stub
-//			
-//		}
-//		
-//		@Override
-//		public void dispose() {
-//			// TODO Auto-generated method stub
-//			
-//		}
-//		
-//		@Override
-//		public Object[] getElements(Object inputElement) {
-//			// TODO Auto-generated method stub
-//			return null;
-//		}
-//		
-//		@Override
-//		public Object[] getRelationships(Object source, Object dest) {
-//			// TODO Auto-generated method stub
-//			return null;
-//		}
-//	});
-	
 		
 		graphViewer.addSelectionChangedListener(new ISelectionChangedListener() {
 			@Override
@@ -223,7 +208,7 @@ public class GraphMappingPage extends MigrationWizardPage {
 				System.out.println("select vertex: " + selectedVertex.getVertexLabel());
 			}
 		});
-
+		
 		graphViewer.applyLayout();
 	}
 	
@@ -265,8 +250,10 @@ public class GraphMappingPage extends MigrationWizardPage {
 				
 				endVertex = selectedVertex;
 				
-				GraphEdgeSettingDialog edgeSettingDialog = new GraphEdgeSettingDialog(getShell(), startVertex, endVertex);
+				GraphEdgeSettingDialog edgeSettingDialog = new GraphEdgeSettingDialog(getShell(), gdbDict, startVertex, endVertex);
 				edgeSettingDialog.open();
+				
+				graphViewer.refresh();
 			}
 			
 			@Override
@@ -288,6 +275,28 @@ public class GraphMappingPage extends MigrationWizardPage {
 				if (endVertex != null) {
 					endVertex = null;
 				}
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {}
+		});
+		
+		MenuItem separator = new MenuItem(popupMenu, SWT.SEPARATOR);
+		
+		MenuItem changeName = new MenuItem(popupMenu, SWT.POP_UP);
+		changeName.setText("change name");
+		
+		changeName.addSelectionListener(new SelectionListener() {
+			
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				
+				selectedObject = selectedVertex;
+				
+				GraphRenamingDialog renameDialog = new GraphRenamingDialog(getShell(), gdbDict, selectedObject);
+				renameDialog.open();
+				
+				graphViewer.refresh();
 			}
 			
 			@Override
@@ -622,7 +631,7 @@ public class GraphMappingPage extends MigrationWizardPage {
 		
 		Catalog sourceCatalog = mw.getSourceCatalog();
 	
-		GraphDictionary gdbDict = cfg.getGraphDictionary();
+		gdbDict = cfg.getGraphDictionary();
 		
 		gdbDict.printVertexAndEdge();
 		

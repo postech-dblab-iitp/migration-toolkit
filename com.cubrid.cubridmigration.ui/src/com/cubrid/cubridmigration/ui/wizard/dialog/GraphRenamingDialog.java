@@ -1,5 +1,7 @@
 package com.cubrid.cubridmigration.ui.wizard.dialog;
 
+import java.util.ArrayList;
+
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
@@ -65,7 +67,8 @@ public class GraphRenamingDialog extends Dialog {
 			}
 			
 			if (isNameNotDuplicate) {
-				selectedVertex.setVertexLabel(txtNewName.getText());		
+				renameVertex(selectedVertex);
+				
 				return true;
 			}
 			
@@ -82,7 +85,7 @@ public class GraphRenamingDialog extends Dialog {
 				}
 			}
 			
-			if (!isNameNotDuplicate) {
+			if (isNameNotDuplicate) {
 				selectedEdge.setEdgeLabel(txtNewName.getText());
 				return true;
 			}
@@ -90,6 +93,42 @@ public class GraphRenamingDialog extends Dialog {
 			return false;
 		}
 		return false;
+	}
+	
+	private void renameVertex(Vertex selectedVertex) {
+		//change edge name first
+		
+		ArrayList<Edge> edgeList = (ArrayList<Edge>) gdbDict.getMigratedEdgeList();
+		
+		for (Edge edge : edgeList) {
+			if (edge.getStartVertexName().equals(selectedVertex.getVertexLabel())) {
+				edge.setStartVertexName(txtNewName.getText());
+			}
+			
+			if (edge.getEndVertexName().equals(selectedVertex.getVertexLabel())) {
+				edge.setEndVertexName(txtNewName.getText());
+			}
+		}
+		
+		//change vertex name second
+		
+		ArrayList<Vertex> vertexList = (ArrayList<Vertex>) gdbDict.getMigratedVertexList();
+		
+		for (Vertex vertex : vertexList) {
+			if (vertex.getVertexLabel().equals(selectedVertex.getVertexLabel())) {
+				vertex.setVertexLabel(txtNewName.getText());
+			}
+			
+			for (Vertex endVertex : vertex.getEndVertexes()) {
+				if (endVertex.getVertexLabel().equals(selectedVertex.getVertexLabel())) {
+					endVertex.setVertexLabel(txtNewName.getText());
+				}
+			}
+		}
+		
+		selectedVertex.setVertexLabel(txtNewName.getText());
+		
+		
 	}
 	
 	@Override

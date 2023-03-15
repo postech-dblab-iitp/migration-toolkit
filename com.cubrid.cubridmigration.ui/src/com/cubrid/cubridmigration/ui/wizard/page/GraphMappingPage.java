@@ -33,6 +33,9 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.zest.core.viewers.EntityConnectionData;
 import org.eclipse.zest.core.viewers.GraphViewer;
 import org.eclipse.zest.core.viewers.IGraphEntityContentProvider;
+import org.eclipse.zest.core.viewers.IGraphEntityRelationshipContentProvider;
+import org.eclipse.zest.core.widgets.Graph;
+import org.eclipse.zest.core.widgets.GraphConnection;
 import org.eclipse.zest.core.widgets.ZestStyles;
 import org.eclipse.zest.layouts.LayoutStyles;
 import org.eclipse.zest.layouts.algorithms.GridLayoutAlgorithm;
@@ -123,46 +126,84 @@ public class GraphMappingPage extends MigrationWizardPage {
 		graphViewer.setLayoutAlgorithm(new GridLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING));
 		
 		graphViewer.getGraphControl().setMenu(popupMenu);
-				
-		graphViewer.setContentProvider(new IGraphEntityContentProvider() {
+		
+		graphViewer.setContentProvider(new IGraphEntityRelationshipContentProvider() {
+			
 			@Override
-			@SuppressWarnings("unchecked")
+			public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {}
+			
+			@Override
+			public void dispose() {}
+			
+			@Override
 			public Object[] getElements(Object inputElement) {
 				if (inputElement instanceof List) {
+					@SuppressWarnings("unchecked")
 					List<Vertex> vertexList = (ArrayList<Vertex>) inputElement;
-					
+				
 					return vertexList.toArray();
 				} else {
 					return new Object[0];
 				}
 			}
 			
-			
 			@Override
-			public Object[] getConnectedTo(Object entity) {
-				if (entity instanceof Vertex) {
-					Vertex vertexList = (Vertex) entity;
-					
-					List<Vertex> list = vertexList.getEndVertexes();
-					
-					if (list == null) {
-						return new Object[0];
-					} else {
-						return vertexList.getEndVertexes().toArray();
+			public Object[] getRelationships(Object source, Object dest) {
+				Vertex startVertex = (Vertex) source;
+				Vertex endVertex = (Vertex) dest;
+				
+				ArrayList<Edge> allEdgeList = (ArrayList<Edge>) gdbDict.getMigratedEdgeList();
+				ArrayList<Edge> currentEdgeList = new ArrayList<Edge>();
+				
+				
+				for (Edge edge : allEdgeList) {
+					if (edge.getStartVertexName().equals(startVertex.getVertexLabel())
+							&& edge.getEndVertexName().equals(endVertex.getVertexLabel())) {
+						currentEdgeList.add(edge);
 					}
-				} else {
-					return new Object[0];
 				}
+				
+				return currentEdgeList.toArray();
 			}
-			
-			@Override
-			public void dispose() {}
-
-			@Override
-			public void inputChanged(Viewer viewer, Object oldInput,
-					Object newInput) {}
-
 		});
+				
+//		graphViewer.setContentProvider(new IGraphEntityContentProvider() {
+//			@Override
+//			@SuppressWarnings("unchecked")
+//			public Object[] getElements(Object inputElement) {
+//				if (inputElement instanceof List) {
+//					List<Vertex> vertexList = (ArrayList<Vertex>) inputElement;
+//					
+//					return vertexList.toArray();
+//				} else {
+//					return new Object[0];
+//				}
+//			}
+//			
+//			@Override
+//			public Object[] getConnectedTo(Object entity) {
+//				if (entity instanceof Vertex) {
+//					Vertex vertexList = (Vertex) entity;
+//					
+//					List<Vertex> list = vertexList.getEndVertexes();
+//					
+//					if (list == null) {
+//						return new Object[0];
+//					} else {
+//						return vertexList.getEndVertexes().toArray();
+//					}
+//				} else {
+//					return new Object[0];
+//				}
+//			}
+//			
+//			@Override
+//			public void dispose() {}
+//
+//			@Override
+//			public void inputChanged(Viewer viewer, Object oldInput,
+//					Object newInput) {}
+//		});
 
 		graphViewer.setLabelProvider(new LabelProvider() {
 			@Override
@@ -171,26 +212,30 @@ public class GraphMappingPage extends MigrationWizardPage {
 					Vertex vertex = (Vertex) element;
 					return vertex.getVertexLabel();
 					
-				} if (element instanceof EntityConnectionData) {
-					EntityConnectionData test = (EntityConnectionData) element;
-					Vertex startVertex = (Vertex) test.source;
-					Vertex endVertex = (Vertex) test.dest;
+				} if (element instanceof Edge) {
+					Edge edge = (Edge) element;
 					
-					ArrayList<Edge> edgeList = (ArrayList<Edge>) gdbDict.getMigratedEdgeList();
-					
-					for (Edge edge : edgeList) {
-						if (edge.getStartVertexName().equalsIgnoreCase(startVertex.getVertexLabel()) && 
-								edge.getEndVertexName().equalsIgnoreCase(endVertex.getVertexLabel())) {
-							return edge.getEdgeLabel();
-						}
-					}
-					
-					return "" + startVertex.getVertexLabel() + "_" + endVertex.getVertexLabel();
+					return edge.getEdgeLabel();
 				}
+//				if (element instanceof EntityConnectionData) {
+//					EntityConnectionData test = (EntityConnectionData) element;
+//					Vertex startVertex = (Vertex) test.source;
+//					Vertex endVertex = (Vertex) test.dest;
+//										
+//					ArrayList<Edge> edgeList = (ArrayList<Edge>) gdbDict.getMigratedEdgeList();
+//					
+//					for (Edge edge : edgeList) {
+//						if (edge.getStartVertexName().equalsIgnoreCase(startVertex.getVertexLabel()) && 
+//								edge.getEndVertexName().equalsIgnoreCase(endVertex.getVertexLabel())) {
+//							return edge.getEdgeLabel();
+//						}
+//					}
+//					
+//					return "" + startVertex.getVertexLabel() + "_" + endVertex.getVertexLabel();
+//				}
 				
 				return null;
 			}
-		
 		});
 		
 		graphViewer.addSelectionChangedListener(new ISelectionChangedListener() {
@@ -200,12 +245,21 @@ public class GraphMappingPage extends MigrationWizardPage {
 				changeColumnData(selection.getFirstElement());
 				
 				if(selection.getFirstElement() instanceof Vertex) {
+					selectedObject = (Vertex) selection.getFirstElement();
 					selectedVertex = (Vertex) selection.getFirstElement();
 					
 					menuHandler();
+					System.out.println("select object: " + ((Vertex) selectedObject).getVertexLabel());
 				}
 				
-				System.out.println("select vertex: " + selectedVertex.getVertexLabel());
+				if(selection.getFirstElement() instanceof Edge) {
+					selectedObject = (Edge) selection.getFirstElement();
+					
+					menuHandler();
+					System.out.println("selected object: " + ((Edge) selectedObject).getEdgeLabel());
+				}
+				
+				graphViewer.refresh();
 			}
 		});
 		
@@ -254,6 +308,7 @@ public class GraphMappingPage extends MigrationWizardPage {
 				edgeSettingDialog.open();
 				
 				graphViewer.refresh();
+				graphViewer.applyLayout();
 			}
 			
 			@Override
@@ -291,21 +346,21 @@ public class GraphMappingPage extends MigrationWizardPage {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				
-				selectedObject = selectedVertex;
-				
 				GraphRenamingDialog renameDialog = new GraphRenamingDialog(getShell(), gdbDict, selectedObject);
 				renameDialog.open();
 				
 				graphViewer.refresh();
+				graphViewer.applyLayout();
 			}
 			
 			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {}
 		});
 		
-		item1.setEnabled(false);
+		item1.setEnabled(true);
 		item2.setEnabled(false);
 		item3.setEnabled(false);
+		changeName.setEnabled(true);
 	}
 	
 	public void menuHandler() {
@@ -317,9 +372,9 @@ public class GraphMappingPage extends MigrationWizardPage {
 			items[2].setEnabled(false);
 			
 		} else {
-			for (MenuItem item : popupMenu.getItems()) {
-				item.setEnabled(false);
-			}
+			items[0].setEnabled(false);
+			items[1].setEnabled(false);
+			items[2].setEnabled(false);
 		}
 		
 		if (startVertex != null) {
@@ -337,8 +392,20 @@ public class GraphMappingPage extends MigrationWizardPage {
 		if (data == null) {
 			return;
 		}
-		Vertex vertex = (Vertex) data;
-		List<Column> columnList = vertex.getColumnList();
+		
+		List<Column> columnList = null;;
+		
+		if (data instanceof Vertex) {
+			Vertex vertex = (Vertex) data;
+			columnList = vertex.getColumnList();
+			
+		} else if (data instanceof EntityConnectionData) {
+			EntityConnectionData connData = (EntityConnectionData) data;
+			
+			Vertex startVertex = (Vertex) connData.dest;
+			Vertex endVertex = (Vertex) connData.source;
+			
+		}
 		
 		gdbTable.setInput(columnList);
 		rdbTable.setInput(columnList);

@@ -18,6 +18,7 @@ public class Vertex {
 
 	//GDB is selected for select page
 	private boolean isSelected;
+	private String tableName;
 	private String vertexLabel;
 	private Map<String, String> vertexProperties;
 	private List<Vertex> endVertexes;
@@ -51,6 +52,12 @@ public class Vertex {
 	}
 	public void setSelected(boolean isSelected) {
 		this.isSelected = isSelected;
+	}
+	public void setTableName(String tableName) {
+		this.tableName = tableName;
+	}
+	public String getTableName() {
+		return tableName;
 	}
 	public String getVertexLabel() {
 		return vertexLabel;

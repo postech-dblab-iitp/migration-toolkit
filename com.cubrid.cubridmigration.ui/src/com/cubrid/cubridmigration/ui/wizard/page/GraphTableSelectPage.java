@@ -374,6 +374,7 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 			Vertex vertex = new Vertex();
 			vertex.setOwner(table.getOwner());
 			vertex.setVertexLabel(table.getName());
+			vertex.setTableName(table.getName());
 			vertex.setColumnList(table.getColumns());
 			vertex.setVertexType(Vertex.FIRST_TYPE);
 			vertex.setHasPK(table.hasPK());
@@ -388,6 +389,7 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 			Vertex startVertex = new Vertex();
 			startVertex.setOwner(table.getOwner());
 			startVertex.setVertexLabel(table.getName());
+			startVertex.setTableName(table.getName());
 			startVertex.setColumnList(table.getColumns());
 			startVertex.setVertexType(Vertex.SECOND_TYPE);
 			startVertex.setHasPK(table.hasPK());
@@ -444,6 +446,7 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 			Vertex startVertex = new Vertex();
 			startVertex.setOwner(table.getOwner());
 			startVertex.setVertexLabel(table.getName());
+			startVertex.setTableName(table.getName());
 			startVertex.setColumnList(table.getColumns());
 			startVertex.setVertexType(Vertex.INTERMEDIATE_TYPE);
 			startVertex.setHasPK(table.hasPK());
@@ -556,6 +559,7 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 			
 			startVertex.setOwner(table.getOwner());
 			startVertex.setVertexLabel(table.getName());
+			startVertex.setTableName(table.getName());
 			startVertex.setColumnList(table.getColumns());
 			startVertex.setVertexType(Vertex.RECURSIVE_TYPE);
 			startVertex.setHasPK(table.hasPK());

@@ -407,7 +407,7 @@ public class JDBCExporter extends
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("[IN]exportGraphVertexRecords()");
 		}
-		Table sTable = config.getSrcTableSchema(v.getOwner(), v.getVertexLabel());
+		Table sTable = config.getSrcTableSchema(v.getOwner(), v.getTableName());
 		if (sTable == null) {
 			throw new NormalMigrationException("Table " + v.getVertexLabel() + " was not found.");
 		}

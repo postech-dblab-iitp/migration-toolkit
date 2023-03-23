@@ -305,7 +305,7 @@ public class CUBRIDExportHelper extends
 		// it will make a query with a schema and table name 
 		// if it required a schema name when there create sql such as SCOTT.EMP
 		addGraphSchemaPrefix(v, buf);
-		buf.append(getQuotedObjName(v.getVertexLabel()));
+		buf.append(getQuotedObjName(v.getTableName()));
 
 //		String condition = setc.getCondition();
 //		if (StringUtils.isNotBlank(condition)) {

@@ -32,7 +32,7 @@ public class GraphRenamingDialog extends Dialog {
 	protected void constrainShellSize() {
 		super.constrainShellSize();
 		getShell().setMinimumSize(500, 150);
-		getShell().setText("Create New Edge");
+		getShell().setText("Rename vertex or edge");
 	}
 
 	@Override

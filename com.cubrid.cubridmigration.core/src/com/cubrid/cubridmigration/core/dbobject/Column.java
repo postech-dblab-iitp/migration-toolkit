@@ -95,6 +95,7 @@ public class Column extends
 
 	
 	private String graphDataType = "";
+	private boolean isSelected = true;
 	private boolean supportGraphDatatype = true;
 	
 	public Column() {
@@ -423,4 +424,12 @@ public class Column extends
 	public boolean getSupportGraphDataType() {
         return this.supportGraphDatatype;
     }
+	
+	public void setSelected(boolean isSelected) {
+		this.isSelected = isSelected;
+	}
+	
+	public boolean isSelected() {
+		return isSelected;
+	}
 }

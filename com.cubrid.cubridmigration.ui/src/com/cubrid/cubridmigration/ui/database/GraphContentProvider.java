@@ -38,6 +38,4 @@ public class GraphContentProvider implements
 		// TODO Auto-generated method stub
 		
 	}
-
-
 }

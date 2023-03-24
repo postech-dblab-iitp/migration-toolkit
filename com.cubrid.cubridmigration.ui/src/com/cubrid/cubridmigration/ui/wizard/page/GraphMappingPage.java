@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.eclipse.jface.dialogs.PageChangedEvent;
 import org.eclipse.jface.viewers.ColumnWeightData;
+import org.eclipse.jface.viewers.ComboBoxCellEditor;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
@@ -46,6 +47,7 @@ import com.cubrid.cubridmigration.core.engine.config.MigrationConfiguration;
 import com.cubrid.cubridmigration.graph.dbobj.Edge;
 import com.cubrid.cubridmigration.graph.dbobj.GraphDictionary;
 import com.cubrid.cubridmigration.graph.dbobj.Vertex;
+import com.cubrid.cubridmigration.ui.MigrationUIPlugin;
 import com.cubrid.cubridmigration.ui.message.Messages;
 import com.cubrid.cubridmigration.ui.wizard.MigrationWizard;
 import com.cubrid.cubridmigration.ui.wizard.dialog.GraphEdgeSettingDialog;
@@ -53,7 +55,9 @@ import com.cubrid.cubridmigration.ui.wizard.dialog.GraphRenamingDialog;
 
 //GDB override ObjectMappingPage. GraphMappingPage seems to have a similar structure to ObjectMappingPage
 public class GraphMappingPage extends MigrationWizardPage {
-
+	public static final Image CHECK_IMAGE = MigrationUIPlugin.getImage("icon/checked.gif");
+	public static final Image UNCHECK_IMAGE = MigrationUIPlugin.getImage("icon/unchecked.gif");
+	
 	private GraphDictionary gdbDict;
 	
 	private GraphViewer graphViewer;
@@ -430,7 +434,7 @@ public class GraphMappingPage extends MigrationWizardPage {
 		rightSash.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		rightSash.setText("GDB column");
 		
-		rdbTable = new TableViewer(leftSash, SWT.NONE);
+		rdbTable = new TableViewer(leftSash, SWT.FULL_SELECTION);
 		rdbTable.setContentProvider(new IStructuredContentProvider() {
 			@Override
 			@SuppressWarnings("unchecked")
@@ -470,6 +474,15 @@ public class GraphMappingPage extends MigrationWizardPage {
 			
 			@Override
 			public Image getColumnImage(Object element, int columnIndex) {
+				Column column = (Column) element;
+				
+				if (columnIndex == 0) {
+					if (column.isSelected()) {
+						return CHECK_IMAGE;
+					} else {
+						return UNCHECK_IMAGE;
+					}
+				}
 				return null;
 			}
 			
@@ -504,8 +517,15 @@ public class GraphMappingPage extends MigrationWizardPage {
 		rdbColumn2.setText("Column Name");
 		rdbColumn3.setText("Data Type");
 		
+		rdbTable.addSelectionChangedListener(new ISelectionChangedListener() {
+			@Override
+			public void selectionChanged(SelectionChangedEvent event) {
+				IStructuredSelection selection = (IStructuredSelection) event.getSelection();
+				changeColumnSelect(selection.getFirstElement());
+			}
+		});
 		
-		gdbTable = new TableViewer(rightSash, SWT.NONE);
+		gdbTable = new TableViewer(rightSash, SWT.FULL_SELECTION);
 		gdbTable.setContentProvider(new IStructuredContentProvider() {
 			
 			@Override
@@ -548,7 +568,7 @@ public class GraphMappingPage extends MigrationWizardPage {
 			
 			@Override
 			public Image getColumnImage(Object element, int columnIndex) {
-				// TODO Auto-generated method stub
+
 				return null;
 			}
 			
@@ -677,6 +697,17 @@ public class GraphMappingPage extends MigrationWizardPage {
 		col4.setText("Property Name");
 		col5.setText("Graph Type");
 		*/
+	}
+	
+	public void changeColumnSelect(Object selectedColumn) {
+		Column column = (Column) selectedColumn;
+		if (column.isSelected()) {
+			column.setSelected(false);
+		} else {
+			column.setSelected(true);
+		}
+		
+		rdbTable.refresh();
 	}
 	
 	public void showGraphData(List<Vertex> vertexList) {

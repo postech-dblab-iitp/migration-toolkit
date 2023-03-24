@@ -43,10 +43,10 @@ import com.cubrid.cubridmigration.core.dbobject.FK;
 import com.cubrid.cubridmigration.core.dbobject.Index;
 import com.cubrid.cubridmigration.core.dbobject.PK;
 import com.cubrid.cubridmigration.core.dbobject.Record;
+import com.cubrid.cubridmigration.core.dbobject.Record.ColumnValue;
 import com.cubrid.cubridmigration.core.dbobject.Sequence;
 import com.cubrid.cubridmigration.core.dbobject.Table;
 import com.cubrid.cubridmigration.core.dbobject.View;
-import com.cubrid.cubridmigration.core.dbobject.Record.ColumnValue;
 import com.cubrid.cubridmigration.core.engine.JDBCConManager;
 import com.cubrid.cubridmigration.core.engine.MigrationContext;
 import com.cubrid.cubridmigration.core.engine.ThreadUtils;
@@ -336,6 +336,10 @@ public class GraphJDBCImporter extends
 						parameterSetter.setRecord2Statement(trec, stmt);
 						stmt.addBatch();
 					} catch (SQLException ex) {
+						//print exception
+						
+						ex.printStackTrace();
+						
 						if (isConnectionCutDown(ex)) {
 							throw new JDBCConnectErrorException(ex);
 						}
@@ -390,32 +394,38 @@ public class GraphJDBCImporter extends
 	
 	private String getTargetInsertVertex(Vertex v) {
 		int supportColumCount = 0;
-		StringBuffer Buf = new StringBuffer("CREATE (n: ").append(v.getVertexLabel()).append(" {");
+		StringBuffer buffer = new StringBuffer("CREATE (n: ").append(v.getVertexLabel()).append(" {");
 		List<Column> columns = v.getColumnList();
 		int len = columns.size();
 		for (int i = 0; i < len; i++) {
+			
+			if (!columns.get(i).isSelected()) {
+				continue;
+			}
+			
 			if (!columns.get(i).getSupportGraphDataType()) {
 				continue;
 			}
+			
 			supportColumCount++;
 			
 			if (i > 0) {
-				Buf.append(", ");
+				buffer.append(", ");
 			}
 			String columnName = columns.get(i).getName();
 			columnName = columnName.replaceAll("\"", "");
-			Buf.append(columnName).append(':');
-			Buf.append('?');
+			buffer.append(columnName).append(':');
+			buffer.append('?');
 		}
 		
 		if (supportColumCount == 0) {
 			return null;
 		}
 		
-		Buf.append("}");
-		Buf.append(")");
-		Buf.append(" return n");
-		return Buf.toString();
+		buffer.append("}");
+		buffer.append(")");
+		buffer.append(" return n");
+		return buffer.toString();
 	}
 
 	/**
@@ -457,7 +467,25 @@ public class GraphJDBCImporter extends
 //			}
 //			trec.addColumnValue(targetColumn, targetValue);
 //		}
-		return rrec;
+		ArrayList<Column> columnList = (ArrayList<Column>) v.getColumnList();
+		ArrayList<ColumnValue> recordList = (ArrayList<ColumnValue>) rrec.getColumnValueList();
+		ArrayList<String> colNameList = new ArrayList<String>();
+		
+		Record newRec = new Record();
+		
+		for (Column col : columnList) {
+			if (col.isSelected()) {
+				colNameList.add(col.getName());
+			}
+		}
+		
+		for (ColumnValue colVal : recordList) {
+			if (colNameList.contains(colVal.getColumn().getName())) {
+				newRec.addColumnValue(colVal);
+			}
+		}
+		
+		return newRec;
 	}
 	
 	/**

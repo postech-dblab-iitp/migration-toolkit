@@ -34,6 +34,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.cubrid.cubridmigration.core.dbobject.Record.ColumnValue;
+
 /**
  * Record
  * 
@@ -59,6 +61,10 @@ public class Record {
 	 */
 	public void addColumnValue(Column column, Object value) {
 		columnValueList.add(new ColumnValue(column, value));
+	}
+	
+	public void addColumnValue(ColumnValue colVal) {
+		columnValueList.add(colVal);
 	}
 
 	/**
@@ -121,4 +127,7 @@ public class Record {
 		}
 		return result;
 	}
+
+
+
 }

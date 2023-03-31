@@ -386,6 +386,9 @@ POSSIBILITY OF SUCH DAMAGE.
       <import plugin="org.eclipse.jface" version="3.6.0" match="compatible"/>
       <import plugin="com.ibm.icu"/>
       <import plugin="org.eclipse.osgi"/>
+      <import plugin="org.eclipse.zest.core" version="1.3.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.zest.layouts" version="1.1.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.draw2d" version="3.7.2" match="greaterOrEqual"/>
    </requires>
 
    <plugin
@@ -418,6 +421,24 @@ POSSIBILITY OF SUCH DAMAGE.
 
    <plugin
          id="com.cubrid.common.configuration"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+   <plugin
+         id="org.eclipse.zest.core"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+   <plugin
+         id="org.eclipse.zest.layouts"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+   <plugin
+         id="org.eclipse.draw2d"
          download-size="0"
          install-size="0"
          version="0.0.0"

@@ -1,6 +1,7 @@
 package com.cubrid.cubridmigration.graph.dbobj;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,7 +21,7 @@ public class Vertex {
 	private boolean isSelected;
 	private String tableName;
 	private String vertexLabel;
-	private Map<String, String> vertexProperties;
+	private Map<String, String> vertexProperties = new HashMap<String, String>();
 	private List<Vertex> endVertexes;
 	
 	private List<Column> columnList;
@@ -123,5 +124,11 @@ public class Vertex {
 			}
 		}
 		return null;
+	}
+	
+	public void transColToProp(){
+		for (Column col : columnList) {
+			vertexProperties.put(col.getName(), col.getDataType());
+		}
 	}
 }

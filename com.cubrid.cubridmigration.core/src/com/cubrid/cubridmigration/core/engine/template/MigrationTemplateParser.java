@@ -35,6 +35,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
@@ -79,6 +81,9 @@ import com.cubrid.cubridmigration.core.engine.config.SourceSQLTableConfig;
 import com.cubrid.cubridmigration.core.engine.config.SourceSequenceConfig;
 import com.cubrid.cubridmigration.core.engine.config.SourceViewConfig;
 import com.cubrid.cubridmigration.core.engine.exception.ErrorMigrationTemplateException;
+import com.cubrid.cubridmigration.graph.dbobj.Edge;
+import com.cubrid.cubridmigration.graph.dbobj.GraphDictionary;
+import com.cubrid.cubridmigration.graph.dbobj.Vertex;
 import com.cubrid.cubridmigration.mysql.trans.MySQL2CUBRIDMigParas;
 
 /**
@@ -270,19 +275,113 @@ public final class MigrationTemplateParser {
 			Element root) {
 		Element target = createElement(document, root, TemplateTags.TAG_TARGET);
 		target.setAttribute(TemplateTags.ATTR_VERSION, config.getTargetDBVersion());
-		if (config.targetIsOnline()) {
+		if (config.targetIsGraph()) {
+			target.setAttribute(TemplateTags.ATTR_TYPE, TemplateTags.VALUE_GRAPH);
+			target.setAttribute(TemplateTags.ATTR_DB_TYPE, "neo4j");
+		} else if (config.targetIsOnline()) {
 			target.setAttribute(TemplateTags.ATTR_TYPE, TemplateTags.VALUE_ONLINE);
+			target.setAttribute(TemplateTags.ATTR_DB_TYPE, "cubrid");
 		} else if (config.targetIsFile()) {
 			target.setAttribute(TemplateTags.ATTR_TYPE, TemplateTags.VALUE_DIR);
+			target.setAttribute(TemplateTags.ATTR_DB_TYPE, "cubrid");
 		} else {
 			target.setAttribute(TemplateTags.ATTR_TYPE, TemplateTags.VALUE_OFFLINE);
+			target.setAttribute(TemplateTags.ATTR_DB_TYPE, "cubrid");
 		}
-
-		target.setAttribute(TemplateTags.ATTR_DB_TYPE, "cubrid");
+		
+		if (config.targetIsGraph()) {
+			createGraphTargetConInfoTag(config, document, target);
+			createGraphTargetNodeTag(config, document, target);
+			createGraphTargetEdgeTag(config, document, target);
+		} else {
 		createTargetConInfoNode(config, document, target);
 		createTargetTableNodes(config, document, target);
 		createTargetSequenceNodes(config, document, target);
 		createTargetViewNodes(config, document, target);
+		}
+	}
+	
+	private static void createGraphTargetConInfoTag(MigrationConfiguration config, Document doc, Element target) {
+		
+		Element jdbc = createElement(doc, target, TemplateTags.TAG_JDBC);
+		ConnParameters tcp = config.getTargetConParams();
+		jdbc.setAttribute(TemplateTags.ATTR_HOST, tcp.getHost());
+		jdbc.setAttribute(TemplateTags.ATTR_PORT, String.valueOf(tcp.getPort()));
+		jdbc.setAttribute(TemplateTags.ATTR_DRIVER, tcp.getDriverFileName());
+		jdbc.setAttribute(TemplateTags.ATTR_NAME, tcp.getDbName());
+		jdbc.setAttribute(TemplateTags.ATTR_USER, tcp.getConUser());
+		jdbc.setAttribute(TemplateTags.ATTR_PASSWORD, tcp.getConPassword());
+		jdbc.setAttribute(TemplateTags.ATTR_CHARSET, tcp.getCharset());
+		jdbc.setAttribute(TemplateTags.ATTR_TIMEZONE, tcp.getTimeZone());
+		jdbc.setAttribute(TemplateTags.ATTR_CREATE_CONSTRAINT_NOW,
+				getBooleanString(config.isCreateConstrainsBeforeData()));
+		jdbc.setAttribute(TemplateTags.ATTR_WRITE_ERROR_RECORDS,
+				getBooleanString(config.isWriteErrorRecords()));
+		jdbc.setAttribute(TemplateTags.ATTR_USER_JDBC_URL, tcp.getUserJDBCURL());
+		
+		return;
+	}
+	
+	private static void createGraphTargetNodeTag(MigrationConfiguration config, Document doc, Element target) {
+		GraphDictionary gdbDict = config.getGraphDictionary();
+		
+		Element vertexes = createElement(doc, target, TemplateTags.TAG_VERTEXES);
+		
+		for (Vertex vertex : gdbDict.getMigratedVertexList()) {
+			
+			Element nodeElement = createElement(doc, vertexes, TemplateTags.TAG_VERTEX);
+			nodeElement.setAttribute(TemplateTags.ATTR_LABEL, vertex.getVertexLabel());
+			
+			HashMap<String, String> properties = (HashMap) vertex.getVertexProperties();
+			
+			if (properties.isEmpty() || properties != null) {
+				
+				Iterator<String> propertyIter = properties.keySet().iterator();
+				
+				while (propertyIter.hasNext()) {
+					
+					Element property = createElement(doc, nodeElement, TemplateTags.TAG_PROPERTY);
+					String key = propertyIter.next();
+					
+					String typeValue = properties.get(key);
+					
+					property.setAttribute(TemplateTags.ATTR_NAME, key);
+					property.setAttribute(TemplateTags.ATTR_TYPE, typeValue);
+				}
+			}
+		}
+	}
+	
+	private static void createGraphTargetEdgeTag(MigrationConfiguration config, Document doc, Element target) {
+		GraphDictionary gdbDict = config.getGraphDictionary();
+		
+		Element edges = createElement(doc, target, TemplateTags.TAG_EDGES);
+		
+		for (Edge edge : gdbDict.getMigratedEdgeList()) {
+			Element edgeElement = createElement(doc, edges, TemplateTags.TAG_EDGE);
+			
+			edgeElement.setAttribute(TemplateTags.ATTR_LABEL, edge.getEdgeLabel());
+			
+			HashMap<String, String> properties = (HashMap) edge.getEdgeProperties();
+			
+			if (properties.isEmpty() || properties != null) {
+				Iterator<String> propertyIter = properties.keySet().iterator();
+				
+				while (propertyIter.hasNext()) {
+					
+					Element property = createElement(doc, edgeElement, TemplateTags.TAG_PROPERTY);
+					String key = propertyIter.next();
+					
+					String typeValue = properties.get(key);
+					
+					property.setAttribute(TemplateTags.ATTR_NAME, key);
+					property.setAttribute(TemplateTags.ATTR_TYPE, properties.get(key));
+					
+					property.setAttribute(TemplateTags.ATTR_START_VERTEX, edge.getStartVertexName());
+					property.setAttribute(TemplateTags.ATTR_END_VERTEX, edge.getEndVertexName());
+				}
+			}
+		}
 	}
 
 	/**

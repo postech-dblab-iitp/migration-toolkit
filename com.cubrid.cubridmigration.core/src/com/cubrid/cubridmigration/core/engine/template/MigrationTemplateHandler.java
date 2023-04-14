@@ -62,6 +62,8 @@ import com.cubrid.cubridmigration.core.engine.config.SourceSQLTableConfig;
 import com.cubrid.cubridmigration.core.engine.config.SourceSequenceConfig;
 import com.cubrid.cubridmigration.core.engine.config.SourceTableConfig;
 import com.cubrid.cubridmigration.cubrid.CUBRIDDataTypeHelper;
+import com.cubrid.cubridmigration.graph.dbobj.Edge;
+import com.cubrid.cubridmigration.graph.dbobj.Vertex;
 import com.cubrid.cubridmigration.mysql.trans.MySQL2CUBRIDMigParas;
 
 /**
@@ -75,6 +77,7 @@ public final class MigrationTemplateHandler extends
 
 	private final MigrationConfiguration config = new MigrationConfiguration();
 	private boolean isSourceNode;
+	private boolean isGraphTarget;
 
 	private SourceTableConfig srcTableCfg;
 	private Table targetTable;
@@ -500,6 +503,9 @@ public final class MigrationTemplateHandler extends
 			isSourceNode = true;
 			config.setSourceType(attributes.getValue(TemplateTags.ATTR_DB_TYPE));
 		} else if (TemplateTags.TAG_TARGET.equals(qName)) {
+			
+			isGraphTarget = (attributes.getValue(TemplateTags.ATTR_TYPE)).equals("graph");
+			
 			isSourceNode = false;
 			config.setTargetDBVersion(attributes.getValue(TemplateTags.ATTR_VERSION));
 			String type = attributes.getValue(TemplateTags.ATTR_TYPE);
@@ -706,6 +712,24 @@ public final class MigrationTemplateHandler extends
 			srcCSV.addColumn(sccc);
 		}
 	}
+	
+	private void parseVertexInfo(Attributes attr) {
+		Vertex vertex = new Vertex();
+		
+		vertex.setVertexLabel(attr.getValue(TemplateTags.ATTR_LABEL));
+		vertex.putVertexProperties(attr.getValue(TemplateTags.ATTR_NAME), attr.getValue(TemplateTags.ATTR_TYPE));
+		
+		config.getGraphDictionary().addMigratedVertexList(vertex);
+	}
+	
+	private void parseEdgeInfo(Attributes attr) {
+		Edge edge = new Edge();
+		
+		edge.setEdgeLabel(attr.getValue(TemplateTags.ATTR_LABEL));
+		edge.putVertexProperties(attr.getValue(TemplateTags.ATTR_NAME), attr.getValue(TemplateTags.ATTR_TYPE));
+		
+		config.getGraphDictionary().addMigratedEdgeList(edge);
+	}
 
 	/**
 	 * Start parse the target element
@@ -715,70 +739,83 @@ public final class MigrationTemplateHandler extends
 	 * @throws SAXException when errors
 	 */
 	private void startTargetElement(String qName, Attributes attr) throws SAXException {
-		if (TemplateTags.TAG_TABLE.equals(qName)) {
-			parseTargetTable(attr);
-		} else if (TemplateTags.TAG_COLUMN.equals(qName)) {
-			parseTargetColumn(attr);
-		} else if (TemplateTags.TAG_FK.equals(qName)) {
-			parseTargetFK(attr);
-		} else if (TemplateTags.TAG_INDEX.equals(qName)) {
-			parseTargetIndex(attr);
-		} else if (TemplateTags.TAG_SEQUENCE.equals(qName)) {
-			parseTargetSequence(attr);
-		} else if (TemplateTags.TAG_VIEW.equals(qName)) {
-			parseTargetView(attr);
-		} else if (TemplateTags.TAG_VIEWCOLUMN.equals(qName)) {
-			parseTargetViewColumn(attr);
-		} else if (TemplateTags.TAG_VIEWQUERYSQL.equals(qName)) {
-			sqlStatement = new StringBuffer();
-		} else if (TemplateTags.TAG_CREATEVIEWSQL.equals(qName)) {
-			sqlStatement = new StringBuffer();
-		} else if (TemplateTags.TAG_PK.equals(qName)) {
-			parseTargetPK(attr);
-		} else if (TemplateTags.TAG_PARTITIONS.equals(qName)) {
-			parseTargetPartition(attr);
-		} else if (TemplateTags.TAG_RANGE.equals(qName)) {
-			parseTargetRangePartition(attr);
-		} else if (TemplateTags.TAG_HASH.equals(qName)) {
-			parseTargetHashPartition(attr);
-		} else if (TemplateTags.TAG_LIST.equals(qName)) {
-			parseTargetRangePartition(attr);
-		} else if (TemplateTags.TAG_JDBC.equals(qName)) {
-			parseTargetJDBC(attr);
-		} else if (TemplateTags.TAG_FILE_REPOSITORY.equals(qName)) {
-			config.setFileRepositroyPath(attr.getValue(TemplateTags.ATTR_DIR));
-			config.setTargetSchemaFileName(attr.getValue(TemplateTags.ATTR_SCHEMA));
-			config.setTargetDataFileName(attr.getValue(TemplateTags.ATTR_DATA));
-			config.setTargetIndexFileName(attr.getValue(TemplateTags.ATTR_INDEX));
-			config.setTargetFileTimeZone(attr.getValue(TemplateTags.ATTR_TIMEZONE));
-			config.setOneTableOneFile(getBoolean(attr.getValue(TemplateTags.ATTR_ONETABLEONEFILE),
-					false));
-			final String fileMaxSize = attr.getValue(TemplateTags.ATTR_FILE_MAX_SIZE);
-			config.setMaxCountPerFile(fileMaxSize == null ? 0 : Integer.parseInt(fileMaxSize));
-			config.setTargetFilePrefix(attr.getValue(TemplateTags.ATTR_OUTPUT_FILE_PREFIX));
-			try {
-				config.setDestType(Integer.parseInt(attr.getValue(TemplateTags.ATTR_DATA_FILE_FORMAT)));
-			} catch (Exception ex) {
-				config.setDestType(MigrationConfiguration.DEST_DB_UNLOAD);
+		
+		if (isGraphTarget) {
+			if (TemplateTags.TAG_VERTEXES.equals(qName)) {
+				parseVertexInfo(attr);				
+			} else if (TemplateTags.TAG_EDGES.equals(qName)) {
+				parseEdgeInfo(attr);
 			}
-			config.setTargetCharSet(attr.getValue(TemplateTags.ATTR_CHARSET));
-			if (config.targetIsCSV()) {
-				String value = attr.getValue(TemplateTags.ATTR_CSV_SEPARATE);
-				config.getCsvSettings().setSeparateChar(
-						StringUtils.isEmpty(value) ? ',' : value.charAt(0));
-				value = attr.getValue(TemplateTags.ATTR_CSV_QUOTE);
-				config.getCsvSettings().setQuoteChar(
-						StringUtils.isEmpty(value) ? MigrationConfiguration.CSV_NO_CHAR
-								: value.charAt(0));
-				value = attr.getValue(TemplateTags.ATTR_CSV_ESCAPE);
-				config.getCsvSettings().setEscapeChar(
-						StringUtils.isEmpty(value) ? MigrationConfiguration.CSV_NO_CHAR
-								: value.charAt(0));
+			
+		} else {
+			if (TemplateTags.TAG_TABLE.equals(qName)) {
+				parseTargetTable(attr);
+			} else if (TemplateTags.TAG_COLUMN.equals(qName)) {
+				parseTargetColumn(attr);
+			} else if (TemplateTags.TAG_FK.equals(qName)) {
+				parseTargetFK(attr);
+			} else if (TemplateTags.TAG_INDEX.equals(qName)) {
+				parseTargetIndex(attr);
+			} else if (TemplateTags.TAG_SEQUENCE.equals(qName)) {
+				parseTargetSequence(attr);
+			} else if (TemplateTags.TAG_VIEW.equals(qName)) {
+				parseTargetView(attr);
+			} else if (TemplateTags.TAG_VIEWCOLUMN.equals(qName)) {
+				parseTargetViewColumn(attr);
+			} else if (TemplateTags.TAG_VIEWQUERYSQL.equals(qName)) {
+				sqlStatement = new StringBuffer();
+			} else if (TemplateTags.TAG_CREATEVIEWSQL.equals(qName)) {
+				sqlStatement = new StringBuffer();
+			} else if (TemplateTags.TAG_PK.equals(qName)) {
+				parseTargetPK(attr);
+			} else if (TemplateTags.TAG_PARTITIONS.equals(qName)) {
+				parseTargetPartition(attr);
+			} else if (TemplateTags.TAG_RANGE.equals(qName)) {
+				parseTargetRangePartition(attr);
+			} else if (TemplateTags.TAG_HASH.equals(qName)) {
+				parseTargetHashPartition(attr);
+			} else if (TemplateTags.TAG_LIST.equals(qName)) {
+				parseTargetRangePartition(attr);
+			} else if (TemplateTags.TAG_JDBC.equals(qName)) {
+				parseTargetJDBC(attr);
+			} else if (TemplateTags.TAG_FILE_REPOSITORY.equals(qName)) {
+				config.setFileRepositroyPath(attr.getValue(TemplateTags.ATTR_DIR));
+				config.setTargetSchemaFileName(attr.getValue(TemplateTags.ATTR_SCHEMA));
+				config.setTargetDataFileName(attr.getValue(TemplateTags.ATTR_DATA));
+				config.setTargetIndexFileName(attr.getValue(TemplateTags.ATTR_INDEX));
+				config.setTargetFileTimeZone(attr.getValue(TemplateTags.ATTR_TIMEZONE));
+				config.setOneTableOneFile(getBoolean(attr.getValue(TemplateTags.ATTR_ONETABLEONEFILE),
+						false));
+				final String fileMaxSize = attr.getValue(TemplateTags.ATTR_FILE_MAX_SIZE);
+				config.setMaxCountPerFile(fileMaxSize == null ? 0 : Integer.parseInt(fileMaxSize));
+				config.setTargetFilePrefix(attr.getValue(TemplateTags.ATTR_OUTPUT_FILE_PREFIX));
+				try {
+					config.setDestType(Integer.parseInt(attr.getValue(TemplateTags.ATTR_DATA_FILE_FORMAT)));
+				} catch (Exception ex) {
+					config.setDestType(MigrationConfiguration.DEST_DB_UNLOAD);
+				}
+				config.setTargetCharSet(attr.getValue(TemplateTags.ATTR_CHARSET));
+				if (config.targetIsCSV()) {
+					String value = attr.getValue(TemplateTags.ATTR_CSV_SEPARATE);
+					config.getCsvSettings().setSeparateChar(
+							StringUtils.isEmpty(value) ? ',' : value.charAt(0));
+					value = attr.getValue(TemplateTags.ATTR_CSV_QUOTE);
+					config.getCsvSettings().setQuoteChar(
+							StringUtils.isEmpty(value) ? MigrationConfiguration.CSV_NO_CHAR
+									: value.charAt(0));
+					value = attr.getValue(TemplateTags.ATTR_CSV_ESCAPE);
+					config.getCsvSettings().setEscapeChar(
+							StringUtils.isEmpty(value) ? MigrationConfiguration.CSV_NO_CHAR
+									: value.charAt(0));
+				}
+				config.setTargetLOBRootPath(attr.getValue(TemplateTags.ATTR_LOB_ROOT_DIR));
+			} else if (TemplateTags.TAG_PARTITION_DDL.equals(qName)) {
+				sqlStatement = new StringBuffer();
 			}
-			config.setTargetLOBRootPath(attr.getValue(TemplateTags.ATTR_LOB_ROOT_DIR));
-		} else if (TemplateTags.TAG_PARTITION_DDL.equals(qName)) {
-			sqlStatement = new StringBuffer();
 		}
+		
+		
+
 		//		else {
 		//			parseCMServer(qName, attr);
 		//		}

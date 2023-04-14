@@ -111,6 +111,9 @@ public class Edge {
 	public void setEdgeProperties(Map<String, String> edgeProperties) {
 		this.edgeProperties = edgeProperties;
 	}
+	public void putVertexProperties(String key, String value) {
+		this.edgeProperties.put(key, value);
+	}
 	
 	public String getFKString() {
 		return fkString;

@@ -72,6 +72,10 @@ public class Vertex {
 	public void setVertexProperties(Map<String, String> vertexProperties) {
 		this.vertexProperties = vertexProperties;
 	}
+	public void putVertexProperties(String key, String value) {
+		this.vertexProperties.put(key, value);
+	}
+	
 	public List<Vertex> getEndVertexes() {
 		return endVertexes;
 	}

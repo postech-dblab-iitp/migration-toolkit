@@ -1,10 +1,18 @@
 #!/bin/sh
+
+ARG=$@
+if [ -z $ARG ]; then
 WORKSPACE=${HOME}/build/src
+else
+WORKSPACE=${ARG}
+fi
+
 JAVA_HOME=${HOME}/build/java
 PRODUCT_DIR=cubridmigration
 PRODUCT_NAME=CUBRIDMigration
 ECLIPSE_HOME=${HOME}/build/eclipse_for_build/eclipse
 BUILD_HOME=${WORKSPACE}
+echo "BUILD_HOME : ${BUILD_HOME}"
 BUILD_DIR=${BUILD_HOME}/${PRODUCT_DIR}/com.cubrid.cubridmigration.build
 VERSION_DIR=${BUILD_HOME}/${PRODUCT_DIR}/com.cubrid.cubridmigration.ui
 VERSION_FILE_PATH=${VERSION_DIR}/version.properties

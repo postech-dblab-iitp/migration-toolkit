@@ -521,6 +521,9 @@ public class GraphMappingPage extends MigrationWizardPage {
 			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
 				IStructuredSelection selection = (IStructuredSelection) event.getSelection();
+				if (selection.isEmpty()) {
+					return;
+				}
 				changeColumnSelect(selection.getFirstElement());
 			}
 		});

@@ -24,7 +24,7 @@ public class Vertex {
 	private Map<String, String> vertexProperties = new HashMap<String, String>();
 	private List<Vertex> endVertexes;
 	
-	private List<Column> columnList;
+	private List<Column> columnList = new ArrayList<Column>();
 	
 	private int vertexType = NONE;
 	private boolean hasPK = false;
@@ -41,6 +41,9 @@ public class Vertex {
 	}
 	public void setColumnList(List<Column> columnList) {
 		this.columnList = columnList;
+	}
+	public void addColumn(Column col) {
+		this.columnList.add(col);
 	}
 	public int getId() {
 		return id;

@@ -38,6 +38,7 @@ import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.TreeMap;
 import java.util.UUID;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -277,7 +278,7 @@ public final class MigrationTemplateParser {
 		target.setAttribute(TemplateTags.ATTR_VERSION, config.getTargetDBVersion());
 		if (config.targetIsGraph()) {
 			target.setAttribute(TemplateTags.ATTR_TYPE, TemplateTags.VALUE_GRAPH);
-			target.setAttribute(TemplateTags.ATTR_DB_TYPE, "neo4j");
+			target.setAttribute(TemplateTags.ATTR_DB_TYPE, "graph");
 		} else if (config.targetIsOnline()) {
 			target.setAttribute(TemplateTags.ATTR_TYPE, TemplateTags.VALUE_ONLINE);
 			target.setAttribute(TemplateTags.ATTR_DB_TYPE, "cubrid");
@@ -291,7 +292,7 @@ public final class MigrationTemplateParser {
 		
 		if (config.targetIsGraph()) {
 			createGraphTargetConInfoTag(config, document, target);
-			createGraphTargetNodeTag(config, document, target);
+			createGraphTargetVertexTag(config, document, target);
 			createGraphTargetEdgeTag(config, document, target);
 		} else {
 		createTargetConInfoNode(config, document, target);
@@ -322,33 +323,50 @@ public final class MigrationTemplateParser {
 		return;
 	}
 	
-	private static void createGraphTargetNodeTag(MigrationConfiguration config, Document doc, Element target) {
+	private static void createGraphTargetVertexTag(MigrationConfiguration config, Document doc, Element target) {
 		GraphDictionary gdbDict = config.getGraphDictionary();
 		
 		Element vertexes = createElement(doc, target, TemplateTags.TAG_VERTEXES);
 		
 		for (Vertex vertex : gdbDict.getMigratedVertexList()) {
 			
-			Element nodeElement = createElement(doc, vertexes, TemplateTags.TAG_VERTEX);
-			nodeElement.setAttribute(TemplateTags.ATTR_LABEL, vertex.getVertexLabel());
+			Element vertexElement = createElement(doc, vertexes, TemplateTags.TAG_VERTEX);
+			vertexElement.setAttribute(TemplateTags.ATTR_LABEL, vertex.getVertexLabel());
+			vertexElement.setAttribute("vertex_type", "" + vertex.getVertexType());
+			vertexElement.setAttribute("table_name", vertex.getTableName());
+			vertexElement.setAttribute("table_owner", vertex.getOwner());
 			
 			HashMap<String, String> properties = (HashMap) vertex.getVertexProperties();
+			List<Column> columnList = vertex.getColumnList();
 			
-			if (properties.isEmpty() || properties != null) {
+			Element columnsElement = createElement(doc, vertexElement, "properties"); 
+			
+			for (Column col : columnList) {
+				String colName = col.getName();
+				String colType = col.getDataType();
 				
-				Iterator<String> propertyIter = properties.keySet().iterator();
+				Element property = createElement(doc, columnsElement, TemplateTags.TAG_PROPERTY);
 				
-				while (propertyIter.hasNext()) {
-					
-					Element property = createElement(doc, nodeElement, TemplateTags.TAG_PROPERTY);
-					String key = propertyIter.next();
-					
-					String typeValue = properties.get(key);
-					
-					property.setAttribute(TemplateTags.ATTR_NAME, key);
-					property.setAttribute(TemplateTags.ATTR_TYPE, typeValue);
-				}
+				property.setAttribute(TemplateTags.ATTR_NAME, colName);
+				property.setAttribute(TemplateTags.ATTR_TYPE, colType);
+				property.setAttribute("datatype_support", String.valueOf(col.getSupportGraphDataType()));
 			}
+			
+//			if (properties.isEmpty() || properties != null) {
+//				
+//				Iterator<String> propertyIter = properties.keySet().iterator();
+//				
+//				while (propertyIter.hasNext()) {
+//					
+//					Element property = createElement(doc, vertexElement, TemplateTags.TAG_PROPERTY);
+//					String key = propertyIter.next();
+//					
+//					String typeValue = properties.get(key);
+//					
+//					property.setAttribute(TemplateTags.ATTR_NAME, key);
+//					property.setAttribute(TemplateTags.ATTR_TYPE, typeValue);
+//				}
+//			}
 		}
 	}
 	
@@ -361,15 +379,22 @@ public final class MigrationTemplateParser {
 			Element edgeElement = createElement(doc, edges, TemplateTags.TAG_EDGE);
 			
 			edgeElement.setAttribute(TemplateTags.ATTR_LABEL, edge.getEdgeLabel());
+			edgeElement.setAttribute("edge_type", "" + edge.getEdgeType());
+			
+			edgeElement.setAttribute(TemplateTags.ATTR_START_VERTEX, edge.getStartVertexName());
+			edgeElement.setAttribute(TemplateTags.ATTR_END_VERTEX, edge.getEndVertexName());
 			
 			HashMap<String, String> properties = (HashMap) edge.getEdgeProperties();
+			TreeMap<String, String> fkRefers = (TreeMap<String, String>) edge.getfkCol2RefMapping();
 			
-			if (properties.isEmpty() || properties != null) {
+			if (!properties.isEmpty() || properties != null) {
+				Element propertiesElement = createElement(doc, edges, "properties");
+				
 				Iterator<String> propertyIter = properties.keySet().iterator();
 				
 				while (propertyIter.hasNext()) {
 					
-					Element property = createElement(doc, edgeElement, TemplateTags.TAG_PROPERTY);
+					Element property = createElement(doc, propertiesElement, "edge_property");
 					String key = propertyIter.next();
 					
 					String typeValue = properties.get(key);
@@ -377,8 +402,27 @@ public final class MigrationTemplateParser {
 					property.setAttribute(TemplateTags.ATTR_NAME, key);
 					property.setAttribute(TemplateTags.ATTR_TYPE, properties.get(key));
 					
-					property.setAttribute(TemplateTags.ATTR_START_VERTEX, edge.getStartVertexName());
-					property.setAttribute(TemplateTags.ATTR_END_VERTEX, edge.getEndVertexName());
+//					if (key != null) {
+//						property.setAttribute("reference_to", edge.getREFColumnNames(key));
+//					} else {
+//						property.setAttribute("reference_to", "");
+//					}
+				}
+			}
+			
+			if (!fkRefers.isEmpty() || fkRefers != null) {
+				Element fkRefersElement = createElement(doc, edges, "fks");
+				
+				Iterator<String> referIter = fkRefers.keySet().iterator();
+				
+				while (referIter.hasNext()) {
+					Element fk = createElement(doc, fkRefersElement, "fk");
+					
+					String colName = referIter.next();
+					String refColName = fkRefers.get(colName);
+					
+					fk.setAttribute("column_name", colName);
+					fk.setAttribute("ref_column_name", refColName);
 				}
 			}
 		}

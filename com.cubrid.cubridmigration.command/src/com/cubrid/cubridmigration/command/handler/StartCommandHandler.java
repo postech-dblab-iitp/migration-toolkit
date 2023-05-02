@@ -197,6 +197,7 @@ public class StartCommandHandler implements
 			}
 			return config;
 		} catch (Exception ex) {
+			ex.printStackTrace();
 			outPrinter.println("Create migration configuration error: " + ex.getMessage());
 			LOG.error("", ex);
 			return null;
@@ -465,7 +466,7 @@ public class StartCommandHandler implements
 		outPrinter.println();
 		List<DataFileImportResult> sqlresult = mr.getDataFileResults();
 		if (sqlresult.isEmpty()) {
-			for (MigrationOverviewResult mor : mr.getOverviewResults()) {
+			for (MigrationOverviewResult mor : mr.getGraphOverviewResults()) {
 				outPrinter.print("    ");
 				outPrinter.print(mor.getObjType());
 				outPrinter.print(":");

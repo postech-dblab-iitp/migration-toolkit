@@ -29,7 +29,7 @@ public class Edge {
 	private String startVertexName;
 	private String endVertexName;
 	
-	private List<Column> columnList;
+	private List<Column> columnList = new ArrayList<Column>();
 	
 	private final Map<String, String> fkCol2RefMapping = new TreeMap<String, String>();
 	
@@ -50,6 +50,9 @@ public class Edge {
 	}
 	public void setColumnList(List<Column> columnList) {
 		this.columnList = columnList;
+	}
+	public void addColumn(Column col) {
+		this.columnList.add(col);
 	}
 	
 	public Column getColumnbyName(String columnName) {

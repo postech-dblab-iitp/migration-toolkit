@@ -78,6 +78,9 @@ public final class MigrationTemplateHandler extends
 	private final MigrationConfiguration config = new MigrationConfiguration();
 	private boolean isSourceNode;
 	private boolean isGraphTarget;
+	
+	private Vertex targetVertex;
+	private Edge targetEdge;
 
 	private SourceTableConfig srcTableCfg;
 	private Table targetTable;
@@ -296,10 +299,17 @@ public final class MigrationTemplateHandler extends
 	 * @param attributes of node
 	 */
 	private void parseTargetJDBC(Attributes attributes) {
+		DatabaseType dbType = DatabaseType.CUBRID;
+		
+		if (isGraphTarget) {
+			dbType = DatabaseType.GRAPH;
+		}
+		
 		ConnParameters cp = ConnParameters.getConParam(null,
 				attributes.getValue(TemplateTags.ATTR_HOST),
 				Integer.parseInt(attributes.getValue(TemplateTags.ATTR_PORT)),
-				attributes.getValue(TemplateTags.ATTR_NAME), DatabaseType.CUBRID,
+				attributes.getValue(TemplateTags.ATTR_NAME), 
+				dbType,
 				attributes.getValue(TemplateTags.ATTR_CHARSET),
 				attributes.getValue(TemplateTags.ATTR_USER),
 				attributes.getValue(TemplateTags.ATTR_PASSWORD),
@@ -504,17 +514,22 @@ public final class MigrationTemplateHandler extends
 			config.setSourceType(attributes.getValue(TemplateTags.ATTR_DB_TYPE));
 		} else if (TemplateTags.TAG_TARGET.equals(qName)) {
 			
-			isGraphTarget = (attributes.getValue(TemplateTags.ATTR_TYPE)).equals("graph");
+			isGraphTarget = (attributes.getValue(TemplateTags.ATTR_DB_TYPE)).equals("graph");
 			
 			isSourceNode = false;
 			config.setTargetDBVersion(attributes.getValue(TemplateTags.ATTR_VERSION));
 			String type = attributes.getValue(TemplateTags.ATTR_TYPE);
-			config.setDestType(MigrationConfiguration.DEST_ONLINE);
-			if (TemplateTags.VALUE_ONLINE.equalsIgnoreCase(type)) {
+			config.setDestType(MigrationConfiguration.DEST_GRAPH);
+			if (TemplateTags.VALUE_ONLINE.equalsIgnoreCase(type) && !(isGraphTarget)) {
 				config.setDestType(MigrationConfiguration.DEST_ONLINE);
 			} else if (TemplateTags.VALUE_DIR.equalsIgnoreCase(type)) {
 				config.setDestType(MigrationConfiguration.DEST_DB_UNLOAD);
 			}
+//			
+//			if (TemplateTags.VALUE_DIR.equalsIgnoreCase(type)) {
+//				config.setDestType(MigrationConfiguration.DEST_DB_UNLOAD);
+//			}
+//			
 			//			else if (TemplateTags.VALUE_OFFLINE.equalsIgnoreCase(type)) {
 			//				config.setDestType(MigrationConfiguration.DEST_OFFLINE);
 			//			} 
@@ -717,7 +732,12 @@ public final class MigrationTemplateHandler extends
 		Vertex vertex = new Vertex();
 		
 		vertex.setVertexLabel(attr.getValue(TemplateTags.ATTR_LABEL));
+		vertex.setVertexType(Integer.parseInt(attr.getValue("vertex_type")));
+		vertex.setTableName(attr.getValue("table_name"));
+		vertex.setOwner(attr.getValue("table_owner"));
 		vertex.putVertexProperties(attr.getValue(TemplateTags.ATTR_NAME), attr.getValue(TemplateTags.ATTR_TYPE));
+		
+		targetVertex = vertex;
 		
 		config.getGraphDictionary().addMigratedVertexList(vertex);
 	}
@@ -726,9 +746,46 @@ public final class MigrationTemplateHandler extends
 		Edge edge = new Edge();
 		
 		edge.setEdgeLabel(attr.getValue(TemplateTags.ATTR_LABEL));
+		edge.setEdgeType(Integer.parseInt(attr.getValue("edge_type")));
 		edge.putVertexProperties(attr.getValue(TemplateTags.ATTR_NAME), attr.getValue(TemplateTags.ATTR_TYPE));
 		
+		edge.setStartVertexName(attr.getValue(TemplateTags.ATTR_START_VERTEX));
+		edge.setEndVertexName(attr.getValue(TemplateTags.ATTR_END_VERTEX));
+		
+		targetEdge = edge;
+		
 		config.getGraphDictionary().addMigratedEdgeList(edge);
+	}
+	
+	private void parsePropertyInfo(Attributes attr) {
+		Column col = new Column();
+		col.setName(attr.getValue("name"));
+		col.setDataType(attr.getValue("type"));
+		col.setSupportGraphDataType(Boolean.valueOf(attr.getValue("datatype_support")));
+		
+		targetVertex.addColumn(col);
+	}
+	
+	private void parseEdgePropertyInfo(Attributes attr) {
+		Column col = new Column();
+		col.setName(attr.getValue("name"));
+		col.setDataType(attr.getValue("type"));
+		
+		String referCol = attr.getValue("reference_to");
+		
+		if (referCol != null && !referCol.isEmpty()) {
+			targetEdge.addFKCol2Ref(attr.getValue("name"), attr.getValue("reference_to"));			
+		}
+		
+		
+		targetEdge.addColumn(col);
+	}
+	
+	private void parseEdgeFKInfo(Attributes attr) {
+		String colName = attr.getValue("column_name");
+		String refColName = attr.getValue("ref_column_name");
+		
+		targetEdge.addFKCol2Ref(colName, refColName);
 	}
 
 	/**
@@ -739,14 +796,20 @@ public final class MigrationTemplateHandler extends
 	 * @throws SAXException when errors
 	 */
 	private void startTargetElement(String qName, Attributes attr) throws SAXException {
-		
 		if (isGraphTarget) {
-			if (TemplateTags.TAG_VERTEXES.equals(qName)) {
+			if (TemplateTags.TAG_VERTEX.equals(qName)) {
 				parseVertexInfo(attr);				
-			} else if (TemplateTags.TAG_EDGES.equals(qName)) {
+			} else if (TemplateTags.TAG_EDGE.equals(qName)) {
 				parseEdgeInfo(attr);
+			} else if (TemplateTags.TAG_JDBC.equals(qName)) {
+				parseTargetJDBC(attr);
+			} else if (TemplateTags.TAG_PROPERTY.equals(qName)) {
+				parsePropertyInfo(attr);
+			} else if ("edge_property".equals(qName)) {
+				parseEdgePropertyInfo(attr);
+			} else if ("fk".equals(qName)) {
+				parseEdgeFKInfo(attr);
 			}
-			
 		} else {
 			if (TemplateTags.TAG_TABLE.equals(qName)) {
 				parseTargetTable(attr);

@@ -107,6 +107,8 @@ public class GraphDictionary {
 					edge.setEndVertex(vertex);
 				}
 			}
+			
+			edge.transColToProp();
 		}
 		
 		for (Vertex vertex : migratedVertexList) {
@@ -116,6 +118,8 @@ public class GraphDictionary {
 					vertex.addEndVertexes(edge.getEndVertex());
 				}
 			}
+			
+			vertex.transColToProp();
 		}
 	}
 }

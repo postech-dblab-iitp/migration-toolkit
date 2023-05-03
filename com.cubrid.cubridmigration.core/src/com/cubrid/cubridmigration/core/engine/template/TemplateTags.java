@@ -169,7 +169,20 @@ public final class TemplateTags {
 	public static final String VALUE_RANGE = "range";
 	public static final String VALUE_YES = "yes";
 
+	//graph tags
+	public static final String TAG_VERTEXES = "vertexes";
+	public static final String TAG_VERTEX = "vertex";
+	public static final String TAG_PROPERTY = "property";
+	public static final String TAG_EDGES = "edges";
+	public static final String TAG_EDGE = "edge";
+	
+	//graph attributes
+	public static final String ATTR_LABEL = "label";
+	public static final String ATTR_START_VERTEX = "start_vertex";
+	public static final String ATTR_END_VERTEX = "end_vertex";
+	
 	public static final String VALUE_ONLINE = "online";
+	public static final String VALUE_GRAPH = "graph";
 	public static final String VALUE_OFFLINE = "offline";
 	public static final String VALUE_DIR = "dir";
 	public static final String ATTR_ONETABLEONEFILE = "one_tale_one_file";

@@ -174,24 +174,25 @@ public class GraphJDBCImporter extends
 						continue;
 					}
 					List<ColumnValue> colVal = getRecord2FKValue(e, rc);
+
 					stmt.setString(1, colVal.get(0).getValue().toString());
 					stmt.setString(2, colVal.get(1).getValue().toString());
 					rs1 = stmt.executeQuery();
 					
-					stmt.clearParameters();
+//					stmt.clearParameters();
 					
-					stmt.setString(1, colVal.get(1).getValue().toString());
-					stmt.setString(2, colVal.get(0).getValue().toString());
-					rs2 = stmt.executeQuery();
+//					stmt.setString(1, colVal.get(1).getValue().toString());
+//					stmt.setString(2, colVal.get(0).getValue().toString());
+//					rs2 = stmt.executeQuery();
 					
 					if (rs1.next()) {
 						result = rs1.getInt("count(r)");
 						resultTotal += result;
 					}
 					
-					if (rs2.next()) {
-						resultTotal += rs1.getInt("count(r)");
-					}
+//					if (rs2.next()) {
+//						resultTotal += rs1.getInt("count(r)");
+//					}
 					
 					stmt.clearParameters();
 				}
@@ -250,20 +251,34 @@ public class GraphJDBCImporter extends
 		int len = record.getColumnValueList().size();
 		List<ColumnValue> colVal = new ArrayList<ColumnValue>();
 		try {
-			for (int i = 0; i < len; i++) {
-				ColumnValue columnValue = record.getColumnValueList().get(i);
-				Object value = columnValue.getValue();
-				if (value == null) {
-					return null;
-				} else {
+			for (String fkColName : e.getFKColumnNames()) {
+				for (int i = 0; i < len; i ++) {
+					ColumnValue columnValue = record.getColumnValueList().get(i);
+					Object value = columnValue.getValue();
+					if (value == null) {
+						return null;
+					}
 					String temp = columnValue.getColumn().getName();
-					for (String fkName : e.getFKColumnNames()) {
-						if (temp.equals(fkName)) {
-							colVal.add(columnValue);
-						}
+					if (temp.equals(fkColName)){
+						colVal.add(columnValue);
 					}
 				}
 			}
+			
+//			for (int i = 0; i < len; i++) {
+//				ColumnValue columnValue = record.getColumnValueList().get(i);
+//				Object value = columnValue.getValue();
+//				if (value == null) {
+//					return null;
+//				} else {
+//					String temp = columnValue.getColumn().getName();
+//					for (String fkName : e.getFKColumnNames()) {
+//						if (temp.equals(fkName)) {
+//							colVal.add(columnValue);
+//						}
+//					}
+//				}
+//			}
 		} catch (Exception ex) {
 			throw new NormalMigrationException(ex);
 		} 

@@ -1,6 +1,7 @@
 package com.cubrid.cubridmigration.graph.dbobj;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -28,11 +29,11 @@ public class Edge {
 	private String startVertexName;
 	private String endVertexName;
 	
-	private List<Column> columnList;
+	private List<Column> columnList = new ArrayList<Column>();
 	
 	private final Map<String, String> fkCol2RefMapping = new TreeMap<String, String>();
 	
-	private Map<String, String> edgeProperties;
+	private Map<String, String> edgeProperties = new HashMap<String, String>();
     
 	private String fkString;
 	
@@ -49,6 +50,9 @@ public class Edge {
 	}
 	public void setColumnList(List<Column> columnList) {
 		this.columnList = columnList;
+	}
+	public void addColumn(Column col) {
+		this.columnList.add(col);
 	}
 	
 	public Column getColumnbyName(String columnName) {
@@ -110,6 +114,9 @@ public class Edge {
 	public void setEdgeProperties(Map<String, String> edgeProperties) {
 		this.edgeProperties = edgeProperties;
 	}
+	public void putVertexProperties(String key, String value) {
+		this.edgeProperties.put(key, value);
+	}
 	
 	public String getFKString() {
 		return fkString;
@@ -164,5 +171,19 @@ public class Edge {
 	
 	public String getREFColumnNames(String columnName) {
 		return fkCol2RefMapping.get(columnName);
+	}
+	
+	public void transColToProp(){
+		if (columnList == null) {
+			return;
+		}
+		
+		for (Column col : columnList) {
+			if (col == null) {
+				continue;
+			}
+			
+			edgeProperties.put(col.getName(), col.getDataType());
+		}
 	}
 }

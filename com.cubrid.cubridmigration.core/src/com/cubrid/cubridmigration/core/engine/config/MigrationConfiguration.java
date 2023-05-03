@@ -2323,7 +2323,7 @@ public class MigrationConfiguration {
 			return null;
 		}
 		final Schema sc;
-		if (schema == null) {
+		if (schema == null || schema.isEmpty()) {
 			//retrieves default schema.
 			sc = srcCatalog.getSchemas().get(0);
 		} else {

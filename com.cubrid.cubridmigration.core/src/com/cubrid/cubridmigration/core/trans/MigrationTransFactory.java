@@ -33,6 +33,9 @@ import com.cubrid.cubridmigration.core.dbtype.DatabaseType;
 import com.cubrid.cubridmigration.cubrid.trans.CUBRID2CUBRIDTranformHelper;
 import com.cubrid.cubridmigration.cubrid.trans.CUBRIDDataTypeMappingHelper;
 import com.cubrid.cubridmigration.cubrid.trans.ToCUBRIDDataConverterFacade;
+import com.cubrid.cubridmigration.graph.trans.CUBRID2GraphTranformHelper;
+import com.cubrid.cubridmigration.graph.trans.GraphDataTypeMappingHelper;
+import com.cubrid.cubridmigration.graph.trans.ToGraphDataConverterFacade;
 import com.cubrid.cubridmigration.mssql.trans.MSSQL2CUBRIDTranformHelper;
 import com.cubrid.cubridmigration.mssql.trans.MSSQLDataTypeMappingHelper;
 import com.cubrid.cubridmigration.mysql.trans.MySQL2CUBRIDTranformHelper;
@@ -52,14 +55,21 @@ public class MigrationTransFactory {
 	private static final MSSQL2CUBRIDTranformHelper MSSQL2CUBRID_TRANFORM_HELPER = new MSSQL2CUBRIDTranformHelper(
 			new MSSQLDataTypeMappingHelper(),
 			ToCUBRIDDataConverterFacade.getIntance());
+	
 	private static final MySQL2CUBRIDTranformHelper MY_SQL2CUBRID_TRANFORM_HELPER = new MySQL2CUBRIDTranformHelper(
 			new MySQLDataTypeMappingHelper(),
 			ToCUBRIDDataConverterFacade.getIntance());
+		
 	private static final Oracle2CUBRIDTranformHelper ORACLE2CUBRID_TRANFORM_HELPER = new Oracle2CUBRIDTranformHelper(
 			new OracleDataTypeMappingHelper(),
 			ToCUBRIDDataConverterFacade.getIntance());
+
 	private static final CUBRID2CUBRIDTranformHelper CUBRID2CUBRID_TRANFORM_HELPER = new CUBRID2CUBRIDTranformHelper(
 			new CUBRIDDataTypeMappingHelper());
+	
+	private static final CUBRID2GraphTranformHelper CUBRID2NEO4J_TRANFORM_HELPER = new CUBRID2GraphTranformHelper(
+			new GraphDataTypeMappingHelper(), 
+			ToGraphDataConverterFacade.getInstance());
 
 	/**
 	 * getTransformHelper of source to target migration
@@ -70,6 +80,10 @@ public class MigrationTransFactory {
 	 */
 	public static DBTransformHelper getTransformHelper(DatabaseType srcDT,
 			DatabaseType tarDT) {
+		if (tarDT.getID() == DatabaseType.GRAPH.getID()){
+			return CUBRID2NEO4J_TRANFORM_HELPER;
+		}
+		
 		if (srcDT.getID() == DatabaseType.CUBRID.getID()) {
 			return CUBRID2CUBRID_TRANFORM_HELPER;
 		} else if (srcDT.getID() == DatabaseType.ORACLE.getID()) {
@@ -79,6 +93,7 @@ public class MigrationTransFactory {
 		} else if (srcDT.getID() == DatabaseType.MSSQL.getID()) {
 			return MSSQL2CUBRID_TRANFORM_HELPER;
 		}
+		
 		throw new IllegalArgumentException("Can't support migration type.");
 	}
 }

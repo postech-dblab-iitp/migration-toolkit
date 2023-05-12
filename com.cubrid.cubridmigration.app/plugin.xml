@@ -100,6 +100,12 @@
             name="MSSQL&gt;&gt;CUBRID">
       </page>
       <page
+            category="com.cubrid.cubridmigration.ui.preference.MigrationConfigPage"
+            class="com.cubrid.cubridmigration.ui.preference.CUBRIDToNeo4jTypeMapPage"
+            id="com.cubrid.cubridmigration.ui.preference.CUBRIDToNeo4jTypeMapPage"
+            name="CUBRID&gt;&gt;NEO4J">
+      </page>
+      <page
             class="com.cubrid.cubridmigration.ui.preference.JDBCDriverManagePage"
             id="com.cubrid.cubridmigration.ui.preference.JDBCDriverManagePage"
             name="%JDBCDrivers">

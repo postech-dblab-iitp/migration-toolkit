@@ -1597,7 +1597,8 @@ public class MigrationConfiguration {
 	 * @return DBTranformHelper
 	 */
 	public DBTransformHelper getDBTransformHelper() {
-		return MigrationTransFactory.getTransformHelper(getSourceDBType(), DatabaseType.CUBRID);
+//		return MigrationTransFactory.getTransformHelper(getSourceDBType(), DatabaseType.CUBRID);
+		return MigrationTransFactory.getTransformHelper(getSourceDBType(), DatabaseType.GRAPH);
 	}
 
 	public int getDestType() {

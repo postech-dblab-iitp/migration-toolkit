@@ -76,7 +76,7 @@ public final class GraphDataTypeHelper extends
 		//float
 		CUBRID_GRAPH_DATATYPE.put("float", "float");
 		//double
-		CUBRID_GRAPH_DATATYPE.put("double", NOT_SUPPORT);
+		CUBRID_GRAPH_DATATYPE.put("double", "double");
 		//monetary
 		CUBRID_GRAPH_DATATYPE.put("monetary", "string");
 		//char
@@ -86,11 +86,11 @@ public final class GraphDataTypeHelper extends
 		//time
 		CUBRID_GRAPH_DATATYPE.put("time", "string");
 		//date
-		CUBRID_GRAPH_DATATYPE.put("date", "string");
+		CUBRID_GRAPH_DATATYPE.put("date", "date");
 		//timestamp
 		CUBRID_GRAPH_DATATYPE.put("timestamp", "string");
 		//datetime
-		CUBRID_GRAPH_DATATYPE.put("datetime", "string");
+		CUBRID_GRAPH_DATATYPE.put("datetime", "datetime");
 		//bit
 		CUBRID_GRAPH_DATATYPE.put("bit", NOT_SUPPORT);
 		//varbit

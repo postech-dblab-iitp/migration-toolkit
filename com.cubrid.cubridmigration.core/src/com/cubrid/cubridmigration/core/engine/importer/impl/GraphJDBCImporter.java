@@ -430,7 +430,18 @@ public class GraphJDBCImporter extends
 			String columnName = columns.get(i).getName();
 			columnName = columnName.replaceAll("\"", "");
 			buffer.append(columnName).append(':');
-			buffer.append('?');
+			
+			if (columns.get(i).getGraphDataType().equals("datetime")) {
+				buffer.append("datetime(");
+				buffer.append('?');
+				buffer.append(")");
+			} else if (columns.get(i).getGraphDataType().equals("date")) {
+				buffer.append("date(");
+				buffer.append('?');
+				buffer.append(")");
+			} else {
+				buffer.append('?');
+			}
 		}
 		
 		if (supportColumCount == 0) {

@@ -462,6 +462,7 @@ public final class CUBRIDSchemaFetcher extends
 					column.setDataType(standardDataType);
 					column.setJdbcIDOfDataType(cubDTHelper.getCUBRIDDataTypeID(standardDataType));
 				}
+				
 				column.setGraphDataType(graphDTHelper.getGraphDataType(column.getDataType()));
 				column.setSupportGraphDataType(graphDTHelper.SupportDataType(column.getDataType()));
 				column.setPrecision(prec);

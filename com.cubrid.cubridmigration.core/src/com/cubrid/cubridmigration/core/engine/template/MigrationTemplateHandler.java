@@ -770,6 +770,7 @@ public final class MigrationTemplateHandler extends
 		Column col = new Column();
 		col.setName(attr.getValue("name"));
 		col.setDataType(attr.getValue("type"));
+		col.setGraphDataType(attr.getValue("graph_type"));
 		
 		String referCol = attr.getValue("reference_to");
 		

@@ -177,6 +177,9 @@ public class GraphJDBCImporter extends
 
 					stmt.setString(1, colVal.get(0).getValue().toString());
 					stmt.setString(2, colVal.get(1).getValue().toString());
+					
+					stmt = setColumnValueParams(stmt, rc);
+					
 					rs1 = stmt.executeQuery();
 					
 //					stmt.clearParameters();
@@ -206,7 +209,8 @@ public class GraphJDBCImporter extends
 				}
 				DBUtils.rollback(conn);
 				//If SQL has errors, write the records to a SQL files.
-			} finally {
+			} 
+			finally {
 				Closer.close(stmt);
 				if (prvAutoCommitStatus) {
 					conn.setAutoCommit(true);
@@ -214,6 +218,14 @@ public class GraphJDBCImporter extends
 				connectionManager.closeTar(conn);
 			}
 		return resultTotal;
+	}
+	
+	private PreparedStatement setColumnValueParams(PreparedStatement pstmt, Record record) throws SQLException {
+		for (int i = 0; i < record.getColumnValueList().size(); i++) {
+			pstmt.setString(i + 3, record.getColumnValueList().get(i).getValue().toString());
+		}
+		
+		return pstmt;
 	}
 	
 	private String getTargetInsertEdge(Edge e, int idx) {
@@ -233,18 +245,49 @@ public class GraphJDBCImporter extends
 			return null;
 		}
 		
-		StringBuffer Buf = new StringBuffer();
-		Buf.append("Match (n:").append(e.getStartVertexName());
-		Buf.append("), (m:").append(e.getEndVertexName());
-		Buf.append(")");
-		Buf.append(" where n.").append(e.getFKColumnNames().get(0)).append(" = ");
-		Buf.append("?");
-		Buf.append(" and m.").append(e.getREFColumnNames(e.getFKColumnNames().get(1))).append(" = ");
-		Buf.append("?");
-		Buf.append(" create (n)-[r:").append(e.getEdgeLabel().replaceAll(" ", "_")).append("]");
-		Buf.append("->(m) ");
-		Buf.append("return count(r)");
-		return Buf.toString();
+		StringBuffer buffer = new StringBuffer();
+		buffer.append("Match (n:").append(e.getStartVertexName());
+		buffer.append("), (m:").append(e.getEndVertexName());
+		buffer.append(")");
+		buffer.append(" where n.").append(e.getFKColumnNames().get(0)).append(" = ");
+		buffer.append("?");
+		buffer.append(" and m.").append(e.getREFColumnNames(e.getFKColumnNames().get(1))).append(" = ");
+		buffer.append("?");
+		buffer.append(" create (n)-[r:").append(e.getEdgeLabel().replaceAll(" ", "_"));
+		if (e.getColumnList() != null) {
+			buffer.append('{');
+			
+			for (int i = 0; i < e.getColumnList().size(); i++) {
+				buffer.append(e.getColumnList().get(i).getName() + ":");
+				
+				if (e.getColumnList().get(i).getGraphDataType().equals("string")) {
+					buffer.append('\'');
+					buffer.append('?');
+					buffer.append('\'');
+				} else if (e.getColumnList().get(i).getGraphDataType().equals("date")){
+					buffer.append("date(");
+					buffer.append('?');
+					buffer.append(')');
+				} else if (e.getColumnList().get(i).getGraphDataType().equals("datetime")){
+					buffer.append("datetime(");
+					buffer.append('?');
+					buffer.append(')');
+				} else {
+					buffer.append('?');
+				}
+				
+				if (i < e.getColumnList().size() - 1) {
+					buffer.append(", ");
+				}
+			}
+			
+			buffer.append('}');
+		}
+		
+		buffer.append("]");
+		buffer.append("->(m) ");
+		buffer.append("return count(r)");
+		return buffer.toString();
 	}
 	
 	private List<ColumnValue> getRecord2FKValue(Edge e, Record record) {

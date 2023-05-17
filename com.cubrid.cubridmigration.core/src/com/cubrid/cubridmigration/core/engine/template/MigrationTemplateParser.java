@@ -35,6 +35,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -384,6 +385,7 @@ public final class MigrationTemplateParser {
 			edgeElement.setAttribute(TemplateTags.ATTR_START_VERTEX, edge.getStartVertexName());
 			edgeElement.setAttribute(TemplateTags.ATTR_END_VERTEX, edge.getEndVertexName());
 			
+			ArrayList<Column> columnList = (ArrayList<Column>) edge.getColumnList();
 			HashMap<String, String> properties = (HashMap) edge.getEdgeProperties();
 			TreeMap<String, String> fkRefers = (TreeMap<String, String>) edge.getfkCol2RefMapping();
 			
@@ -401,12 +403,11 @@ public final class MigrationTemplateParser {
 					
 					property.setAttribute(TemplateTags.ATTR_NAME, key);
 					property.setAttribute(TemplateTags.ATTR_TYPE, properties.get(key));
-					
-//					if (key != null) {
-//						property.setAttribute("reference_to", edge.getREFColumnNames(key));
-//					} else {
-//						property.setAttribute("reference_to", "");
-//					}
+					for (Column col : columnList) {
+						if (col.getName().equals(key)) {
+							property.setAttribute("graph_type", col.getName());
+						}
+					}
 				}
 			}
 			

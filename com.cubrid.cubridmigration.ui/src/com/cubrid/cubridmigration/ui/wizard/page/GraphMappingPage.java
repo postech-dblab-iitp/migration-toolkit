@@ -414,6 +414,9 @@ public class GraphMappingPage extends MigrationWizardPage {
 		} else if (data instanceof EntityConnectionData) {
 			EntityConnectionData connData = (EntityConnectionData) data;
 			
+		} else if (data instanceof Edge) {
+			Edge edge = (Edge) data;
+			columnList = edge.getColumnList();
 		}
 		
 		gdbTable.setInput(columnList);

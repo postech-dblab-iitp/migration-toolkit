@@ -4,9 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.jface.dialogs.PageChangedEvent;
+import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ColumnWeightData;
-import org.eclipse.jface.viewers.DoubleClickEvent;
-import org.eclipse.jface.viewers.IDoubleClickListener;
+import org.eclipse.jface.viewers.ComboBoxCellEditor;
+import org.eclipse.jface.viewers.ICellModifier;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
@@ -19,8 +20,6 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
@@ -36,13 +35,13 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.zest.core.viewers.EntityConnectionData;
 import org.eclipse.zest.core.viewers.GraphViewer;
 import org.eclipse.zest.core.viewers.IGraphEntityRelationshipContentProvider;
 import org.eclipse.zest.core.widgets.Graph;
 import org.eclipse.zest.core.widgets.GraphNode;
 import org.eclipse.zest.core.widgets.ZestStyles;
-import org.eclipse.zest.core.widgets.internal.ZestRootLayer;
 import org.eclipse.zest.layouts.LayoutStyles;
 import org.eclipse.zest.layouts.algorithms.GridLayoutAlgorithm;
 
@@ -54,6 +53,7 @@ import com.cubrid.cubridmigration.graph.dbobj.GraphDictionary;
 import com.cubrid.cubridmigration.graph.dbobj.Vertex;
 import com.cubrid.cubridmigration.ui.MigrationUIPlugin;
 import com.cubrid.cubridmigration.ui.message.Messages;
+import com.cubrid.cubridmigration.ui.preference.GraphDataTypeComboBoxCellEditor;
 import com.cubrid.cubridmigration.ui.wizard.MigrationWizard;
 import com.cubrid.cubridmigration.ui.wizard.dialog.GraphEdgeSettingDialog;
 import com.cubrid.cubridmigration.ui.wizard.dialog.GraphRenamingDialog;
@@ -81,6 +81,11 @@ public class GraphMappingPage extends MigrationWizardPage {
 	private TableViewer rdbTable;
 	
 	private Menu popupMenu;
+	
+	private GraphDataTypeComboBoxCellEditor comboEditor;
+	
+	private String[] columnProperties = {"Property Name", "GDB Types"};
+	private String[] targetTypeList = {"integer", "string", "date", "datetime"};
 	
 	public GraphMappingPage(String pageName) {
 		super(pageName);
@@ -532,6 +537,70 @@ public class GraphMappingPage extends MigrationWizardPage {
 		});
 		
 		gdbTable = new TableViewer(rightSash, SWT.FULL_SELECTION);
+		
+		comboEditor = new GraphDataTypeComboBoxCellEditor(gdbTable.getTable(), targetTypeList);
+		
+		CellEditor[] editors = new CellEditor[] {
+				null,
+				comboEditor
+		};
+		
+		gdbTable.setCellEditors(editors);
+		gdbTable.setCellModifier(new ICellModifier() {
+			
+			@Override
+			public void modify(Object element, String property, Object value) {
+				// TODO Auto-generated method stub
+				TableItem tabItem = (TableItem) element;
+				Column col = (Column) tabItem.getData();
+			
+				if (value instanceof Integer) {
+					int intVal = (Integer) value;
+					
+					if (intVal == 1) {
+						col.setGraphDataType(targetTypeList[1]);
+					}
+					
+					gdbTable.refresh();
+				}
+			}
+			
+			@Override
+			public Object getValue(Object element, String property) {
+				// TODO Auto-generated method stub
+				if (property.equals(columnProperties[1])){
+					return returnIndex(element);
+				} else {
+					return null;
+				}
+			}
+			
+			@Override
+			public boolean canModify(Object element, String property) {
+				// TODO Auto-generated method stub
+				if (property.equals("GDB Types")){
+					return true;
+				} else {
+					return false;
+				}
+			}
+			
+			public int returnIndex(Object element) {
+				if (element instanceof Column) {
+					Column column = (Column) element;
+					
+					for (int i = 0; i < targetTypeList.length; i++) {
+						if (column.getGraphDataType().equals(targetTypeList[i])) {
+							return i;
+						}
+					}
+				}
+				
+				return 0;
+			}
+		});
+		
+		
 		gdbTable.setContentProvider(new IStructuredContentProvider() {
 			
 			@Override
@@ -604,105 +673,38 @@ public class GraphMappingPage extends MigrationWizardPage {
 		TableColumn gdbColumn1 = new TableColumn(gdbTable.getTable(), SWT.LEFT);
 		TableColumn gdbColumn2 = new TableColumn(gdbTable.getTable(), SWT.LEFT);
 		
-		gdbColumn1.setText("Property Name");
-		gdbColumn2.setText("GDB Types");
+		gdbTable.setColumnProperties(columnProperties);
 		
+		gdbColumn1.setText(columnProperties[0]);
+		gdbColumn2.setText(columnProperties[1]);
+	}
+	
+	public List<String> getTypeList(String type) {
+		ArrayList<String> types = new ArrayList<String>();
 		
-		/*
-		Group groupContainer = new Group(parent, SWT.NONE);
-		groupContainer.setLayout(new FillLayout());
-		groupContainer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		groupContainer.setText("sash 2");
-		
-		columnViewer = new TableViewer(groupContainer, SWT.FULL_SELECTION);
-		columnViewer.setContentProvider(new IStructuredContentProvider() {
-			@Override
-			@SuppressWarnings("unchecked")
-			public Object[] getElements(Object inputElement) {
-				if (inputElement instanceof ArrayList) {
-					List<Column> columnList = (ArrayList<Column>) inputElement;
-					
-					return columnList.toArray();
-				} else {
-					return new Object[0];
-				}
-			}
+		if (type.equals("integer")) {
+			types.add("integer");
+			types.add("string");
 			
-			@Override
-			public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {}
+			return types;
 			
-			@Override
-			public void dispose() {}
+		} else if (type.equals("date")) {
+			types.add("date");
+			types.add("string");
 			
-		});
-		columnViewer.setLabelProvider(new ITableLabelProvider() {
+			return types;
 			
-			@Override
-			public String getColumnText(Object element, int columnIndex) {
-				Column column = (Column) element;
-				
-				switch (columnIndex) {
-				case 0:
-					return null;
-				case 1:
-					return column.getName();
-				case 2:
-					return column.getDataType();
-					
-					//GDB column 3, 4 is migrated column.
-					//GDB todo: make this column editable
-				case 3:
-					return column.getName();
-				case 4:
-					return null;
-				}
-				
-				// TODO Auto-generated method stub
-				return null;
-			}
+		} else if (type.equals("datetime")) {
+			types.add("datetime");
+			types.add("string");
 			
-			@Override
-			public Image getColumnImage(Object element, int columnIndex) {
-				// TODO Auto-generated method stub
-				return null;
-			}
+			return types;
 			
-			@Override
-			public void removeListener(ILabelProviderListener listener) {}
+		} else {
+			types.add(type);
 			
-			@Override
-			public boolean isLabelProperty(Object element, String property) {return false;}
-			
-			@Override
-			public void dispose() {}
-			
-			@Override
-			public void addListener(ILabelProviderListener listener) {}
-			
-		});
-		
-		TableLayout tableLayout = new TableLayout();
-		tableLayout.addColumnData(new ColumnWeightData(4, true));
-		tableLayout.addColumnData(new ColumnWeightData(24, true));
-		tableLayout.addColumnData(new ColumnWeightData(24, true));
-		tableLayout.addColumnData(new ColumnWeightData(24, true));
-		tableLayout.addColumnData(new ColumnWeightData(24, true));
-		
-		columnViewer.getTable().setLayout(tableLayout);
-		columnViewer.getTable().setLinesVisible(true);
-		columnViewer.getTable().setHeaderVisible(true);
-		
-		TableColumn col1 = new TableColumn(columnViewer.getTable(), SWT.LEFT);
-		TableColumn col2 = new TableColumn(columnViewer.getTable(), SWT.LEFT);
-		TableColumn col3 = new TableColumn(columnViewer.getTable(), SWT.LEFT);
-		TableColumn col4 = new TableColumn(columnViewer.getTable(), SWT.LEFT);
-		TableColumn col5 = new TableColumn(columnViewer.getTable(), SWT.LEFT);
-		
-		col2.setText("Column name");
-		col3.setText("Data Type");
-		col4.setText("Property Name");
-		col5.setText("Graph Type");
-		*/
+			return types;
+		}
 	}
 	
 	public void changeColumnSelect(Object selectedColumn) {
@@ -740,193 +742,6 @@ public class GraphMappingPage extends MigrationWizardPage {
 		gdbDict.printVertexAndEdge();
 		
 		
-//		showTableInformationForGdbms(sourceCatalog);
-		
 		showGraphData(gdbDict.getMigratedVertexList());
 	}
-	
-//	private void showTableInformationForGdbms(Catalog sourceCatalog) {
-//		MigrationWizard mw = getMigrationWizard();
-//		
-//		GraphDictionary gdbDict = mw.getGraphDictionary();
-//		
-//		List<Schema> schemas = sourceCatalog.getSchemas();
-//
-//		List<Table> joinTablesEdgesList = new ArrayList<Table>();
-//		List<Table> intermediateVertexesList = new ArrayList<Table>();
-//		List<Table> firstVertexesList = new ArrayList<Table>();
-//		List<Table> secondVertexesList = new ArrayList<Table>();
-//		List<Table> recursiveEdgesList = new ArrayList<Table>();
-//
-//		for (Schema schema : schemas) {
-//			List<Table> tables = schema.getTables();
-//			for (Table table : tables) {
-//
-//				int importedKeysCount = table.getImportedKeysCount();
-//				int exportedKeysCount = table.getExportedKeysCount();
-//
-//				if (importedKeysCount == 2 && exportedKeysCount == 0) {
-//					joinTablesEdgesList.add(table);
-//				} else if (importedKeysCount >= 3) {
-//					intermediateVertexesList.add(table);
-//				} else if (importedKeysCount == 0) {
-//					firstVertexesList.add(table);
-//				} else if (importedKeysCount > 0 || exportedKeysCount > 0) {
-//					secondVertexesList.add(table);
-//				}
-//
-//				List<FK> fks = table.getFks();
-//				for (FK fk : fks) {
-//					String referencedTableName = fk.getReferencedTableName();
-//					if (referencedTableName.equalsIgnoreCase(table.getName())) {
-//						recursiveEdgesList.add(table);
-//					}
-//				}
-//			}
-//		}
-//
-//		printTableElement("JoinTables Edges", joinTablesEdgesList);
-//		printTableElement("Intermediate Vertexes", intermediateVertexesList);
-//		printTableElement("First Vertexes", firstVertexesList);
-//		printTableElement("Second Vertexes", secondVertexesList);
-//		printTableElement("Recursive Edges", recursiveEdgesList);
-//		
-//		migrateFirstVertex(firstVertexesList, gdbDict);
-//		migrateSecondVertexes(secondVertexesList, gdbDict);
-//		migrateIntermediateVertexes(intermediateVertexesList, gdbDict);
-//		migrateJoinTablesEdges(joinTablesEdgesList, gdbDict);
-//		migrateRecursiveRelationship(recursiveEdgesList, gdbDict);
-//		
-//		gdbDict.printVertexAndEdge();
-//	}
-//
-//	/**
-//	 * printTableElement
-//	 *
-//	 * @param elementType
-//	 * @param tableList
-//	 */
-//	private void printTableElement(String elementType, List<Table> tableList) {
-//		System.out.println("==== " + elementType + " ==== ");
-//
-//		for (Table table : tableList) {
-//			System.out.println("- " + table.getName());
-//		}
-//
-//		System.out.println();
-//	}
-//	
-//	//GDB first vertex
-//	private void migrateFirstVertex(List<Table> firstVertexList, GraphDictionary gdbDict) {
-//		for (Table table : firstVertexList) {
-//			Vertex vertex = new Vertex();
-//			vertex.setVertexLabel(table.getName());
-//			
-//			gdbDict.setMigratedVertexList(vertex);
-//		}
-//	}
-//	
-//	//GDB second vertex
-//	private void migrateSecondVertexes(List<Table> secondVertexList, GraphDictionary gdbDict) {
-//		for (Table table : secondVertexList) {
-//			Vertex startVertex = new Vertex();
-//			Edge edge = new Edge();
-//			startVertex.setVertexLabel(table.getName());
-//			
-//			gdbDict.setMigratedVertexList(startVertex);
-//			edge.setStartVertexName(startVertex.getVertexLabel());
-//			
-//			for (FK fk : table.getFks()) {
-//				String endVertexName = gdbDict.getMigratedVertexByName(fk.getReferencedTableName()).getVertexLabel();
-//				
-//				if (endVertexName != null) {
-//					edge.setEndVertexName(endVertexName);
-//					gdbDict.setMigratedEdgeList(edge);
-//					
-//				} else {
-//					Vertex endVertex = new Vertex();
-//					endVertex.setVertexLabel(fk.getReferencedTableName());
-//					gdbDict.setMigratedVertexList(endVertex);
-//				}
-//			}
-//		}
-//	}
-//	
-//	//GDB intermediate vertex
-//	private void migrateIntermediateVertexes(List<Table> intermediateVertexList, GraphDictionary gdbDict){
-//		for (Table table : intermediateVertexList) {
-//			Vertex startVertex = new Vertex();
-//			Edge edge = new Edge();
-//			startVertex.setVertexLabel(table.getName());
-//			
-//			gdbDict.setMigratedVertexList(startVertex);
-//			edge.setStartVertexName(startVertex.getVertexLabel());
-//			
-//			for (FK fk : table.getFks()) {
-//				String endVertexName = gdbDict.getMigratedVertexByName(fk.getReferencedTableName()).getVertexLabel();
-//				
-//				if (endVertexName != null) {
-//					edge.setEndVertexName(endVertexName);
-//					gdbDict.setMigratedEdgeList(edge);
-//					
-//				} else {
-//					Vertex endVertex = new Vertex();
-//					endVertex.setVertexLabel(fk.getReferencedTableName());
-//					gdbDict.setMigratedVertexList(endVertex);
-//				}
-//			}
-//		}
-//	}
-//	
-//	//GDB join table edges
-//	private void migrateJoinTablesEdges(List<Table> joinTablesEdges, GraphDictionary gdbDict) {
-//		for (Table table : joinTablesEdges) {
-//			Vertex startVertex = new Vertex();
-//			Edge edge = new Edge();
-//			startVertex.setVertexLabel(table.getName());
-//			
-//			gdbDict.setMigratedVertexList(startVertex);
-//			edge.setStartVertexName(startVertex.getVertexLabel());
-//			
-//			for (FK fk : table.getFks()) {
-//				String endVertexName = gdbDict.getMigratedVertexByName(fk.getReferencedTableName()).getVertexLabel();
-//				
-//				if (endVertexName != null) {
-//					edge.setEndVertexName(endVertexName);
-//					gdbDict.setMigratedEdgeList(edge);
-//					
-//				} else {
-//					Vertex endVertex = new Vertex();
-//					endVertex.setVertexLabel(fk.getReferencedTableName());
-//					gdbDict.setMigratedVertexList(endVertex);
-//				}
-//			}
-//		}
-//	}
-//	
-//	//GDB recursive relationship
-//	private void migrateRecursiveRelationship(List<Table> recursiveEdges, GraphDictionary gdbDict){
-//		for (Table table : recursiveEdges) {
-//			Vertex startVertex = new Vertex();
-//			Edge edge = new Edge();
-//			startVertex.setVertexLabel(table.getName());
-//			
-//			gdbDict.setMigratedVertexList(startVertex);
-//			edge.setStartVertexName(startVertex.getVertexLabel());
-//			
-//			for (FK fk : table.getFks()) {
-//				String endVertexName = gdbDict.getMigratedVertexByName(fk.getReferencedTableName()).getVertexLabel();
-//				
-//				if (endVertexName != null) {
-//					edge.setEndVertexName(endVertexName);
-//					gdbDict.setMigratedEdgeList(edge);
-//					
-//				} else {
-//					Vertex endVertex = new Vertex();
-//					endVertex.setVertexLabel(fk.getReferencedTableName());
-//					gdbDict.setMigratedVertexList(endVertex);
-//				}
-//			}
-//		}
-//	}
 }

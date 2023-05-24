@@ -227,12 +227,12 @@ public class LoadFileImporter extends
 		return mrManager.getDirAndFilesMgr().getLobFilesDir() + tableName + File.separatorChar;
 	}
 
-	public int importVertex(Vertex e, List<Record> records) {
-		return 0;
-	}
-    
-    public int importEdge(Edge e, List<Record> records) {
-		return 0;
-	}
+//	public int importVertex(Vertex e, List<Record> records) {
+//		return 0;
+//	}
+//    
+//    public int importEdge(Edge e, List<Record> records) {
+//		return 0;
+//	}
 
 }

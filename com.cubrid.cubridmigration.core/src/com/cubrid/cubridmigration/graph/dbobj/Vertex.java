@@ -6,8 +6,9 @@ import java.util.List;
 import java.util.Map;
 
 import com.cubrid.cubridmigration.core.dbobject.Column;
+import com.cubrid.cubridmigration.core.dbobject.DBObject;
 
-public class Vertex {
+public class Vertex extends DBObject {
     
     public static final int NONE = 0;
     public static final int FIRST_TYPE = 1;
@@ -31,6 +32,7 @@ public class Vertex {
 	//need for source export 
 	private String owner;
 	private String condition;
+	private String ddl;
 	
 	public Vertex() {
 		this.endVertexes = new ArrayList<Vertex>();
@@ -137,5 +139,27 @@ public class Vertex {
 		for (Column col : columnList) {
 			vertexProperties.put(col.getName(), col.getDataType());
 		}
+	}
+
+	@Override
+	public String getName() {
+		// TODO Auto-generated method stub
+		return vertexLabel;
+	}
+
+	@Override
+	public String getObjType() {
+		// TODO Auto-generated method stub
+		return "Vertex";
+	}
+
+	@Override
+	public String getDDL() {
+		// TODO Auto-generated method stub
+		return ddl;
+	}
+	
+	public void setDDL(String ddl) {
+		this.ddl = ddl;
 	}
 }

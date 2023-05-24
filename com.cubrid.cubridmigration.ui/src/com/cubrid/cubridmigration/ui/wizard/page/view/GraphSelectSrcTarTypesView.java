@@ -66,7 +66,7 @@ public class GraphSelectSrcTarTypesView {
 	//private Button btnOnlineTar;
 	private Button btnOnlineGraph;
 	//private Button btnOfflineTar;
-	//private Button btnDumpTar;
+	private Button btnDumpTar;
 	//private Button btnSQLTar;
 
 	//private Button btnCSVTar;
@@ -164,10 +164,10 @@ public class GraphSelectSrcTarTypesView {
 			comSep.setLayoutData(gd);
 		}
 
-//		btnDumpTar = createSrcTarTypeBtn(grpTar, Messages.btnDestLocalDump,
-//				Messages.btnDestLocalDumpDes);
-//		btnDumpTar.setData(MigrationConfiguration.DEST_DB_UNLOAD);
-//		tarButtons.add(btnDumpTar);
+		btnDumpTar = createSrcTarTypeBtn(grpTar, Messages.btnDestLocalDump,
+				Messages.btnDestLocalDumpDes);
+		btnDumpTar.setData(MigrationConfiguration.DEST_DB_UNLOAD);
+		tarButtons.add(btnDumpTar);
 //
 //		btnSQLTar = createSrcTarTypeBtn(grpTar, Messages.btnDestSQLFiles,
 //				Messages.btnDestSQLFilesDes);

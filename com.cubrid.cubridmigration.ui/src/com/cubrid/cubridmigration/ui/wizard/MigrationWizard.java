@@ -94,6 +94,8 @@ public class MigrationWizard extends
 
 	private static final int[] IDX_ONLINE = new int[] {0, 1, 2, 3, 4};
 	
+	private static final int[] IDX_GRAPH_OFFLINE = new int[] {0, 1, 14, 12, 13, 15};
+	
 	//GDB index of GraphDB
 	//maybe need graph only confirmation page (idx no. 13)
 	private static final int[] IDX_GRAPH = new int[] {0, 1, 14, 12, 13, 15};
@@ -279,7 +281,11 @@ public class MigrationWizard extends
 	 * @return int[]
 	 */
 	private int[] getPageNOs() {
-		if (migrationConfig.targetIsGraph()){
+		if (migrationConfig.sourceIsOnline() && migrationConfig.targetIsDBDump()) {
+			return IDX_GRAPH_OFFLINE;
+		}
+		
+		if (migrationConfig.targetIsGraph()) {
 			return IDX_GRAPH;
 		}
 		if (migrationConfig.sourceIsOnline() || migrationConfig.sourceIsXMLDump()) {

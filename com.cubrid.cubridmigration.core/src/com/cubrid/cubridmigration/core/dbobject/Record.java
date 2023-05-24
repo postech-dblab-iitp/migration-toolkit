@@ -45,6 +45,14 @@ import com.cubrid.cubridmigration.core.dbobject.Record.ColumnValue;
 public class Record {
 	private List<ColumnValue> columnValueList = new ArrayList<ColumnValue>();
 
+	public void trimValues() {
+		for (ColumnValue colVal : getColumnValueList()) {
+			if (colVal.getValue() instanceof String) {
+				colVal.getValue().toString().trim();
+			}
+		}
+	}
+	
 	public List<ColumnValue> getColumnValueList() {
 		return columnValueList;
 	}

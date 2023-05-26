@@ -735,10 +735,27 @@ public abstract class OfflineImporter extends
 		//TODO need vertex ddl
 		//TODO executeDDL(ddl, true, resultHandler)
 		
+		int recCounter = 0;
+		int commitCount = config.getCommitCount();
+		
+		StringBuffer buffer = new StringBuffer();
+		
 		for (Record rec : records) {
+			
 			String ddl = GraphSQLHelper.getInstance(null).getVertexDDL(v, rec);
-			executeDDL(ddl + ";\n", false, createResultHandler(v, records.size()));
+			buffer.append(ddl);
+			buffer.append(";\n");
+			recCounter++;
+			
+			if (recCounter == commitCount) {
+				executeDDL(buffer.toString(), false, createResultHandler(v, recCounter));
+				
+				recCounter = 0;
+			}
+			
 		}
+		
+		executeDDL(buffer.toString() + ";\n", false, createResultHandler(v, recCounter));
 		
 		return 0;
 	}
@@ -747,16 +764,50 @@ public abstract class OfflineImporter extends
 		//TODO need edge ddl
 		//TODO executeDDL(ddl, true, resultHandler)
 		
-		if (records == null) {
-			return 0;
-		}
+		int commitCount = config.getCommitCount();
+		int recCounter = 0;
 		
-		for (Record rc : records) {
-			if (rc == null) {
-				continue;
+		StringBuffer buffer = new StringBuffer();
+		
+		if (records == null) {
+			for (int i=0 ; i < e.getfkCol2RefMappingSize(); i++) {
+				String ddl = GraphSQLHelper.getInstance(null).getEdgeDDL(e, i);
+				
+				buffer.append(ddl);
+				buffer.append(";\n");
+				recCounter++;
+				
+				if (recCounter == commitCount) {
+					executeDDL(buffer.toString(), false, createResultHandler(e, recCounter));
+					
+					recCounter = 0;
+					buffer = new StringBuffer();
+				}
 			}
-			String ddl = GraphSQLHelper.getInstance(null).getEdgeDDL(e, rc);
-			executeDDL(ddl + ";\n", false, createResultHandler(e, records.size()));
+			
+			executeDDL(buffer.toString(), false, createResultHandler(e, recCounter));
+			
+		} else {
+			for (Record rc : records) {
+			
+				if (rc == null) {
+					continue;
+				}
+				String ddl = GraphSQLHelper.getInstance(null).getEdgeDDL(e, rc);
+				buffer.append(ddl);
+				buffer.append(";\n");
+				recCounter++;
+				
+				if (recCounter == commitCount) {
+					executeDDL(buffer.toString(), false, createResultHandler(e, recCounter));
+					
+					recCounter = 0;
+					buffer = new StringBuffer();
+				}
+				
+			}
+			
+			executeDDL(buffer.toString(), false, createResultHandler(e, recCounter));
 		}
 		
 		return 0;

@@ -40,16 +40,19 @@ public class GraphSQLHelper extends SQLHelper {
 		return ddl;
 	}
 	
+	public String getEdgeDDL(Edge e, int index) { 
+		String ddl = new String();
+		
+		ddl = getTargetInsertEdge(e, index);				
+		
+		return ddl;
+	}
+	
 	public String getEdgeDDL(Edge e, Record record) {
 		String ddl = new String();
 		
 		if (e.getEdgeType() == Edge.JOINTABLE_TYPE) {
 			ddl = getTargetInsertJoinEdge(e, record);
-			
-		} else {
-			for (int i=0 ; i < e.getfkCol2RefMappingSize(); i++) {
-				ddl = getTargetInsertEdge(e, i);				
-			}
 			
 		}
 		
@@ -57,8 +60,7 @@ public class GraphSQLHelper extends SQLHelper {
 	}
 	
 	private String getTargetInsertEdge(Edge e, int index) {
-		StringBuffer buffer = new StringBuffer();
-		
+		StringBuffer buffer = new StringBuffer("MATCH (n:").append(e.getStartVertexName()).append("),");
 		buffer.append("(m:").append(e.getEndVertexName()).append(")");
 		buffer.append(" where ");
 		buffer.append("n.").append(e.getFKColumnNames().get(index)).append(" = ");

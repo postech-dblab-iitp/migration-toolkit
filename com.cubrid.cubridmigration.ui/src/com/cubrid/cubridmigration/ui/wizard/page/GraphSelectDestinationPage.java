@@ -287,7 +287,7 @@ public class GraphSelectDestinationPage extends
 
 			final Label lblFilePrefix = new Label(fileRepositoryContainer, SWT.NONE);
 			lblFilePrefix.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
-			lblFilePrefix.setText(Messages.lblOutputFilePrefix);
+//			lblFilePrefix.setText(Messages.lblOutputFilePrefix);
 
 			txtFilePrefix = new Text(fileRepositoryContainer, SWT.BORDER);
 			txtFilePrefix.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
@@ -304,7 +304,7 @@ public class GraphSelectDestinationPage extends
 			});
 
 			Label timezoneLabel = new Label(fileRepositoryContainer, SWT.NONE);
-			timezoneLabel.setText(Messages.lblXMLFileTimezone);
+//			timezoneLabel.setText(Messages.lblXMLFileTimezone);
 			timezoneLabel.setLayoutData(new GridData(SWT.END, SWT.CENTER, false, false));
 
 			targetFileTimezoneCombo = new Combo(fileRepositoryContainer, SWT.READ_ONLY);
@@ -317,7 +317,7 @@ public class GraphSelectDestinationPage extends
 			new Label(fileRepositoryContainer, SWT.NONE);
 
 			lblCharset = new Label(fileRepositoryContainer, SWT.NONE);
-			lblCharset.setText(Messages.lblCharset);
+//			lblCharset.setText(Messages.lblCharset);
 			lblCharset.setLayoutData(new GridData(SWT.END, SWT.CENTER, false, false));
 
 			cboCharset = new Combo(fileRepositoryContainer, SWT.READ_ONLY);
@@ -332,15 +332,15 @@ public class GraphSelectDestinationPage extends
 			new Label(fileRepositoryContainer, SWT.NONE);
 			btnOneTableOneFile = new Button(fileRepositoryContainer, SWT.CHECK);
 			btnOneTableOneFile.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false));
-			btnOneTableOneFile.setText(Messages.btnOneTableOneFile);
+//			btnOneTableOneFile.setText(Messages.btnOneTableOneFile);
 			new Label(fileRepositoryContainer, SWT.NONE);
 
 			lblLobPath = new Label(fileRepositoryContainer, SWT.NONE);
 			lblLobPath.setLayoutData(new GridData(SWT.END, SWT.CENTER, false, false));
-			lblLobPath.setText("LOB files' root path: ");
+//			lblLobPath.setText("LOB files' root path: ");
 			txtLobPath = new Text(fileRepositoryContainer, SWT.BORDER);
 			txtLobPath.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-			txtLobPath.setText("");
+//			txtLobPath.setText("");
 			txtLobPath.addModifyListener(new ModifyListener() {
 
 				public void modifyText(ModifyEvent ev) {
@@ -457,6 +457,14 @@ public class GraphSelectDestinationPage extends
 				txtLobPath.setText(config.getTargetLOBRootPath());
 			}
 			fileRepositoryContainer.layout();
+			
+			btnOneTableOneFile.setVisible(false);
+			txtFilePrefix.setVisible(false);
+			targetFileTimezoneCombo.setVisible(false);
+			cboCharset.setVisible(false);
+			lblLobPath.setVisible(false);
+			txtLobPath.setVisible(false);
+			
 		}
 
 		/**

@@ -70,6 +70,7 @@ import com.cubrid.cubridmigration.core.engine.MigrationContext;
 import com.cubrid.cubridmigration.core.engine.config.MigrationConfiguration;
 import com.cubrid.cubridmigration.core.engine.config.SourceColumnConfig;
 import com.cubrid.cubridmigration.core.engine.config.SourceTableConfig;
+import com.cubrid.cubridmigration.core.engine.event.ImportGraphRecordsEvent;
 import com.cubrid.cubridmigration.core.engine.event.ImportRecordsEvent;
 import com.cubrid.cubridmigration.core.engine.event.SingleRecordErrorEvent;
 import com.cubrid.cubridmigration.core.engine.exception.BreakMigrationException;
@@ -81,6 +82,9 @@ import com.cubrid.cubridmigration.core.engine.task.RunnableResultHandler;
 import com.cubrid.cubridmigration.core.trans.DBTransformHelper;
 import com.cubrid.cubridmigration.cubrid.CUBRIDSQLHelper;
 import com.cubrid.cubridmigration.cubrid.Data2StrTranslator;
+import com.cubrid.cubridmigration.graph.GraphSQLHelper;
+import com.cubrid.cubridmigration.graph.dbobj.Edge;
+import com.cubrid.cubridmigration.graph.dbobj.Vertex;
 
 /**
  * LoadDBImporter : Use LoadDB and CSQL commands to import database objects.
@@ -511,6 +515,39 @@ public abstract class OfflineImporter extends
 			}
 		};
 	}
+	
+	protected RunnableResultHandler createResultHandler(final Vertex v, final int recCounter) {
+		return new RunnableResultHandler() {
+			ImportGraphRecordsEvent graphEvent = new ImportGraphRecordsEvent(v, recCounter);
+			
+			
+			public void success() {
+				//TODO here
+				eventHandler.handleEvent(graphEvent);
+			}
+			
+			public void failed(String error) {
+				//TODO here
+				eventHandler.handleEvent(graphEvent);
+			}
+		};
+	}
+	
+	protected RunnableResultHandler createResultHandler(final Edge e, final int recCounter) {
+		return new RunnableResultHandler() {
+			ImportGraphRecordsEvent graphEvent = new ImportGraphRecordsEvent(e, recCounter);
+			
+			
+			public void success() {
+				eventHandler.handleEvent(graphEvent);
+				
+			}
+			
+			public void failed(String error) {
+				graphEvent.isSuccess();
+			}
+		};
+	}
 
 	//	/**
 	//	 * Retrieve the CM server object.
@@ -693,5 +730,86 @@ public abstract class OfflineImporter extends
 		sq.setDDL(ddl);
 		executeDDL(ddl + ";\n", false, createResultHandler(sq));
 	}
-
+	
+	public int importVertex(Vertex v, List<Record> records) {
+		//TODO need vertex ddl
+		//TODO executeDDL(ddl, true, resultHandler)
+		
+		int recCounter = 0;
+		int commitCount = config.getCommitCount();
+		
+		StringBuffer buffer = new StringBuffer();
+		
+		for (Record rec : records) {
+			
+			String ddl = GraphSQLHelper.getInstance(null).getVertexDDL(v, rec);
+			buffer.append(ddl);
+			buffer.append(";\n");
+			recCounter++;
+			
+			if (recCounter == commitCount) {
+				executeDDL(buffer.toString(), false, createResultHandler(v, recCounter));
+				
+				recCounter = 0;
+			}
+			
+		}
+		
+		executeDDL(buffer.toString() + ";\n", false, createResultHandler(v, recCounter));
+		
+		return 0;
+	}
+	
+	public int importEdge(Edge e, List<Record> records) {
+		//TODO need edge ddl
+		//TODO executeDDL(ddl, true, resultHandler)
+		
+		int commitCount = config.getCommitCount();
+		int recCounter = 0;
+		
+		StringBuffer buffer = new StringBuffer();
+		
+		if (records == null) {
+			for (int i=0 ; i < e.getfkCol2RefMappingSize(); i++) {
+				String ddl = GraphSQLHelper.getInstance(null).getEdgeDDL(e, i);
+				
+				buffer.append(ddl);
+				buffer.append(";\n");
+				recCounter++;
+				
+				if (recCounter == commitCount) {
+					executeDDL(buffer.toString(), false, createResultHandler(e, recCounter));
+					
+					recCounter = 0;
+					buffer = new StringBuffer();
+				}
+			}
+			
+			executeDDL(buffer.toString(), false, createResultHandler(e, recCounter));
+			
+		} else {
+			for (Record rc : records) {
+			
+				if (rc == null) {
+					continue;
+				}
+				String ddl = GraphSQLHelper.getInstance(null).getEdgeDDL(e, rc);
+				buffer.append(ddl);
+				buffer.append(";\n");
+				recCounter++;
+				
+				if (recCounter == commitCount) {
+					executeDDL(buffer.toString(), false, createResultHandler(e, recCounter));
+					
+					recCounter = 0;
+					buffer = new StringBuffer();
+				}
+				
+			}
+			
+			executeDDL(buffer.toString(), false, createResultHandler(e, recCounter));
+		}
+		
+		return 0;
+	}
 }

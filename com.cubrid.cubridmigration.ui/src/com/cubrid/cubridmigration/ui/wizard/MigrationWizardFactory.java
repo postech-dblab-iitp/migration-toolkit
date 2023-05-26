@@ -460,6 +460,8 @@ public final class MigrationWizardFactory {
 	public static String getProgressEditorPartID(int sourceType, int targetType) {
 		if (targetType == MigrationConfiguration.DEST_GRAPH) {
 			return R2GMigrationProgressEditorPart.ID;
+		} if (targetType == MigrationConfiguration.DEST_DB_UNLOAD) {
+			return R2GMigrationProgressEditorPart.ID;
 		}
 
 		if (sourceType == MigrationConfiguration.SOURCE_TYPE_CSV) {

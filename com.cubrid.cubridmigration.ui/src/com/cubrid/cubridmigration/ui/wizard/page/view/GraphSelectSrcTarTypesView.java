@@ -73,6 +73,7 @@ public class GraphSelectSrcTarTypesView {
 	//private Button btnXLSTar;
 
 	private Button btnOnlineCUBRIDSrc;
+	private Button btnOnlineGraphSrc;
 	//private Button btnOnlineOracleSrc;
 	//private Button btnOnlineMYSQLSrc;
 	//private Button btnOnlineMSSQLSrc;
@@ -99,6 +100,11 @@ public class GraphSelectSrcTarTypesView {
 				Messages.btnSrcOnlineCUBRIDDBDes);
 		btnOnlineCUBRIDSrc.setData(MigrationConfiguration.SOURCE_TYPE_CUBRID);
 		srcButtons.add(btnOnlineCUBRIDSrc);
+		
+		btnOnlineGraphSrc = createSrcTarTypeBtn(grpSrc, "Online GraphDB Source",
+				"Connecting to Graph via JDBC.");
+		btnOnlineGraphSrc.setData(MigrationConfiguration.SOURCE_TYPE_GRAPH);
+		srcButtons.add(btnOnlineGraphSrc);
 
 //		btnOnlineMYSQLSrc = createSrcTarTypeBtn(grpSrc, Messages.btnSrcOnlineMySQLDB,
 //				Messages.btnSrcOnlineMySQLDBDes);

@@ -3439,7 +3439,8 @@ public class MigrationConfiguration {
 	 */
 	public boolean sourceIsOnline() {
 		return (sourceType == SOURCE_TYPE_CUBRID) || (sourceType == SOURCE_TYPE_MYSQL)
-				|| (sourceType == SOURCE_TYPE_ORACLE) || (sourceType == SOURCE_TYPE_MSSQL);
+				|| (sourceType == SOURCE_TYPE_ORACLE) || (sourceType == SOURCE_TYPE_MSSQL)
+				|| (sourceType == SOURCE_TYPE_GRAPH);
 	}
 
 	/**

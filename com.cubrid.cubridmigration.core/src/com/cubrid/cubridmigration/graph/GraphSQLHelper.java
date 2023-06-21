@@ -196,9 +196,9 @@ public class GraphSQLHelper extends SQLHelper {
 	public String getQuotedObjName(String objectName) {
 		return new StringBuffer("\"").append(objectName).append("\"").toString();
 	}
+	
 	@Override
 	public String getTestSelectSQL(String sql) {
-		//GDB testSelectSQL
-		return null;
+		return sql;
 	}
 }

@@ -1,20 +1,28 @@
 package com.cubrid.cubridmigration.graph.meta;
 
 import java.sql.Connection;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
+import org.apache.commons.lang.StringUtils;
 
 import com.cubrid.cubridmigration.core.connection.ConnParameters;
 import com.cubrid.cubridmigration.core.dbmetadata.AbstractJDBCSchemaFetcher;
 import com.cubrid.cubridmigration.core.dbmetadata.IBuildSchemaFilter;
 import com.cubrid.cubridmigration.core.dbobject.Catalog;
+import com.cubrid.cubridmigration.core.dbobject.Column;
 import com.cubrid.cubridmigration.core.dbobject.DBObjectFactory;
+import com.cubrid.cubridmigration.core.dbobject.Table;
 import com.cubrid.cubridmigration.core.dbtype.DatabaseType;
 import com.cubrid.cubridmigration.core.export.DBExportHelper;
 import com.cubrid.cubridmigration.graph.dbobj.GraphDictionary;
 
 public class GraphSchemaFetcher extends AbstractJDBCSchemaFetcher {
+	
+	private static final int CUBRID_VARCHAR_MAX_LENGHT = 1073741823;
 	
 	public GraphSchemaFetcher() {
 		factory = new DBObjectFactory();
@@ -76,5 +84,45 @@ public class GraphSchemaFetcher extends AbstractJDBCSchemaFetcher {
 //		}
 		return catalog;
 	}
+	
+	@Override
+	public Table buildSQLTable(ResultSetMetaData resultSetMeta) throws SQLException {
+//		if (LOG.isDebugEnabled()) {
+//			LOG.debug("[IN]buildSQLTable()");
+//		}
+		List<Column> columns = new ArrayList<Column>();
+		Table sqlTable = factory.createTable();
+
+		for (int i = 1; i < resultSetMeta.getColumnCount() + 1; i++) {
+			Column column = factory.createColumn();
+			column.setTableOrView(sqlTable);
+			String columnName = resultSetMeta.getColumnLabel(i); // if it has column alias
+			if (StringUtils.isEmpty(columnName)) {
+				columnName = resultSetMeta.getColumnName(i);
+			}
+			column.setName(columnName);
+			//			int charLength = resultSetMeta.getColumnDisplaySize(i);
+			//			if (charLength <= 0) {
+			//				charLength = 1;
+			//			}
+			column.setJdbcIDOfDataType(resultSetMeta.getColumnType(i));
+
+			int precision = resultSetMeta.getPrecision(i);
+			column.setDataType(resultSetMeta.getColumnTypeName(i));
+			if (precision <= 0) {
+				column.setPrecision(CUBRID_VARCHAR_MAX_LENGHT);
+			} else {
+				column.setPrecision(precision);
+			}
+			column.setScale(resultSetMeta.getScale(i));
+
+			column.setNullable(true);
+			columns.add(column);
+		}
+
+		sqlTable.setColumns(columns);
+		return sqlTable;
+	}
+
 
 }

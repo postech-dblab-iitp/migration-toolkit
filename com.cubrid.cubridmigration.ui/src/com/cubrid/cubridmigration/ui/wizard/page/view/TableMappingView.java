@@ -246,9 +246,9 @@ public class TableMappingView extends
 	 * @param listener IDoubleClickListener
 	 */
 	public void addDoubleClickListener(IDoubleClickListener listener) {
-		tvTableColumns.addDoubleClickListener(listener);
-		tvTableFKs.addDoubleClickListener(listener);
-		tvTableIndexes.addDoubleClickListener(listener);
+//		tvTableColumns.addDoubleClickListener(listener);
+//		tvTableFKs.addDoubleClickListener(listener);
+//		tvTableIndexes.addDoubleClickListener(listener);
 	}
 
 	/**
@@ -266,11 +266,11 @@ public class TableMappingView extends
 		tabTableDetailFolder.setUnselectedCloseVisible(false);
 		tabTableDetailFolder.setTabHeight(24);
 
-		createDetailOfColumns(tabTableDetailFolder);
-		createDetailOfPKs(tabTableDetailFolder);
-		createDetailOfFKs(tabTableDetailFolder);
-		createDetailOfIndexes(tabTableDetailFolder);
-		createDetailOfPartition(tabTableDetailFolder);
+//		createDetailOfColumns(tabTableDetailFolder);
+//		createDetailOfPKs(tabTableDetailFolder);
+//		createDetailOfFKs(tabTableDetailFolder);
+//		createDetailOfIndexes(tabTableDetailFolder);
+//		createDetailOfPartition(tabTableDetailFolder);
 		createDetailOfUserDefine(tabTableDetailFolder);
 	}
 

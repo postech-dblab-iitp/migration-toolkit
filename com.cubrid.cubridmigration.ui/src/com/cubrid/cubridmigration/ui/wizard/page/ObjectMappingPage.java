@@ -344,59 +344,59 @@ public class ObjectMappingPage extends
 
 		TableMappingView tableMappingView = new TableMappingView(detailContainer);
 		//Double click to show detail information
-		tableMappingView.addDoubleClickListener(new IDoubleClickListener() {
-
-			public void doubleClick(DoubleClickEvent event) {
-				if (event.getSource() == null || event.getSelection().isEmpty()) {
-					return;
-				}
-				//The last element of the array is the source configuration object
-				Object[] obj = (Object[]) ((StructuredSelection) event.getSelection()).getFirstElement();
-				TableViewer tv = (TableViewer) event.getSource();
-				String ct = tv.getData(AbstractMappingView.CONTENT_TYPE).toString();
-				ICUBRIDNode cn = (ICUBRIDNode) currentView.getModel();
-				while (cn != null) {
-					if (cn instanceof TableNode) {
-						break;
-					}
-					cn = cn.getParent();
-				}
-				//For klocwork
-				if (cn == null) {
-					return;
-				}
-				ICUBRIDNode selectionParent = cn;
-				if (AbstractMappingView.CT_COLUMN.equals(ct)) {
-					for (ICUBRIDNode chn : cn.getChildren()) {
-						if (chn instanceof ColumnsNode) {
-							selectionParent = chn;
-							break;
-						}
-					}
-				} else if (AbstractMappingView.CT_FK.equals(ct)) {
-					for (ICUBRIDNode chn : cn.getChildren()) {
-						if (chn instanceof FKsNode) {
-							selectionParent = chn;
-							break;
-						}
-					}
-				} else if (AbstractMappingView.CT_INDEX.equals(ct)) {
-					for (ICUBRIDNode chn : cn.getChildren()) {
-						if (chn instanceof IndexesNode) {
-							selectionParent = chn;
-							break;
-						}
-					}
-				}
-				for (ICUBRIDNode col : selectionParent.getChildren()) {
-					if (col.getName().equals((String) obj[1])) {
-						tvSourceDBObjects.setSelection(col);
-						showRightView(col, true);
-						return;
-					}
-				}
-			}
-		});
+//		tableMappingView.addDoubleClickListener(new IDoubleClickListener() {
+//
+//			public void doubleClick(DoubleClickEvent event) {
+//				if (event.getSource() == null || event.getSelection().isEmpty()) {
+//					return;
+//				}
+//				//The last element of the array is the source configuration object
+//				Object[] obj = (Object[]) ((StructuredSelection) event.getSelection()).getFirstElement();
+//				TableViewer tv = (TableViewer) event.getSource();
+//				String ct = tv.getData(AbstractMappingView.CONTENT_TYPE).toString();
+//				ICUBRIDNode cn = (ICUBRIDNode) currentView.getModel();
+//				while (cn != null) {
+//					if (cn instanceof TableNode) {
+//						break;
+//					}
+//					cn = cn.getParent();
+//				}
+//				//For klocwork
+//				if (cn == null) {
+//					return;
+//				}
+//				ICUBRIDNode selectionParent = cn;
+//				if (AbstractMappingView.CT_COLUMN.equals(ct)) {
+//					for (ICUBRIDNode chn : cn.getChildren()) {
+//						if (chn instanceof ColumnsNode) {
+//							selectionParent = chn;
+//							break;
+//						}
+//					}
+//				} else if (AbstractMappingView.CT_FK.equals(ct)) {
+//					for (ICUBRIDNode chn : cn.getChildren()) {
+//						if (chn instanceof FKsNode) {
+//							selectionParent = chn;
+//							break;
+//						}
+//					}
+//				} else if (AbstractMappingView.CT_INDEX.equals(ct)) {
+//					for (ICUBRIDNode chn : cn.getChildren()) {
+//						if (chn instanceof IndexesNode) {
+//							selectionParent = chn;
+//							break;
+//						}
+//					}
+//				}
+//				for (ICUBRIDNode col : selectionParent.getChildren()) {
+//					if (col.getName().equals((String) obj[1])) {
+//						tvSourceDBObjects.setSelection(col);
+//						showRightView(col, true);
+//						return;
+//					}
+//				}
+//			}
+//		});
 		ColumnMappingView columnMappingView = new ColumnMappingView(detailContainer);
 		IndexMappingView indexMappingView = new IndexMappingView(detailContainer);
 		FKMappingView fkMappingView = new FKMappingView(detailContainer);

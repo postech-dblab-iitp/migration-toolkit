@@ -318,10 +318,8 @@ public class GraphSelectSrcTarTypesView {
 		try {
 			IEclipsePreferences preferences = new ConfigurationScope().getNode(MigrationUIPlugin.PLUGIN_ID);
 			preferences.put(SOURCE_TYPE_KEY, String.valueOf(getSourceType()));
-			LOG.info(String.valueOf(getSourceType()));
 			
 			preferences.put(TARGET_TYPE_KEY, String.valueOf(getTargetType()));
-			LOG.info(String.valueOf(getTargetType()));
 			
 			preferences.flush();
 		} catch (BackingStoreException e) {

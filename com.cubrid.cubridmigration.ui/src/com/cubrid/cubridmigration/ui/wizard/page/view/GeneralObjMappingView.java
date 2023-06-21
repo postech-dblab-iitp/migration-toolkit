@@ -119,9 +119,12 @@ public class GeneralObjMappingView extends
 		tabSchemaDetailFolder.setUnselectedCloseVisible(false);
 		tabSchemaDetailFolder.setTabHeight(24);
 
-		createDetailOfTables(tabSchemaDetailFolder);
-		createDetailOfViews(tabSchemaDetailFolder);
-		createDetailOfSerials(tabSchemaDetailFolder);
+//		createDetailOfTables(tabSchemaDetailFolder);
+//		createDetailOfViews(tabSchemaDetailFolder);
+//		createDetailOfSerials(tabSchemaDetailFolder);
+		
+		tabSchemaDetailFolder.getChildren();
+		
 		createSQLManager(tabSchemaDetailFolder);
 	}
 
@@ -154,6 +157,8 @@ public class GeneralObjMappingView extends
 
 		initSourceConfigTableViewer(tvSerials);
 		tvSerials.setData(CONTENT_TYPE, CT_SERIAL);
+		
+		container.setEnabled(false);
 	}
 
 	/**
@@ -284,6 +289,8 @@ public class GeneralObjMappingView extends
 				new CheckBoxColumnSelectionListener(new int[] {CREATE_COLUMN_INDEX}, true, false),
 				new CheckBoxColumnSelectionListener(new int[] {CREATE_COLUMN_INDEX}, true, false)};
 		CompositeUtils.setTableColumnSelectionListener(tvTables, selectionListeners);
+		
+		container.setEnabled(false);
 	}
 
 	/**
@@ -303,6 +310,8 @@ public class GeneralObjMappingView extends
 
 		initSourceConfigTableViewer(tvViews);
 		tvViews.setData(CONTENT_TYPE, CT_VIEW);
+		
+		container.setEnabled(false);
 	}
 
 	/**
@@ -318,53 +327,53 @@ public class GeneralObjMappingView extends
 	 * @return VerifyResultMessages
 	 */
 	public VerifyResultMessages save() {
-		CompositeUtils.applyTableViewerEditing(tvTables);
-		CompositeUtils.applyTableViewerEditing(tvSerials);
-		CompositeUtils.applyTableViewerEditing(tvViews);
+//		CompositeUtils.applyTableViewerEditing(tvTables);
+//		CompositeUtils.applyTableViewerEditing(tvSerials);
+//		CompositeUtils.applyTableViewerEditing(tvViews);
 		VerifyResultMessages result = validate();
 		if (result.hasError()) {
 			return result;
 		}
 		//Save UI to configuration object
-		for (int i = 0; i < tvTables.getTable().getItemCount(); i++) {
-			TableItem ti = tvTables.getTable().getItem(i);
-			Object[] obj = (Object[]) ti.getData();
-			SourceEntryTableConfig setc = (SourceEntryTableConfig) obj[obj.length - 1];
-			//If target name is changed
-			final String name = (String) obj[TARGET_NAME_INDEX];
-			config.changeTarget(setc, name);
-			setc.setMigrateData((Boolean) obj[DATA_COLUMN_INDEX]);
-			setc.setCondition(obj[CONDITION_COLUMN_INDEX].toString());
-			setc.setCreateNewTable((Boolean) obj[CREATE_COLUMN_INDEX]);
-			setc.setReplace((Boolean) obj[REPLACE_COLUMN_INDEX]);
-			setc.setCreatePK((Boolean) obj[PK_COLUMN_INDEX]);
-		}
-		for (int i = 0; i < tvViews.getTable().getItemCount(); i++) {
-			TableItem ti = tvViews.getTable().getItem(i);
-			Object[] obj = (Object[]) ti.getData();
-			SourceConfig setc = (SourceConfig) obj[obj.length - 1];
-			View vw = config.getTargetViewSchema(setc.getTarget());
-			final String name = obj[1].toString();
-			if (vw != null) {
-				vw.setName(name);
-			}
-			setc.setTarget(name);
-			setc.setCreate((Boolean) obj[2]);
-			setc.setReplace((Boolean) obj[3]);
-		}
-		for (int i = 0; i < tvSerials.getTable().getItemCount(); i++) {
-			TableItem ti = tvSerials.getTable().getItem(i);
-			Object[] obj = (Object[]) ti.getData();
-			SourceConfig setc = (SourceConfig) obj[obj.length - 1];
-			Sequence ts = config.getTargetSerialSchema(setc.getTarget());
-			final String name = obj[1].toString();
-			if (ts != null) {
-				ts.setName(name);
-			}
-			setc.setTarget(name);
-			setc.setCreate((Boolean) obj[2]);
-			setc.setReplace((Boolean) obj[3]);
-		}
+//		for (int i = 0; i < tvTables.getTable().getItemCount(); i++) {
+//			TableItem ti = tvTables.getTable().getItem(i);
+//			Object[] obj = (Object[]) ti.getData();
+//			SourceEntryTableConfig setc = (SourceEntryTableConfig) obj[obj.length - 1];
+//			//If target name is changed
+//			final String name = (String) obj[TARGET_NAME_INDEX];
+//			config.changeTarget(setc, name);
+//			setc.setMigrateData((Boolean) obj[DATA_COLUMN_INDEX]);
+//			setc.setCondition(obj[CONDITION_COLUMN_INDEX].toString());
+//			setc.setCreateNewTable((Boolean) obj[CREATE_COLUMN_INDEX]);
+//			setc.setReplace((Boolean) obj[REPLACE_COLUMN_INDEX]);
+//			setc.setCreatePK((Boolean) obj[PK_COLUMN_INDEX]);
+//		}
+//		for (int i = 0; i < tvViews.getTable().getItemCount(); i++) {
+//			TableItem ti = tvViews.getTable().getItem(i);
+//			Object[] obj = (Object[]) ti.getData();
+//			SourceConfig setc = (SourceConfig) obj[obj.length - 1];
+//			View vw = config.getTargetViewSchema(setc.getTarget());
+//			final String name = obj[1].toString();
+//			if (vw != null) {
+//				vw.setName(name);
+//			}
+//			setc.setTarget(name);
+//			setc.setCreate((Boolean) obj[2]);
+//			setc.setReplace((Boolean) obj[3]);
+//		}
+//		for (int i = 0; i < tvSerials.getTable().getItemCount(); i++) {
+//			TableItem ti = tvSerials.getTable().getItem(i);
+//			Object[] obj = (Object[]) ti.getData();
+//			SourceConfig setc = (SourceConfig) obj[obj.length - 1];
+//			Sequence ts = config.getTargetSerialSchema(setc.getTarget());
+//			final String name = obj[1].toString();
+//			if (ts != null) {
+//				ts.setName(name);
+//			}
+//			setc.setTarget(name);
+//			setc.setCreate((Boolean) obj[2]);
+//			setc.setReplace((Boolean) obj[3]);
+//		}
 		return super.save();
 	}
 
@@ -436,14 +445,14 @@ public class GeneralObjMappingView extends
 				itSerials.remove();
 			}
 		}
-		tvTables.setInput(ipTables);
-		tvViews.setInput(ipViews);
-		tvSerials.setInput(ipSerials);
+//		tvTables.setInput(ipTables);
+//		tvViews.setInput(ipViews);
+//		tvSerials.setInput(ipSerials);
 		sqlMgrView.showData(obj);
 
-		CompositeUtils.initTableViewerCheckColumnImage(tvTables);
-		CompositeUtils.initTableViewerCheckColumnImage(tvViews);
-		CompositeUtils.initTableViewerCheckColumnImage(tvSerials);
+//		CompositeUtils.initTableViewerCheckColumnImage(tvTables);
+//		CompositeUtils.initTableViewerCheckColumnImage(tvViews);
+//		CompositeUtils.initTableViewerCheckColumnImage(tvSerials);
 
 	}
 
@@ -454,60 +463,60 @@ public class GeneralObjMappingView extends
 	 */
 	private VerifyResultMessages validate() {
 
-		Map<String, Boolean> names = new TreeMap<String, Boolean>();
-		for (int i = 0; i < tvTables.getTable().getItemCount(); i++) {
-			TableItem ti = tvTables.getTable().getItem(i);
-			Object[] obj = (Object[]) ti.getData();
-			final String name = (String) obj[TARGET_NAME_INDEX];
-			final Boolean isMigData = (Boolean) obj[DATA_COLUMN_INDEX];
-			final Boolean isCreate = (Boolean) obj[CREATE_COLUMN_INDEX];
-			final boolean isSelected = isMigData || isCreate;
-			if (isSelected && !MigrationCfgUtils.verifyTargetDBObjName(name)) {
-				return new VerifyResultMessages(
-						Messages.bind(Messages.msgErrInvalidTableName, name), null, null);
-			}
-			names.put(name.toLowerCase(Locale.US), isSelected);
-			//Validate condition
-			if (!MigrationCfgUtils.checkEntryTableCondition(config, isMigData,
-					(String) obj[SOURCE_NAME_INDEX], (String) obj[CONDITION_COLUMN_INDEX])) {
-				return new VerifyResultMessages(Messages.bind(Messages.msgErrInvalidCondition,
-						(String) obj[SOURCE_NAME_INDEX]), null, null);
-			}
-		}
-		for (int i = 0; i < tvViews.getTable().getItemCount(); i++) {
-			TableItem ti = tvViews.getTable().getItem(i);
-			Object[] obj = (Object[]) ti.getData();
-			final String name = obj[1].toString();
-			final Boolean isCreate = (Boolean) obj[2];
-			if (isCreate) {
-				if (!MigrationCfgUtils.verifyTargetDBObjName(name)) {
-					return new VerifyResultMessages(Messages.bind(Messages.msgErrInvalidViewName,
-							name), null, null);
-				}
-				if (names.get(name) != null && names.get(name)) {
-					return new VerifyResultMessages(
-							Messages.bind(Messages.msgErrDupViewName, name), null, null);
-				}
-			}
-			names.put(name.toLowerCase(Locale.US), isCreate);
-		}
-
-		//Serial name can be duplicated with view or table.
-		names.clear();
-		for (int i = 0; i < tvSerials.getTable().getItemCount(); i++) {
-			TableItem ti = tvSerials.getTable().getItem(i);
-			Object[] obj = (Object[]) ti.getData();
-			final String name = obj[1].toString();
-			if (!MigrationCfgUtils.verifyTargetDBObjName(name)) {
-				return new VerifyResultMessages(Messages.bind(Messages.msgErrInvalidSerialName,
-						name), null, null);
-			}
-			if (names.get(name) != null) {
-				return new VerifyResultMessages(Messages.bind(Messages.msgErrDupSerialName, name),
-						null, null);
-			}
-			names.put(name.toLowerCase(Locale.US), true);
-		}
+//		Map<String, Boolean> names = new TreeMap<String, Boolean>();
+//		for (int i = 0; i < tvTables.getTable().getItemCount(); i++) {
+//			TableItem ti = tvTables.getTable().getItem(i);
+//			Object[] obj = (Object[]) ti.getData();
+//			final String name = (String) obj[TARGET_NAME_INDEX];
+//			final Boolean isMigData = (Boolean) obj[DATA_COLUMN_INDEX];
+//			final Boolean isCreate = (Boolean) obj[CREATE_COLUMN_INDEX];
+//			final boolean isSelected = isMigData || isCreate;
+//			if (isSelected && !MigrationCfgUtils.verifyTargetDBObjName(name)) {
+//				return new VerifyResultMessages(
+//						Messages.bind(Messages.msgErrInvalidTableName, name), null, null);
+//			}
+//			names.put(name.toLowerCase(Locale.US), isSelected);
+//			//Validate condition
+//			if (!MigrationCfgUtils.checkEntryTableCondition(config, isMigData,
+//					(String) obj[SOURCE_NAME_INDEX], (String) obj[CONDITION_COLUMN_INDEX])) {
+//				return new VerifyResultMessages(Messages.bind(Messages.msgErrInvalidCondition,
+//						(String) obj[SOURCE_NAME_INDEX]), null, null);
+//			}
+//		}
+//		for (int i = 0; i < tvViews.getTable().getItemCount(); i++) {
+//			TableItem ti = tvViews.getTable().getItem(i);
+//			Object[] obj = (Object[]) ti.getData();
+//			final String name = obj[1].toString();
+//			final Boolean isCreate = (Boolean) obj[2];
+//			if (isCreate) {
+//				if (!MigrationCfgUtils.verifyTargetDBObjName(name)) {
+//					return new VerifyResultMessages(Messages.bind(Messages.msgErrInvalidViewName,
+//							name), null, null);
+//				}
+//				if (names.get(name) != null && names.get(name)) {
+//					return new VerifyResultMessages(
+//							Messages.bind(Messages.msgErrDupViewName, name), null, null);
+//				}
+//			}
+//			names.put(name.toLowerCase(Locale.US), isCreate);
+//		}
+//
+//		//Serial name can be duplicated with view or table.
+//		names.clear();
+//		for (int i = 0; i < tvSerials.getTable().getItemCount(); i++) {
+//			TableItem ti = tvSerials.getTable().getItem(i);
+//			Object[] obj = (Object[]) ti.getData();
+//			final String name = obj[1].toString();
+//			if (!MigrationCfgUtils.verifyTargetDBObjName(name)) {
+//				return new VerifyResultMessages(Messages.bind(Messages.msgErrInvalidSerialName,
+//						name), null, null);
+//			}
+//			if (names.get(name) != null) {
+//				return new VerifyResultMessages(Messages.bind(Messages.msgErrDupSerialName, name),
+//						null, null);
+//			}
+//			names.put(name.toLowerCase(Locale.US), true);
+//		}
 		return sqlMgrView.save();
 	}
 
@@ -517,9 +526,9 @@ public class GeneralObjMappingView extends
 	 * @param iDoubleClickListener IDoubleClickListener
 	 */
 	public void addDoubleClickListener(IDoubleClickListener iDoubleClickListener) {
-		tvTables.addDoubleClickListener(iDoubleClickListener);
-		tvViews.addDoubleClickListener(iDoubleClickListener);
-		tvSerials.addDoubleClickListener(iDoubleClickListener);
+//		tvTables.addDoubleClickListener(iDoubleClickListener);
+//		tvViews.addDoubleClickListener(iDoubleClickListener);
+//		tvSerials.addDoubleClickListener(iDoubleClickListener);
 	}
 
 	/**

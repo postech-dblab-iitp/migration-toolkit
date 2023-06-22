@@ -332,6 +332,7 @@ public class ObjectMappingPage extends
 						}
 					}
 				}
+				//sql table column page draw part
 				for (ICUBRIDNode col : selectionParent.getChildren()) {
 					if (col.getName().equals((String) obj[1])) {
 						tvSourceDBObjects.setSelection(col);

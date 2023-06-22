@@ -1599,7 +1599,8 @@ public class MigrationConfiguration {
 	 */
 	public DBTransformHelper getDBTransformHelper() {
 //		return MigrationTransFactory.getTransformHelper(getSourceDBType(), DatabaseType.CUBRID);
-		return MigrationTransFactory.getTransformHelper(getSourceDBType(), DatabaseType.GRAPH);
+//		return MigrationTransFactory.getTransformHelper(getSourceDBType(), DatabaseType.GRAPH);
+		return MigrationTransFactory.getTransformHelper(getSourceDBType(), getTargetDBType());
 	}
 
 	public int getDestType() {
@@ -2318,6 +2319,23 @@ public class MigrationConfiguration {
 	 * @return source table
 	 */
 	public Table getSrcTableSchema(String schema, String name) {
+		
+
+		if (!(expSQLTables.isEmpty())) {
+			Table table = null;
+
+			List<Table> tblList = getSrcSQLSchema2Exp();
+			
+			for (Table tbl : tblList) {
+				if (tbl.getName().equals(name)) {
+					table = tbl;
+					break;
+				}
+			}
+			
+			return table;
+		}
+		
 		if (srcCatalog == null) {
 			return null;
 		}
@@ -2459,6 +2477,14 @@ public class MigrationConfiguration {
 	 */
 	public String getTargetDBVersion() {
 		return targetDBVersion;
+	}
+	
+	public DatabaseType getTargetDBType() {
+		if (destType == DEST_ONLINE) {
+			return DatabaseType.CUBRID;
+		} else {
+			return DatabaseType.GRAPH;
+		}
 	}
 
 	public String getTargetFilePrefix() {

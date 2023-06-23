@@ -328,6 +328,17 @@ public class MigrationReport implements
 		dbObjectsResult.add(result);
 		return result;
 	}
+	
+	public List<MigrationOverviewResult> printOverviewResults() {
+		int sourceType = brief.getSourceType();
+		int destType = brief.getDestType();
+		
+		if (sourceType == 4 && destType == 1) {
+			return getOverviewResults();
+		} else {
+			return getGraphOverviewResults();
+		}
+	}
 
 	/**
 	 * Sum the overview results of migration

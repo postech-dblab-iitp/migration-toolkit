@@ -15,6 +15,7 @@ import com.cubrid.cubridmigration.core.dbmetadata.IBuildSchemaFilter;
 import com.cubrid.cubridmigration.core.dbobject.Catalog;
 import com.cubrid.cubridmigration.core.dbobject.Column;
 import com.cubrid.cubridmigration.core.dbobject.DBObjectFactory;
+import com.cubrid.cubridmigration.core.dbobject.Schema;
 import com.cubrid.cubridmigration.core.dbobject.Table;
 import com.cubrid.cubridmigration.core.dbtype.DatabaseType;
 import com.cubrid.cubridmigration.core.export.DBExportHelper;
@@ -79,10 +80,55 @@ public class GraphSchemaFetcher extends AbstractJDBCSchemaFetcher {
 		if (schemas.isEmpty()) {
 			throw new IllegalArgumentException("Invalid schema or no schema specified.");
 		}
-//		for (String schema : schemas) {
-//			buildSchema(conn, catalog, schema, filter);
-//		}
+		for (String schema : schemas) {
+			buildSchema(conn, catalog, schema, filter);
+		}
 		return catalog;
+	}
+	
+	private void buildSchema(final Connection conn, final Catalog catalog, String schemaName,
+			IBuildSchemaFilter filter) throws SQLException {
+//		if (LOG.isDebugEnabled()) {
+//			LOG.debug("[IN]buildSchema()");
+//		}
+		final Schema schema = factory.createSchema();
+		schema.setName(schemaName);
+		catalog.addSchema(schema);
+
+		// Get Tables
+//		try {
+//			buildTables(conn, catalog, schema, filter);
+//		} catch (SQLException e) {
+//			throw e;
+//		} catch (Exception e) {
+//			LOG.error("buildTables", e);
+//		}
+//
+//		try {
+//			buildViews(conn, catalog, schema, filter);
+//		} catch (Exception e) {
+//			LOG.error("buildViews", e);
+//		}
+//
+//		// get procedures
+//		try {
+//			buildProcedures(conn, catalog, schema, filter);
+//		} catch (Exception e) {
+//			LOG.error("buildProcedures", e);
+//		}
+//
+//		// get triggers
+//		try {
+//			buildTriggers(conn, catalog, schema, filter);
+//		} catch (Exception e) {
+//			LOG.error("buildTriggers", e);
+//		}
+//
+//		try {
+//			buildSequence(conn, catalog, schema, filter);
+//		} catch (Exception e) {
+//			LOG.error("buildSequence", e);
+//		}
 	}
 	
 	@Override

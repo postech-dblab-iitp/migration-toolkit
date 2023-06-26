@@ -810,6 +810,37 @@ public final class MigrationTemplateHandler extends
 				parseEdgePropertyInfo(attr);
 			} else if ("fk".equals(qName)) {
 				parseEdgeFKInfo(attr);
+			} else if (TemplateTags.TAG_FILE_REPOSITORY.equals(qName)) {
+				config.setFileRepositroyPath(attr.getValue(TemplateTags.ATTR_DIR));
+				config.setTargetSchemaFileName(attr.getValue(TemplateTags.ATTR_SCHEMA));
+				config.setTargetDataFileName(attr.getValue(TemplateTags.ATTR_DATA));
+				config.setTargetIndexFileName(attr.getValue(TemplateTags.ATTR_INDEX));
+				config.setTargetFileTimeZone(attr.getValue(TemplateTags.ATTR_TIMEZONE));
+				config.setOneTableOneFile(getBoolean(attr.getValue(TemplateTags.ATTR_ONETABLEONEFILE),
+						false));
+				final String fileMaxSize = attr.getValue(TemplateTags.ATTR_FILE_MAX_SIZE);
+				config.setMaxCountPerFile(fileMaxSize == null ? 0 : Integer.parseInt(fileMaxSize));
+				config.setTargetFilePrefix(attr.getValue(TemplateTags.ATTR_OUTPUT_FILE_PREFIX));
+				try {
+					config.setDestType(Integer.parseInt(attr.getValue(TemplateTags.ATTR_DATA_FILE_FORMAT)));
+				} catch (Exception ex) {
+					config.setDestType(MigrationConfiguration.DEST_DB_UNLOAD);
+				}
+				config.setTargetCharSet(attr.getValue(TemplateTags.ATTR_CHARSET));
+				if (config.targetIsCSV()) {
+					String value = attr.getValue(TemplateTags.ATTR_CSV_SEPARATE);
+					config.getCsvSettings().setSeparateChar(
+							StringUtils.isEmpty(value) ? ',' : value.charAt(0));
+					value = attr.getValue(TemplateTags.ATTR_CSV_QUOTE);
+					config.getCsvSettings().setQuoteChar(
+							StringUtils.isEmpty(value) ? MigrationConfiguration.CSV_NO_CHAR
+									: value.charAt(0));
+					value = attr.getValue(TemplateTags.ATTR_CSV_ESCAPE);
+					config.getCsvSettings().setEscapeChar(
+							StringUtils.isEmpty(value) ? MigrationConfiguration.CSV_NO_CHAR
+									: value.charAt(0));
+				}
+				config.setTargetLOBRootPath(attr.getValue(TemplateTags.ATTR_LOB_ROOT_DIR));
 			}
 		} else {
 			if (TemplateTags.TAG_TABLE.equals(qName)) {

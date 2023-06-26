@@ -285,13 +285,13 @@ public final class MigrationTemplateParser {
 			target.setAttribute(TemplateTags.ATTR_DB_TYPE, "cubrid");
 		} else if (config.targetIsFile()) {
 			target.setAttribute(TemplateTags.ATTR_TYPE, TemplateTags.VALUE_DIR);
-			target.setAttribute(TemplateTags.ATTR_DB_TYPE, "cubrid");
+			target.setAttribute(TemplateTags.ATTR_DB_TYPE, "graph");
 		} else {
 			target.setAttribute(TemplateTags.ATTR_TYPE, TemplateTags.VALUE_OFFLINE);
 			target.setAttribute(TemplateTags.ATTR_DB_TYPE, "cubrid");
 		}
 		
-		if (config.targetIsGraph()) {
+		if (config.targetIsGraph() || config.targetIsDBDump()) {
 			createGraphTargetConInfoTag(config, document, target);
 			createGraphTargetVertexTag(config, document, target);
 			createGraphTargetEdgeTag(config, document, target);
@@ -305,21 +305,61 @@ public final class MigrationTemplateParser {
 	
 	private static void createGraphTargetConInfoTag(MigrationConfiguration config, Document doc, Element target) {
 		
-		Element jdbc = createElement(doc, target, TemplateTags.TAG_JDBC);
-		ConnParameters tcp = config.getTargetConParams();
-		jdbc.setAttribute(TemplateTags.ATTR_HOST, tcp.getHost());
-		jdbc.setAttribute(TemplateTags.ATTR_PORT, String.valueOf(tcp.getPort()));
-		jdbc.setAttribute(TemplateTags.ATTR_DRIVER, tcp.getDriverFileName());
-		jdbc.setAttribute(TemplateTags.ATTR_NAME, tcp.getDbName());
-		jdbc.setAttribute(TemplateTags.ATTR_USER, tcp.getConUser());
-		jdbc.setAttribute(TemplateTags.ATTR_PASSWORD, tcp.getConPassword());
-		jdbc.setAttribute(TemplateTags.ATTR_CHARSET, tcp.getCharset());
-		jdbc.setAttribute(TemplateTags.ATTR_TIMEZONE, tcp.getTimeZone());
-		jdbc.setAttribute(TemplateTags.ATTR_CREATE_CONSTRAINT_NOW,
-				getBooleanString(config.isCreateConstrainsBeforeData()));
-		jdbc.setAttribute(TemplateTags.ATTR_WRITE_ERROR_RECORDS,
-				getBooleanString(config.isWriteErrorRecords()));
-		jdbc.setAttribute(TemplateTags.ATTR_USER_JDBC_URL, tcp.getUserJDBCURL());
+		if (config.targetIsFile()) {
+			
+			Element dir = createElement(doc, target, TemplateTags.TAG_FILE_REPOSITORY);
+			dir.setAttribute(TemplateTags.ATTR_DIR, config.getFileRepositroyPath());
+			dir.setAttribute(TemplateTags.ATTR_SCHEMA, config.getTargetSchemaFileName());
+			dir.setAttribute(TemplateTags.ATTR_DATA, config.getTargetDataFileName());
+			dir.setAttribute(TemplateTags.ATTR_INDEX, config.getTargetIndexFileName());
+			dir.setAttribute(TemplateTags.ATTR_TIMEZONE, config.getTargetFileTimeZone());
+			dir.setAttribute(TemplateTags.ATTR_CHARSET, config.getTargetCharSet());
+
+			dir.setAttribute(TemplateTags.ATTR_ONETABLEONEFILE,
+					getBooleanString(config.isOneTableOneFile()));
+
+			dir.setAttribute(TemplateTags.ATTR_DATA_FILE_FORMAT,
+					String.valueOf(config.getDestType()));
+			dir.setAttribute(TemplateTags.ATTR_OUTPUT_FILE_PREFIX, config.getTargetFilePrefix());
+			dir.setAttribute(TemplateTags.ATTR_FILE_MAX_SIZE,
+					String.valueOf(config.getMaxCountPerFile()));
+			if (config.targetIsCSV()) {
+				dir.setAttribute(
+						TemplateTags.ATTR_CSV_SEPARATE,
+						config.getCsvSettings().getSeparateChar() == MigrationConfiguration.CSV_NO_CHAR ? ""
+								: String.valueOf(config.getCsvSettings().getSeparateChar()));
+				dir.setAttribute(
+						TemplateTags.ATTR_CSV_QUOTE,
+						config.getCsvSettings().getQuoteChar() == MigrationConfiguration.CSV_NO_CHAR ? ""
+								: String.valueOf(config.getCsvSettings().getQuoteChar()));
+				dir.setAttribute(
+						TemplateTags.ATTR_CSV_ESCAPE,
+						config.getCsvSettings().getEscapeChar() == MigrationConfiguration.CSV_NO_CHAR ? ""
+								: String.valueOf(config.getCsvSettings().getEscapeChar()));
+			}
+			if (config.targetIsDBDump()) {
+				dir.setAttribute(TemplateTags.ATTR_LOB_ROOT_DIR, config.getTargetLOBRootPath());
+			}
+			
+		} else {
+			
+			Element jdbc = createElement(doc, target, TemplateTags.TAG_JDBC);
+			ConnParameters tcp = config.getTargetConParams();
+			jdbc.setAttribute(TemplateTags.ATTR_HOST, tcp.getHost());
+			jdbc.setAttribute(TemplateTags.ATTR_PORT, String.valueOf(tcp.getPort()));
+			jdbc.setAttribute(TemplateTags.ATTR_DRIVER, tcp.getDriverFileName());
+			jdbc.setAttribute(TemplateTags.ATTR_NAME, tcp.getDbName());
+			jdbc.setAttribute(TemplateTags.ATTR_USER, tcp.getConUser());
+			jdbc.setAttribute(TemplateTags.ATTR_PASSWORD, tcp.getConPassword());
+			jdbc.setAttribute(TemplateTags.ATTR_CHARSET, tcp.getCharset());
+			jdbc.setAttribute(TemplateTags.ATTR_TIMEZONE, tcp.getTimeZone());
+			jdbc.setAttribute(TemplateTags.ATTR_CREATE_CONSTRAINT_NOW,
+					getBooleanString(config.isCreateConstrainsBeforeData()));
+			jdbc.setAttribute(TemplateTags.ATTR_WRITE_ERROR_RECORDS,
+					getBooleanString(config.isWriteErrorRecords()));
+			jdbc.setAttribute(TemplateTags.ATTR_USER_JDBC_URL, tcp.getUserJDBCURL());
+			
+			}
 		
 		return;
 	}

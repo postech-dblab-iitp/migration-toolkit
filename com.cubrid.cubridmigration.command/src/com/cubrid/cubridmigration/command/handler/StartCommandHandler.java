@@ -466,7 +466,7 @@ public class StartCommandHandler implements
 		outPrinter.println();
 		List<DataFileImportResult> sqlresult = mr.getDataFileResults();
 		if (sqlresult.isEmpty()) {
-			for (MigrationOverviewResult mor : mr.getGraphOverviewResults()) {
+			for (MigrationOverviewResult mor : mr.printOverviewResults()) {
 				outPrinter.print("    ");
 				outPrinter.print(mor.getObjType());
 				outPrinter.print(":");

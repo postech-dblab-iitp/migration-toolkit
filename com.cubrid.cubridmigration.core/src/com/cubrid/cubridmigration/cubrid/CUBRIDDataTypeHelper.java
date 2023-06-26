@@ -166,6 +166,9 @@ public final class CUBRIDDataTypeHelper extends
 		//varchar
 		DataTypeSymbol varcharSymbol = new DataTypeSymbol(
 				DataTypeConstant.CUBRID_DT_VARCHAR, "varchar", "varchar");
+		varcharSymbol.getNickNames().add("string");
+		varcharSymbol.getNickNames().add("node");
+		varcharSymbol.getNickNames().add("relationship");
 		varcharSymbol.getNickNames().add("varchar");
 		varcharSymbol.getNickNames().add("char varying");
 		varcharSymbol.getNickNames().add("character varying");

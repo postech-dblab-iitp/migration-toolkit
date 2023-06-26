@@ -307,24 +307,33 @@ public abstract class DBExportHelper implements
 					boolean useDerivedQuery = true;
 
 					String trimSql = executableSQL.toLowerCase();
-					int sp = trimSql.indexOf("select");
-					int ep = trimSql.indexOf("from");
-					int lmt = trimSql.indexOf("limit");
-					if (sp != -1 && ep != -1 && lmt == -1) {
-						sp += "select".length();
-						String pre = executableSQL.substring(0, sp);
-						String post = executableSQL.substring(ep, executableSQL.length());
-						String finalsql = pre + " COUNT(1) " + post;
-						if (setTableRowCount(config, stmt, sstc.getOwner(), sstc.getName(),
-								finalsql)) {
-							useDerivedQuery = false;
-						}
-					}
+					
+					String splitQuery = trimSql.split("return")[0];
+
+					StringBuffer sb = new StringBuffer();
+
+					sb.append(splitQuery);
+					sb.append(" return count(*)");
+					
+					
+//					int sp = trimSql.indexOf("select");
+//					int ep = trimSql.indexOf("from");
+//					int lmt = trimSql.indexOf("limit");
+//					if (sp != -1 && ep != -1 && lmt == -1) {
+//						sp += "select".length();
+//						String pre = executableSQL.substring(0, sp);
+//						String post = executableSQL.substring(ep, executableSQL.length());
+//						String finalsql = pre + " COUNT(1) " + post;
+//						if (setTableRowCount(config, stmt, sstc.getOwner(), sstc.getName(),
+//								finalsql)) {
+//							useDerivedQuery = false;
+//						}
+//					}
 
 					if (useDerivedQuery) {
 						executableSQL = "SELECT COUNT(1) FROM (" + executableSQL + ") tbl";
 						setTableRowCount(config, stmt, sstc.getOwner(), sstc.getName(),
-								executableSQL);
+								sb.toString());
 					}
 				}
 			} finally {

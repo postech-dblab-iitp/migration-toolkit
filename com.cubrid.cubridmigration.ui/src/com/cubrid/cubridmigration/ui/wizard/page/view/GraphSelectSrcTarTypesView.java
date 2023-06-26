@@ -36,6 +36,9 @@ import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.preferences.ConfigurationScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -63,7 +66,7 @@ public class GraphSelectSrcTarTypesView {
 	private static final String TARGET_TYPE_KEY = "target_type";
 	private static final String SOURCE_TYPE_KEY = "source_type";
 
-	//private Button btnOnlineTar;
+	private Button btnOnlineTar;
 	private Button btnOnlineGraph;
 	//private Button btnOfflineTar;
 	private Button btnDumpTar;
@@ -73,6 +76,7 @@ public class GraphSelectSrcTarTypesView {
 	//private Button btnXLSTar;
 
 	private Button btnOnlineCUBRIDSrc;
+	private Button btnOnlineGraphSrc;
 	//private Button btnOnlineOracleSrc;
 	//private Button btnOnlineMYSQLSrc;
 	//private Button btnOnlineMSSQLSrc;
@@ -99,6 +103,35 @@ public class GraphSelectSrcTarTypesView {
 				Messages.btnSrcOnlineCUBRIDDBDes);
 		btnOnlineCUBRIDSrc.setData(MigrationConfiguration.SOURCE_TYPE_CUBRID);
 		srcButtons.add(btnOnlineCUBRIDSrc);
+		
+		btnOnlineCUBRIDSrc.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e){
+				Button sourceBtn = (Button) e.getSource();
+				if (sourceBtn.getSelection()) {
+					selectCUBRIDSrc();
+				}
+			}
+		});
+		
+		btnOnlineGraphSrc = createSrcTarTypeBtn(grpSrc, "Online GraphDB Source",
+				"Connecting to Graph via JDBC.");
+		btnOnlineGraphSrc.setData(MigrationConfiguration.SOURCE_TYPE_GRAPH);
+		
+		btnOnlineGraphSrc.addSelectionListener(new SelectionListener() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				// TODO Auto-generated method stub
+				Button sourceBtn = (Button) e.getSource();
+				if (sourceBtn.getSelection()) {
+					selectGraphSrc();
+				}
+			}
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {}
+		});
+		
+		srcButtons.add(btnOnlineGraphSrc);
 
 //		btnOnlineMYSQLSrc = createSrcTarTypeBtn(grpSrc, Messages.btnSrcOnlineMySQLDB,
 //				Messages.btnSrcOnlineMySQLDBDes);
@@ -139,10 +172,10 @@ public class GraphSelectSrcTarTypesView {
 		grpTar.setLayoutData(new GridData(SWT.LEFT, SWT.FILL, false, true));
 		grpTar.setText(Messages.msgDestType);
 
-//		btnOnlineTar = createSrcTarTypeBtn(grpTar, Messages.btnDestOnlineCUBRIDDB,
-//				Messages.btnDestOnlineCUBRIDDBDes);
-//		btnOnlineTar.setData(MigrationConfiguration.DEST_ONLINE);
-//		tarButtons.add(btnOnlineTar);
+		btnOnlineTar = createSrcTarTypeBtn(grpTar, Messages.btnDestOnlineCUBRIDDB,
+				Messages.btnDestOnlineCUBRIDDBDes);
+		btnOnlineTar.setData(MigrationConfiguration.DEST_ONLINE);
+		tarButtons.add(btnOnlineTar);
 		
 		//GDB online neo4j target connect button
 		btnOnlineGraph = createSrcTarTypeBtn(grpTar, Messages.btnDestOnlineGraph, Messages.btnDestOnlineGraphes);
@@ -168,7 +201,7 @@ public class GraphSelectSrcTarTypesView {
 				Messages.btnDestLocalDumpDes);
 		btnDumpTar.setData(MigrationConfiguration.DEST_DB_UNLOAD);
 		tarButtons.add(btnDumpTar);
-//
+		
 //		btnSQLTar = createSrcTarTypeBtn(grpTar, Messages.btnDestSQLFiles,
 //				Messages.btnDestSQLFilesDes);
 //		btnSQLTar.setData(MigrationConfiguration.DEST_SQL);
@@ -285,11 +318,30 @@ public class GraphSelectSrcTarTypesView {
 		try {
 			IEclipsePreferences preferences = new ConfigurationScope().getNode(MigrationUIPlugin.PLUGIN_ID);
 			preferences.put(SOURCE_TYPE_KEY, String.valueOf(getSourceType()));
+			
 			preferences.put(TARGET_TYPE_KEY, String.valueOf(getTargetType()));
+			
 			preferences.flush();
 		} catch (BackingStoreException e) {
 			LOG.error("", e);
 		}
+	}
+	
+	private void selectCUBRIDSrc() {
+		btnOnlineGraph.setEnabled(true);
+		btnDumpTar.setEnabled(true);
+	}
+	
+	private void selectGraphSrc() {
+		btnOnlineGraph.setEnabled(false);
+		btnOnlineGraph.setSelection(false);
+		
+		btnOnlineTar.setEnabled(true);
+		btnOnlineTar.setSelection(true);
+		
+		btnDumpTar.setEnabled(false);
+		btnDumpTar.setSelection(false);
+		
 	}
 
 	/**
@@ -305,10 +357,15 @@ public class GraphSelectSrcTarTypesView {
 			if (((Integer) btn.getData()).intValue() == srcType) {
 				btn.setSelection(true);
 				flag = true;
+				
+				if (srcType == MigrationConfiguration.SOURCE_TYPE_GRAPH) {
+					selectGraphSrc();
+				}
 			}
 		}
 		if (!flag) {
 			btnOnlineCUBRIDSrc.setSelection(true);
+			selectGraphSrc();
 		}
 		flag = false;
 		for (Button btn : tarButtons) {

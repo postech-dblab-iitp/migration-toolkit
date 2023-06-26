@@ -34,6 +34,7 @@ import com.cubrid.cubridmigration.cubrid.trans.CUBRID2CUBRIDTranformHelper;
 import com.cubrid.cubridmigration.cubrid.trans.CUBRIDDataTypeMappingHelper;
 import com.cubrid.cubridmigration.cubrid.trans.ToCUBRIDDataConverterFacade;
 import com.cubrid.cubridmigration.graph.trans.CUBRID2GraphTranformHelper;
+import com.cubrid.cubridmigration.graph.trans.Graph2CUBRIDTranformHelper;
 import com.cubrid.cubridmigration.graph.trans.GraphDataTypeMappingHelper;
 import com.cubrid.cubridmigration.graph.trans.ToGraphDataConverterFacade;
 import com.cubrid.cubridmigration.mssql.trans.MSSQL2CUBRIDTranformHelper;
@@ -67,10 +68,14 @@ public class MigrationTransFactory {
 	private static final CUBRID2CUBRIDTranformHelper CUBRID2CUBRID_TRANFORM_HELPER = new CUBRID2CUBRIDTranformHelper(
 			new CUBRIDDataTypeMappingHelper());
 	
-	private static final CUBRID2GraphTranformHelper CUBRID2NEO4J_TRANFORM_HELPER = new CUBRID2GraphTranformHelper(
+	private static final CUBRID2GraphTranformHelper CUBRID2GRAPH_TRANFORM_HELPER = new CUBRID2GraphTranformHelper(
 			new GraphDataTypeMappingHelper(), 
 			ToGraphDataConverterFacade.getInstance());
 
+	private static final Graph2CUBRIDTranformHelper GRAPH2CUBRID_TRANFORM_HELPER = new Graph2CUBRIDTranformHelper(
+			new CUBRIDDataTypeMappingHelper(),
+			ToCUBRIDDataConverterFacade.getIntance());
+	
 	/**
 	 * getTransformHelper of source to target migration
 	 * 
@@ -81,10 +86,11 @@ public class MigrationTransFactory {
 	public static DBTransformHelper getTransformHelper(DatabaseType srcDT,
 			DatabaseType tarDT) {
 		if (tarDT.getID() == DatabaseType.GRAPH.getID()){
-			return CUBRID2NEO4J_TRANFORM_HELPER;
-		}
-		
-		if (srcDT.getID() == DatabaseType.CUBRID.getID()) {
+			return CUBRID2GRAPH_TRANFORM_HELPER;
+		} else if (srcDT.getID() == DatabaseType.GRAPH.getID() &&
+				tarDT.getID() == DatabaseType.CUBRID.getID()) {
+			return GRAPH2CUBRID_TRANFORM_HELPER;
+		} else if (srcDT.getID() == DatabaseType.CUBRID.getID()) {
 			return CUBRID2CUBRID_TRANFORM_HELPER;
 		} else if (srcDT.getID() == DatabaseType.ORACLE.getID()) {
 			return ORACLE2CUBRID_TRANFORM_HELPER;

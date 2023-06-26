@@ -288,13 +288,16 @@ public class MigrationWizard extends
 		if (migrationConfig.targetIsGraph()) {
 			return IDX_GRAPH;
 		}
+		if (migrationConfig.sourceIsOnline() && migrationConfig.targetIsOnline())  {
+			return IDX_ONLINE;
+		}
+		
 		if (migrationConfig.sourceIsOnline() || migrationConfig.sourceIsXMLDump()) {
 			//			if (migrationConfig.targetIsOffline()) {
 			//				return IDX_OFFLINE;
 			//			}
 			return IDX_ONLINE;
 		}
-
 		if (migrationConfig.sourceIsCSV()) {
 			return IDX_CSV;
 		}

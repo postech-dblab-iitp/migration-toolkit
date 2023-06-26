@@ -109,6 +109,7 @@ public class MigrationConfiguration {
 	public static final int SOURCE_TYPE_MYSQL = DatabaseType.MYSQL.getID();
 	public static final int SOURCE_TYPE_ORACLE = DatabaseType.ORACLE.getID();
 	public static final int SOURCE_TYPE_MSSQL = DatabaseType.MSSQL.getID();
+	public static final int SOURCE_TYPE_GRAPH = DatabaseType.GRAPH.getID();
 
 	public static final int SOURCE_TYPE_XML_1 = 101;
 	public static final int SOURCE_TYPE_SQL = 102;
@@ -1598,7 +1599,8 @@ public class MigrationConfiguration {
 	 */
 	public DBTransformHelper getDBTransformHelper() {
 //		return MigrationTransFactory.getTransformHelper(getSourceDBType(), DatabaseType.CUBRID);
-		return MigrationTransFactory.getTransformHelper(getSourceDBType(), DatabaseType.GRAPH);
+//		return MigrationTransFactory.getTransformHelper(getSourceDBType(), DatabaseType.GRAPH);
+		return MigrationTransFactory.getTransformHelper(getSourceDBType(), getTargetDBType());
 	}
 
 	public int getDestType() {
@@ -2317,6 +2319,23 @@ public class MigrationConfiguration {
 	 * @return source table
 	 */
 	public Table getSrcTableSchema(String schema, String name) {
+		
+
+		if (!(expSQLTables.isEmpty())) {
+			Table table = null;
+
+			List<Table> tblList = getSrcSQLSchema2Exp();
+			
+			for (Table tbl : tblList) {
+				if (tbl.getName().equals(name)) {
+					table = tbl;
+					break;
+				}
+			}
+			
+			return table;
+		}
+		
 		if (srcCatalog == null) {
 			return null;
 		}
@@ -2458,6 +2477,14 @@ public class MigrationConfiguration {
 	 */
 	public String getTargetDBVersion() {
 		return targetDBVersion;
+	}
+	
+	public DatabaseType getTargetDBType() {
+		if (destType == DEST_ONLINE) {
+			return DatabaseType.CUBRID;
+		} else {
+			return DatabaseType.GRAPH;
+		}
 	}
 
 	public String getTargetFilePrefix() {
@@ -3438,7 +3465,8 @@ public class MigrationConfiguration {
 	 */
 	public boolean sourceIsOnline() {
 		return (sourceType == SOURCE_TYPE_CUBRID) || (sourceType == SOURCE_TYPE_MYSQL)
-				|| (sourceType == SOURCE_TYPE_ORACLE) || (sourceType == SOURCE_TYPE_MSSQL);
+				|| (sourceType == SOURCE_TYPE_ORACLE) || (sourceType == SOURCE_TYPE_MSSQL)
+				|| (sourceType == SOURCE_TYPE_GRAPH);
 	}
 
 	/**

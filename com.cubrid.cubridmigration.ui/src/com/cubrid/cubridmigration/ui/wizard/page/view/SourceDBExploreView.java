@@ -199,11 +199,11 @@ public class SourceDBExploreView implements
 		List<ICUBRIDNode> tvContent = new ArrayList<ICUBRIDNode>();
 		//Database/schema/tables|views|sequences/.....
 		//If one one schema in the source database, don't show schema node 
-		if (input.getChildren().size() == 1) {
-			tvContent.addAll(input.getChildren().get(0).getChildren());
-		} else {
-			tvContent.addAll(input.getChildren());
-		}
+//		if (input.getChildren().size() == 1) {
+//			tvContent.addAll(input.getChildren().get(0).getChildren());
+//		} else {
+//			tvContent.addAll(input.getChildren());
+//		}
 
 		//Build SQL table nodes
 		sqlFolder.removeAllChild();

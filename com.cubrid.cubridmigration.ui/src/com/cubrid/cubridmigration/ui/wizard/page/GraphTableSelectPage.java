@@ -34,6 +34,7 @@ import com.cubrid.cubridmigration.core.dbobject.FK;
 import com.cubrid.cubridmigration.core.dbobject.Schema;
 import com.cubrid.cubridmigration.core.dbobject.Table;
 import com.cubrid.cubridmigration.core.engine.config.MigrationConfiguration;
+import com.cubrid.cubridmigration.core.engine.config.SourceEntryTableConfig;
 import com.cubrid.cubridmigration.graph.dbobj.Edge;
 import com.cubrid.cubridmigration.graph.dbobj.GraphDictionary;
 import com.cubrid.cubridmigration.graph.dbobj.Vertex;
@@ -181,12 +182,15 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 	}
 	
 	public void showTableViewerData(List<Schema> schemaList) {
+		List<SourceEntryTableConfig> setcList = getMigrationWizard().getMigrationConfig().getExpEntryTableCfg();
+		
 		for (Schema schema : schemaList) {
 			List<Table> schemaTableList = schema.getTables();
 			for (Table table : schemaTableList) {
 				tableList.add(table);
 			}
 		}
+		
 		tableViewer.setInput(tableList);
 	}
 	
@@ -277,9 +281,18 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 	//GDB error dialog
 	public boolean saveSelectedTable() {
 		selectedTableList.clear();
+		List<SourceEntryTableConfig> setcList = getMigrationWizard().getMigrationConfig().getExpEntryTableCfg();
+		
 		for (Table table : tableList) {
 			if (table.isSelected()) {
 				selectedTableList.add(table);
+				String tableName = table.getName();
+				
+				for (SourceEntryTableConfig setc : setcList) {
+					if (setc.getName().equals(tableName)) {
+						setc.setSelected(true);
+					}
+				}
 			}
 		}
 		

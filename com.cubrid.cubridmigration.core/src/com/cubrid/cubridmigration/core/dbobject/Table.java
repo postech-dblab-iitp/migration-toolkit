@@ -34,6 +34,8 @@ import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
 
+import com.cubrid.cubridmigration.core.engine.config.SourceEntryTableConfig;
+
 /**
  * to store a table information
  * 
@@ -360,4 +362,6 @@ public class Table extends
 	public void setExportedKeysCount(int exportedKeysCount) {
 		this.exportedKeysCount = exportedKeysCount;
 	}
+	
+
 }

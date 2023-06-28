@@ -59,6 +59,7 @@ public final class TemplateTags {
 	public static final String ATTR_FIELDS = "fields";
 	public static final String ATTR_HOST = "host";
 	public static final String ATTR_IMPORT_THREAD = "import_thread";
+	public static final String ATTR_IS_SELECTED = "is_selected";
 	public static final String ATTR_INCREMENT = "increment";
 	public static final String ATTR_LOAD_ONLY = "load_only";
 	public static final String ATTR_LOCATION = "location";

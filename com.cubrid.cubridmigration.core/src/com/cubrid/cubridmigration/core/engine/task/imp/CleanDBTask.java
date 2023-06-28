@@ -127,19 +127,19 @@ public class CleanDBTask extends
 				execDDL(sql);
 			}
 		}
-		if (config.targetIsFile() && !sb.isEmpty()) {
-			File clearFile = new File(config.getFileRepositroyPath()
-					+ File.separator + "clear_"
-					+ config.getSrcCatalog().getName() + ".sql");
-			try {
-				PathUtils.deleteFile(clearFile);
-				PathUtils.createFile(clearFile);
-				CUBRIDIOUtils.writeLines(clearFile, sb.toArray(new String[]{}),
-						config.getTargetCharSet());
-			} catch (IOException e) {
-				LOG.error("", e);
-			}
-		}
+//		if (config.targetIsFile() && !sb.isEmpty()) {
+//			File clearFile = new File(config.getFileRepositroyPath()
+//					+ File.separator + "clear_"
+//					+ config.getSrcCatalog().getName() + ".sql");
+//			try {
+//				PathUtils.deleteFile(clearFile);
+//				PathUtils.createFile(clearFile);
+//				CUBRIDIOUtils.writeLines(clearFile, sb.toArray(new String[]{}),
+//						config.getTargetCharSet());
+//			} catch (IOException e) {
+//				LOG.error("", e);
+//			}
+//		}
 	}
 
 	/**

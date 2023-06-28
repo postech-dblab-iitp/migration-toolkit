@@ -79,6 +79,7 @@ public class MigrationTasksScheduler {
 		MigrationConfiguration config = context.getConfig();
 		
 		if (config.targetIsGraph() || config.targetIsDBDump()) {
+			clearTargetDB();
 			greaphSchedule();
 			return;
 		}

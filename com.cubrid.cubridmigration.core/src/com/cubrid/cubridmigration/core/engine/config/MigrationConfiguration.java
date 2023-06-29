@@ -703,7 +703,9 @@ public class MigrationConfiguration {
 					setc.setCreatePK(false);
 					setc.setMigrateData(false);
 					setc.setReplace(false);
-					setc.setEnableExpOpt(srcTable.getPk() != null);
+					setc.setEnableExpOpt(srcTable.getPk() !=null);
+				} else {
+					srcTable.setSelected(setc.isSelected());
 				}
 				tempExpEntryTables.add(setc);
 

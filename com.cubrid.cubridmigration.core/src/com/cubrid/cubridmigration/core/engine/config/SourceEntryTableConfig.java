@@ -34,6 +34,8 @@ import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
 
+import com.cubrid.cubridmigration.core.dbobject.Table;
+
 /**
  * SourceTableConfig
  * 
@@ -47,6 +49,8 @@ public class SourceEntryTableConfig extends
 	private boolean createPartition;
 	private boolean isEnableExpOpt;
 	private boolean startFromTargetMax;
+	//graphDB option
+	private Boolean isSelected = false;
 
 	private final List<SourceFKConfig> fks = new ArrayList<SourceFKConfig>();
 	private final List<SourceIndexConfig> indexes = new ArrayList<SourceIndexConfig>();
@@ -275,6 +279,39 @@ public class SourceEntryTableConfig extends
 
 	public void setEnableExpOpt(boolean isEnableExpOpt) {
 		this.isEnableExpOpt = isEnableExpOpt;
+	}
+	
+	public Boolean isSelected() {
+		return isSelected;
+	}
+	
+	/**
+	 * default is false
+	 */
+	public void setSelected(boolean isSelected) {
+		this.isSelected = isSelected;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof SourceEntryTableConfig) {
+			SourceEntryTableConfig setc = (SourceEntryTableConfig) obj;
+			if (this.getName().equals(setc.getName())) {
+				return true;
+			} else {
+				return false;
+			}
+				
+		} else if (obj instanceof Table) {
+			Table tbl = (Table) obj;
+			if (this.getName().equals(tbl.getName())) {
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			return super.equals(obj);
+		}
 	}
 
 }

@@ -622,6 +622,7 @@ public final class MigrationTemplateHandler extends
 					true));
 			setc.setStartFromTargetMax(getBoolean(
 					attributes.getValue(TemplateTags.ATTR_START_TAR_MAX), false));
+			setc.setSelected(Boolean.parseBoolean((attributes.getValue(TemplateTags.ATTR_IS_SELECTED))));
 			config.addExpEntryTableCfg(setc);
 
 		} else if (TemplateTags.TAG_COLUMN.equals(qName)) {
@@ -762,6 +763,7 @@ public final class MigrationTemplateHandler extends
 		col.setName(attr.getValue("name"));
 		col.setDataType(attr.getValue("type"));
 		col.setSupportGraphDataType(Boolean.valueOf(attr.getValue("datatype_support")));
+		col.setGraphDataType(attr.getValue("graph_type"));
 		
 		targetVertex.addColumn(col);
 	}

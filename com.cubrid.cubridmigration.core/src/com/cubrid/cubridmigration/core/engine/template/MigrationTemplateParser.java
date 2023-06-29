@@ -390,6 +390,7 @@ public final class MigrationTemplateParser {
 				
 				property.setAttribute(TemplateTags.ATTR_NAME, colName);
 				property.setAttribute(TemplateTags.ATTR_TYPE, colType);
+				property.setAttribute("graph_type", col.getGraphDataType());
 				property.setAttribute("datatype_support", String.valueOf(col.getSupportGraphDataType()));
 			}
 			
@@ -445,7 +446,7 @@ public final class MigrationTemplateParser {
 					property.setAttribute(TemplateTags.ATTR_TYPE, properties.get(key));
 					for (Column col : columnList) {
 						if (col.getName().equals(key)) {
-							property.setAttribute("graph_type", col.getName());
+							property.setAttribute("graph_type", col.getGraphDataType());
 						}
 					}
 				}
@@ -910,6 +911,7 @@ public final class MigrationTemplateParser {
 		List<SourceEntryTableConfig> exportEntryTables = config.getExpEntryTableCfg();
 		for (SourceEntryTableConfig setc : exportEntryTables) {
 			Element tbe = createElement(document, tables, TemplateTags.TAG_TABLE);
+			tbe.setAttribute(TemplateTags.ATTR_IS_SELECTED, setc.isSelected().toString());
 			tbe.setAttribute(TemplateTags.ATTR_NAME, setc.getName());
 			tbe.setAttribute(TemplateTags.ATTR_CREATE, getBooleanString(setc.isCreateNewTable()));
 			tbe.setAttribute(TemplateTags.ATTR_REPLACE, getBooleanString(setc.isReplace()));

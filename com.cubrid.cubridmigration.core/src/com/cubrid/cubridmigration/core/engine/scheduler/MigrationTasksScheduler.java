@@ -137,8 +137,11 @@ public class MigrationTasksScheduler {
 		createGrephStep4();
 		await();
 		createGrephStep5();
+		await();
 		createGrephStep6();
+		await();
 		createGrephStep8();
+		await();
 		createGrephStep7();
 		await();
 		createGraphStep9();

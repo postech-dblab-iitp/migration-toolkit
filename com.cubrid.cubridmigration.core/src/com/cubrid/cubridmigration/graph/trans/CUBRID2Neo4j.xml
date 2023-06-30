@@ -22,7 +22,51 @@
 		</TargetDataType>
 	</DataTypeMapping>
 	
-		<DataTypeMapping>
+	<DataTypeMapping>
+		<SourceDataType>
+			<type>clob</type>
+      		<precision></precision>
+	  		<scale></scale>
+		</SourceDataType>
+		<TargetDataType>
+			<type>string</type>
+			<precision>64</precision>
+			<scale></scale>
+		</TargetDataType>
+	</DataTypeMapping>
+	
+	<DataTypeMapping>
+		<SourceDataType>
+			<type>blob</type>
+      		<precision></precision>
+	  		<scale></scale>
+		</SourceDataType>
+		<TargetDataType>
+			<type>string</type>
+			<precision>64</precision>
+			<scale></scale>
+		</TargetDataType>
+	</DataTypeMapping>
+	
+	<DataTypeMapping>
+		<SourceDataType>
+			<type>char</type>
+      		<precision></precision>
+	  		<scale></scale>
+		</SourceDataType>
+		<SourceDataType>
+			<type>varchar</type>
+      		<precision></precision>
+	  		<scale></scale>
+		</SourceDataType>
+		<TargetDataType>
+			<type>string</type>
+			<precision>64</precision>
+			<scale></scale>
+		</TargetDataType>
+	</DataTypeMapping>
+
+	<DataTypeMapping>
 		<SourceDataType>
 			<type>varchar</type>
       		<precision></precision>

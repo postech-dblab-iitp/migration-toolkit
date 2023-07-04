@@ -678,35 +678,7 @@ public class GraphMappingPage extends MigrationWizardPage {
 		gdbColumn1.setText(columnProperties[0]);
 		gdbColumn2.setText(columnProperties[1]);
 	}
-	
-	public List<String> getTypeList(String type) {
-		ArrayList<String> types = new ArrayList<String>();
-		
-		if (type.equals("integer")) {
-			types.add("integer");
-			types.add("string");
-			
-			return types;
-			
-		} else if (type.equals("date")) {
-			types.add("date");
-			types.add("string");
-			
-			return types;
-			
-		} else if (type.equals("datetime")) {
-			types.add("datetime");
-			types.add("string");
-			
-			return types;
-			
-		} else {
-			types.add(type);
-			
-			return types;
-		}
-	}
-	
+
 	public void changeColumnSelect(Object selectedColumn) {
 		Column column = (Column) selectedColumn;
 		if (column.isSelected()) {

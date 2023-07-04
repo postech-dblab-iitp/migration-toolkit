@@ -128,18 +128,21 @@ public class MigrationTasksScheduler {
 
 	private void greaphSchedule() {
 		
-		createGrephStep1();
+		createGraphStep1();
 		await();
-		createGrephStep2();
+		createGraphStep2();
 		await();
-		createGrephStep3();
+		createGraphStep3();
 		await();
-		createGrephStep4();
+		createGraphStep4();
 		await();
-		createGrephStep5();
-		createGrephStep6();
-		createGrephStep8();
-		createGrephStep7();
+		createGraphStep5();
+		await();
+		createGraphStep6();
+		await();
+		createGraphStep8();
+		await();
+		createGraphStep7();
 		await();
 		createGraphStep9();
 		await();
@@ -486,7 +489,7 @@ public class MigrationTasksScheduler {
 		await();
 	}
 	
-	protected void createGrephStep1() {
+	protected void createGraphStep1() {
 		MigrationConfiguration config = context.getConfig();
 		GraphDictionary gdict = config.getGraphDictionary();
 		List<Vertex> migratedVertexList = gdict.getMigratedVertexList();
@@ -500,7 +503,7 @@ public class MigrationTasksScheduler {
 		}
 	}
 	
-	protected void createGrephStep2() {
+	protected void createGraphStep2() {
 		MigrationConfiguration config = context.getConfig();
 		GraphDictionary gdict = config.getGraphDictionary();
 		List<Vertex> migratedVertexList = gdict.getMigratedVertexList();
@@ -515,7 +518,7 @@ public class MigrationTasksScheduler {
 		
 	}
 	
-	protected void createGrephStep3() {
+	protected void createGraphStep3() {
 		MigrationConfiguration config = context.getConfig();
 		GraphDictionary gdict = config.getGraphDictionary();
 		List<Vertex> migratedVertexList = gdict.getMigratedVertexList();
@@ -540,7 +543,7 @@ public class MigrationTasksScheduler {
 		
 	}
 	
-	protected void createGrephStep4() {
+	protected void createGraphStep4() {
 		MigrationConfiguration config = context.getConfig();
 		GraphDictionary gdict = config.getGraphDictionary();
 		List<Vertex> migratedVertexList = gdict.getMigratedVertexList();
@@ -564,7 +567,7 @@ public class MigrationTasksScheduler {
 		}
 	}
 	
-	protected void createGrephStep5() {
+	protected void createGraphStep5() {
 		MigrationConfiguration config = context.getConfig();
 		GraphDictionary gdict = config.getGraphDictionary();
 		List<Edge> migratedEdgeList = gdict.getMigratedEdgeList();
@@ -577,7 +580,7 @@ public class MigrationTasksScheduler {
 		}
 	}
 	
-	protected void createGrephStep6() {
+	protected void createGraphStep6() {
 		MigrationConfiguration config = context.getConfig();
 		GraphDictionary gdict = config.getGraphDictionary();
 		List<Edge> migratedEdgeList = gdict.getMigratedEdgeList();
@@ -590,7 +593,7 @@ public class MigrationTasksScheduler {
 		}
 	}
 	
-	protected void createGrephStep7() {
+	protected void createGraphStep7() {
 		MigrationConfiguration config = context.getConfig();
 		GraphDictionary gdict = config.getGraphDictionary();
 		List<Edge> migratedEdgeList = gdict.getMigratedEdgeList();
@@ -602,7 +605,7 @@ public class MigrationTasksScheduler {
 		}
 	}
 	
-	protected void createGrephStep8() {
+	protected void createGraphStep8() {
 		MigrationConfiguration config = context.getConfig();
 		GraphDictionary gdict = config.getGraphDictionary();
 		List<Vertex> migratedVertexList = gdict.getMigratedVertexList();

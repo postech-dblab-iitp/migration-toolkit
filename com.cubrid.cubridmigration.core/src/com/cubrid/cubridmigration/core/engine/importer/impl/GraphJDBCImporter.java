@@ -239,17 +239,17 @@ public class GraphJDBCImporter extends
 	}
 	
 	private String getTargetInsertJoinEdge(Edge e) {
-		
-		if (!e.getColumnbyName(e.getFKColumnNames().get(0)).getSupportGraphDataType()
-				|| !e.getColumnbyName(e.getREFColumnNames(e.getFKColumnNames().get(0))).getSupportGraphDataType()) {
-			return null;
-		}
-		
 		StringBuffer buffer = new StringBuffer();
 		buffer.append("Match (n:").append(e.getStartVertexName());
 		buffer.append("), (m:").append(e.getEndVertexName());
 		buffer.append(")");
-		buffer.append(" where n.").append(e.getFKColumnNames().get(0)).append(" = ");
+		
+		if (e.getStartVertexName().equals(e.getEndVertexName())) {
+			buffer.append(" where n.").append(e.getREFColumnNames(e.getFKColumnNames().get(1))).append(" = ");
+		} else {
+			buffer.append(" where n.").append(e.getFKColumnNames().get(0)).append(" = ");
+		}
+		
 		buffer.append("?");
 		buffer.append(" and m.").append(e.getREFColumnNames(e.getFKColumnNames().get(1))).append(" = ");
 		buffer.append("?");

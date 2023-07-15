@@ -41,6 +41,11 @@ public class Messages extends
 	public static String aboutMessage;
 
 	public static String addNewGroup;
+	public static String addGraphSQLDialogGroupTitle;
+	public static String addGraphSQLDialogMessage1;
+	public static String addGraphSQLDialogMessage2;
+	public static String addGraphSQLDialogTitle1;
+	public static String addGraphSQLDialogTitle2;
 	public static String addSQLDialogErrorMess;
 	public static String addSQLDialogGroupTitle;
 	public static String addSQLDialogMessage1;
@@ -86,6 +91,8 @@ public class Messages extends
 	public static String btnDelete;
 	public static String btnDestCSVFiles;
 	public static String btnDestCSVFilesDes;
+	public static String btnDestGraphDump;
+	public static String btnDestGraphDumpDes;
 	public static String btnDestLocalDump;
 	public static String btnDestLocalDumpDes;
 	public static String btnDestOnlineCUBRIDDB;
@@ -141,6 +148,8 @@ public class Messages extends
 	public static String btnSrcMySQLDumpDBDes;
 	public static String btnSrcOnlineCUBRIDDB;
 	public static String btnSrcOnlineCUBRIDDBDes;
+	public static String btnSrcOnlineGraphDB;
+	public static String btnSrcOnlineGraphDBDes;
 	public static String btnSrcOnlineMSSQLDB;
 	public static String btnSrcOnlineMSSQLDBDes;
 	public static String btnSrcOnlineMySQLDB;

@@ -74,15 +74,22 @@ public class GraphSQLHelper extends SQLHelper {
 		
 			Map<String, Object> colValMap = record.getColumnValueMap();
 			
-			if (!e.getColumnbyName(e.getFKColumnNames().get(0)).getSupportGraphDataType()
-					|| !e.getColumnbyName(e.getREFColumnNames(e.getFKColumnNames().get(0))).getSupportGraphDataType()) {
-				return null;
-			}
+//			if (!e.getColumnbyName(e.getFKColumnNames().get(0)).getSupportGraphDataType()
+//					|| !e.getColumnbyName(e.getREFColumnNames(e.getFKColumnNames().get(0))).getSupportGraphDataType()) {
+//				return null;
+//			}
 			
 			StringBuffer buffer = new StringBuffer();
 			buffer.append("Match (n:").append(e.getStartVertexName());
 			buffer.append("), (m:").append(e.getEndVertexName());
 			buffer.append(")");
+			
+			if (e.getStartVertexName().equals(e.getEndVertexName())) {
+				buffer.append(" where n.").append(e.getREFColumnNames(e.getFKColumnNames().get(1))).append(" = ");
+			} else {
+				buffer.append(" where n.").append(e.getFKColumnNames().get(0)).append(" = ");
+			}
+			
 			buffer.append(" where n.").append(e.getFKColumnNames().get(0)).append(" = ");
 			buffer.append(colValMap.get(e.getFKColumnNames().get(0)));
 			buffer.append(" and m.").append(e.getREFColumnNames(e.getFKColumnNames().get(1))).append(" = ");

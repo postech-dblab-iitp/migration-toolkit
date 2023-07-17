@@ -114,8 +114,8 @@ public class GraphSelectSrcTarTypesView {
 			}
 		});
 		
-		btnOnlineGraphSrc = createSrcTarTypeBtn(grpSrc, "Online GraphDB Source",
-				"Connecting to Graph via JDBC.");
+		btnOnlineGraphSrc = createSrcTarTypeBtn(grpSrc, Messages.btnSrcOnlineGraphDB,
+				Messages.btnSrcOnlineGraphDBDes);
 		btnOnlineGraphSrc.setData(MigrationConfiguration.SOURCE_TYPE_GRAPH);
 		
 		btnOnlineGraphSrc.addSelectionListener(new SelectionListener() {
@@ -197,8 +197,8 @@ public class GraphSelectSrcTarTypesView {
 			comSep.setLayoutData(gd);
 		}
 
-		btnDumpTar = createSrcTarTypeBtn(grpTar, Messages.btnDestLocalDump,
-				Messages.btnDestLocalDumpDes);
+		btnDumpTar = createSrcTarTypeBtn(grpTar, Messages.btnDestGraphDump,
+				Messages.btnDestGraphDumpDes);
 		btnDumpTar.setData(MigrationConfiguration.DEST_DB_UNLOAD);
 		tarButtons.add(btnDumpTar);
 		

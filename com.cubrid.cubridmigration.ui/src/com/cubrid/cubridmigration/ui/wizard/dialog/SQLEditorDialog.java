@@ -180,7 +180,7 @@ public class SQLEditorDialog extends
 		final Group group = new Group(dbnameGroup, SWT.NONE);
 		group.setLayoutData(gdDbnameGroup);
 		group.setLayout(layout);
-		group.setText(Messages.addSQLDialogGroupTitle);
+		group.setText(Messages.addGraphSQLDialogGroupTitle);
 
 		txtSQL = new Text(group, SWT.BORDER | SWT.WRAP | SWT.MULTI | SWT.V_SCROLL);
 
@@ -211,11 +211,11 @@ public class SQLEditorDialog extends
 		createdbNameGroup(composite);
 
 		if (newFlag) {
-			setTitle(Messages.addSQLDialogTitle1);
-			setMessage(Messages.addSQLDialogMessage1);
+			setTitle(Messages.addGraphSQLDialogTitle1);
+			setMessage(Messages.addGraphSQLDialogMessage1);
 		} else {
-			setTitle(Messages.addSQLDialogTitle2);
-			setMessage(Messages.addSQLDialogMessage2);
+			setTitle(Messages.addGraphSQLDialogTitle2);
+			setMessage(Messages.addGraphSQLDialogMessage2);
 		}
 
 		initial();

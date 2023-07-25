@@ -46,6 +46,7 @@ import com.cubrid.cubridmigration.core.engine.MigrationContext;
 import com.cubrid.cubridmigration.core.engine.MigrationDirAndFilesManager;
 import com.cubrid.cubridmigration.core.engine.MigrationStatusManager;
 import com.cubrid.cubridmigration.core.engine.config.SourceTableConfig;
+import com.cubrid.cubridmigration.core.engine.event.ImportGraphRecordsEvent;
 import com.cubrid.cubridmigration.core.engine.event.ImportRecordsEvent;
 import com.cubrid.cubridmigration.core.engine.exception.NormalMigrationException;
 import com.cubrid.cubridmigration.core.engine.task.FileMergeRunnable;
@@ -186,6 +187,116 @@ public class LoadFileImporter extends
 		}
 	}
 
+	protected void handleDataFile(String fileName, final Edge e, final int impCount,
+			final int expCount) {
+		synchronized (lockObj) {
+			MigrationDirAndFilesManager mdfm = mrManager.getDirAndFilesMgr();
+			CurrentDataFileInfo es = tableFiles.get(e.getEdgeLabel());
+			if (es == null) {
+				final StringBuffer sb = new StringBuffer(
+						mrManager.getDirAndFilesMgr().getMergeFilesDir()).append(
+						config.getFullTargetFilePrefix()).append(e.getEdgeLabel());
+				es = new CurrentDataFileInfo(sb.toString(), config.getDataFileExt());
+				PathUtils.deleteFile(new File(es.fileFullName));
+				tableFiles.put(e.getEdgeLabel(), es);
+			}
+			//If the target file is full. 
+			if (mdfm.isDataFileFull(es.fileFullName)) {
+				//Full name will be changed.
+				es.nextFile();
+			}
+			final String fileFullName = es.fileFullName;
+			mdfm.addDataFile(fileFullName, impCount);
+			executeTask(fileName, fileFullName, new RunnableResultHandler() {
+
+				public void success() {
+					eventHandler.handleEvent(new ImportGraphRecordsEvent(e, impCount));
+					final MigrationStatusManager sm = mrManager.getStatusMgr();
+					sm.addImpCount(e.getOwner(), e.getEdgeLabel(), expCount);
+					//CSV, XLS file will not be merged into one data file.
+					if (config.targetIsCSV() || config.targetIsXLS()) {
+						return;
+					}
+					if (config.isOneTableOneFile()) {
+						return;
+					}
+					final Table st = config.getSrcTableSchema(e.getOwner(), e.getEdgeLabel());
+					if (null == st) {
+						return;
+					}
+					final long totalEc = sm.getExpCount(e.getOwner(), e.getEdgeLabel());
+					final long totalIc = sm.getImpCount(e.getOwner(), e.getEdgeLabel());
+					final boolean expEnd = sm.getExpFlag(e.getOwner(), e.getEdgeLabel());
+					//If it is the last merging,Merge data files to one data file
+					if (expEnd && totalEc == totalIc) {
+						executeTask(fileFullName, config.getTargetDataFileName(), null, true, false);
+					}
+				}
+
+				public void failed(String error) {
+					mrManager.getStatusMgr().addImpCount(e.getOwner(), e.getEdgeLabel(), expCount);
+					eventHandler.handleEvent(new ImportGraphRecordsEvent(e, impCount,
+							new NormalMigrationException(error), null));
+				}
+			}, config.isDeleteTempFile(), false);
+		}
+	}
+	
+	protected void handleDataFile(String fileName, final Vertex v, final int impCount,
+			final int expCount) {
+		synchronized (lockObj) {
+			MigrationDirAndFilesManager mdfm = mrManager.getDirAndFilesMgr();
+			CurrentDataFileInfo es = tableFiles.get(v.getVertexLabel());
+			if (es == null) {
+				final StringBuffer sb = new StringBuffer(
+						mrManager.getDirAndFilesMgr().getMergeFilesDir()).append(
+						config.getFullTargetFilePrefix()).append(v.getVertexLabel());
+				es = new CurrentDataFileInfo(sb.toString(), config.getDataFileExt());
+				PathUtils.deleteFile(new File(es.fileFullName));
+				tableFiles.put(v.getVertexLabel(), es);
+			}
+			//If the target file is full. 
+			if (mdfm.isDataFileFull(es.fileFullName)) {
+				//Full name will be changed.
+				es.nextFile();
+			}
+			final String fileFullName = es.fileFullName;
+			mdfm.addDataFile(fileFullName, impCount);
+			executeTask(fileName, fileFullName, new RunnableResultHandler() {
+
+				public void success() {
+					eventHandler.handleEvent(new ImportGraphRecordsEvent(v, impCount));
+					final MigrationStatusManager sm = mrManager.getStatusMgr();
+					sm.addImpCount(v.getOwner(), v.getVertexLabel(), expCount);
+					//CSV, XLS file will not be merged into one data file.
+					if (config.targetIsCSV() || config.targetIsXLS()) {
+						return;
+					}
+					if (config.isOneTableOneFile()) {
+						return;
+					}
+					final Table st = config.getSrcTableSchema(v.getOwner(), v.getVertexLabel());
+					if (null == st) {
+						return;
+					}
+					final long totalEc = sm.getExpCount(v.getOwner(), v.getVertexLabel());
+					final long totalIc = sm.getImpCount(v.getOwner(), v.getVertexLabel());
+					final boolean expEnd = sm.getExpFlag(v.getOwner(), v.getVertexLabel());
+					//If it is the last merging,Merge data files to one data file
+					if (expEnd && totalEc == totalIc) {
+						executeTask(fileFullName, config.getTargetDataFileName(), null, true, false);
+					}
+				}
+
+				public void failed(String error) {
+					mrManager.getStatusMgr().addImpCount(v.getOwner(), v.getVertexLabel(), expCount);
+					eventHandler.handleEvent(new ImportGraphRecordsEvent(v, impCount,
+							new NormalMigrationException(error), null));
+				}
+			}, config.isDeleteTempFile(), false);
+		}
+	}
+	
 	/**
 	 * Send schema file and data file to server for loadDB command.
 	 * 

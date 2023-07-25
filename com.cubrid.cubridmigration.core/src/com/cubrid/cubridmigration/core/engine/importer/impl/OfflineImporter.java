@@ -242,6 +242,43 @@ public abstract class OfflineImporter extends
 			}
 		}
 	}
+//	protected class GraphCSVFileWriter implements ImportFileWriter {
+//		/**
+//		 * Write data to a CSV file
+//		 * 
+//		 * @param stc SourceTableConfig
+//		 * @param records List<Record> records
+//		 * @param file File
+//		 * @param tt Table
+//		 * @return total count
+//		 * @throws Exception ex
+//		 */
+//		public int writeData(final SourceTableConfig stc, final List<Record> records, File file, final Table tt) throws Exception {
+//			CSVWriter writer = new CSVWriter(new OutputStreamWriter(new FileOutputStream(file),
+//					config.getTargetCharSet()), config.getCsvSettings().getSeparateChar(),
+//					config.getCsvSettings().getQuoteChar(), config.getCsvSettings().getEscapeChar());
+//			try {
+//				List<String> lobFiles = new ArrayList<String>();
+//				int total = 0;
+//				for (Record re : records) {
+//					if (re == null) {
+//						continue;
+//					}
+//					List<String> res = getRecordString(stc, tt, re, lobFiles);
+//					if (res == null) {
+//						continue;
+//					}
+//					writer.writeNext(res.toArray(new String[res.size()]));
+//					total++;
+//				}
+//				writer.flush();
+//				return total;
+//			} finally {
+//				writer.close();
+//			}
+//		}
+//	}
+	
 
 	/**
 	 * XLSFileWriter responses to write data to XLS
@@ -403,6 +440,10 @@ public abstract class OfflineImporter extends
 	 */
 	protected abstract void handleDataFile(String fileName, final SourceTableConfig stc,
 			final int impCount, int expCount);
+	
+	protected abstract void handleDataFile(String fileName, final Edge e, final int impCount, final int expCount);
+	
+	protected abstract void handleDataFile(String fileName, final Vertex v, final int impCount, final int expCount);
 
 	/**
 	 * Send schema file and data file to server for loadDB command.
@@ -735,81 +776,176 @@ public abstract class OfflineImporter extends
 		//TODO need vertex ddl
 		//TODO executeDDL(ddl, true, resultHandler)
 		
-		int recCounter = 0;
-		int commitCount = config.getCommitCount();
-		
-		StringBuffer buffer = new StringBuffer();
-		
-		for (Record rec : records) {
+		if (config.targetIsCSV()) {
+			importVertexToCSV(records, v);
 			
-			String ddl = GraphSQLHelper.getInstance(null).getVertexDDL(v, rec);
-			buffer.append(ddl);
-			buffer.append(";\n");
-			recCounter++;
+			return 0;
+		} else {
+		
+			int recCounter = 0;
+			int commitCount = config.getCommitCount();
 			
-			if (recCounter == commitCount) {
-				executeDDL(buffer.toString(), false, createResultHandler(v, recCounter));
+			StringBuffer buffer = new StringBuffer();
+			
+			for (Record rec : records) {
 				
-				recCounter = 0;
+				String ddl = GraphSQLHelper.getInstance(null).getVertexDDL(v, rec);
+				buffer.append(ddl);
+				buffer.append(";\n");
+				recCounter++;
+				
+				if (recCounter == commitCount) {
+					executeDDL(buffer.toString(), false, createResultHandler(v, recCounter));
+					
+					recCounter = 0;
+				}
+				
 			}
 			
+			executeDDL(buffer.toString() + ";\n", false, createResultHandler(v, recCounter));
+			
+			return 0;
 		}
-		
-		executeDDL(buffer.toString() + ";\n", false, createResultHandler(v, recCounter));
-		
-		return 0;
 	}
 	
 	public int importEdge(Edge e, List<Record> records) {
 		//TODO need edge ddl
 		//TODO executeDDL(ddl, true, resultHandler)
 		
-		int commitCount = config.getCommitCount();
-		int recCounter = 0;
-		
-		StringBuffer buffer = new StringBuffer();
-		
-		if (records == null) {
-			for (int i=0 ; i < e.getfkCol2RefMappingSize(); i++) {
-				String ddl = GraphSQLHelper.getInstance(null).getEdgeDDL(e, i);
-				
-				buffer.append(ddl);
-				buffer.append(";\n");
-				recCounter++;
-				
-				if (recCounter == commitCount) {
-					executeDDL(buffer.toString(), false, createResultHandler(e, recCounter));
+		if (config.targetIsCSV()) {
+			importEdgeToCSV(records, e);
+			
+			return 0;
+		} else {
+			int commitCount = config.getCommitCount();
+			int recCounter = 0;
+			
+			StringBuffer buffer = new StringBuffer();
+			
+			if (records == null) {
+				for (int i=0 ; i < e.getfkCol2RefMappingSize(); i++) {
+					String ddl = GraphSQLHelper.getInstance(null).getEdgeDDL(e, i);
 					
-					recCounter = 0;
-					buffer = new StringBuffer();
+					buffer.append(ddl);
+					buffer.append(";\n");
+					recCounter++;
+					
+					if (recCounter == commitCount) {
+						executeDDL(buffer.toString(), false, createResultHandler(e, recCounter));
+						
+						recCounter = 0;
+						buffer = new StringBuffer();
+					}
 				}
+				
+				executeDDL(buffer.toString(), false, createResultHandler(e, recCounter));
+				
+			} else {
+				for (Record rc : records) {
+				
+					if (rc == null) {
+						continue;
+					}
+					String ddl = GraphSQLHelper.getInstance(null).getEdgeDDL(e, rc);
+					buffer.append(ddl);
+					buffer.append(";\n");
+					recCounter++;
+					
+					if (recCounter == commitCount) {
+						executeDDL(buffer.toString(), false, createResultHandler(e, recCounter));
+						
+						recCounter = 0;
+						buffer = new StringBuffer();
+					}
+					
+				}
+				
+				executeDDL(buffer.toString(), false, createResultHandler(e, recCounter));
 			}
 			
-			executeDDL(buffer.toString(), false, createResultHandler(e, recCounter));
-			
-		} else {
-			for (Record rc : records) {
-			
-				if (rc == null) {
+			return 0;
+		}
+	}
+	
+	public void importVertexToCSV(List<Record> records, Vertex v) {
+		String tmpDataFileName = getRandomTempFileName() + config.getDataFileExt();
+		File file = new File(tmpDataFileName);
+		
+		try {
+			if (records != null) {
+				int counter = writeGraphData(records, file);
+				
+				RunnableResultHandler resultHandler = createResultHandler(v, counter);
+				
+//				sendSchemaFile(tmpDataFileName, resultHandler, false);
+				
+				handleDataFile(tmpDataFileName, v, counter, records.size());
+			}
+		} catch (Exception exception) {
+			// TODO Auto-generated catch block
+			exception.printStackTrace();
+		}
+	}
+	
+	public void importEdgeToCSV(List<Record> records, Edge e) {
+		String tmpDataFileName = getRandomTempFileName() + config.getDataFileExt();
+		File file = new File(tmpDataFileName);
+		
+		try {
+			if (records != null) {
+				int counter = writeGraphData(records, file);
+				
+				RunnableResultHandler resultHandler = createResultHandler(e, counter);
+				
+//				sendSchemaFile(tmpDataFileName, resultHandler, false);
+				
+				handleDataFile(tmpDataFileName, e, counter, records.size());
+			}
+		} catch (Exception exception) {
+			// TODO Auto-generated catch block
+			exception.printStackTrace();
+		}
+	}
+	
+	public int writeGraphData(List<Record> records, File file) throws Exception {
+		
+		CSVWriter writer = new CSVWriter(new OutputStreamWriter(new FileOutputStream(file),
+				config.getTargetCharSet()), config.getCsvSettings().getSeparateChar(),
+				config.getCsvSettings().getQuoteChar(), config.getCsvSettings().getEscapeChar());
+		
+		try {
+			int total = 0;
+			for (Record re : records) {
+				if (re == null) {
 					continue;
 				}
-				String ddl = GraphSQLHelper.getInstance(null).getEdgeDDL(e, rc);
-				buffer.append(ddl);
-				buffer.append(";\n");
-				recCounter++;
-				
-				if (recCounter == commitCount) {
-					executeDDL(buffer.toString(), false, createResultHandler(e, recCounter));
-					
-					recCounter = 0;
-					buffer = new StringBuffer();
+				List<String> res = getGraphRecords(re);
+				if (res == null) {
+					continue;
 				}
-				
+				writer.writeNext(res.toArray(new String[res.size()]));
+				total++;
+			}
+			writer.flush();
+			return total;
+		} finally {
+			writer.close();
+		}
+	}
+	
+	public List<String> getGraphRecords(Record record) {
+		List<String> recordList = new ArrayList<String>();
+		
+		List<ColumnValue> colValList = record.getColumnValueList();
+		
+		for (ColumnValue colVal : colValList) {
+			if (colVal.getValue() == null) {
+				continue;
 			}
 			
-			executeDDL(buffer.toString(), false, createResultHandler(e, recCounter));
+			recordList.add(colVal.getValue().toString());
 		}
 		
-		return 0;
+		return recordList;
 	}
 }

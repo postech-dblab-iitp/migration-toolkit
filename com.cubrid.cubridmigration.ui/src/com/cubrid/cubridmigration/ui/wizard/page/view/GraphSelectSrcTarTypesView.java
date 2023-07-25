@@ -72,7 +72,7 @@ public class GraphSelectSrcTarTypesView {
 	private Button btnDumpTar;
 	//private Button btnSQLTar;
 
-	//private Button btnCSVTar;
+	private Button btnCSVTar;
 	//private Button btnXLSTar;
 
 	private Button btnOnlineCUBRIDSrc;
@@ -207,10 +207,10 @@ public class GraphSelectSrcTarTypesView {
 //		btnSQLTar.setData(MigrationConfiguration.DEST_SQL);
 //		tarButtons.add(btnSQLTar);
 //
-//		btnCSVTar = createSrcTarTypeBtn(grpTar, Messages.btnDestCSVFiles,
-//				Messages.btnDestCSVFilesDes);
-//		btnCSVTar.setData(MigrationConfiguration.DEST_CSV);
-//		tarButtons.add(btnCSVTar);
+		btnCSVTar = createSrcTarTypeBtn(grpTar, Messages.btnDestCSVFiles,
+				Messages.btnDestCSVFilesDes);
+		btnCSVTar.setData(MigrationConfiguration.DEST_CSV);
+		tarButtons.add(btnCSVTar);
 //
 //		btnXLSTar = createSrcTarTypeBtn(grpTar, Messages.btnDestXLSFiles,
 //				Messages.btnDestXLSFilesDes);

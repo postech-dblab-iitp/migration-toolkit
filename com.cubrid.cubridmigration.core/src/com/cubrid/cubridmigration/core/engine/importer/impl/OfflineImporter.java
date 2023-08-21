@@ -107,6 +107,8 @@ public abstract class OfflineImporter extends
 
 	//Default path of migration load DB file 
 	protected Data2StrTranslator unloadFileUtil;
+	
+	private int testCounter = 1;
 
 	/**
 	 * ImportFileWriter writes data to file with specified format
@@ -871,9 +873,11 @@ public abstract class OfflineImporter extends
 		String tmpDataFileName = getRandomTempFileName() + config.getDataFileExt();
 		File file = new File(tmpDataFileName);
 		
+//		editCSVFormat(records);
+		
 		try {
 			if (records != null) {
-				int counter = writeGraphData(records, file);
+				int counter = writeGraphData(records, file, v);
 				
 				RunnableResultHandler resultHandler = createResultHandler(v, counter);
 				
@@ -887,13 +891,27 @@ public abstract class OfflineImporter extends
 		}
 	}
 	
+	private int editCSVFormat(List<Record> records) {
+		
+		int counter = 1;
+		
+		Column col = new Column("id");
+		
+		for (Record rec : records) {
+			rec.addColumnValueFront(col, counter);
+			++counter;
+		}
+		
+		return counter;
+	}
+	
 	public void importEdgeToCSV(List<Record> records, Edge e) {
 		String tmpDataFileName = getRandomTempFileName() + config.getDataFileExt();
 		File file = new File(tmpDataFileName);
 		
 		try {
 			if (records != null) {
-				int counter = writeGraphData(records, file);
+				int counter = writeGraphData(records, file, e);
 				
 				RunnableResultHandler resultHandler = createResultHandler(e, counter);
 				
@@ -907,11 +925,54 @@ public abstract class OfflineImporter extends
 		}
 	}
 	
-	public int writeGraphData(List<Record> records, File file) throws Exception {
+	public int writeGraphData(List<Record> records, File file, Object obj) throws Exception {
 		
 		CSVWriter writer = new CSVWriter(new OutputStreamWriter(new FileOutputStream(file),
 				config.getTargetCharSet()), config.getCsvSettings().getSeparateChar(),
 				config.getCsvSettings().getQuoteChar(), config.getCsvSettings().getEscapeChar());
+		
+		if (obj instanceof Edge) {
+			Edge edge = (Edge) obj;
+			
+			List<String> firstLine = new ArrayList<String>();
+			
+			List<Column> edgeColumnList = edge.getColumnList();
+			for (Column col : edgeColumnList) {
+				StringBuffer sb = new StringBuffer();
+				sb.append(col.getName());
+				sb.append(":");
+				sb.append(col.getGraphDataType());
+				
+				firstLine.add(sb.toString());
+			}
+			
+			writer.writeNext(firstLine.toArray(new String[firstLine.size()]));
+			
+		} else if (obj instanceof Vertex) {
+			StringBuffer firstCol = new StringBuffer();
+			
+			Vertex vertex = (Vertex) obj;
+			List<String> firstLine = new ArrayList<String>();
+			
+//			firstCol.append("id:ID(");
+//			firstCol.append(vertex.getVertexLabel());
+//			firstCol.append(")");
+			
+//			firstLine.add(firstCol.toString());
+			
+			List<Column> vertexColumnList = vertex.getColumnList();
+			for (Column col : vertexColumnList) {
+				StringBuffer sb = new StringBuffer();
+				
+				sb.append(col.getName());
+				sb.append(":");
+				sb.append(col.getGraphDataType());
+				
+				firstLine.add(sb.toString());
+			}
+			
+			writer.writeNext(firstLine.toArray(new String[firstLine.size()]));
+		}
 		
 		try {
 			int total = 0;

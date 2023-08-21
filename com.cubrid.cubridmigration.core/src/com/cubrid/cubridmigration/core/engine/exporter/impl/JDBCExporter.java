@@ -35,6 +35,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 
@@ -348,6 +349,7 @@ public class JDBCExporter extends
 					}
 				}
 				rs = stmt.executeQuery(); //NOPMD
+				
 				break;
 			} catch (Exception ex) {
 				//Release statement and result set.
@@ -421,7 +423,7 @@ public class JDBCExporter extends
 			List<Record> records = new ArrayList<Record>();
 			long totalExported = 0L;
 			long intPageCount = config.getPageFetchCount();
-			String sql = graphExHelper.getGraphSelectSQL(v);
+			String sql = graphExHelper.getGraphSelectSQL(v, config.targetIsCSV());
 			while (true) {
 				if (interrupted) {
 					return;
@@ -431,7 +433,15 @@ public class JDBCExporter extends
 					realPageCount = Math.min(sTable.getTableRowCount() - totalExported,
 							intPageCount);
 				}
-				String pagesql = graphExHelper.getPagedSelectSQL(sql, realPageCount, totalExported, pk);
+				String pagesql;
+				
+				
+				if (config.targetIsCSV()) {
+					pagesql = graphExHelper.getPagedSelectSQL(v, sql, realPageCount, totalExported, pk);
+				} else {
+					pagesql = graphExHelper.getPagedSelectSQL(sql, realPageCount, totalExported, pk);
+				}
+				
 				if (LOG.isDebugEnabled()) {
 					LOG.debug("[SQL]PAGINATED=" + pagesql);
 				}
@@ -462,12 +472,141 @@ public class JDBCExporter extends
 			return;
 		}
 		
+		if (config.targetIsCSV()) {
+			exportGraphEdgeRecordForCSV(e, newRecordProcessor);
+			return;
+		}
+		
 		try {
 			newRecordProcessor.startExportTable(e.getEdgeLabel());
 			newRecordProcessor.processRecords(e.getEdgeLabel(), null);
 		} finally {
 			newRecordProcessor.endExportTable(e.getEdgeLabel());
 		}
+	}
+	protected void exportGraphEdgeRecordForCSV(Edge e, RecordExportedListener newRecordProcessor) { 
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("[IN]exportGraphVertexRecords()");
+		}
+		Table sTable = config.getSrcTableSchema(e.getOwner(), e.getEdgeLabel());
+//		if (sTable == null) {
+//			throw new NormalMigrationException("Table " + e.getEdgeLabel() + " was not found.");
+//		}
+//		final PK srcPK = sTable.getPk();
+		Connection conn = connManager.getSourceConnection(); //NOPMD
+		
+		long countOfRecords = graphFkEdgeCountSQL(conn, e);
+		
+		try {
+			final DBExportHelper expHelper = getSrcDBExportHelper();
+			CUBRIDExportHelper graphExHelper = (CUBRIDExportHelper) expHelper;
+//			PK pk = graphExHelper.supportFastSearchWithPK(conn) ? srcPK : null;
+			newRecordProcessor.startExportTable(e.getEdgeLabel());
+			List<Record> records = new ArrayList<Record>();
+			long totalExported = 0L;
+			long intPageCount = config.getPageFetchCount();
+			String sql = graphExHelper.getGraphSelectSQL(e);
+			while (true) {
+				if (interrupted) {
+					return;
+				}
+				long realPageCount = intPageCount;
+				if (!config.isImplicitEstimate()) {
+					realPageCount = Math.min(countOfRecords - totalExported,
+							intPageCount);
+				}
+				String pageSql;
+				
+				pageSql = graphExHelper.getPagedFkRecords(e, sql, realPageCount, totalExported);
+				
+//				if (config.targetIsCSV()) {
+//					pagesql = graphExHelper.getPagedSelectSQL(e, sql, realPageCount, totalExported, pk);
+//				} else {
+//					pagesql = graphExHelper.getPagedSelectSQL(sql, realPageCount, totalExported, pk);
+//				}
+				
+//				pageSql = graphExHelper.getPagedSelectSQL(e, sql, realPageCount, totalExported, pk);
+				
+				if (LOG.isDebugEnabled()) {
+					LOG.debug("[SQL]PAGINATED=" + pageSql);
+				}
+				long recordCountOfQuery = graphEdgeHandleSQL(conn, pageSql, e, sTable,
+						records, newRecordProcessor);
+				totalExported = totalExported + recordCountOfQuery;
+				//Stop fetching condition: no result;less then fetching count;great then total count
+				if (isLatestPage(sTable, totalExported, recordCountOfQuery)) {
+					break;
+				}
+			}
+			if (!records.isEmpty()) {
+				newRecordProcessor.processRecords(e.getEdgeLabel(), records);
+			}
+		} finally {
+			newRecordProcessor.endExportTable(e.getEdgeLabel());
+			connManager.closeSrc(conn);
+		}
+	}
+	
+	protected long graphFkEdgeCountSQL(Connection conn, Edge e) {		
+		Map<String, String> fkMapping = e.getfkCol2RefMapping();
+		
+		String sql = editFkRecordCounterSql(e, fkMapping);
+		
+		JDBCObjContainer joc = new JDBCObjContainer();
+		joc.setConn(conn);
+		
+		long totalExported = 0;
+		
+		try {
+			//Execute SQL with retry
+			joc = getResultSet(sql, null, joc);
+			if (joc.getRs() == null) {
+				return totalExported;
+			}
+			
+			while(joc.getRs().next()){
+				totalExported = joc.getRs().getLong(1);
+			}
+
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return totalExported;
+	}
+	
+	private String editFkRecordCounterSql(Edge e, Map<String, String> fkMapping) {
+		List<String> keySet = e.getFKColumnNames();
+		String fkCol = keySet.get(0);
+		String refCol = fkMapping.get(keySet.get(0));
+		
+		StringBuffer buffer = new StringBuffer();
+		buffer.append("SELECT COUNT(1) FROM ");
+		
+		buffer.append("(SELECT ROWNUM as \"START_ID\", ");
+		buffer.append(fkCol);
+		buffer.append(" FROM ");
+		buffer.append(e.getStartVertexName());
+		buffer.append(" order by ");
+		buffer.append(fkCol);
+		buffer.append(" for orderby_num()) as ");
+		buffer.append(e.getStartVertexName());
+		buffer.append(", ");
+		
+		buffer.append("(SELECT ROWNUM as \"END_ID\", ");
+		buffer.append(refCol);
+		buffer.append(" FROM ");
+		buffer.append(e.getEndVertexName());
+		buffer.append(" order by ");
+		buffer.append(refCol);
+		buffer.append(" for orderby_num()) as ");
+		buffer.append(e.getEndVertexName());
+		
+		buffer.append(" where ");
+		buffer.append(e.getStartVertexName() + "." + fkCol);
+		buffer.append(" = ");
+		buffer.append(e.getEndVertexName() + "." + refCol);
+		
+		return buffer.toString();
 	}
 	
 	
@@ -499,7 +638,13 @@ public class JDBCExporter extends
 					realPageCount = Math.min(sTable.getTableRowCount() - totalExported,
 							intPageCount);
 				}
-				String pagesql = graphExHelper.getPagedSelectSQL(sql, realPageCount, totalExported, pk);
+				String pagesql;
+				
+				if (config.targetIsCSV()) {
+					pagesql = graphExHelper.getPagedSelectSQL(e, sql, realPageCount, totalExported, pk);
+				} else {
+					pagesql = graphExHelper.getPagedSelectSQL(sql, realPageCount, totalExported, pk);
+				}
 				if (LOG.isDebugEnabled()) {
 					LOG.debug("[SQL]PAGINATED=" + pagesql);
 				}
@@ -550,6 +695,7 @@ public class JDBCExporter extends
 		}
 	}
 	
+
 	protected long graphEdgeHandleSQL(Connection conn, String sql, Edge edge, Table sTable, List<Record> records,
 			RecordExportedListener newRecsHandler) {
 		JDBCObjContainer joc = new JDBCObjContainer();
@@ -566,12 +712,12 @@ public class JDBCExporter extends
 					return totalExported;
 				}
 				totalExported++;
-				Record record = createGraphNewRecord(sTable, edge.getColumnList(), joc.getRs());
+				Record record = createGraphNewRecordForFkCSV(edge, edge.getColumnList(), joc.getRs());
 				if (record == null) {
 					continue;
 				}
 				records.add(record);
-				handleGraphCommit(edge.getEdgeLabel(), newRecsHandler, sTable, records);
+				handleGraphCommitForFkCSV(edge.getEdgeLabel(), newRecsHandler, edge, records);
 			}
 			return totalExported;
 		} finally {
@@ -609,6 +755,35 @@ public class JDBCExporter extends
 		return null;
 	}
 	
+	protected Record createGraphNewRecordForFkCSV(Edge e, List<Column> cols, ResultSet rs) {
+		try {
+			Record record = new Record();
+			final DBExportHelper srcDBExportHelper = getSrcDBExportHelper();
+			for (int ci = 1; ci <= cols.size(); ci++) {
+				Column cc = cols.get(ci - 1);
+				if (!cc.getSupportGraphDataType()) {
+					continue;
+				}
+				Column sCol = e.getColumnbyName(cc.getName());
+				Object value = srcDBExportHelper.getJdbcObjectForFkCSV(rs, sCol);
+				record.addColumnValue(sCol, value);
+			}
+			return record;
+		} catch (NormalMigrationException ex) {
+			LOG.error("", ex);
+			eventHandler.handleEvent(new MigrationErrorEvent(ex));
+		} catch (SQLException ex) {
+			LOG.error("", ex);
+			eventHandler.handleEvent(new MigrationErrorEvent(new NormalMigrationException(
+					"Transform foreign key [" + e.getEdgeLabel() + "] record error.", ex)));
+		} catch (Exception ex) {
+			LOG.error("", ex);
+			eventHandler.handleEvent(new MigrationErrorEvent(new NormalMigrationException(
+					"Transform foreign key [" + e.getEdgeLabel() + "] record error.", ex)));
+		}
+		return null;
+	}
+	
 	protected void handleGraphCommit(String tableName, RecordExportedListener newRecordProcessor,
 			Table sTable, List<Record> records) {
 		//Watching memory to avoid out of memory errors
@@ -616,6 +791,31 @@ public class JDBCExporter extends
 		int counter = 0;
 		while (true) {
 			status = msm.isCommitNow(sTable.getName(), records.size(), config.getCommitCount());
+			if (status == MigrationStatusManager.STATUS_WAITING) {
+				ThreadUtils.threadSleep(1000, null);
+				counter++;
+			} else {
+				break;
+			}
+			if (counter >= 10) {
+				status = MigrationStatusManager.STATUS_COMMIT;
+				break;
+			}
+		}
+		if (MigrationStatusManager.STATUS_COMMIT == status) {
+			newRecordProcessor.processRecords(tableName, records);
+			// After records processed, clear it.
+			records.clear();
+		}
+	}
+	
+	protected void handleGraphCommitForFkCSV(String tableName, RecordExportedListener newRecordProcessor,
+			Edge edge, List<Record> records) {
+		//Watching memory to avoid out of memory errors
+		int status = MigrationStatusManager.STATUS_WAITING;
+		int counter = 0;
+		while (true) {
+			status = msm.isCommitNow(edge.getEdgeLabel(), records.size(), config.getCommitCount());
 			if (status == MigrationStatusManager.STATUS_WAITING) {
 				ThreadUtils.threadSleep(1000, null);
 				counter++;

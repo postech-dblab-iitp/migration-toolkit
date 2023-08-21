@@ -101,6 +101,11 @@ public class Column extends
 	public Column() {
 		//do nothing
 	}
+	
+	public Column(String name) {
+		this.setName(name);
+		this.setGraphDataType("ID");
+	}
 
 	public Column(Table table) {
 		this.tableOrView = table;

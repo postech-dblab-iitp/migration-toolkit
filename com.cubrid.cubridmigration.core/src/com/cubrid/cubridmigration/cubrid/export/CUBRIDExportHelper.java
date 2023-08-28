@@ -177,7 +177,9 @@ public class CUBRIDExportHelper extends
 	public String getPagedSelectSQL(Vertex v, String sql, long rows, long exportedRecords, PK pk) {
 		String cleanSql = sql.toUpperCase().trim();
 		
-		StringBuilder buf = new StringBuilder(sql.trim());
+		String editedQuery = editQueryForVertexCSV(v, sql);
+		
+		StringBuilder buf = new StringBuilder(editedQuery.trim());
 		
 		Pattern pattern = Pattern.compile("GROUP\\s+BY", Pattern.MULTILINE
 				| Pattern.CASE_INSENSITIVE);
@@ -225,6 +227,19 @@ public class CUBRIDExportHelper extends
 		buf.append(" AND ").append(exportedRecords + rows);
 
 		return buf.toString(); 
+	}
+	
+	private String editQueryForVertexCSV(Vertex v, String sql) {
+		Pattern selectPattern = Pattern.compile("SELECT\\s", Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
+		Matcher selectMatcher = selectPattern.matcher(sql);
+		
+		if (selectMatcher.find()) {
+			StringBuffer buffer = new StringBuffer("SELECT ROWNUM as ");
+			
+			sql = selectMatcher.replaceFirst(buffer.toString());
+		}
+		
+		return sql;
 	}
 	
 	public String getPagedSelectSQL(Edge e, String sql, long rows, long exportedRecords, PK pk) {
@@ -341,14 +356,25 @@ public class CUBRIDExportHelper extends
 		Map<String, String> fkMapping = e.getfkCol2RefMapping();
 		List<String> keySet = e.getFKColumnNames();
 		
+		String startVertexName;
+		String endVertexName;
+		
+		if (e.getStartVertexName().equals(e.getEndVertexName())) {
+			startVertexName = e.getStartVertexName() + "_1";
+			endVertexName = e.getEndVertexName() + "_2";
+		} else {
+			startVertexName = e.getStartVertexName();
+			endVertexName = e.getEndVertexName();
+		}
+		
 		String fkCol = keySet.get(0);
 		String refCol = fkMapping.get(keySet.get(0));
 		
 		StringBuffer buffer = new StringBuffer();
 		buffer.append("SELECT ");
-		buffer.append(e.getStartVertexName() + ".\"START_ID(" + e.getStartVertexName() + ")\"");
+		buffer.append(startVertexName + ".\"START_ID(" + e.getStartVertexName() + ")\"");
 		buffer.append(", ");
-		buffer.append(e.getEndVertexName() + ".\"END_ID(" + e.getEndVertexName() + ")\"");
+		buffer.append(endVertexName + ".\"END_ID(" + e.getEndVertexName() + ")\"");
 		
 		buffer.append(" FROM ");
 		
@@ -359,7 +385,7 @@ public class CUBRIDExportHelper extends
 		buffer.append(" order by ");
 		buffer.append(fkCol);
 		buffer.append(" for orderby_num()) as ");
-		buffer.append(e.getStartVertexName());
+		buffer.append(startVertexName);
 		buffer.append(", ");
 		
 		buffer.append("(SELECT ROWNUM as \"END_ID(" + e.getEndVertexName() + ")\", ");
@@ -369,14 +395,14 @@ public class CUBRIDExportHelper extends
 		buffer.append(" order by ");
 		buffer.append(refCol);
 		buffer.append(" for orderby_num()) as ");
-		buffer.append(e.getEndVertexName());
+		buffer.append(endVertexName);
 		
 		buffer.append(" where ");
-		buffer.append(e.getStartVertexName() + "." + fkCol);
+		buffer.append(startVertexName + "." + fkCol);
 		buffer.append(" = ");
-		buffer.append(e.getEndVertexName() + "." + refCol);
+		buffer.append(endVertexName + "." + refCol);
 		
-		buffer.append(" order by " + e.getStartVertexName() + "." + fkCol);
+		buffer.append(" order by " + startVertexName + "." + fkCol);
 		
 		return buffer.toString();
 	}
@@ -388,6 +414,9 @@ public class CUBRIDExportHelper extends
 		
 		String startVertexName = addDoubleQuote(e.getStartVertexName().toUpperCase());
 		String endVertexName = addDoubleQuote(e.getEndVertexName().toUpperCase());
+		
+		String startIdCol = "\"START_ID(" + e.getStartVertexName().toUpperCase() + ")\"";
+		String endIdCol = "\"END_ID(" + e.getEndVertexName().toUpperCase() + ")\"";
 		
 		String dupStartVertexName = null;
 		String dupEndVertexName = null;
@@ -411,6 +440,24 @@ public class CUBRIDExportHelper extends
 			editString = startVertexIdMatcher.replaceFirst(column);
 		}
 		
+		Pattern startIdPattern = Pattern.compile("\"START_ID", Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
+		Matcher startIdMatcher = startIdPattern.matcher(editString);
+		
+		if (startIdMatcher.find()) {
+			String startId = dupStartVertexName + ".\"START_ID";
+			
+			editString = startIdMatcher.replaceFirst(startId);
+		}
+		
+		Pattern endIdPattern = Pattern.compile("\"END_ID", Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);;
+		Matcher endIdMatcher = endIdPattern.matcher(editString);
+		
+		if (endIdMatcher.find()) {
+			String endId = dupEndVertexName + ".\"END_ID";
+			
+			editString = endIdMatcher.replaceFirst(endId);
+		}
+		
 		Pattern endVertexIdPattern = Pattern.compile(addDoubleQuote(refColList.get(1)), Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
 		Matcher endVertexIdMatcher = endVertexIdPattern.matcher(editString);
 		
@@ -419,22 +466,6 @@ public class CUBRIDExportHelper extends
 			String column = "\"main\"." + addDoubleQuote(refColList.get(1));
 			
 			editString = endVertexIdMatcher.replaceFirst(column);
-		}
-		
-		Pattern selectPattern = Pattern.compile("SELECT\\s", Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
-		Matcher selectMatcher = selectPattern.matcher(editString);
-		
-		if (selectMatcher.find()) {
-			StringBuffer buffer = new StringBuffer();
-			buffer.append("SELECT " + dupStartVertexName + "." + "\"START_ID\"");
-			
-			buffer.append(", ");
-			
-			buffer.append(dupEndVertexName + "." + "\"END_ID\"");
-			
-			buffer.append(", ");
-			
-			editString = selectMatcher.replaceFirst(buffer.toString());
 		}
 		
 		Pattern fromPattern = Pattern.compile("FROM\\s.*$", Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
@@ -447,14 +478,13 @@ public class CUBRIDExportHelper extends
 			endVertexIdMatcher.reset();
 			
 			if (startVertexIdMatcher.find() || endVertexIdMatcher.find()) {
-				buffer.append("FROM " + edgeLabel + " as main, " + "(SELECT ROWNUM as \"START_ID\", ");
+				buffer.append("FROM " + edgeLabel + " as main, " + "(SELECT ROWNUM as " + startIdCol + ", ");
 				
 				edgeLabel = new String("\"main\"");
 				
 			} else {
-				buffer.append("FROM " + edgeLabel + ", " + "(SELECT ROWNUM as \"START_ID\", ");
+				buffer.append("FROM " + edgeLabel + ", " + "(SELECT ROWNUM as " + startIdCol + ", ");
 			}
-			
 			
 			buffer.append(addDoubleQuote(e.getREFColumnNames(refColList.get(0))));
 			
@@ -462,7 +492,7 @@ public class CUBRIDExportHelper extends
 			
 			buffer.append(addDoubleQuote(e.getREFColumnNames(refColList.get(0))));
 			
-			buffer.append(" for orderby_num()) as " + dupStartVertexName + ", (SELECT ROWNUM as \"END_ID\", ");
+			buffer.append(" for orderby_num()) as " + dupStartVertexName + ", (SELECT ROWNUM as " + endIdCol + ", ");
 			
 			buffer.append(addDoubleQuote(e.getREFColumnNames(refColList.get(1))));
 			
@@ -505,11 +535,6 @@ public class CUBRIDExportHelper extends
 		originalString.append(whereBuffer.toString());
 		
 		editString = originalString.toString();
-		
-		// replace select
-		// replace from
-		// add where
-		// add order by
 		
 		return editString;
 	}
@@ -639,11 +664,7 @@ public class CUBRIDExportHelper extends
 	public String getGraphSelectSQL(Vertex v, boolean isTargetCSV) {
 		StringBuffer buf = new StringBuffer(256);
 		buf.append("SELECT ");
-		
-		if (isTargetCSV) {
-			buf.append("ROWNUM as \"ID\", ");
-		}
-		
+
 		final List<Column> columnList = v.getColumnList();
 		for (int i = 0; i < columnList.size(); i++) {
 			if (i > 0) {

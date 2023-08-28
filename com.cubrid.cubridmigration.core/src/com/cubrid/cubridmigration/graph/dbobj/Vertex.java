@@ -45,7 +45,7 @@ public class Vertex extends DBObject {
 		this.columnList = columnList;
 	}
 	public void addColumn(Column col) {
-		this.columnList.add(1, col);
+		this.columnList.add(0, col);
 	}
 	public int getId() {
 		return id;

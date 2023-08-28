@@ -576,6 +576,19 @@ public class JDBCExporter extends
 	
 	private String editFkRecordCounterSql(Edge e, Map<String, String> fkMapping) {
 		List<String> keySet = e.getFKColumnNames();
+		
+		String startVertexName;
+		String endVertexName;
+		
+		if (e.getStartVertexName().equals(e.getEndVertexName())) {
+			startVertexName = e.getStartVertexName() + "_1";
+			endVertexName = e.getEndVertexName() + "_2";
+		} else {
+			startVertexName = e.getStartVertexName();
+			endVertexName = e.getEndVertexName();
+		}
+		
+		
 		String fkCol = keySet.get(0);
 		String refCol = fkMapping.get(keySet.get(0));
 		
@@ -589,7 +602,7 @@ public class JDBCExporter extends
 		buffer.append(" order by ");
 		buffer.append(fkCol);
 		buffer.append(" for orderby_num()) as ");
-		buffer.append(e.getStartVertexName());
+		buffer.append(startVertexName);
 		buffer.append(", ");
 		
 		buffer.append("(SELECT ROWNUM as \"END_ID\", ");
@@ -599,12 +612,12 @@ public class JDBCExporter extends
 		buffer.append(" order by ");
 		buffer.append(refCol);
 		buffer.append(" for orderby_num()) as ");
-		buffer.append(e.getEndVertexName());
+		buffer.append(endVertexName);
 		
 		buffer.append(" where ");
-		buffer.append(e.getStartVertexName() + "." + fkCol);
+		buffer.append(startVertexName + "." + fkCol);
 		buffer.append(" = ");
-		buffer.append(e.getEndVertexName() + "." + refCol);
+		buffer.append(endVertexName + "." + refCol);
 		
 		return buffer.toString();
 	}
@@ -665,7 +678,7 @@ public class JDBCExporter extends
 		}
 	}
 	
-	protected long graphHandleSQL(Connection conn, String sql, Vertex vextex, Table sTable, List<Record> records,
+	protected long graphHandleSQL(Connection conn, String sql, Vertex vertex, Table sTable, List<Record> records,
 			RecordExportedListener newRecsHandler) {
 		JDBCObjContainer joc = new JDBCObjContainer();
 		joc.setConn(conn);
@@ -681,12 +694,12 @@ public class JDBCExporter extends
 					return totalExported;
 				}
 				totalExported++;
-				Record record = createGraphNewRecord(sTable, vextex.getColumnList(), joc.getRs());
+				Record record = createGraphNewRecordForVertexCSV(vertex, vertex.getColumnList(), joc.getRs());
 				if (record == null) {
 					continue;
 				}
 				records.add(record);
-				handleGraphCommit(vextex.getVertexLabel(), newRecsHandler, sTable, records);
+				handleGraphCommit(vertex.getVertexLabel(), newRecsHandler, sTable, records);
 			}
 			return totalExported;
 		} finally {
@@ -755,6 +768,35 @@ public class JDBCExporter extends
 		return null;
 	}
 	
+	protected Record createGraphNewRecordForVertexCSV(Vertex v, List<Column> cols, ResultSet rs) {
+		try {
+			Record record = new Record();
+			final DBExportHelper srcDBExportHelper = getSrcDBExportHelper();
+			for (int ci = 1; ci <= cols.size(); ci++) {
+				Column cc = cols.get(ci - 1);
+				if (!cc.getSupportGraphDataType()) {
+					continue;
+				}
+				Column sCol = v.getColumnByName(cc.getName());
+				Object value = srcDBExportHelper.getJdbcObjectForCSV(rs, sCol);
+				record.addColumnValue(sCol, value);
+			}
+			return record;
+		} catch (NormalMigrationException e) {
+			LOG.error("", e);
+			eventHandler.handleEvent(new MigrationErrorEvent(e));
+		} catch (SQLException e) {
+			LOG.error("", e);
+			eventHandler.handleEvent(new MigrationErrorEvent(new NormalMigrationException(
+					"Transform table [" + v.getName() + "] record error.", e)));
+		} catch (Exception e) {
+			LOG.error("", e);
+			eventHandler.handleEvent(new MigrationErrorEvent(new NormalMigrationException(
+					"Transform table [" + v.getName() + "] record error.", e)));
+		}
+		return null;
+	}
+	
 	protected Record createGraphNewRecordForFkCSV(Edge e, List<Column> cols, ResultSet rs) {
 		try {
 			Record record = new Record();
@@ -765,7 +807,7 @@ public class JDBCExporter extends
 					continue;
 				}
 				Column sCol = e.getColumnbyName(cc.getName());
-				Object value = srcDBExportHelper.getJdbcObjectForFkCSV(rs, sCol);
+				Object value = srcDBExportHelper.getJdbcObjectForCSV(rs, sCol);
 				record.addColumnValue(sCol, value);
 			}
 			return record;

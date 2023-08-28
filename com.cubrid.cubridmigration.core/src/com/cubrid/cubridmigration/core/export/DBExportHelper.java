@@ -149,7 +149,7 @@ public abstract class DBExportHelper implements
 		return null;
 	}
 	
-	public Object getJdbcObjectForFkCSV(final ResultSet rs, final Column column) throws SQLException {
+	public Object getJdbcObjectForCSV(final ResultSet rs, final Column column) throws SQLException {
 		if (column == null) {
 			throw new RuntimeException("Column can't be null.");
 		}

@@ -391,6 +391,14 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 			vertex.setVertexLabel(table.getName());
 			vertex.setTableName(table.getName());
 			vertex.setColumnList(table.getColumns());
+			
+			if (getMigrationWizard().getMigrationConfig().targetIsCSV()) {
+				Column idCol = new Column("id", vertex.getVertexLabel());
+				idCol.setDataType("ID");
+				
+				vertex.addColumn(idCol);
+			}
+			
 			vertex.setVertexType(Vertex.FIRST_TYPE);
 			vertex.setHasPK(table.hasPK());
 			
@@ -406,6 +414,14 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 			startVertex.setVertexLabel(table.getName());
 			startVertex.setTableName(table.getName());
 			startVertex.setColumnList(table.getColumns());
+			
+			if (getMigrationWizard().getMigrationConfig().targetIsCSV()) {
+				Column idCol = new Column("id", startVertex.getVertexLabel());
+				idCol.setDataType("ID");
+				
+				startVertex.addColumn(idCol);
+			}
+			
 			startVertex.setVertexType(Vertex.SECOND_TYPE);
 			startVertex.setHasPK(table.hasPK());
 			Edge edge;
@@ -473,6 +489,14 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 			startVertex.setVertexLabel(table.getName());
 			startVertex.setTableName(table.getName());
 			startVertex.setColumnList(table.getColumns());
+			
+			if (getMigrationWizard().getMigrationConfig().targetIsCSV()) {
+				Column idCol = new Column("id", startVertex.getVertexLabel());
+				idCol.setDataType("ID");
+				
+				startVertex.addColumn(idCol);
+			}
+			
 			startVertex.setVertexType(Vertex.INTERMEDIATE_TYPE);
 			startVertex.setHasPK(table.hasPK());
 
@@ -584,13 +608,16 @@ public class GraphTableSelectPage extends MigrationWizardPage {
             edge.addFKCol2Ref(col1, fk1.getRefColumns(col1));
             edge.addFKCol2Ref(col2, fk2.getRefColumns(col2));
             
-//			if (getMigrationWizard().getMigrationConfig().targetIsCSV()) {
-//				Column startCol = new Column("START_ID(" + edge.getStartVertexName() + ")");
-//				Column endCol = new Column("END_ID(" + edge.getEndVertexName() + ")");
-//				
-//				edge.addColumn(startCol);
-//				edge.addColumn(endCol);
-//			}
+			if (getMigrationWizard().getMigrationConfig().targetIsCSV()) {
+				Column startCol = new Column("START_ID(" + edge.getStartVertexName() + ")");
+				Column endCol = new Column("END_ID(" + edge.getEndVertexName() + ")");
+				
+				startCol.setDataType("ID");
+				endCol.setDataType("ID");
+				
+				edge.addColumnAtFirst(endCol);
+				edge.addColumnAtFirst(startCol);
+			}
             
 			gdbDict.addMigratedEdgeList(edge);
 		}
@@ -605,6 +632,14 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 			startVertex.setVertexLabel(table.getName());
 			startVertex.setTableName(table.getName());
 			startVertex.setColumnList(table.getColumns());
+			
+			if (getMigrationWizard().getMigrationConfig().targetIsCSV()) {
+				Column idCol = new Column("id", startVertex.getVertexLabel());
+				idCol.setDataType("ID");
+				
+				startVertex.addColumn(idCol);
+			}
+			
 			startVertex.setVertexType(Vertex.RECURSIVE_TYPE);
 			startVertex.setHasPK(table.hasPK());
 			

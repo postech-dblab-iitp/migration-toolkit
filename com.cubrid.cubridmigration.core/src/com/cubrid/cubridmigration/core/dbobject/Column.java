@@ -106,6 +106,12 @@ public class Column extends
 		this.setName(name);
 		this.setGraphDataType("ID");
 	}
+	
+	public Column(String name, String vLabel) {
+		this.setName(name);
+		this.setGraphDataType("ID(" + vLabel + ")");
+	}
+
 
 	public Column(Table table) {
 		this.tableOrView = table;
@@ -436,5 +442,9 @@ public class Column extends
 	
 	public boolean isSelected() {
 		return isSelected;
+	}
+	
+	public String toString() {
+		return "Column name: " + this.getName() + " | Column type: " + this.getDataType() + "\n";
 	}
 }

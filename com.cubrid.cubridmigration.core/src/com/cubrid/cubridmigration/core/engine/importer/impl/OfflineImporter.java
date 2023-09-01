@@ -107,8 +107,6 @@ public abstract class OfflineImporter extends
 
 	//Default path of migration load DB file 
 	protected Data2StrTranslator unloadFileUtil;
-	
-	private int testCounter = 1;
 
 	/**
 	 * ImportFileWriter writes data to file with specified format
@@ -774,6 +772,12 @@ public abstract class OfflineImporter extends
 		executeDDL(ddl + ";\n", false, createResultHandler(sq));
 	}
 	
+	public int importVertexHeader(Vertex v) {
+		importVertexToCSV(v);
+		
+		return 0;
+	}
+	
 	public int importVertex(Vertex v, List<Record> records) {
 		//TODO need vertex ddl
 		//TODO executeDDL(ddl, true, resultHandler)
@@ -801,13 +805,17 @@ public abstract class OfflineImporter extends
 					
 					recCounter = 0;
 				}
-				
 			}
-			
 			executeDDL(buffer.toString() + ";\n", false, createResultHandler(v, recCounter));
 			
 			return 0;
 		}
+	}
+	
+	public int importEdgeHeader(Edge e) {
+		importEdgeToCSV(e);
+		
+		return 0;
 	}
 	
 	public int importEdge(Edge e, List<Record> records) {
@@ -868,12 +876,28 @@ public abstract class OfflineImporter extends
 			return 0;
 		}
 	}
+
+	public void importVertexToCSV(Vertex v) {
+		String tmpDataFileName = getRandomTempFileName() + config.getDataFileExt();
+		File file = new File(tmpDataFileName);
+		
+		try {
+			if (v != null) {
+				int counter = writeGraphHeader(file, v);
+				
+				RunnableResultHandler resultHandler = createResultHandler(v, counter);
+				
+				handleDataFile(tmpDataFileName, v, counter, 0);
+			}
+		} catch (Exception exception) {
+			// TODO Auto-generated catch block
+			exception.printStackTrace();
+		}
+	}
 	
 	public void importVertexToCSV(List<Record> records, Vertex v) {
 		String tmpDataFileName = getRandomTempFileName() + config.getDataFileExt();
 		File file = new File(tmpDataFileName);
-		
-//		editCSVFormat(records);
 		
 		try {
 			if (records != null) {
@@ -881,9 +905,25 @@ public abstract class OfflineImporter extends
 				
 				RunnableResultHandler resultHandler = createResultHandler(v, counter);
 				
-//				sendSchemaFile(tmpDataFileName, resultHandler, false);
-				
 				handleDataFile(tmpDataFileName, v, counter, records.size());
+			}
+		} catch (Exception exception) {
+			// TODO Auto-generated catch block
+			exception.printStackTrace();
+		}
+	}
+	
+	public void importEdgeToCSV(Edge e) {
+		String tmpDataFileName = getRandomTempFileName() + config.getDataFileExt();
+		File file = new File(tmpDataFileName);
+		
+		try {
+			if (e != null) {
+				int counter = writeGraphHeader(file, e);
+				
+				RunnableResultHandler resultHandler = createResultHandler(e, counter);
+				
+				handleDataFile(tmpDataFileName, e, counter, 0);
 			}
 		} catch (Exception exception) {
 			// TODO Auto-generated catch block
@@ -911,8 +951,7 @@ public abstract class OfflineImporter extends
 		}
 	}
 	
-	public int writeGraphData(List<Record> records, File file, Object obj) throws Exception {
-		
+	public int writeGraphHeader(File file, Object obj) throws Exception {
 		CSVWriter writer = new CSVWriter(new OutputStreamWriter(new FileOutputStream(file),
 				config.getTargetCharSet()), config.getCsvSettings().getSeparateChar(),
 				config.getCsvSettings().getQuoteChar(), config.getCsvSettings().getEscapeChar());
@@ -920,7 +959,7 @@ public abstract class OfflineImporter extends
 		if (obj instanceof Edge) {
 			Edge edge = (Edge) obj;
 			
-			List<String> firstLine = new ArrayList<String>();
+			List<String> header = new ArrayList<String>();
 			
 			List<Column> edgeColumnList = edge.getColumnList();
 			for (Column col : edgeColumnList) {
@@ -929,18 +968,19 @@ public abstract class OfflineImporter extends
 					continue;
 				}
 				
-				StringBuffer sb = new StringBuffer();		
-				sb.append(":");
-				sb.append(col.getName());
+				StringBuffer sb = new StringBuffer();
 				
-				firstLine.add(sb.toString());
+				sb.append(col.getName());
+			
+				header.add(sb.toString());
 			}
 			
-			writer.writeNext(firstLine.toArray(new String[firstLine.size()]));
+			writer.writeNext(header.toArray(new String[header.size()]));
 			
 		} else if (obj instanceof Vertex) {
 			Vertex vertex = (Vertex) obj;
-			List<String> firstLine = new ArrayList<String>();
+			
+			List<String> header = new ArrayList<String>();
 			
 			List<Column> vertexColumnList = vertex.getColumnList();
 			for (Column col : vertexColumnList) {
@@ -955,11 +995,22 @@ public abstract class OfflineImporter extends
 				sb.append(":");
 				sb.append(col.getGraphDataType());
 				
-				firstLine.add(sb.toString());
+				header.add(sb.toString());
 			}
 			
-			writer.writeNext(firstLine.toArray(new String[firstLine.size()]));
+			writer.writeNext(header.toArray(new String[header.size()]));
 		}
+		
+		writer.flush();
+		
+		return 1;
+	}
+	
+	public int writeGraphData(List<Record> records, File file, Object obj) throws Exception {
+		
+		CSVWriter writer = new CSVWriter(new OutputStreamWriter(new FileOutputStream(file),
+				config.getTargetCharSet()), config.getCsvSettings().getSeparateChar(),
+				config.getCsvSettings().getQuoteChar(), config.getCsvSettings().getEscapeChar());
 		
 		try {
 			int total = 0;

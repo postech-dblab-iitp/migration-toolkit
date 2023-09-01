@@ -67,6 +67,8 @@ public class MigrationTasksScheduler {
 	protected MigrationTaskFactory taskFactory;
 	protected MigrationContext context;
 
+	protected boolean targetIsCSV;
+	
 	public MigrationTasksScheduler() {
 
 	}
@@ -80,6 +82,8 @@ public class MigrationTasksScheduler {
 		MigrationConfiguration config = context.getConfig();
 		
 		if (config.targetIsGraph() || config.targetIsDBDump() || config.targetIsCSV()) {
+			targetIsCSV = config.targetIsCSV();
+			
 			clearTargetDB();
 			greaphSchedule();
 			return;
@@ -128,6 +132,9 @@ public class MigrationTasksScheduler {
 	}
 
 	private void greaphSchedule() {
+		if (targetIsCSV) {
+			createHeaderTask();
+		}
 		
 		createGraphStep1();
 		await();
@@ -490,6 +497,22 @@ public class MigrationTasksScheduler {
 		await();
 	}
 	
+	protected void createHeaderTask() {
+		MigrationConfiguration config = context.getConfig();
+		GraphDictionary gdbDict = config.getGraphDictionary();
+		
+		List<Vertex> vertexList = gdbDict.getMigratedVertexList();
+		List<Edge> edgeList = gdbDict.getMigratedEdgeList();
+		
+		for (Vertex v : vertexList) {
+			executeTask2(taskFactory.createVertexCSVHeaderTask(v));
+		}
+		
+		for (Edge e : edgeList) {
+			executeTask2(taskFactory.createEdgeCSVHeaderTask(e));
+		}
+	}
+	
 	protected void createGraphStep1() {
 		MigrationConfiguration config = context.getConfig();
 		GraphDictionary gdict = config.getGraphDictionary();
@@ -633,9 +656,9 @@ public class MigrationTasksScheduler {
 		GraphDictionary gdbDict = cfg.getGraphDictionary();
 		List<Edge> migratedEdgeList = gdbDict.getMigratedEdgeList();
 		
-		for (Edge edge : migratedEdgeList) {
-			if (edge.getEdgeType() == Edge.CUSTOM_TYPE) {
-				executeTask2(taskFactory.GraphEdgeExportTask(edge));
+		for (Edge e : migratedEdgeList) {
+			if (e.getEdgeType() == Edge.CUSTOM_TYPE) {
+				executeTask2(taskFactory.GraphEdgeExportTask(e));
 			}
 		}
 	}

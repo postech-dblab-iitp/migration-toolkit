@@ -466,8 +466,8 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 					edge.setStartVertexName(startVertex.getVertexLabel());
 					edge.setHavePKStartVertex(startVertex.getHasPK());
 					if (getMigrationWizard().getMigrationConfig().targetIsCSV()) {
-						Column startCol = new Column("START_ID(" + startVertex.getName() + ")");
-						Column endCol = new Column("END_ID(" + endVertex.getName() + ")");
+						Column startCol = new Column(":START_ID(" + startVertex.getName() + ")");
+						Column endCol = new Column(":END_ID(" + endVertex.getName() + ")");
 						
 						startCol.setDataType("ID");
 						endCol.setDataType("ID");
@@ -543,8 +543,8 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 					edge.setStartVertexName(startVertex.getVertexLabel());
 					edge.setHavePKStartVertex(startVertex.getHasPK());
 					if (getMigrationWizard().getMigrationConfig().targetIsCSV()) {
-						Column startCol = new Column("START_ID(" + startVertex.getName() + ")");
-						Column endCol = new Column("END_ID(" + endVertex.getName() + ")");
+						Column startCol = new Column(":START_ID(" + startVertex.getName() + ")");
+						Column endCol = new Column(":END_ID(" + endVertex.getName() + ")");
 						
 						startCol.setDataType("ID");
 						endCol.setDataType("ID");
@@ -609,8 +609,8 @@ public class GraphTableSelectPage extends MigrationWizardPage {
             edge.addFKCol2Ref(col2, fk2.getRefColumns(col2));
             
 			if (getMigrationWizard().getMigrationConfig().targetIsCSV()) {
-				Column startCol = new Column("START_ID(" + edge.getStartVertexName() + ")");
-				Column endCol = new Column("END_ID(" + edge.getEndVertexName() + ")");
+				Column startCol = new Column(":START_ID(" + edge.getStartVertexName() + ")");
+				Column endCol = new Column(":END_ID(" + edge.getEndVertexName() + ")");
 				
 				startCol.setDataType("ID");
 				endCol.setDataType("ID");
@@ -660,8 +660,8 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 				}
 				
 				if (getMigrationWizard().getMigrationConfig().targetIsCSV()) {
-					Column startCol = new Column("START_ID(" + startVertex.getName() + ")");
-					Column endCol = new Column("END_ID(" + startVertex.getName() + ")");
+					Column startCol = new Column(":START_ID(" + startVertex.getName() + ")");
+					Column endCol = new Column(":END_ID(" + startVertex.getName() + ")");
 					
 					startCol.setDataType("ID");
 					endCol.setDataType("ID");

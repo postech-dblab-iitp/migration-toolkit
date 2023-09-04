@@ -514,6 +514,13 @@ public final class MigrationTemplateHandler extends
 			config.setSourceType(attributes.getValue(TemplateTags.ATTR_DB_TYPE));
 		} else if (TemplateTags.TAG_TARGET.equals(qName)) {
 			
+//			if (attributes.getValue(TemplateTags.ATTR_DB_TYPE).equals("graph") 
+//					&& attributes.getValue(TemplateTags.ATTR_TYPE).equals("dir")) {
+//				isGraphTarget = false;
+//			} else {
+//				isGraphTarget = (attributes.getValue(TemplateTags.ATTR_DB_TYPE)).equals("graph");				
+//			}
+			
 			isGraphTarget = (attributes.getValue(TemplateTags.ATTR_DB_TYPE)).equals("graph");
 			
 			isSourceNode = false;

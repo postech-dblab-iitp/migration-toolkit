@@ -396,7 +396,7 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 				Column idCol = new Column("id", vertex.getVertexLabel());
 				idCol.setDataType("ID");
 				
-				vertex.addColumn(idCol);
+				vertex.addColumnFirst(idCol);
 			}
 			
 			vertex.setVertexType(Vertex.FIRST_TYPE);
@@ -419,7 +419,7 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 				Column idCol = new Column("id", startVertex.getVertexLabel());
 				idCol.setDataType("ID");
 				
-				startVertex.addColumn(idCol);
+				startVertex.addColumnFirst(idCol);
 			}
 			
 			startVertex.setVertexType(Vertex.SECOND_TYPE);
@@ -494,7 +494,7 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 				Column idCol = new Column("id", startVertex.getVertexLabel());
 				idCol.setDataType("ID");
 				
-				startVertex.addColumn(idCol);
+				startVertex.addColumnFirst(idCol);
 			}
 			
 			startVertex.setVertexType(Vertex.INTERMEDIATE_TYPE);
@@ -637,7 +637,7 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 				Column idCol = new Column("id", startVertex.getVertexLabel());
 				idCol.setDataType("ID");
 				
-				startVertex.addColumn(idCol);
+				startVertex.addColumnFirst(idCol);
 			}
 			
 			startVertex.setVertexType(Vertex.RECURSIVE_TYPE);

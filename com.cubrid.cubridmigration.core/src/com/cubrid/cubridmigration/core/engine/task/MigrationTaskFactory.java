@@ -70,7 +70,9 @@ import com.cubrid.cubridmigration.core.engine.task.imp.CleanDBTask;
 import com.cubrid.cubridmigration.core.engine.task.imp.ExecuteSQLTask;
 import com.cubrid.cubridmigration.core.engine.task.imp.FKImportTask;
 import com.cubrid.cubridmigration.core.engine.task.imp.FunctionImportTask;
+import com.cubrid.cubridmigration.core.engine.task.imp.GraphEdgeHeaderImportTask;
 import com.cubrid.cubridmigration.core.engine.task.imp.GraphEdgeImportTask;
+import com.cubrid.cubridmigration.core.engine.task.imp.GraphVertexHeaderImportTask;
 import com.cubrid.cubridmigration.core.engine.task.imp.GraphVertexImportTask;
 import com.cubrid.cubridmigration.core.engine.task.imp.IndexImportTask;
 import com.cubrid.cubridmigration.core.engine.task.imp.PKImportTask;
@@ -532,5 +534,17 @@ public class MigrationTaskFactory {
 		ImportTask task = new GraphEdgeImportTask(e, recordsTobeImport);
 		initImportTask(task);
 		return new ImportDataTaskDecorator(context, task);
+	}
+	
+	public ImportTask createEdgeCSVHeaderTask(Edge e) {
+		ImportTask task = new GraphEdgeHeaderImportTask(e);
+		initImportTask(task);
+		return task;
+	}
+	
+	public ImportTask createVertexCSVHeaderTask(Vertex v) {
+		ImportTask task = new GraphVertexHeaderImportTask(v);
+		initImportTask(task);
+		return task;
 	}
 }

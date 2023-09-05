@@ -291,7 +291,7 @@ public final class MigrationTemplateParser {
 			target.setAttribute(TemplateTags.ATTR_DB_TYPE, "cubrid");
 		}
 		
-		if (config.targetIsGraph() || config.targetIsDBDump()) {
+		if (config.targetIsGraph() || config.targetIsDBDump() || config.targetIsCSV()) {
 			createGraphTargetConInfoTag(config, document, target);
 			createGraphTargetVertexTag(config, document, target);
 			createGraphTargetEdgeTag(config, document, target);

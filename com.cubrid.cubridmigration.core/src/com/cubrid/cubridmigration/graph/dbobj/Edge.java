@@ -55,6 +55,10 @@ public class Edge {
 		this.columnList.add(col);
 	}
 	
+	public void addColumnAtFirst(Column col) {
+		this.columnList.add(0, col);
+	}
+	
 	public Column getColumnbyName(String columnName) {
 		for (Column column : columnList) {
 			if (column.getName().equals(columnName)) {

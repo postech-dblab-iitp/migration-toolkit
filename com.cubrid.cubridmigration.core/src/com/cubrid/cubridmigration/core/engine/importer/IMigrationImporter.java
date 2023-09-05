@@ -133,8 +133,12 @@ public interface IMigrationImporter {
 	 */
 	public int importRecords(SourceTableConfig stc, List<Record> records);
 	
+	public int importVertexHeader(Vertex v); 
+	
 	public int importVertex(Vertex v, List<Record> records);
     
+	public int importEdgeHeader(Edge e);
+	
     public int importEdge(Edge e, List<Record> records);
 
 }

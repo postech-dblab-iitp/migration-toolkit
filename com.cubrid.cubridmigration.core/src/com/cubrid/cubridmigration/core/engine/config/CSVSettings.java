@@ -48,8 +48,8 @@ public class CSVSettings implements
 
 	private static final long serialVersionUID = 6398832693801882983L;
 
-	private char separateChar = ',';
-	private char quoteChar = '\"';
+	private char separateChar = '|';
+	private char quoteChar = '\u0000';
 	private char escapeChar = MigrationConfiguration.CSV_NO_CHAR;
 
 	private final List<String> nullStrings = new ArrayList<String>(4);

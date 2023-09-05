@@ -98,11 +98,11 @@ public class MigrationConfiguration {
 
 	//GDB need remapping code
 	public static final int DEST_DB_UNLOAD = 0;
-	public static final int DEST_CSV = 5;
+	public static final int DEST_CSV = 1;
 	public static final int DEST_SQL = 2;
 	public static final int DEST_XLS = 3;
 	//GDB dest_online is cubrid.
-	public static final int DEST_ONLINE = 1;
+	public static final int DEST_ONLINE = 5;
 	public static final int DEST_GRAPH = 4;
 
 	public static final int SOURCE_TYPE_CUBRID = DatabaseType.CUBRID.getID();

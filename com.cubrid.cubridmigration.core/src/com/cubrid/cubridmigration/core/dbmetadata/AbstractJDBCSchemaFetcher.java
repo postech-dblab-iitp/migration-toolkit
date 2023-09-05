@@ -329,6 +329,7 @@ public abstract class AbstractJDBCSchemaFetcher implements
 			getExportHelper().configStatement(stmt);
 			stmt.setFetchSize(1);
 			rs = stmt.executeQuery();
+			
 			ResultSetMetaData resultSetMeta = rs.getMetaData();
 			return buildSQLTable(resultSetMeta);
 		} catch (Exception ex) {

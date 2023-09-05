@@ -148,6 +148,14 @@ public abstract class DBExportHelper implements
 				+ column.getName() + ")");
 		return null;
 	}
+	
+	public Object getJdbcObjectForCSV(final ResultSet rs, final Column column) throws SQLException {
+		if (column == null) {
+			throw new RuntimeException("Column can't be null.");
+		}
+
+		return rs.getObject(column.getName());
+	}
 
 	/**
 	 * return database object name

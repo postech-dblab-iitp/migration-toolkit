@@ -404,12 +404,10 @@ public class JDBCImporter extends
 	}
 
 	public int importVertexHeader(Vertex v) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	public int importEdgeHeader(Edge e) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 

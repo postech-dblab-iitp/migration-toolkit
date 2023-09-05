@@ -627,27 +627,15 @@ public class GraphJDBCImporter extends
 		}
 		
 		Object result = null;
-//		if (srcColumn.getDataType() == )
-//
-//		Object result = convert(srcValue, toColumn.getGraphDataType());
-		
-		return result;
-	}
-	
-	private Object convert(Object srcValue, String graphDataType) {
-		Object result = null;
-		
 		
 		return result;
 	}
 
 	public int importVertexHeader(Vertex v) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	public int importEdgeHeader(Edge e) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 }

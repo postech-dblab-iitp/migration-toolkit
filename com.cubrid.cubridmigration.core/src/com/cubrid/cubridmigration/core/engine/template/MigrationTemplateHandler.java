@@ -513,14 +513,6 @@ public final class MigrationTemplateHandler extends
 			isSourceNode = true;
 			config.setSourceType(attributes.getValue(TemplateTags.ATTR_DB_TYPE));
 		} else if (TemplateTags.TAG_TARGET.equals(qName)) {
-			
-//			if (attributes.getValue(TemplateTags.ATTR_DB_TYPE).equals("graph") 
-//					&& attributes.getValue(TemplateTags.ATTR_TYPE).equals("dir")) {
-//				isGraphTarget = false;
-//			} else {
-//				isGraphTarget = (attributes.getValue(TemplateTags.ATTR_DB_TYPE)).equals("graph");				
-//			}
-			
 			isGraphTarget = (attributes.getValue(TemplateTags.ATTR_DB_TYPE)).equals("graph");
 			
 			isSourceNode = false;
@@ -533,13 +525,6 @@ public final class MigrationTemplateHandler extends
 				config.setDestType(MigrationConfiguration.DEST_DB_UNLOAD);
 			}
 //			
-//			if (TemplateTags.VALUE_DIR.equalsIgnoreCase(type)) {
-//				config.setDestType(MigrationConfiguration.DEST_DB_UNLOAD);
-//			}
-//			
-			//			else if (TemplateTags.VALUE_OFFLINE.equalsIgnoreCase(type)) {
-			//				config.setDestType(MigrationConfiguration.DEST_OFFLINE);
-			//			} 
 		} else if (TemplateTags.TAG_PARAMS.equals(qName)) {
 			config.setExportThreadCount(Integer.parseInt(attributes.getValue(TemplateTags.ATTR_EXPORT_THREAD)));
 			String attrImportThread = attributes.getValue(TemplateTags.ATTR_IMPORT_THREAD);

@@ -242,43 +242,6 @@ public abstract class OfflineImporter extends
 			}
 		}
 	}
-//	protected class GraphCSVFileWriter implements ImportFileWriter {
-//		/**
-//		 * Write data to a CSV file
-//		 * 
-//		 * @param stc SourceTableConfig
-//		 * @param records List<Record> records
-//		 * @param file File
-//		 * @param tt Table
-//		 * @return total count
-//		 * @throws Exception ex
-//		 */
-//		public int writeData(final SourceTableConfig stc, final List<Record> records, File file, final Table tt) throws Exception {
-//			CSVWriter writer = new CSVWriter(new OutputStreamWriter(new FileOutputStream(file),
-//					config.getTargetCharSet()), config.getCsvSettings().getSeparateChar(),
-//					config.getCsvSettings().getQuoteChar(), config.getCsvSettings().getEscapeChar());
-//			try {
-//				List<String> lobFiles = new ArrayList<String>();
-//				int total = 0;
-//				for (Record re : records) {
-//					if (re == null) {
-//						continue;
-//					}
-//					List<String> res = getRecordString(stc, tt, re, lobFiles);
-//					if (res == null) {
-//						continue;
-//					}
-//					writer.writeNext(res.toArray(new String[res.size()]));
-//					total++;
-//				}
-//				writer.flush();
-//				return total;
-//			} finally {
-//				writer.close();
-//			}
-//		}
-//	}
-	
 
 	/**
 	 * XLSFileWriter responses to write data to XLS
@@ -561,7 +524,6 @@ public abstract class OfflineImporter extends
 		return new RunnableResultHandler() {
 			ImportGraphRecordsEvent graphEvent = new ImportGraphRecordsEvent(v, recCounter);
 			
-			
 			public void success() {
 				//TODO here
 				eventHandler.handleEvent(graphEvent);
@@ -577,7 +539,6 @@ public abstract class OfflineImporter extends
 	protected RunnableResultHandler createResultHandler(final Edge e, final int recCounter) {
 		return new RunnableResultHandler() {
 			ImportGraphRecordsEvent graphEvent = new ImportGraphRecordsEvent(e, recCounter);
-			
 			
 			public void success() {
 				eventHandler.handleEvent(graphEvent);
@@ -867,9 +828,7 @@ public abstract class OfflineImporter extends
 						recCounter = 0;
 						buffer = new StringBuffer();
 					}
-					
 				}
-				
 				executeDDL(buffer.toString(), false, createResultHandler(e, recCounter));
 			}
 			
@@ -940,8 +899,6 @@ public abstract class OfflineImporter extends
 				int counter = writeGraphData(records, file, e);
 				
 				RunnableResultHandler resultHandler = createResultHandler(e, counter);
-				
-//				sendSchemaFile(tmpDataFileName, resultHandler, false);
 				
 				handleDataFile(tmpDataFileName, e, counter, records.size());
 			}

@@ -154,7 +154,6 @@ public class GraphSchemaFetcher extends AbstractJDBCSchemaFetcher {
 			System.out.println("column type number log : " + columnTypeNum);
 			System.out.println("column precision log : " + columnPrecision);
 			
-			
 			if (StringUtils.isEmpty(columnName)) {
 				columnName = resultSetMeta.getColumnName(i);
 			}
@@ -181,6 +180,4 @@ public class GraphSchemaFetcher extends AbstractJDBCSchemaFetcher {
 		sqlTable.setColumns(columns);
 		return sqlTable;
 	}
-
-
 }

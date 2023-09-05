@@ -435,7 +435,6 @@ public class JDBCExporter extends
 				}
 				String pagesql;
 				
-				
 				if (config.targetIsCSV()) {
 					pagesql = graphExHelper.getPagedSelectSQL(v, sql, realPageCount, totalExported, pk);
 				} else {
@@ -489,10 +488,6 @@ public class JDBCExporter extends
 			LOG.debug("[IN]exportGraphVertexRecords()");
 		}
 		Table sTable = config.getSrcTableSchema(e.getOwner(), e.getEdgeLabel());
-//		if (sTable == null) {
-//			throw new NormalMigrationException("Table " + e.getEdgeLabel() + " was not found.");
-//		}
-//		final PK srcPK = sTable.getPk();
 		Connection conn = connManager.getSourceConnection(); //NOPMD
 		
 		long countOfRecords = graphFkEdgeCountSQL(conn, e);
@@ -518,14 +513,6 @@ public class JDBCExporter extends
 				String pageSql;
 				
 				pageSql = graphExHelper.getPagedFkRecords(e, sql, realPageCount, totalExported);
-				
-//				if (config.targetIsCSV()) {
-//					pagesql = graphExHelper.getPagedSelectSQL(e, sql, realPageCount, totalExported, pk);
-//				} else {
-//					pagesql = graphExHelper.getPagedSelectSQL(sql, realPageCount, totalExported, pk);
-//				}
-				
-//				pageSql = graphExHelper.getPagedSelectSQL(e, sql, realPageCount, totalExported, pk);
 				
 				if (LOG.isDebugEnabled()) {
 					LOG.debug("[SQL]PAGINATED=" + pageSql);
@@ -587,7 +574,6 @@ public class JDBCExporter extends
 			startVertexName = e.getStartVertexName();
 			endVertexName = e.getEndVertexName();
 		}
-		
 		
 		String fkCol = keySet.get(0);
 		String refCol = fkMapping.get(keySet.get(0));

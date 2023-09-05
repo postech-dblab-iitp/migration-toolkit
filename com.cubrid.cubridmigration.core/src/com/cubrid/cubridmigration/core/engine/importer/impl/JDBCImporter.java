@@ -403,4 +403,12 @@ public class JDBCImporter extends
 		return 0;
 	}
 
+	public int importVertexHeader(Vertex v) {
+		return 0;
+	}
+
+	public int importEdgeHeader(Edge e) {
+		return 0;
+	}
+
 }

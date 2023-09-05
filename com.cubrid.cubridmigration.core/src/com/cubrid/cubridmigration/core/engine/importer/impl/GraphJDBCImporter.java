@@ -174,7 +174,15 @@ public class GraphJDBCImporter extends
 						continue;
 					}
 					List<ColumnValue> colVal = getRecord2FKValue(e, rc);
-
+					
+//					if (colVal.get(0).getColumn().getGraphDataType().equalsIgnoreCase("int") || colVal.get(0).getColumn().getGraphDataType().equalsIgnoreCase("integer")) {
+//						stmt.setInt(1, Integer.parseInt(colVal.get(0).getValue().toString()));
+//						stmt.setInt(2, Integer.parseInt(colVal.get(1).getValue().toString()));
+//					} else {
+//						stmt.setString(1, colVal.get(0).getValue().toString());
+//						stmt.setString(2, colVal.get(1).getValue().toString());
+//					}
+					
 					stmt.setString(1, colVal.get(0).getValue().toString());
 					stmt.setString(2, colVal.get(1).getValue().toString());
 					
@@ -209,7 +217,9 @@ public class GraphJDBCImporter extends
 				}
 				DBUtils.rollback(conn);
 				//If SQL has errors, write the records to a SQL files.
-			} 
+			} catch (Exception eee) {
+				eee.printStackTrace();
+			}
 			finally {
 				Closer.close(stmt);
 				if (prvAutoCommitStatus) {
@@ -617,17 +627,15 @@ public class GraphJDBCImporter extends
 		}
 		
 		Object result = null;
-//		if (srcColumn.getDataType() == )
-//
-//		Object result = convert(srcValue, toColumn.getGraphDataType());
 		
 		return result;
 	}
-	
-	private Object convert(Object srcValue, String graphDataType) {
-		Object result = null;
-		
-		
-		return result;
+
+	public int importVertexHeader(Vertex v) {
+		return 0;
+	}
+
+	public int importEdgeHeader(Edge e) {
+		return 0;
 	}
 }

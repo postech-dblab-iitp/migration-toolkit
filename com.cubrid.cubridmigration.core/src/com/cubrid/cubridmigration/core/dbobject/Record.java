@@ -71,6 +71,10 @@ public class Record {
 		columnValueList.add(new ColumnValue(column, value));
 	}
 	
+	public void addColumnValueFront(Column column, Object value) {
+		columnValueList.add(1, new ColumnValue(column, value));
+	}
+	
 	public void addColumnValue(ColumnValue colVal) {
 		columnValueList.add(colVal);
 	}

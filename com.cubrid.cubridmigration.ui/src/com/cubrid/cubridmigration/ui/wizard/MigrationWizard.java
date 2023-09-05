@@ -285,6 +285,10 @@ public class MigrationWizard extends
 			return IDX_GRAPH_OFFLINE;
 		}
 		
+		if (migrationConfig.sourceIsOnline() && migrationConfig.targetIsCSV()) {
+			return IDX_GRAPH_OFFLINE;
+		}
+		
 		if (migrationConfig.targetIsGraph()) {
 			return IDX_GRAPH;
 		}

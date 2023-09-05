@@ -462,6 +462,8 @@ public final class MigrationWizardFactory {
 			return R2GMigrationProgressEditorPart.ID;
 		} if (targetType == MigrationConfiguration.DEST_DB_UNLOAD) {
 			return R2GMigrationProgressEditorPart.ID;
+		}  if (targetType == MigrationConfiguration.DEST_CSV) {
+			return R2GMigrationProgressEditorPart.ID;
 		}
 
 		if (sourceType == MigrationConfiguration.SOURCE_TYPE_CSV) {

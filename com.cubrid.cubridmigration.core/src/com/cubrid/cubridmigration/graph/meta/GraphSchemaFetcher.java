@@ -143,6 +143,17 @@ public class GraphSchemaFetcher extends AbstractJDBCSchemaFetcher {
 			Column column = factory.createColumn();
 			column.setTableOrView(sqlTable);
 			String columnName = resultSetMeta.getColumnLabel(i); // if it has column alias
+			
+			String columnType = resultSetMeta.getColumnTypeName(i);
+			int columnSize = resultSetMeta.getColumnDisplaySize(i);
+			int columnTypeNum = resultSetMeta.getColumnType(i);
+			int columnPrecision = resultSetMeta.getPrecision(i);
+			
+			System.out.println("column type log : " + columnType);
+			System.out.println("column size log : " + columnSize);
+			System.out.println("column type number log : " + columnTypeNum);
+			System.out.println("column precision log : " + columnPrecision);
+			
 			if (StringUtils.isEmpty(columnName)) {
 				columnName = resultSetMeta.getColumnName(i);
 			}
@@ -169,6 +180,4 @@ public class GraphSchemaFetcher extends AbstractJDBCSchemaFetcher {
 		sqlTable.setColumns(columns);
 		return sqlTable;
 	}
-
-
 }

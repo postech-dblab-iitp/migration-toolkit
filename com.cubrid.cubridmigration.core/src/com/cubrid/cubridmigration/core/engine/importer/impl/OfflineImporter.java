@@ -887,7 +887,7 @@ public abstract class OfflineImporter extends
 				
 				RunnableResultHandler resultHandler = createResultHandler(v, counter);
 				
-				handleDataFile(tmpDataFileName, v, counter, 0);
+				handleDataFile(tmpDataFileName, v, counter, 1);
 			}
 		} catch (Exception exception) {
 			// TODO Auto-generated catch block
@@ -923,7 +923,7 @@ public abstract class OfflineImporter extends
 				
 				RunnableResultHandler resultHandler = createResultHandler(e, counter);
 				
-				handleDataFile(tmpDataFileName, e, counter, 0);
+				handleDataFile(tmpDataFileName, e, counter, 1);
 			}
 		} catch (Exception exception) {
 			// TODO Auto-generated catch block
@@ -1003,7 +1003,7 @@ public abstract class OfflineImporter extends
 		
 		writer.flush();
 		
-		return 1;
+		return 0;
 	}
 	
 	public int writeGraphData(List<Record> records, File file, Object obj) throws Exception {

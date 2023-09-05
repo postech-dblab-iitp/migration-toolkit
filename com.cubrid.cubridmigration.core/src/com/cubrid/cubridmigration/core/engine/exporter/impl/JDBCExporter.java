@@ -694,7 +694,14 @@ public class JDBCExporter extends
 					return totalExported;
 				}
 				totalExported++;
-				Record record = createGraphNewRecordForVertexCSV(vertex, vertex.getColumnList(), joc.getRs());
+				Record record;
+				
+				if (config.targetIsCSV()) {
+					record = createGraphNewRecordForVertexCSV(vertex, vertex.getColumnList(), joc.getRs());
+				} else {
+					record = createGraphNewRecord(sTable, vertex.getColumnList(), joc.getRs());
+				}
+				
 				if (record == null) {
 					continue;
 				}
@@ -725,7 +732,14 @@ public class JDBCExporter extends
 					return totalExported;
 				}
 				totalExported++;
-				Record record = createGraphNewRecordForFkCSV(edge, edge.getColumnList(), joc.getRs());
+				Record record;
+				
+				if (config.targetIsCSV()) {
+					record = createGraphNewRecordForFkCSV(edge, edge.getColumnList(), joc.getRs());
+				} else {
+					record = createGraphNewRecord(sTable, edge.getColumnList(), joc.getRs());
+				}
+				
 				if (record == null) {
 					continue;
 				}

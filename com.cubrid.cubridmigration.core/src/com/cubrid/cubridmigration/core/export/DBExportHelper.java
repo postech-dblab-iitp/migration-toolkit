@@ -153,7 +153,13 @@ public abstract class DBExportHelper implements
 		if (column == null) {
 			throw new RuntimeException("Column can't be null.");
 		}
-
+		
+		Object obj = rs.getObject(column.getName());
+		
+		if (obj == null) {
+			return "NULL";
+		}
+		
 		return rs.getObject(column.getName());
 	}
 

@@ -927,8 +927,14 @@ public abstract class OfflineImporter extends
 				
 				StringBuffer sb = new StringBuffer();
 				
-				sb.append(col.getName());
-			
+				if (col.getDataType().equals("ID")) {
+					sb.append(col.getName());
+				} else {
+					sb.append(col.getName());
+					sb.append(":");
+					sb.append(col.getDataType());
+				}
+				
 				header.add(sb.toString());
 			}
 			

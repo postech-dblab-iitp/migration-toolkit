@@ -932,7 +932,7 @@ public abstract class OfflineImporter extends
 				} else {
 					sb.append(col.getName());
 					sb.append(":");
-					sb.append(col.getDataType());
+					sb.append(col.getDataType().toUpperCase());
 				}
 				
 				header.add(sb.toString());
@@ -956,7 +956,7 @@ public abstract class OfflineImporter extends
 				
 				sb.append(col.getName());
 				sb.append(":");
-				sb.append(col.getGraphDataType());
+				sb.append(col.getGraphDataType().toUpperCase());
 				
 				header.add(sb.toString());
 			}

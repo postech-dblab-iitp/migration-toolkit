@@ -195,7 +195,7 @@ public class LoadFileImporter extends
 			if (es == null) {
 				final StringBuffer sb = new StringBuffer(
 						mrManager.getDirAndFilesMgr().getMergeFilesDir()).append(
-						config.getFullTargetFilePrefix()).append(e.getEdgeLabel());
+						config.getFullTargetFilePrefix()).append(removeSpace(e.getEdgeLabel()));
 				es = new CurrentDataFileInfo(sb.toString(), config.getDataFileExt());
 				PathUtils.deleteFile(new File(es.fileFullName));
 				tableFiles.put(e.getEdgeLabel(), es);
@@ -250,7 +250,7 @@ public class LoadFileImporter extends
 			if (es == null) {
 				final StringBuffer sb = new StringBuffer(
 						mrManager.getDirAndFilesMgr().getMergeFilesDir()).append(
-						config.getFullTargetFilePrefix()).append(v.getVertexLabel());
+						config.getFullTargetFilePrefix()).append(removeSpace(v.getVertexLabel()));
 				es = new CurrentDataFileInfo(sb.toString(), config.getDataFileExt());
 				PathUtils.deleteFile(new File(es.fileFullName));
 				tableFiles.put(v.getVertexLabel(), es);
@@ -336,6 +336,10 @@ public class LoadFileImporter extends
 	 */
 	protected String getLOBDir(String tableName) {
 		return mrManager.getDirAndFilesMgr().getLobFilesDir() + tableName + File.separatorChar;
+	}
+	
+	protected String removeSpace(String label) {
+		return label.trim().replaceAll(" ", "_"); 
 	}
 
 //	public int importVertex(Vertex e, List<Record> records) {

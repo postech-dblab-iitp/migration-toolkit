@@ -157,7 +157,7 @@ public abstract class DBExportHelper implements
 		Object obj = rs.getObject(column.getName());
 		
 		if (obj == null) {
-			return "NULL";
+			return "";
 		}
 		
 		return rs.getObject(column.getName());

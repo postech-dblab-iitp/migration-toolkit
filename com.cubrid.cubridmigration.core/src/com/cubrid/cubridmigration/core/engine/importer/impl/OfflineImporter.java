@@ -407,6 +407,10 @@ public abstract class OfflineImporter extends
 	protected abstract void handleDataFile(String fileName, final Edge e, final int impCount, final int expCount);
 	
 	protected abstract void handleDataFile(String fileName, final Vertex v, final int impCount, final int expCount);
+	
+	protected abstract void handleDataFileHeader(String fileName, final Edge e, final int impCount, final int expCount);
+	
+	protected abstract void handleDataFileHeader(String fileName, final Vertex v, final int impCount, final int expCount);
 
 	/**
 	 * Send schema file and data file to server for loadDB command.
@@ -844,9 +848,9 @@ public abstract class OfflineImporter extends
 			if (v != null) {
 				int counter = writeGraphHeader(file, v);
 				
-				RunnableResultHandler resultHandler = createResultHandler(v, counter);
+//				RunnableResultHandler resultHandler = createResultHandler(v, counter);
 				
-				handleDataFile(tmpDataFileName, v, counter, 1);
+				handleDataFileHeader(tmpDataFileName, v, counter, 1);
 			}
 		} catch (Exception exception) {
 			// TODO Auto-generated catch block
@@ -880,9 +884,9 @@ public abstract class OfflineImporter extends
 			if (e != null) {
 				int counter = writeGraphHeader(file, e);
 				
-				RunnableResultHandler resultHandler = createResultHandler(e, counter);
+//				RunnableResultHandler resultHandler = createResultHandler(e, counter);
 				
-				handleDataFile(tmpDataFileName, e, counter, 1);
+				handleDataFileHeader(tmpDataFileName, e, counter, 1);
 			}
 		} catch (Exception exception) {
 			// TODO Auto-generated catch block

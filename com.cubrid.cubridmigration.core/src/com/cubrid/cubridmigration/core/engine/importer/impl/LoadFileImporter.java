@@ -191,14 +191,14 @@ public class LoadFileImporter extends
 			final int expCount) {
 		synchronized (lockObj) {
 			MigrationDirAndFilesManager mdfm = mrManager.getDirAndFilesMgr();
-			CurrentDataFileInfo es = tableFiles.get(e.getEdgeLabel());
+			CurrentDataFileInfo es = tableFiles.get(removeSpace(e.getEdgeLabel()));
 			if (es == null) {
 				final StringBuffer sb = new StringBuffer(
 						mrManager.getDirAndFilesMgr().getMergeFilesDir()).append(
 						config.getFullTargetFilePrefix()).append(removeSpace(e.getEdgeLabel()));
 				es = new CurrentDataFileInfo(sb.toString(), config.getDataFileExt());
 				PathUtils.deleteFile(new File(es.fileFullName));
-				tableFiles.put(e.getEdgeLabel(), es);
+				tableFiles.put(removeSpace(e.getEdgeLabel()), es);
 			}
 			//If the target file is full. 
 			if (mdfm.isDataFileFull(es.fileFullName)) {
@@ -246,14 +246,14 @@ public class LoadFileImporter extends
 			final int expCount) {
 		synchronized (lockObj) {
 			MigrationDirAndFilesManager mdfm = mrManager.getDirAndFilesMgr();
-			CurrentDataFileInfo es = tableFiles.get(v.getVertexLabel());
+			CurrentDataFileInfo es = tableFiles.get(removeSpace(v.getVertexLabel()));
 			if (es == null) {
 				final StringBuffer sb = new StringBuffer(
 						mrManager.getDirAndFilesMgr().getMergeFilesDir()).append(
 						config.getFullTargetFilePrefix()).append(removeSpace(v.getVertexLabel()));
 				es = new CurrentDataFileInfo(sb.toString(), config.getDataFileExt());
 				PathUtils.deleteFile(new File(es.fileFullName));
-				tableFiles.put(v.getVertexLabel(), es);
+				tableFiles.put(removeSpace(v.getVertexLabel()), es);
 			}
 			//If the target file is full. 
 			if (mdfm.isDataFileFull(es.fileFullName)) {
@@ -301,14 +301,14 @@ public class LoadFileImporter extends
 			final int expCount) {
 		synchronized (lockObj) {
 			MigrationDirAndFilesManager mdfm = mrManager.getDirAndFilesMgr();
-			CurrentDataFileInfo es = tableFiles.get(e.getEdgeLabel());
+			CurrentDataFileInfo es = tableFiles.get(removeSpace(e.getEdgeLabel()));
 			if (es == null) {
 				final StringBuffer sb = new StringBuffer(
 						mrManager.getDirAndFilesMgr().getMergeFilesDir()).append(
-						config.getFullTargetFilePrefix()).append(e.getEdgeLabel());
+						config.getFullTargetFilePrefix()).append(removeSpace(e.getEdgeLabel()));
 				es = new CurrentDataFileInfo(sb.toString(), config.getDataFileExt());
 				PathUtils.deleteFile(new File(es.fileFullName));
-				tableFiles.put(e.getEdgeLabel(), es);
+				tableFiles.put(removeSpace(e.getEdgeLabel()), es);
 			}
 			//If the target file is full. 
 			if (mdfm.isDataFileFull(es.fileFullName)) {
@@ -355,14 +355,14 @@ public class LoadFileImporter extends
 			final int expCount) {
 		synchronized (lockObj) {
 			MigrationDirAndFilesManager mdfm = mrManager.getDirAndFilesMgr();
-			CurrentDataFileInfo es = tableFiles.get(v.getVertexLabel());
+			CurrentDataFileInfo es = tableFiles.get(removeSpace(v.getVertexLabel()));
 			if (es == null) {
 				final StringBuffer sb = new StringBuffer(
 						mrManager.getDirAndFilesMgr().getMergeFilesDir()).append(
-						config.getFullTargetFilePrefix()).append(v.getVertexLabel());
+						config.getFullTargetFilePrefix()).append(removeSpace(v.getVertexLabel()));
 				es = new CurrentDataFileInfo(sb.toString(), config.getDataFileExt());
 				PathUtils.deleteFile(new File(es.fileFullName));
-				tableFiles.put(v.getVertexLabel(), es);
+				tableFiles.put(removeSpace(v.getVertexLabel()), es);
 			}
 			//If the target file is full. 
 			if (mdfm.isDataFileFull(es.fileFullName)) {

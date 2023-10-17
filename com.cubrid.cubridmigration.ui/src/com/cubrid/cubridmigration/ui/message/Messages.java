@@ -158,6 +158,8 @@ public class Messages extends
 	public static String btnSrcOnlineOracleDBDes;
 	public static String btnSrcSQLFiles;
 	public static String btnSrcSQLFilesDes;
+	public static String btnSrcOnlineTiberoDB;
+	public static String btnSrcOnlineTiberoDBDes;
 	public static String btnSSHProxySettings;
 	public static String btnStartMigrationByHistory;
 	public static String btnStartMigrationBySelectedHistory;

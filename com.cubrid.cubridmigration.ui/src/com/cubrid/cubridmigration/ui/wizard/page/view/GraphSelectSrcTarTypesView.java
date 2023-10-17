@@ -76,6 +76,7 @@ public class GraphSelectSrcTarTypesView {
 	//private Button btnXLSTar;
 
 	private Button btnOnlineCUBRIDSrc;
+	private Button btnOnlineTiberoSrc;
 	private Button btnOnlineGraphSrc;
 	//private Button btnOnlineOracleSrc;
 	//private Button btnOnlineMYSQLSrc;
@@ -113,6 +114,11 @@ public class GraphSelectSrcTarTypesView {
 				}
 			}
 		});
+		
+		btnOnlineTiberoSrc = createSrcTarTypeBtn(grpSrc, Messages.btnSrcOnlineTiberoDB,
+				Messages.btnSrcOnlineTiberoDBDes);
+		btnOnlineTiberoSrc.setData(MigrationConfiguration.SOURCE_TYPE_ORACLE);
+		srcButtons.add(btnOnlineTiberoSrc);
 		
 		btnOnlineGraphSrc = createSrcTarTypeBtn(grpSrc, Messages.btnSrcOnlineGraphDB,
 				Messages.btnSrcOnlineGraphDBDes);

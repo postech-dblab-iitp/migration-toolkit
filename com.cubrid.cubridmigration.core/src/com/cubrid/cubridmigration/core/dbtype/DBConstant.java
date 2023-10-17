@@ -52,6 +52,7 @@ public class DBConstant { //NOPMD
 	public static final String JDBC_CLASS_MSSQL = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
 	public static final String JDBC_CLASS_CUBRID = "cubrid.jdbc.driver.CUBRIDDriver";
 	public static final String JDBC_CLASS_MYSQL = "org.gjt.mm.mysql.Driver";
+	public static final String JDBC_CLASS_TIBERO = "com.tmax.tibero.jdbc.TbDriver";
 	public static final String JDBC_CLASS_MSSQL_JTDS = "net.sourceforge.jtds.jdbc.Driver";
 	//GDB driver
 	public static final String JDBC_CLASS_NEO4J = "org.neo4j.jdbc.Driver";
@@ -60,6 +61,7 @@ public class DBConstant { //NOPMD
 	public static final String DEF_PORT_MYSQL = "3306";
 	public static final String DEF_PORT_CUBRID = "33000";
 	public static final String DEF_PORT_ORACLE = "1521";
+	public static final String DEF_PORT_TIBERO = "8629";
 	//GDB port
 	public static final String DEF_PORT_GRAPH = "7687";
 

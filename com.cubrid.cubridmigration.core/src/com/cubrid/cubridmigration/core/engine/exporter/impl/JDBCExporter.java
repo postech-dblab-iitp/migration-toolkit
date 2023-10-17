@@ -400,6 +400,11 @@ public class JDBCExporter extends
 			return true;
 		}
 		
+		if (sTable == null) {
+			System.out.println("sTable is null");
+			return true;
+		}
+		
 		return recordCountOfCurrentPage == 0
 				|| recordCountOfCurrentPage < config.getPageFetchCount()
 				|| (!config.isImplicitEstimate() && exportedRecords >= sTable.getTableRowCount());
@@ -417,7 +422,7 @@ public class JDBCExporter extends
 		Connection conn = connManager.getSourceConnection(); //NOPMD
 		try {
 			final DBExportHelper expHelper = getSrcDBExportHelper();
-			CUBRIDExportHelper graphExHelper = (CUBRIDExportHelper) expHelper;
+			DBExportHelper graphExHelper = expHelper;
 			PK pk = graphExHelper.supportFastSearchWithPK(conn) ? srcPK : null;
 			newRecordProcessor.startExportTable(v.getVertexLabel());
 			List<Record> records = new ArrayList<Record>();
@@ -621,7 +626,7 @@ public class JDBCExporter extends
 		Connection conn = connManager.getSourceConnection(); //NOPMD
 		try {
 			final DBExportHelper expHelper = getSrcDBExportHelper();
-			CUBRIDExportHelper graphExHelper = (CUBRIDExportHelper) expHelper;
+			DBExportHelper graphExHelper = expHelper;
 			PK pk = graphExHelper.supportFastSearchWithPK(conn) ? srcPK : null;
 			newRecordProcessor.startExportTable(e.getEdgeLabel());
 			List<Record> records = new ArrayList<Record>();
@@ -749,7 +754,12 @@ public class JDBCExporter extends
 					continue;
 				}
 				Column sCol = st.getColumnByName(cc.getName());
-				Object value = srcDBExportHelper.getJdbcObject(rs, sCol);
+				Object value = srcDBExportHelper.getJdbcObject(rs, sCol);;
+				if (sCol.getDataType().equals("DATE")) {
+					if (value instanceof java.sql.Timestamp) {
+						value = new java.sql.Date(((java.sql.Timestamp) value).getTime());
+					}
+				}
 				record.addColumnValue(sCol, value);
 			}
 			return record;

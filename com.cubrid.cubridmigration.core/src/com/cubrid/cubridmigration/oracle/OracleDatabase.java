@@ -31,6 +31,7 @@ package com.cubrid.cubridmigration.oracle;
 
 import java.lang.reflect.Method;
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.Driver;
 import java.sql.SQLException;
 import java.util.Properties;
@@ -60,8 +61,8 @@ public class OracleDatabase extends
 	public OracleDatabase() {
 		super(DBConstant.DBTYPE_ORACLE,
 				DBConstant.DB_NAMES[DBConstant.DBTYPE_ORACLE],
-				new String[]{DBConstant.JDBC_CLASS_ORACLE },
-				DBConstant.DEF_PORT_ORACLE, new OracleSchemaFetcher(),
+				new String[]{DBConstant.JDBC_CLASS_TIBERO},
+				DBConstant.DEF_PORT_TIBERO, new OracleSchemaFetcher(),
 				new OracleExportHelper(), new OracleConnHelper(), false);
 	}
 
@@ -83,10 +84,10 @@ public class OracleDatabase extends
 			if (dbName == null) {
 				throw new IllegalArgumentException("DB name can't be NULL.");
 			}
-			String oracleJdbcURLPattern = "jdbc:oracle:thin:@%s:%s:%s";
+			String oracleJdbcURLPattern = "jdbc:tibero:thin:@%s:%s:%s";
 			//Oracle cluster connecting mode
 			if (dbName.startsWith("/")) {
-				oracleJdbcURLPattern = "jdbc:oracle:thin:@%s:%s/%s";
+				oracleJdbcURLPattern = "jdbc:tibero:thin:@%s:%s/%s";
 				dbName = dbName.substring(1, dbName.length());
 			}
 			//If the DB name contains schema name, for example: XE/migrationdev
@@ -136,19 +137,35 @@ public class OracleDatabase extends
 				//						timeZone = TimeZoneUtil.getOracleTZID(tzID);
 				//					}
 				//				}
-				Method method = Class.forName("oracle.jdbc.OracleConnection",
-						false, driver.getClass().getClassLoader()).getMethod(
-						"setSessionTimeZone", new Class[]{String.class });
-				String timeZone = TimeZoneUtils.getOracleTZID(TimeZoneUtils.getGMTFormat(TimeZone.getDefault().getID()));
-				method.invoke(conn, timeZone);
+//				Method method = Class.forName("com.tmax.tibero.jdbc.TbDriver",
+//						false, driver.getClass().getClassLoader()).getMethod(
+//						"setSessionTimeZone", new Class[]{String.class });
+//				String timeZone = TimeZoneUtils.getOracleTZID(TimeZoneUtils.getGMTFormat(TimeZone.getDefault().getID()));
+//				method.invoke(conn, timeZone);
 				//				((OracleConnection) conn).setSessionTimeZone(timeZone == null ? "Etc/GMT+0"
 				//						: TimeUtil.getOracleTZID(timeZone));
+				
+				checkDatabase(conn);
+				
 				return conn;
-			} catch (IllegalAccessException e) {
-				throw new RuntimeException(e);
 			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}
+		}
+		
+		private void checkDatabase(Connection conn) 
+		        throws SQLException {
+            try {
+                DatabaseMetaData metaData = conn.getMetaData();
+                if (metaData != null) {
+                    String projectVersion= metaData.getDatabaseProductVersion();
+                    if (projectVersion.equals("Unknown")) {
+                        throw new SQLException("Unable to read database information., Please check name or all setting of database");
+                    }
+                }
+            } catch (SQLException e) {
+                throw e;
+            }
 		}
 	}
 

@@ -181,8 +181,8 @@ public final class OracleDataTypeHelper extends
 		//REAL, RAW, BLOB, TIMESTAMP WITH TIME ZONE, TIMESTAMP WITH LOCAL TIME ZONE, 
 		//VARCHAR2, LONG RAW, NUMBER, CLOB, CHAR, STRUCT, FLOAT, DATE, LONG, 
 		//INTERVALDS, INTERVALYM, ARRAY, TIMESTAMP, REF
-		Map<String, List<DataType>> supportedDataType = catalog.getSupportedDataType();
 
+		Map<String, List<DataType>> supportedDataType = catalog.getSupportedDataType();
 		List<DataType> dataTypeList = supportedDataType.get(key);
 
 		if (dataTypeList == null) {

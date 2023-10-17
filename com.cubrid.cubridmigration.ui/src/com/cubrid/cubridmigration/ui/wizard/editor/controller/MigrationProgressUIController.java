@@ -653,7 +653,7 @@ public class MigrationProgressUIController {
 			if (item[4] == null || "null".equalsIgnoreCase(item[4])) {
 				return updateEdgeImpData(EdgeFKName, imp);
 			}
-			if (item[0].equals(EdgeFKName) && item[3].equalsIgnoreCase(owner)) {
+			if (item[2].equals(EdgeFKName) && item[4].equalsIgnoreCase(owner)) {
 				return getEdgeItemForImpData(imp, item);
 			}
 		}

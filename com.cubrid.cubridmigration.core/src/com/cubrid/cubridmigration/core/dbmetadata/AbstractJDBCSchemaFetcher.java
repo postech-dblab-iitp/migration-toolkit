@@ -1072,6 +1072,10 @@ public abstract class AbstractJDBCSchemaFetcher implements
 				} else {
 					List<DataType> list = new ArrayList<DataType>();
 					list.add(dataTypeObj);
+					//temp
+					if (typeName.equals("VARCHAR2")) {
+						supportedDataType.put("VARCHAR", list);
+					}
 					supportedDataType.put(typeName, list);
 				}
 			}

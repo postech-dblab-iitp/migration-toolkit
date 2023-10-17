@@ -43,6 +43,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
 
@@ -186,6 +187,9 @@ public final class OracleSchemaFetcher extends
 				String ddl = getObjectDDL(conn, schema.getName(), table.getName(),
 						OBJECT_TYPE_TABLE);
 				table.setDDL(ddl);
+				
+				setImportedKeysCount(conn, catalog, schema, table);
+				setExportedKeysCount(conn, catalog, schema, table);
 			}
 			// get views
 			List<View> viewList = schema.getViews();
@@ -201,6 +205,7 @@ public final class OracleSchemaFetcher extends
 				view.setQuerySpec(getQueryText(conn, schema.getName(), view.getName()));
 			}
 			buildPartitions(conn, catalog, schema);
+			
 		}
 		return catalog;
 	}
@@ -1411,4 +1416,57 @@ public final class OracleSchemaFetcher extends
 	//	protected void buildAllSchemas(Connection conn, Catalog catalog, Schema schema, Map<String, Table> tables)
 	//			throws SQLException {
 	//	}
+	
+	/**
+	 * setImportedKeysCount
+	 *
+	 * @param conn
+	 * @param catalog
+	 * @param schema
+	 * @param table
+	 * @throws SQLException
+	 */
+	protected void setImportedKeysCount(final Connection conn, final Catalog catalog, final Schema schema,
+			Table table) throws SQLException {
+
+		int importedKeysCount = 0;
+
+		ResultSet rs = null;
+		try {
+			rs = conn.getMetaData().getImportedKeys(getCatalogName(catalog), getSchemaName(schema), table.getName());
+			while (rs.next()) {
+				importedKeysCount++;
+			}
+			table.setImportedKeysCount(importedKeysCount);
+		} finally {
+			Closer.close(rs);
+		}
+	}
+
+	/**
+	 * setExportedKeysCount
+	 *
+	 * @param conn
+	 * @param catalog
+	 * @param schema
+	 * @param table
+	 * @throws SQLException
+	 */
+	protected void setExportedKeysCount(final Connection conn, final Catalog catalog, final Schema schema,
+			Table table) throws SQLException {
+
+		int exportedKeysCount = 0;
+
+		ResultSet rs = null;
+		try {
+			rs = conn.getMetaData().getExportedKeys(getCatalogName(catalog), getSchemaName(schema), table.getName());
+			while (rs.next()) {
+				exportedKeysCount++;
+			}
+			table.setExportedKeysCount(exportedKeysCount);
+		} finally {
+			Closer.close(rs);
+		}
+	}
+	
 }

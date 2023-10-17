@@ -68,6 +68,7 @@ public abstract class DatabaseType {
 	public static final DatabaseType MSSQL = new MSSQLDatabase();
 
 	public static final DatabaseType ORACLE = new OracleDatabase();
+	
 	//GDB add graph Database into DB types
 	public static final DatabaseType GRAPH = new GraphDatabase();
 

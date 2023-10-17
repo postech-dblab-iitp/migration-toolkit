@@ -35,6 +35,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.cubrid.cubridmigration.core.common.Closer;
 import com.cubrid.cubridmigration.core.connection.ConnParameters;
@@ -199,5 +201,58 @@ public class OracleExportHelper extends
 			Closer.close(conn);
 		}
 		return null;
+	}
+	
+	public String getGraphPagedSelectSQL(String sql, long pageSize,
+			long exportedRecords, PK pk) {
+		StringBuilder buf = new StringBuilder(sql.trim());
+		String cleanSql = sql.toUpperCase().trim();
+
+		Pattern pattern = Pattern.compile("GROUP\\s+BY", Pattern.MULTILINE
+				| Pattern.CASE_INSENSITIVE);
+		Pattern pattern2 = Pattern.compile("ORDER\\s+BY", Pattern.MULTILINE
+				| Pattern.CASE_INSENSITIVE);
+		Matcher matcher = pattern.matcher(cleanSql);
+		Matcher matcher2 = pattern2.matcher(cleanSql);
+		if (matcher.find()) {
+			//End with group by 
+			if (cleanSql.indexOf("HAVING") < 0) {
+				buf.append(" HAVING ");
+			} else {
+				buf.append(" AND ");
+			}
+			buf.append(" GROUPBY_NUM() ");
+		} else if (matcher2.find()) {
+			//End with order by 
+			buf.append(" FOR ORDERBY_NUM() ");
+		} else {
+			StringBuilder orderby = new StringBuilder();
+			if (pk != null) {
+				// if it has a pk, a pk scan is better than full range scan
+				for (String pkCol : pk.getPkColumns()) {
+					if (orderby.length() > 0) {
+						orderby.append(", ");
+					}
+					orderby.append("\"").append(pkCol).append("\"");
+				}
+			}
+			if (orderby.length() > 0) {
+				buf.append(" ORDER BY ");
+				buf.append(orderby);
+				buf.append(" FOR ORDERBY_NUM() ");
+			} else {
+				if (cleanSql.indexOf("WHERE") < 0) {
+					buf.append(" WHERE");
+				} else {
+					buf.append(" AND");
+				}
+				buf.append(" ROWNUM ");
+			}
+		}
+
+		buf.append(" BETWEEN ").append(exportedRecords + 1L);
+		buf.append(" AND ").append(exportedRecords + pageSize);
+
+		return buf.toString();
 	}
 }

@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 138
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/configuration/org.eclipse.osgi/bundles/30/1/.cp/lib
+END
+antdebug.jar
+K 25
+svn:wc:ra_dav:version-url
+V 151
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/configuration/org.eclipse.osgi/bundles/30/1/.cp/lib/antdebug.jar
+END
+remote.jar
+K 25
+svn:wc:ra_dav:version-url
+V 149
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/configuration/org.eclipse.osgi/bundles/30/1/.cp/lib/remote.jar
+END
+loggers.jar
+K 25
+svn:wc:ra_dav:version-url
+V 150
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/configuration/org.eclipse.osgi/bundles/30/1/.cp/lib/loggers.jar
+END

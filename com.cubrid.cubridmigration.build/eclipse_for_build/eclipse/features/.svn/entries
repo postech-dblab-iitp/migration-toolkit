@@ -1,0 +1,115 @@
+10
+
+dir
+168
+http://svn.platform.nhncorp.cn/devtools/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/features
+http://svn.platform.nhncorp.cn/devtools
+
+
+
+2012-09-20T14:57:07.208556Z
+168
+CN14917
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+a45defa0-3301-0010-9946-6f6903298bd5
+
+org.eclipse.mylyn.wikitext_feature_1.3.0.v20100608-0100-e3x
+dir
+
+org.eclipse.wst.xml_userdoc.feature_3.2.100.v201005241420-50FXNAkF7B77RBgFFBF
+dir
+
+org.eclipse.epp.usagedata.feature_1.3.0.R201005261100
+dir
+
+org.eclipse.mylyn.pde_feature_3.4.0.v20100608-0100-e3x
+dir
+
+org.eclipse.help_1.2.0.v20100427-7e7jEKFEx2XlnZinYPtgz03
+dir
+
+org.eclipse.mylyn.bugzilla_feature_3.4.0.v20100608-0100-e3x
+dir
+
+org.eclipse.equinox.p2.discovery.feature_1.0.0.v20100510-4--9oB5855K7P
+dir
+
+org.eclipse.wst.xml_core.feature_3.2.0.v201005241510-7C7OFXTF7RZHQHHxO4IuKe
+dir
+
+org.eclipse.epp.mpc_1.0.0.v20100611-0430
+dir
+
+org.eclipse.pde_3.6.0.v20100525-7b7mFKtFEx2XmfZ4_B7NUJA
+dir
+
+org.eclipse.rcp.source_3.6.0.v20100519-9OArFKvFtsd7WLUKh-DcYTS
+dir
+
+org.eclipse.jdt_3.6.0.v20100526-0800-7z8XFUJFMTfCWGoVuHImpms9H155
+dir
+
+org.eclipse.rcp_3.6.0.v20100519-9OArFKvFtsd7WLUKh-DcYTS
+dir
+
+org.eclipse.mylyn.java_feature_3.4.0.v20100608-0100-e3x
+dir
+
+org.eclipse.platform.source_3.6.0.v20100602-9gF78GpqFt6trOGhL60z0oEx3fz-JKNwxPY
+dir
+
+org.eclipse.wst.common_core.feature_3.2.0.v201005241600-7B7DFEdF7RZHOZIvUqM4NJ
+dir
+
+org.eclipse.platform_3.6.0.v20100602-9gF78GpqFt6trOGhL60z0oEx3fz-JKNwxPY
+dir
+
+org.eclipse.mylyn.context_feature_3.4.0.v20100608-0100-e3x
+dir
+
+org.eclipse.wst.common_ui.feature_3.2.0.v201005241600-7C78FPcEdhO_mXOgHjYfp_JwVrN5
+dir
+
+org.eclipse.equinox.p2.user.ui.source_2.0.0.v20100503-897HFZ-FdHjO2NQo0sD_Nt
+dir
+
+org.eclipse.mylyn.team_feature_3.4.0.v20100608-0100-e3x
+dir
+
+org.eclipse.equinox.p2.user.ui_2.0.0.v20100503-897HFZ-FdHjO2NQo0sD_Nt
+dir
+
+org.eclipse.cvs_1.2.0.v20100427-7B77FKs8sF7B77SDX4GW85
+dir
+
+org.eclipse.wst.xml_ui.feature_3.2.0.v201005241510-7H7AFUIDxumQGOb7ocjUR2Pvz-28
+dir
+
+org.eclipse.epp.package.rcp.feature_1.3.0.20100617-0521
+dir
+
+org.eclipse.epp.package.common.feature_1.3.0.20100617-0520
+dir
+
+org.eclipse.rap.tooling_1.3.0.20100615-1734
+dir
+
+org.eclipse.mylyn_feature_3.4.0.v20100608-0100-e3x
+dir
+
+org.eclipse.mylyn.ide_feature_3.4.0.v20100608-0100-e3x
+dir
+

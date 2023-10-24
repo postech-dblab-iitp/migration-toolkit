@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 138
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/configuration/org.eclipse.osgi/bundles/31/1/.cp/lib
+END
+antrunner.jar
+K 25
+svn:wc:ra_dav:version-url
+V 152
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/configuration/org.eclipse.osgi/bundles/31/1/.cp/lib/antrunner.jar
+END
+remoteAnt.jar
+K 25
+svn:wc:ra_dav:version-url
+V 152
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/configuration/org.eclipse.osgi/bundles/31/1/.cp/lib/remoteAnt.jar
+END

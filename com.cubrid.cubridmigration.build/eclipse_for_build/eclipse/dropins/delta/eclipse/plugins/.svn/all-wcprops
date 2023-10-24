@@ -1,0 +1,425 @@
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins
+END
+org.eclipse.swt.cocoa.macosx.x86_64_3.6.0.v3650b.jar
+K 25
+svn:wc:ra_dav:version-url
+V 169
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.cocoa.macosx.x86_64_3.6.0.v3650b.jar
+END
+org.eclipse.swt.cocoa.macosx.source_3.6.0.v3650b.jar
+K 25
+svn:wc:ra_dav:version-url
+V 169
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.cocoa.macosx.source_3.6.0.v3650b.jar
+END
+org.eclipse.swt.motif.aix.ppc.source_3.6.0.v3650b.jar
+K 25
+svn:wc:ra_dav:version-url
+V 170
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.motif.aix.ppc.source_3.6.0.v3650b.jar
+END
+org.eclipse.swt.gtk.linux.x86_64.source_3.6.0.v3650b.jar
+K 25
+svn:wc:ra_dav:version-url
+V 173
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.gtk.linux.x86_64.source_3.6.0.v3650b.jar
+END
+org.eclipse.swt.gtk.linux.x86_64_3.6.0.v3650b.jar
+K 25
+svn:wc:ra_dav:version-url
+V 166
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.gtk.linux.x86_64_3.6.0.v3650b.jar
+END
+org.eclipse.swt.gtk.solaris.x86.source_3.6.0.v3650b.jar
+K 25
+svn:wc:ra_dav:version-url
+V 172
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.gtk.solaris.x86.source_3.6.0.v3650b.jar
+END
+org.eclipse.swt.gtk.solaris.x86_3.6.0.v3650b.jar
+K 25
+svn:wc:ra_dav:version-url
+V 165
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.gtk.solaris.x86_3.6.0.v3650b.jar
+END
+org.eclipse.swt.win32.win32.x86.source_3.6.0.v3650b.jar
+K 25
+svn:wc:ra_dav:version-url
+V 172
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.win32.win32.x86.source_3.6.0.v3650b.jar
+END
+org.eclipse.equinox.security.win32.x86.source_1.0.200.v20100503.jar
+K 25
+svn:wc:ra_dav:version-url
+V 184
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.equinox.security.win32.x86.source_1.0.200.v20100503.jar
+END
+org.eclipse.equinox.security.win32.x86_1.0.200.v20100503.jar
+K 25
+svn:wc:ra_dav:version-url
+V 177
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.equinox.security.win32.x86_1.0.200.v20100503.jar
+END
+org.eclipse.core.net.linux.x86_64_1.1.0.I20100505-1245.jar
+K 25
+svn:wc:ra_dav:version-url
+V 175
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.core.net.linux.x86_64_1.1.0.I20100505-1245.jar
+END
+org.eclipse.swt.motif.solaris.sparc.source_3.6.0.v3650b.jar
+K 25
+svn:wc:ra_dav:version-url
+V 176
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.motif.solaris.sparc.source_3.6.0.v3650b.jar
+END
+org.eclipse.swt.motif.solaris.sparc_3.6.0.v3650b.jar
+K 25
+svn:wc:ra_dav:version-url
+V 169
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.motif.solaris.sparc_3.6.0.v3650b.jar
+END
+org.eclipse.equinox.security.macosx_1.100.100.v20100503.jar
+K 25
+svn:wc:ra_dav:version-url
+V 176
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.equinox.security.macosx_1.100.100.v20100503.jar
+END
+org.eclipse.ui.carbon.source_4.0.100.I20100601-0800.jar
+K 25
+svn:wc:ra_dav:version-url
+V 172
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.ui.carbon.source_4.0.100.I20100601-0800.jar
+END
+org.eclipse.core.resources.win32.x86_3.5.100.v20100505-1345.jar
+K 25
+svn:wc:ra_dav:version-url
+V 180
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.core.resources.win32.x86_3.5.100.v20100505-1345.jar
+END
+org.eclipse.core.filesystem.linux.x86_1.4.0.v20100505-1235.jar
+K 25
+svn:wc:ra_dav:version-url
+V 179
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.core.filesystem.linux.x86_1.4.0.v20100505-1235.jar
+END
+org.eclipse.jdt.launching.ui.macosx.source_1.0.100.v20100505.jar
+K 25
+svn:wc:ra_dav:version-url
+V 181
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.jdt.launching.ui.macosx.source_1.0.100.v20100505.jar
+END
+org.eclipse.swt.motif.hpux.ia64_32_3.6.0.v3650b.jar
+K 25
+svn:wc:ra_dav:version-url
+V 168
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.motif.hpux.ia64_32_3.6.0.v3650b.jar
+END
+org.eclipse.swt.gtk.solaris.sparc_3.6.0.v3650b.jar
+K 25
+svn:wc:ra_dav:version-url
+V 167
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.gtk.solaris.sparc_3.6.0.v3650b.jar
+END
+org.eclipse.swt.gtk.linux.s390x.source_3.6.0.v3650b.jar
+K 25
+svn:wc:ra_dav:version-url
+V 172
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.gtk.linux.s390x.source_3.6.0.v3650b.jar
+END
+org.eclipse.swt.gtk.linux.s390x_3.6.0.v3650b.jar
+K 25
+svn:wc:ra_dav:version-url
+V 165
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.gtk.linux.s390x_3.6.0.v3650b.jar
+END
+org.eclipse.core.filesystem.win32.x86_64_1.1.200.v20100505-1235.jar
+K 25
+svn:wc:ra_dav:version-url
+V 184
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.core.filesystem.win32.x86_64_1.1.200.v20100505-1235.jar
+END
+org.eclipse.swt.cocoa.macosx_3.6.0.v3650b.jar
+K 25
+svn:wc:ra_dav:version-url
+V 162
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.cocoa.macosx_3.6.0.v3650b.jar
+END
+org.eclipse.swt.gtk.linux.ppc64_3.6.0.v3650b.jar
+K 25
+svn:wc:ra_dav:version-url
+V 165
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.gtk.linux.ppc64_3.6.0.v3650b.jar
+END
+org.eclipse.core.filesystem.hpux.ia64_32_1.0.100.v20100505.jar
+K 25
+svn:wc:ra_dav:version-url
+V 179
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.core.filesystem.hpux.ia64_32_1.0.100.v20100505.jar
+END
+org.eclipse.core.filesystem.aix.ppc_1.1.0.v20100505-1235.jar
+K 25
+svn:wc:ra_dav:version-url
+V 177
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.core.filesystem.aix.ppc_1.1.0.v20100505-1235.jar
+END
+org.eclipse.core.filesystem.macosx_1.3.0.v20100505.jar
+K 25
+svn:wc:ra_dav:version-url
+V 171
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.core.filesystem.macosx_1.3.0.v20100505.jar
+END
+org.eclipse.core.net.win32.x86_1.0.100.I20100511-0800.jar
+K 25
+svn:wc:ra_dav:version-url
+V 174
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.core.net.win32.x86_1.0.100.I20100511-0800.jar
+END
+org.eclipse.core.filesystem.linux.ppc_1.0.200.v20100505-1235.jar
+K 25
+svn:wc:ra_dav:version-url
+V 181
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.core.filesystem.linux.ppc_1.0.200.v20100505-1235.jar
+END
+org.eclipse.jdt.launching.macosx.source_3.2.100.v20100505.jar
+K 25
+svn:wc:ra_dav:version-url
+V 178
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.jdt.launching.macosx.source_3.2.100.v20100505.jar
+END
+org.eclipse.swt.win32.win32.x86_64.source_3.6.0.v3650b.jar
+K 25
+svn:wc:ra_dav:version-url
+V 175
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.win32.win32.x86_64.source_3.6.0.v3650b.jar
+END
+org.eclipse.swt.photon.qnx.x86.source_3.6.0.v3650b.jar
+K 25
+svn:wc:ra_dav:version-url
+V 171
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.photon.qnx.x86.source_3.6.0.v3650b.jar
+END
+org.eclipse.swt.motif.linux.x86.source_3.6.0.v3650b.jar
+K 25
+svn:wc:ra_dav:version-url
+V 172
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.motif.linux.x86.source_3.6.0.v3650b.jar
+END
+org.eclipse.swt.win32.win32.x86_64_3.6.0.v3650b.jar
+K 25
+svn:wc:ra_dav:version-url
+V 168
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.win32.win32.x86_64_3.6.0.v3650b.jar
+END
+org.eclipse.swt.photon.qnx.x86_3.6.0.v3650b.jar
+K 25
+svn:wc:ra_dav:version-url
+V 164
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.photon.qnx.x86_3.6.0.v3650b.jar
+END
+org.eclipse.swt.motif.linux.x86_3.6.0.v3650b.jar
+K 25
+svn:wc:ra_dav:version-url
+V 165
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.motif.linux.x86_3.6.0.v3650b.jar
+END
+org.eclipse.core.filesystem.solaris.sparc_1.2.0.v20100505-1235.jar
+K 25
+svn:wc:ra_dav:version-url
+V 183
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.core.filesystem.solaris.sparc_1.2.0.v20100505-1235.jar
+END
+org.eclipse.swt.gtk.linux.ppc.source_3.6.0.v3650b.jar
+K 25
+svn:wc:ra_dav:version-url
+V 170
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.gtk.linux.ppc.source_3.6.0.v3650b.jar
+END
+org.eclipse.swt.gtk.linux.ppc_3.6.0.v3650b.jar
+K 25
+svn:wc:ra_dav:version-url
+V 163
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.gtk.linux.ppc_3.6.0.v3650b.jar
+END
+org.eclipse.core.filesystem.win32.x86_1.1.200.v20100505-1235.jar
+K 25
+svn:wc:ra_dav:version-url
+V 181
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.core.filesystem.win32.x86_1.1.200.v20100505-1235.jar
+END
+org.eclipse.swt.motif.hpux.ia64_32.source_3.6.0.v3650b.jar
+K 25
+svn:wc:ra_dav:version-url
+V 175
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.motif.hpux.ia64_32.source_3.6.0.v3650b.jar
+END
+org.eclipse.swt.gtk.solaris.sparc.source_3.6.0.v3650b.jar
+K 25
+svn:wc:ra_dav:version-url
+V 174
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.gtk.solaris.sparc.source_3.6.0.v3650b.jar
+END
+org.eclipse.swt.gtk.linux.x86_3.6.0.v3650b.jar
+K 25
+svn:wc:ra_dav:version-url
+V 163
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.gtk.linux.x86_3.6.0.v3650b.jar
+END
+org.eclipse.swt.cocoa.macosx.x86_64.source_3.6.0.v3650b.jar
+K 25
+svn:wc:ra_dav:version-url
+V 176
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.cocoa.macosx.x86_64.source_3.6.0.v3650b.jar
+END
+org.eclipse.compare.win32.source_1.0.100.I20100505-1245.jar
+K 25
+svn:wc:ra_dav:version-url
+V 176
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.compare.win32.source_1.0.100.I20100505-1245.jar
+END
+org.eclipse.update.core.linux.source_3.2.200.v20100512.jar
+K 25
+svn:wc:ra_dav:version-url
+V 175
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.update.core.linux.source_3.2.200.v20100512.jar
+END
+org.eclipse.update.core.linux_3.2.200.v20100512.jar
+K 25
+svn:wc:ra_dav:version-url
+V 168
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.update.core.linux_3.2.200.v20100512.jar
+END
+org.eclipse.core.net.linux.x86_1.1.0.I20100505-1245.jar
+K 25
+svn:wc:ra_dav:version-url
+V 172
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.core.net.linux.x86_1.1.0.I20100505-1245.jar
+END
+org.eclipse.update.core.win32_3.2.200.v20100512.jar
+K 25
+svn:wc:ra_dav:version-url
+V 168
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.update.core.win32_3.2.200.v20100512.jar
+END
+org.eclipse.swt.carbon.macosx.source_3.6.0.v3650b.jar
+K 25
+svn:wc:ra_dav:version-url
+V 170
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.carbon.macosx.source_3.6.0.v3650b.jar
+END
+org.eclipse.equinox.security.macosx.source_1.100.100.v20100503.jar
+K 25
+svn:wc:ra_dav:version-url
+V 183
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.equinox.security.macosx.source_1.100.100.v20100503.jar
+END
+org.eclipse.ui.carbon_4.0.100.I20100601-0800.jar
+K 25
+svn:wc:ra_dav:version-url
+V 165
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.ui.carbon_4.0.100.I20100601-0800.jar
+END
+org.eclipse.swt.gtk.linux.x86.source_3.6.0.v3650b.jar
+K 25
+svn:wc:ra_dav:version-url
+V 170
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.gtk.linux.x86.source_3.6.0.v3650b.jar
+END
+org.eclipse.jdt.launching.ui.macosx_1.0.100.v20100505.jar
+K 25
+svn:wc:ra_dav:version-url
+V 174
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.jdt.launching.ui.macosx_1.0.100.v20100505.jar
+END
+org.eclipse.ui.win32.source_3.2.200.I20100509-0800.jar
+K 25
+svn:wc:ra_dav:version-url
+V 171
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.ui.win32.source_3.2.200.I20100509-0800.jar
+END
+org.eclipse.core.filesystem.linux.x86_64_1.2.0.v20100505-1235.jar
+K 25
+svn:wc:ra_dav:version-url
+V 182
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.core.filesystem.linux.x86_64_1.2.0.v20100505-1235.jar
+END
+org.eclipse.ui.win32_3.2.200.I20100509-0800.jar
+K 25
+svn:wc:ra_dav:version-url
+V 164
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.ui.win32_3.2.200.I20100509-0800.jar
+END
+org.eclipse.swt.gtk.linux.ppc64.source_3.6.0.v3650b.jar
+K 25
+svn:wc:ra_dav:version-url
+V 172
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.gtk.linux.ppc64.source_3.6.0.v3650b.jar
+END
+org.eclipse.compare.win32_1.0.100.I20100505-1245.jar
+K 25
+svn:wc:ra_dav:version-url
+V 169
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.compare.win32_1.0.100.I20100505-1245.jar
+END
+org.eclipse.ui.cocoa.source_1.0.2.I20100601-0800.jar
+K 25
+svn:wc:ra_dav:version-url
+V 169
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.ui.cocoa.source_1.0.2.I20100601-0800.jar
+END
+org.eclipse.swt.motif.aix.ppc_3.6.0.v3650b.jar
+K 25
+svn:wc:ra_dav:version-url
+V 163
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.motif.aix.ppc_3.6.0.v3650b.jar
+END
+org.eclipse.swt.gtk.linux.s390.source_3.6.0.v3650b.jar
+K 25
+svn:wc:ra_dav:version-url
+V 171
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.gtk.linux.s390.source_3.6.0.v3650b.jar
+END
+org.eclipse.swt.gtk.linux.s390_3.6.0.v3650b.jar
+K 25
+svn:wc:ra_dav:version-url
+V 164
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.gtk.linux.s390_3.6.0.v3650b.jar
+END
+org.eclipse.ui.cocoa_1.0.2.I20100601-0800.jar
+K 25
+svn:wc:ra_dav:version-url
+V 162
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.ui.cocoa_1.0.2.I20100601-0800.jar
+END
+org.eclipse.update.core.win32.source_3.2.200.v20100512.jar
+K 25
+svn:wc:ra_dav:version-url
+V 175
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.update.core.win32.source_3.2.200.v20100512.jar
+END
+org.eclipse.swt.win32.win32.x86_3.6.0.v3650b.jar
+K 25
+svn:wc:ra_dav:version-url
+V 165
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.win32.win32.x86_3.6.0.v3650b.jar
+END
+org.eclipse.swt.carbon.macosx_3.6.0.v3650b.jar
+K 25
+svn:wc:ra_dav:version-url
+V 163
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.carbon.macosx_3.6.0.v3650b.jar
+END
+org.eclipse.jdt.launching.macosx_3.2.100.v20100505.jar
+K 25
+svn:wc:ra_dav:version-url
+V 171
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.jdt.launching.macosx_3.2.100.v20100505.jar
+END
+org.eclipse.core.net.win32.x86_64_1.0.100.I20100505-1245.jar
+K 25
+svn:wc:ra_dav:version-url
+V 177
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.core.net.win32.x86_64_1.0.100.I20100505-1245.jar
+END

@@ -1,0 +1,37 @@
+10
+
+dir
+168
+http://svn.platform.nhncorp.cn/devtools/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/dropins/language/eclipse/features
+http://svn.platform.nhncorp.cn/devtools
+
+
+
+2012-09-20T14:57:07.208556Z
+168
+CN14917
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+a45defa0-3301-0010-9946-6f6903298bd5
+
+org.eclipse.babel.nls_eclipse_ko_3.6.0.v20101211043401
+dir
+
+org.eclipse.babel.nls_rt.equinox.p2_ko_3.6.0.v20101211043401
+dir
+
+org.eclipse.babel.nls_tools.gef_ko_3.6.0.v20101211043401
+dir
+

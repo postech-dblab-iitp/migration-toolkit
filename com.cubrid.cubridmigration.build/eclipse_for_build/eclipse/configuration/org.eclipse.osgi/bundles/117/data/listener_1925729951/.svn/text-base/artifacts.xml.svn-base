@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<?artifactRepository version='1.1.0'?>
+<repository name='artifact listener dropins' type='org.eclipse.equinox.p2.artifact.repository.simpleRepository' version='1.0.0'>
+  <properties size='3'>
+    <property name='p2.system' value='true'/>
+    <property name='p2.timestamp' value='1345566838178'/>
+    <property name='dropin.artifactRepositories' value='file:/home/hudson/tools/eclipse_for_build/eclipse/dropins/delta/|file:/home/hudson/tools/eclipse_for_build/eclipse/dropins/language/'/>
+  </properties>
+  <mappings size='3'>
+    <rule filter='(&amp; (classifier=osgi.bundle))' output='${repoUrl}/plugins/${id}_${version}.jar'/>
+    <rule filter='(&amp; (classifier=binary))' output='${repoUrl}/binary/${id}_${version}'/>
+    <rule filter='(&amp; (classifier=org.eclipse.update.feature))' output='${repoUrl}/features/${id}_${version}.jar'/>
+  </mappings>
+  <artifacts size='0'/>
+</repository>

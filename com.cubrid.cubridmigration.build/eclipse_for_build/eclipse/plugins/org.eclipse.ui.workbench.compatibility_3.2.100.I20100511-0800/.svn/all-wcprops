@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 156
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/plugins/org.eclipse.ui.workbench.compatibility_3.2.100.I20100511-0800
+END
+compatibility.jar
+K 25
+svn:wc:ra_dav:version-url
+V 174
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/plugins/org.eclipse.ui.workbench.compatibility_3.2.100.I20100511-0800/compatibility.jar
+END
+fragment-compatibility.properties
+K 25
+svn:wc:ra_dav:version-url
+V 190
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/plugins/org.eclipse.ui.workbench.compatibility_3.2.100.I20100511-0800/fragment-compatibility.properties
+END
+.api_description
+K 25
+svn:wc:ra_dav:version-url
+V 173
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/plugins/org.eclipse.ui.workbench.compatibility_3.2.100.I20100511-0800/.api_description
+END
+about.html
+K 25
+svn:wc:ra_dav:version-url
+V 167
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/plugins/org.eclipse.ui.workbench.compatibility_3.2.100.I20100511-0800/about.html
+END

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<feature
+	id="org.eclipse.babel.nls_tools.gef_ko"
+	label="Babel Language Pack for tools.gef in Korean (56.75%)"
+	image="eclipse_update_120.jpg"
+	provider-name="%providerName"
+	version="3.6.0.v20101211043401">
+	<copyright>
+		%copyright
+	</copyright>
+	<license url="%licenseURL">
+		%license
+	</license>
+	<description>Babel Language Pack for tools.gef in Korean</description>
+	<plugin fragment="true" id="org.eclipse.draw2d.doc.isv.nl_ko" unpack="false" version="3.6.0.v20101211043401" download-size="1399" install-size="1399" />
+	<plugin fragment="true" id="org.eclipse.draw2d.nl_ko" unpack="false" version="3.6.0.v20101211043401" download-size="1367" install-size="1367" />
+	<plugin fragment="true" id="org.eclipse.draw2d.test.nl_ko" unpack="false" version="3.6.0.v20101211043401" download-size="1370" install-size="1370" />
+	<plugin fragment="true" id="org.eclipse.gef.doc.isv.nl_ko" unpack="false" version="3.6.0.v20101211043401" download-size="1496" install-size="1496" />
+	<plugin fragment="true" id="org.eclipse.gef.examples.flow.nl_ko" unpack="false" version="3.6.0.v20101211043401" download-size="1375" install-size="1375" />
+	<plugin fragment="true" id="org.eclipse.gef.examples.logic.nl_ko" unpack="false" version="3.6.0.v20101211043401" download-size="2391" install-size="2391" />
+	<plugin fragment="true" id="org.eclipse.gef.examples.shapes.nl_ko" unpack="false" version="3.6.0.v20101211043401" download-size="1376" install-size="1376" />
+	<plugin fragment="true" id="org.eclipse.gef.examples.text.nl_ko" unpack="false" version="3.6.0.v20101211043401" download-size="1374" install-size="1374" />
+	<plugin fragment="true" id="org.eclipse.gef.examples.ui.pde.nl_ko" unpack="false" version="3.6.0.v20101211043401" download-size="1412" install-size="1412" />
+	<plugin fragment="true" id="org.eclipse.gef.nl_ko" unpack="false" version="3.6.0.v20101211043401" download-size="5222" install-size="5222" />
+	<plugin fragment="true" id="org.eclipse.gef.test.nl_ko" unpack="false" version="3.6.0.v20101211043401" download-size="1368" install-size="1368" />
+	<plugin fragment="true" id="org.eclipse.zest.core.nl_ko" unpack="false" version="3.6.0.v20101211043401" download-size="1370" install-size="1370" />
+	<plugin fragment="true" id="org.eclipse.zest.layouts.nl_ko" unpack="false" version="3.6.0.v20101211043401" download-size="1371" install-size="1371" />
+</feature>

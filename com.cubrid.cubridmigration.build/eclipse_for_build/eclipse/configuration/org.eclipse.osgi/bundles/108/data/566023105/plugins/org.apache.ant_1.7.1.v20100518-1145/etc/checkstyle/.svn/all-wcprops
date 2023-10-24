@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 145
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/plugins/org.apache.ant_1.7.1.v20100518-1145/etc/checkstyle
+END
+checkstyle-text.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 165
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/plugins/org.apache.ant_1.7.1.v20100518-1145/etc/checkstyle/checkstyle-text.xsl
+END
+checkstyle-frames.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 167
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/plugins/org.apache.ant_1.7.1.v20100518-1145/etc/checkstyle/checkstyle-frames.xsl
+END
+checkstyle-xdoc.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 165
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/plugins/org.apache.ant_1.7.1.v20100518-1145/etc/checkstyle/checkstyle-xdoc.xsl
+END

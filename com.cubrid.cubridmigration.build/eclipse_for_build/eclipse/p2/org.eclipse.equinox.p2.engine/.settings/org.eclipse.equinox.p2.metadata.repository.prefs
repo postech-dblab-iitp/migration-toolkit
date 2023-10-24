@@ -1,0 +1,12 @@
+#Thu Jun 17 12:40:39 EDT 2010
+repositories/file\:___home_data_httpd_download.eclipse.org_releases_staging/uri=file\:///home/data/httpd/download.eclipse.org/releases/staging/
+repositories/file\:___home_data_httpd_download.eclipse.org_releases_staging/enabled=true
+repositories/file\:___home_data_httpd_download.eclipse.org_eclipse_updates_3.6-I-builds_I20100608-0911/type=org.eclipse.equinox.internal.p2.metadata.repository.LocalMetadataRepository
+repositories/file\:___home_data_httpd_download.eclipse.org_eclipse_updates_3.6-I-builds_I20100608-0911/version=1.0.0
+repositories/file\:___home_data_httpd_download.eclipse.org_eclipse_updates_3.6-I-builds_I20100608-0911/enabled=true
+repositories/file\:___home_data_httpd_download.eclipse.org_eclipse_updates_3.6-I-builds_I20100608-0911/suffix=content.xml
+repositories/file\:___home_data_httpd_download.eclipse.org_eclipse_updates_3.6-I-builds_I20100608-0911/isSystem=false
+eclipse.preferences.version=1
+repositories/file\:___home_data_httpd_download.eclipse.org_eclipse_updates_3.6-I-builds_I20100608-0911/uri=file\:///home/data/httpd/download.eclipse.org/eclipse/updates/3.6-I-builds/I20100608-0911/
+repositories/file\:___home_data_httpd_download.eclipse.org_releases_staging/isSystem=false
+repositories/file\:___home_data_httpd_download.eclipse.org_eclipse_updates_3.6-I-builds_I20100608-0911/name="Eclipse Project Test Site"

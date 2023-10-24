@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<?artifactRepository version='1.1.0'?>
+<repository name='/home/hudson/tools/eclipse_for_build/eclipse/.eclipseextension' type='org.eclipse.equinox.p2.artifact.repository.simpleRepository' version='1.0.0'>
+  <properties size='3'>
+    <property name='p2.timestamp' value='1347006729598'/>
+    <property name='org.eclipse.update.site.policy' value='USER-EXCLUDE'/>
+    <property name='org.eclipse.update.site.list' value=''/>
+  </properties>
+  <mappings size='3'>
+    <rule filter='(&amp; (classifier=osgi.bundle))' output='${repoUrl}/plugins/${id}_${version}.jar'/>
+    <rule filter='(&amp; (classifier=binary))' output='${repoUrl}/binary/${id}_${version}'/>
+    <rule filter='(&amp; (classifier=org.eclipse.update.feature))' output='${repoUrl}/features/${id}_${version}.jar'/>
+  </mappings>
+  <artifacts size='3'>
+    <artifact classifier='osgi.bundle' id='slf4j.api' version='1.6.6'>
+      <properties size='3'>
+        <property name='artifact.size' value='26176'/>
+        <property name='download.size' value='26176'/>
+        <property name='download.md5' value='9ab3faab3e33793ae3dfceb24540b0a5'/>
+      </properties>
+      <repositoryProperties size='2'>
+        <property name='artifact.reference' value='file:/home/hudson/tools/eclipse_for_build/eclipse/plugins/slf4j-api-1.6.6.jar'/>
+        <property name='file.name' value='/home/hudson/tools/eclipse_for_build/eclipse/plugins/slf4j-api-1.6.6.jar'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.apache.log4j' version='1.2.13.v200806030600'>
+      <properties size='3'>
+        <property name='artifact.size' value='387870'/>
+        <property name='download.size' value='387870'/>
+        <property name='download.md5' value='e0fcba2ad215a54d08fb7450d92f3e6e'/>
+      </properties>
+      <repositoryProperties size='2'>
+        <property name='artifact.reference' value='file:/home/hudson/tools/eclipse_for_build/eclipse/plugins/org.apache.log4j_1.2.13.v200806030600.jar'/>
+        <property name='file.name' value='/home/hudson/tools/eclipse_for_build/eclipse/plugins/org.apache.log4j_1.2.13.v200806030600.jar'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='slf4j.log4j12' version='1.6.6'>
+      <properties size='3'>
+        <property name='artifact.size' value='9711'/>
+        <property name='download.size' value='9711'/>
+        <property name='download.md5' value='3dd228d68dcc771b030cc5dea2ca7cc3'/>
+      </properties>
+      <repositoryProperties size='2'>
+        <property name='artifact.reference' value='file:/home/hudson/tools/eclipse_for_build/eclipse/plugins/slf4j-log4j12-1.6.6.jar'/>
+        <property name='file.name' value='/home/hudson/tools/eclipse_for_build/eclipse/plugins/slf4j-log4j12-1.6.6.jar'/>
+      </repositoryProperties>
+    </artifact>
+  </artifacts>
+</repository>

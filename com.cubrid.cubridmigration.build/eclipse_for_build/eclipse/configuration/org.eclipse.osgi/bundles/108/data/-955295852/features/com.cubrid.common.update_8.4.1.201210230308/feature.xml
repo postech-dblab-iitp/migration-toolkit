@@ -1,0 +1,563 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="com.cubrid.common.update"
+      label="%featureName"
+      version="8.4.1.201210230308"
+      provider-name="%providerName"
+      plugin="com.cubrid.common.update">
+
+   <description>
+      %description
+   </description>
+
+   <copyright>
+      %copyright
+   </copyright>
+
+   <license>
+      %licence
+   </license>
+
+   <plugin
+         id="org.eclipse.equinox.p2.core"
+         download-size="0"
+         install-size="0"
+         version="2.0.0.v20100510"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.metadata"
+         download-size="0"
+         install-size="0"
+         version="2.0.0.v20100601"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.operations"
+         download-size="0"
+         install-size="0"
+         version="2.0.0.v20100510"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.touchpoint.eclipse"
+         download-size="0"
+         install-size="0"
+         version="2.0.0.v20100513"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.ui"
+         download-size="0"
+         install-size="0"
+         version="2.0.0.v20100518"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.core.net"
+         download-size="0"
+         install-size="0"
+         version="1.2.100.I20100511-0800"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.security"
+         download-size="0"
+         install-size="0"
+         version="1.0.200.v20100503"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.engine"
+         download-size="0"
+         install-size="0"
+         version="2.0.0.v20100606"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.garbagecollector"
+         download-size="0"
+         install-size="0"
+         version="1.0.100.v20100503"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.jarprocessor"
+         download-size="0"
+         install-size="0"
+         version="1.0.200.v20100503a"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.metadata.repository"
+         download-size="0"
+         install-size="0"
+         version="1.1.0.v20100513"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.repository"
+         download-size="0"
+         install-size="0"
+         version="2.0.0.v20100519"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.director"
+         download-size="0"
+         install-size="0"
+         version="2.0.0.v20100525"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.artifact.repository"
+         download-size="0"
+         install-size="0"
+         version="1.1.0.v20100513"
+         unpack="false"/>
+
+   <plugin
+         id="org.sat4j.core"
+         download-size="0"
+         install-size="0"
+         version="2.2.0.v20100429"
+         unpack="false"/>
+
+   <plugin
+         id="org.sat4j.pb"
+         download-size="0"
+         install-size="0"
+         version="2.2.0.v20100429"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.ecf"
+         download-size="0"
+         install-size="0"
+         version="3.1.0.v20100529-0735"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.ecf.filetransfer"
+         download-size="0"
+         install-size="0"
+         version="4.0.0.v20100529-0735"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.ecf.identity"
+         download-size="0"
+         install-size="0"
+         version="3.1.0.v20100529-0735"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.ecf.provider.filetransfer"
+         download-size="0"
+         install-size="0"
+         version="3.1.0.v20100529-0735"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.frameworkadmin"
+         download-size="0"
+         install-size="0"
+         version="2.0.0.v20100503"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.frameworkadmin.equinox"
+         download-size="0"
+         install-size="0"
+         version="1.0.200.v20100505"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.simpleconfigurator"
+         download-size="0"
+         install-size="0"
+         version="1.0.200.v20100503"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.simpleconfigurator.manipulator"
+         download-size="0"
+         install-size="0"
+         version="2.0.0.v20100503"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.touchpoint.natives"
+         download-size="0"
+         install-size="0"
+         version="1.0.200.v20100503a"
+         unpack="false"/>
+
+   <plugin
+         id="com.cubrid.common.update"
+         download-size="0"
+         install-size="0"
+         version="8.4.1.201210230308"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.ecf.ssl"
+         download-size="0"
+         install-size="0"
+         version="1.0.0.v20100529-0735"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.ecf.provider.filetransfer.ssl"
+         download-size="0"
+         install-size="0"
+         version="1.0.0.v20100529-0735"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.security.nl_ko"
+         download-size="0"
+         install-size="0"
+         version="3.6.0.v20101211043401"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.reconciler.dropins"
+         download-size="0"
+         install-size="0"
+         version="1.1.0.v20100525"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.directorywatcher"
+         download-size="0"
+         install-size="0"
+         version="1.0.200.v20100601"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.discovery"
+         download-size="0"
+         install-size="0"
+         version="1.0.0.v20100503"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.discovery.compatibility"
+         download-size="0"
+         install-size="0"
+         version="1.0.0.v20100518"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.extensionlocation"
+         download-size="0"
+         install-size="0"
+         version="1.2.0.v20100518"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.metadata.generator"
+         download-size="0"
+         install-size="0"
+         version="1.0.200.v20100503a"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.publisher"
+         download-size="0"
+         install-size="0"
+         version="1.1.0.v20100513"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.ql"
+         download-size="0"
+         install-size="0"
+         version="2.0.0.v20100503a"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.director.app"
+         download-size="0"
+         install-size="0"
+         version="1.0.200.v20100527"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.repository.tools"
+         download-size="0"
+         install-size="0"
+         version="2.0.0.v20100520"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.updatechecker"
+         download-size="0"
+         install-size="0"
+         version="1.1.100.v20100503a"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.updatesite"
+         download-size="0"
+         install-size="0"
+         version="1.0.200.v20100503"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.console"
+         download-size="0"
+         install-size="0"
+         version="1.0.200.v20100601"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.artifact.repository.nl_ko"
+         download-size="0"
+         install-size="0"
+         version="3.6.0.v20101211043401"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.console.nl_ko"
+         download-size="0"
+         install-size="0"
+         version="3.6.0.v20101211043401"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.core.nl_ko"
+         download-size="0"
+         install-size="0"
+         version="3.6.0.v20101211043401"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.director.app.nl_ko"
+         download-size="0"
+         install-size="0"
+         version="3.6.0.v20101211043401"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.director.nl_ko"
+         download-size="0"
+         install-size="0"
+         version="3.6.0.v20101211043401"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.directorywatcher.nl_ko"
+         download-size="0"
+         install-size="0"
+         version="3.6.0.v20101211043401"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.discovery.compatibility.nl_ko"
+         download-size="0"
+         install-size="0"
+         version="3.6.0.v20101211043401"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.discovery.nl_ko"
+         download-size="0"
+         install-size="0"
+         version="3.6.0.v20101211043401"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.engine.nl_ko"
+         download-size="0"
+         install-size="0"
+         version="3.6.0.v20101211043401"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.extensionlocation.nl_ko"
+         download-size="0"
+         install-size="0"
+         version="3.6.0.v20101211043401"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.garbagecollector.nl_ko"
+         download-size="0"
+         install-size="0"
+         version="3.6.0.v20101211043401"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.jarprocessor.nl_ko"
+         download-size="0"
+         install-size="0"
+         version="3.6.0.v20101211043401"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.metadata.generator.nl_ko"
+         download-size="0"
+         install-size="0"
+         version="3.6.0.v20101211043401"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.metadata.nl_ko"
+         download-size="0"
+         install-size="0"
+         version="3.6.0.v20101211043401"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.metadata.repository.nl_ko"
+         download-size="0"
+         install-size="0"
+         version="3.6.0.v20101211043401"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.operations.nl_ko"
+         download-size="0"
+         install-size="0"
+         version="3.6.0.v20101211043401"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.publisher.nl_ko"
+         download-size="0"
+         install-size="0"
+         version="3.6.0.v20101211043401"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.ql.nl_ko"
+         download-size="0"
+         install-size="0"
+         version="3.6.0.v20101211043401"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.reconciler.dropins.nl_ko"
+         download-size="0"
+         install-size="0"
+         version="3.6.0.v20101211043401"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.repository.nl_ko"
+         download-size="0"
+         install-size="0"
+         version="3.6.0.v20101211043401"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.repository.tools.nl_ko"
+         download-size="0"
+         install-size="0"
+         version="3.6.0.v20101211043401"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.touchpoint.eclipse.nl_ko"
+         download-size="0"
+         install-size="0"
+         version="3.6.0.v20101211043401"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.touchpoint.natives.nl_ko"
+         download-size="0"
+         install-size="0"
+         version="3.6.0.v20101211043401"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.ui.nl_ko"
+         download-size="0"
+         install-size="0"
+         version="3.6.0.v20101211043401"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.updatechecker.nl_ko"
+         download-size="0"
+         install-size="0"
+         version="3.6.0.v20101211043401"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.p2.updatesite.nl_ko"
+         download-size="0"
+         install-size="0"
+         version="3.6.0.v20101211043401"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.security.ui"
+         download-size="0"
+         install-size="0"
+         version="1.0.200.v20100503"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.security.ui.nl_ko"
+         download-size="0"
+         install-size="0"
+         version="3.6.0.v20101211043401"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.ecf.provider.filetransfer.httpclient"
+         download-size="0"
+         install-size="0"
+         version="4.0.0.v20100529-0735"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.ecf.provider.filetransfer.httpclient.ssl"
+         download-size="0"
+         install-size="0"
+         version="1.0.0.v20100529-0735"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.commons.httpclient"
+         download-size="0"
+         install-size="0"
+         version="3.1.0.v201005080502"
+         unpack="false"/>
+
+</feature>

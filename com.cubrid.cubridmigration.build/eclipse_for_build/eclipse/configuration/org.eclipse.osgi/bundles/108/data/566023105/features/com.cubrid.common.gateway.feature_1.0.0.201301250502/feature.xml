@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="com.cubrid.common.gateway.feature"
+      label="%featureName"
+      version="1.0.0.201301250502"
+      provider-name="%providerName"
+      plugin="com.cubrid.common.gateway">
+
+   <description>
+      %description
+   </description>
+
+   <copyright>
+      %copyright
+   </copyright>
+
+   <license>
+      %licence
+   </license>
+
+   <url>
+      <update label="%updateSiteName" url="ftp://ftp.cubrid.org/sites/gateway"/>
+   </url>
+
+   <requires>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="com.cubrid.query.core"/>
+      <import plugin="com.cubrid.common.sso"/>
+      <import plugin="com.cubrid.query.ui.framework"/>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="com.cubrid.query.core.cubrid"/>
+      <import plugin="com.cubrid.query.core.mysql"/>
+      <import plugin="com.cubrid.query.core.mssql"/>
+      <import plugin="com.cubrid.query.core.oracle"/>
+      <import plugin="com.cubrid.query.ui"/>
+      <import plugin="com.cubrid.query.ui.cubrid"/>
+      <import plugin="com.cubrid.query.ui.mssql"/>
+      <import plugin="com.cubrid.query.ui.mysql"/>
+      <import plugin="com.cubrid.query.ui.oracle"/>
+   </requires>
+
+   <plugin
+         id="com.cubrid.common.gateway"
+         download-size="0"
+         install-size="0"
+         version="1.0.0.201301250502"
+         unpack="false"/>
+
+   <plugin
+         id="com.cubrid.common.sso"
+         download-size="0"
+         install-size="0"
+         version="1.0.0.201301250502"
+         unpack="false"/>
+
+</feature>

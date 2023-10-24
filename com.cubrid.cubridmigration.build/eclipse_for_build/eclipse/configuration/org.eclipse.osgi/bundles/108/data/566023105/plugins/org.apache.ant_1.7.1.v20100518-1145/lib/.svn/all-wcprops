@@ -1,0 +1,149 @@
+K 25
+svn:wc:ra_dav:version-url
+V 134
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/plugins/org.apache.ant_1.7.1.v20100518-1145/lib
+END
+ant-javamail.jar
+K 25
+svn:wc:ra_dav:version-url
+V 151
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/plugins/org.apache.ant_1.7.1.v20100518-1145/lib/ant-javamail.jar
+END
+ant-apache-bcel.jar
+K 25
+svn:wc:ra_dav:version-url
+V 154
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/plugins/org.apache.ant_1.7.1.v20100518-1145/lib/ant-apache-bcel.jar
+END
+ant-jsch.jar
+K 25
+svn:wc:ra_dav:version-url
+V 147
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/plugins/org.apache.ant_1.7.1.v20100518-1145/lib/ant-jsch.jar
+END
+ant-swing.jar
+K 25
+svn:wc:ra_dav:version-url
+V 148
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/plugins/org.apache.ant_1.7.1.v20100518-1145/lib/ant-swing.jar
+END
+ant-nodeps.jar
+K 25
+svn:wc:ra_dav:version-url
+V 149
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/plugins/org.apache.ant_1.7.1.v20100518-1145/lib/ant-nodeps.jar
+END
+ant-junit.jar
+K 25
+svn:wc:ra_dav:version-url
+V 148
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/plugins/org.apache.ant_1.7.1.v20100518-1145/lib/ant-junit.jar
+END
+ant-apache-bsf.jar
+K 25
+svn:wc:ra_dav:version-url
+V 153
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/plugins/org.apache.ant_1.7.1.v20100518-1145/lib/ant-apache-bsf.jar
+END
+ant-weblogic.jar
+K 25
+svn:wc:ra_dav:version-url
+V 151
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/plugins/org.apache.ant_1.7.1.v20100518-1145/lib/ant-weblogic.jar
+END
+ant-netrexx.jar
+K 25
+svn:wc:ra_dav:version-url
+V 150
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/plugins/org.apache.ant_1.7.1.v20100518-1145/lib/ant-netrexx.jar
+END
+ant-apache-log4j.jar
+K 25
+svn:wc:ra_dav:version-url
+V 155
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/plugins/org.apache.ant_1.7.1.v20100518-1145/lib/ant-apache-log4j.jar
+END
+ant-commons-net.jar
+K 25
+svn:wc:ra_dav:version-url
+V 154
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/plugins/org.apache.ant_1.7.1.v20100518-1145/lib/ant-commons-net.jar
+END
+ant-commons-logging.jar
+K 25
+svn:wc:ra_dav:version-url
+V 158
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/plugins/org.apache.ant_1.7.1.v20100518-1145/lib/ant-commons-logging.jar
+END
+ant-launcher.jar
+K 25
+svn:wc:ra_dav:version-url
+V 151
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/plugins/org.apache.ant_1.7.1.v20100518-1145/lib/ant-launcher.jar
+END
+ant.jar
+K 25
+svn:wc:ra_dav:version-url
+V 142
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/plugins/org.apache.ant_1.7.1.v20100518-1145/lib/ant.jar
+END
+ant-jai.jar
+K 25
+svn:wc:ra_dav:version-url
+V 146
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/plugins/org.apache.ant_1.7.1.v20100518-1145/lib/ant-jai.jar
+END
+ant-jdepend.jar
+K 25
+svn:wc:ra_dav:version-url
+V 150
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/plugins/org.apache.ant_1.7.1.v20100518-1145/lib/ant-jdepend.jar
+END
+ant-apache-regexp.jar
+K 25
+svn:wc:ra_dav:version-url
+V 156
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/plugins/org.apache.ant_1.7.1.v20100518-1145/lib/ant-apache-regexp.jar
+END
+ant-stylebook.jar
+K 25
+svn:wc:ra_dav:version-url
+V 152
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/plugins/org.apache.ant_1.7.1.v20100518-1145/lib/ant-stylebook.jar
+END
+ant-jmf.jar
+K 25
+svn:wc:ra_dav:version-url
+V 146
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/plugins/org.apache.ant_1.7.1.v20100518-1145/lib/ant-jmf.jar
+END
+ant-apache-oro.jar
+K 25
+svn:wc:ra_dav:version-url
+V 153
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/plugins/org.apache.ant_1.7.1.v20100518-1145/lib/ant-apache-oro.jar
+END
+ant-trax.jar
+K 25
+svn:wc:ra_dav:version-url
+V 147
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/plugins/org.apache.ant_1.7.1.v20100518-1145/lib/ant-trax.jar
+END
+ant-apache-resolver.jar
+K 25
+svn:wc:ra_dav:version-url
+V 158
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/plugins/org.apache.ant_1.7.1.v20100518-1145/lib/ant-apache-resolver.jar
+END
+ant-antlr.jar
+K 25
+svn:wc:ra_dav:version-url
+V 148
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/plugins/org.apache.ant_1.7.1.v20100518-1145/lib/ant-antlr.jar
+END
+ant-starteam.jar
+K 25
+svn:wc:ra_dav:version-url
+V 151
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/plugins/org.apache.ant_1.7.1.v20100518-1145/lib/ant-starteam.jar
+END

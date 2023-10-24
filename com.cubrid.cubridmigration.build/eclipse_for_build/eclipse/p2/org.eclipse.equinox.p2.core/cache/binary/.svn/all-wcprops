@@ -1,0 +1,65 @@
+K 25
+svn:wc:ra_dav:version-url
+V 130
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/p2/org.eclipse.equinox.p2.core/cache/binary
+END
+org.eclipse.jdt_root_3.6.0.v20100526-0800-7z8XFUJFMTfCWGoVuHImpms9H155
+K 25
+svn:wc:ra_dav:version-url
+V 201
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/p2/org.eclipse.equinox.p2.core/cache/binary/org.eclipse.jdt_root_3.6.0.v20100526-0800-7z8XFUJFMTfCWGoVuHImpms9H155
+END
+org.eclipse.rcp_root_3.6.0.v20100519-9OArFKvFtsd7WLUKh-DcYTS
+K 25
+svn:wc:ra_dav:version-url
+V 191
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/p2/org.eclipse.equinox.p2.core/cache/binary/org.eclipse.rcp_root_3.6.0.v20100519-9OArFKvFtsd7WLUKh-DcYTS
+END
+org.eclipse.equinox.executable_root.gtk.linux.x86_64_3.4.0.v20100524-7M7K-FIhIez-egBko15H73
+K 25
+svn:wc:ra_dav:version-url
+V 222
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/p2/org.eclipse.equinox.p2.core/cache/binary/org.eclipse.equinox.executable_root.gtk.linux.x86_64_3.4.0.v20100524-7M7K-FIhIez-egBko15H73
+END
+org.eclipse.equinox.executable_root.win32.win32.x86_64_3.4.0.v20100524-7M7K-FIhIez-egBko15H73
+K 25
+svn:wc:ra_dav:version-url
+V 224
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/p2/org.eclipse.equinox.p2.core/cache/binary/org.eclipse.equinox.executable_root.win32.win32.x86_64_3.4.0.v20100524-7M7K-FIhIez-egBko15H73
+END
+org.eclipse.equinox.executable_root.carbon.macosx.x86_3.4.0.v20100524-7M7K-FIhIez-egBko15H73
+K 25
+svn:wc:ra_dav:version-url
+V 223
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/p2/org.eclipse.equinox.p2.core/cache/binary/org.eclipse.equinox.executable_root.carbon.macosx.x86_3.4.0.v20100524-7M7K-FIhIez-egBko15H73
+END
+org.eclipse.platform_root_3.6.0.v20100602-9gF78GpqFt6trOGhL60z0oEx3fz-JKNwxPY
+K 25
+svn:wc:ra_dav:version-url
+V 208
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/p2/org.eclipse.equinox.p2.core/cache/binary/org.eclipse.platform_root_3.6.0.v20100602-9gF78GpqFt6trOGhL60z0oEx3fz-JKNwxPY
+END
+org.eclipse.cvs_root_1.2.0.v20100427-7B77FKs8sF7B77SDX4GW85
+K 25
+svn:wc:ra_dav:version-url
+V 190
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/p2/org.eclipse.equinox.p2.core/cache/binary/org.eclipse.cvs_root_1.2.0.v20100427-7B77FKs8sF7B77SDX4GW85
+END
+org.eclipse.rcp.configuration_root.win32.win32.x86_1.0.0.I20100608-0911
+K 25
+svn:wc:ra_dav:version-url
+V 202
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/p2/org.eclipse.equinox.p2.core/cache/binary/org.eclipse.rcp.configuration_root.win32.win32.x86_1.0.0.I20100608-0911
+END
+org.eclipse.equinox.executable_root.gtk.linux.x86_3.4.0.v20100524-7M7K-FIhIez-egBko15H73
+K 25
+svn:wc:ra_dav:version-url
+V 219
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/p2/org.eclipse.equinox.p2.core/cache/binary/org.eclipse.equinox.executable_root.gtk.linux.x86_3.4.0.v20100524-7M7K-FIhIez-egBko15H73
+END
+org.eclipse.equinox.executable_root.win32.win32.x86_3.4.0.v20100524-7M7K-FIhIez-egBko15H73
+K 25
+svn:wc:ra_dav:version-url
+V 221
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/p2/org.eclipse.equinox.p2.core/cache/binary/org.eclipse.equinox.executable_root.win32.win32.x86_3.4.0.v20100524-7M7K-FIhIez-egBko15H73
+END

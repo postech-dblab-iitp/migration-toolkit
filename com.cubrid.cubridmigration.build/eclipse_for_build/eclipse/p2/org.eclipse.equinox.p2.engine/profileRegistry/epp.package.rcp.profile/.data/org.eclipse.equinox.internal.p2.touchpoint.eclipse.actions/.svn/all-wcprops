@@ -1,0 +1,11 @@
+K 25
+svn:wc:ra_dav:version-url
+V 224
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/p2/org.eclipse.equinox.p2.engine/profileRegistry/epp.package.rcp.profile/.data/org.eclipse.equinox.internal.p2.touchpoint.eclipse.actions
+END
+jvmargs
+K 25
+svn:wc:ra_dav:version-url
+V 232
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/p2/org.eclipse.equinox.p2.engine/profileRegistry/epp.package.rcp.profile/.data/org.eclipse.equinox.internal.p2.touchpoint.eclipse.actions/jvmargs
+END

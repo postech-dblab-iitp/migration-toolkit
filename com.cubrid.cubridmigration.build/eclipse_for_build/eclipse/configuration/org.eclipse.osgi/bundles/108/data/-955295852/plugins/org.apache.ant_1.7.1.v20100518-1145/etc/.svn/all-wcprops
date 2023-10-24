@@ -1,0 +1,71 @@
+K 25
+svn:wc:ra_dav:version-url
+V 134
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/plugins/org.apache.ant_1.7.1.v20100518-1145/etc
+END
+maudit-frames.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 152
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/plugins/org.apache.ant_1.7.1.v20100518-1145/etc/maudit-frames.xsl
+END
+mmetrics-frames.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 154
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/plugins/org.apache.ant_1.7.1.v20100518-1145/etc/mmetrics-frames.xsl
+END
+junit-noframes.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 153
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/plugins/org.apache.ant_1.7.1.v20100518-1145/etc/junit-noframes.xsl
+END
+log.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 142
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/plugins/org.apache.ant_1.7.1.v20100518-1145/etc/log.xsl
+END
+jdepend-frames.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 153
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/plugins/org.apache.ant_1.7.1.v20100518-1145/etc/jdepend-frames.xsl
+END
+junit-frames.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 151
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/plugins/org.apache.ant_1.7.1.v20100518-1145/etc/junit-frames.xsl
+END
+tagdiff.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 146
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/plugins/org.apache.ant_1.7.1.v20100518-1145/etc/tagdiff.xsl
+END
+coverage-frames.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 154
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/plugins/org.apache.ant_1.7.1.v20100518-1145/etc/coverage-frames.xsl
+END
+junit-frames-xalan1.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 158
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/plugins/org.apache.ant_1.7.1.v20100518-1145/etc/junit-frames-xalan1.xsl
+END
+changelog.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 148
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/plugins/org.apache.ant_1.7.1.v20100518-1145/etc/changelog.xsl
+END
+jdepend.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 146
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/plugins/org.apache.ant_1.7.1.v20100518-1145/etc/jdepend.xsl
+END

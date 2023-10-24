@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="com.cubrid.cubridmanager.app"
+      label="%featureName"
+      version="8.4.3.201212311018"
+      provider-name="%providerName"
+      plugin="com.cubrid.cubridmanager.app">
+
+   <description>
+      %description
+   </description>
+
+   <copyright>
+      %copyright
+   </copyright>
+
+   <license>
+      %licence
+   </license>
+
+   <includes
+         id="com.cubrid.common.update"
+         version="8.4.3.201212311018"/>
+
+   <plugin
+         id="com.cubrid.common.ui"
+         download-size="0"
+         install-size="0"
+         version="8.4.3.201212311018"
+         unpack="false"/>
+
+   <plugin
+         id="com.cubrid.cubridmanager.core"
+         download-size="0"
+         install-size="0"
+         version="8.4.3.201212311018"
+         unpack="false"/>
+
+   <plugin
+         id="com.cubrid.cubridmanager.ui"
+         download-size="0"
+         install-size="0"
+         version="8.4.3.201212311018"
+         unpack="false"/>
+
+   <plugin
+         id="com.cubrid.cubridmanager.app"
+         download-size="0"
+         install-size="0"
+         version="8.4.3.201212311018"
+         unpack="false"/>
+
+   <plugin
+         id="com.cubrid.tool.editor"
+         download-size="0"
+         install-size="0"
+         version="8.4.3.201212311018"
+         unpack="false"/>
+
+   <plugin
+         id="com.cubrid.common.core"
+         download-size="0"
+         install-size="0"
+         version="8.4.3.201212311018"
+         unpack="false"/>
+
+</feature>

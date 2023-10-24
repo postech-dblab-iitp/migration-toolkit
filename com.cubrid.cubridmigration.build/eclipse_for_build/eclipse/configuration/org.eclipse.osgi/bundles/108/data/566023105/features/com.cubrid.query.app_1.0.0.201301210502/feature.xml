@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="com.cubrid.query.app"
+      label="%featureName"
+      version="1.0.0.201301210502"
+      provider-name="%providerName"
+      plugin="com.cubrid.query.app">
+
+   <description>
+      %description
+   </description>
+
+   <copyright>
+      %copyright
+   </copyright>
+
+   <license>
+      %licence
+   </license>
+
+   <includes
+         id="com.cubrid.common.update"
+         version="1.0.0.201301210502"/>
+
+   <requires>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.apache.log4j"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.jface.text"/>
+      <import plugin="org.eclipse.ui.views"/>
+      <import plugin="org.eclipse.help"/>
+      <import plugin="org.apache.lucene"/>
+      <import plugin="org.eclipse.help.appserver"/>
+      <import plugin="org.eclipse.help.webapp"/>
+      <import plugin="org.eclipse.help.base"/>
+      <import plugin="org.eclipse.help.ui"/>
+      <import plugin="org.eclipse.ui.forms"/>
+      <import plugin="org.eclipse.equinox.http.jetty"/>
+   </requires>
+
+   <plugin
+         id="com.cubrid.query.core"
+         download-size="0"
+         install-size="0"
+         version="1.0.0.201301210503"
+         unpack="false"/>
+
+   <plugin
+         id="com.cubrid.query.ui"
+         download-size="0"
+         install-size="0"
+         version="1.0.0.201301210503"
+         unpack="false"/>
+
+   <plugin
+         id="com.cubrid.jdbc.proxy"
+         download-size="0"
+         install-size="0"
+         version="1.0.0.201301210503"
+         unpack="false"/>
+
+   <plugin
+         id="com.cubrid.query.app"
+         download-size="0"
+         install-size="0"
+         version="1.0.0.201301210503"
+         unpack="false"/>
+
+   <plugin
+         id="com.cubrid.query.ui.framework"
+         download-size="0"
+         install-size="0"
+         version="1.0.0.201301210503"
+         unpack="false"/>
+
+   <plugin
+         id="com.cubrid.query.queryeditor"
+         download-size="0"
+         install-size="0"
+         version="1.0.0.201301210503"
+         unpack="false"/>
+
+   <plugin
+         id="com.cubrid.query.ui.cubrid"
+         download-size="0"
+         install-size="0"
+         version="1.0.0.201301210503"
+         unpack="false"/>
+
+   <plugin
+         id="com.cubrid.query.core.cubrid"
+         download-size="0"
+         install-size="0"
+         version="1.0.0.201301210503"
+         unpack="false"/>
+
+   <plugin
+         id="com.cubrid.query.ui.mysql"
+         download-size="0"
+         install-size="0"
+         version="1.0.0.201301210503"
+         unpack="false"/>
+
+   <plugin
+         id="com.cubrid.query.core.mysql"
+         download-size="0"
+         install-size="0"
+         version="1.0.0.201301210503"
+         unpack="false"/>
+
+   <plugin
+         id="com.cubrid.query.core.oracle"
+         download-size="0"
+         install-size="0"
+         version="1.0.0.201301210503"
+         unpack="false"/>
+
+   <plugin
+         id="com.cubrid.query.ui.oracle"
+         download-size="0"
+         install-size="0"
+         version="1.0.0.201301210503"
+         unpack="false"/>
+
+   <plugin
+         id="com.cubrid.query.core.mssql"
+         download-size="0"
+         install-size="0"
+         version="1.0.0.201301210503"
+         unpack="false"/>
+
+   <plugin
+         id="com.cubrid.query.ui.mssql"
+         download-size="0"
+         install-size="0"
+         version="1.0.0.201301210503"
+         unpack="false"/>
+
+   <plugin
+         id="com.cubrid.query.help"
+         download-size="0"
+         install-size="0"
+         version="1.0.0.201301210503"
+         unpack="false"/>
+
+   <plugin
+         id="com.cubrid.query.core.mongo"
+         download-size="0"
+         install-size="0"
+         version="1.0.0.201301210503"
+         unpack="false"/>
+
+   <plugin
+         id="com.cubrid.query.ui.mongo"
+         download-size="0"
+         install-size="0"
+         version="1.0.0.201301210503"
+         unpack="false"/>
+	 
+   <plugin	 
+         id="com.cubrid.tool.editor"
+         download-size="0"
+         install-size="0"
+         version="1.0.0.201301210503"
+         unpack="false"/>
+
+</feature>

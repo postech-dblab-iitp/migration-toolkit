@@ -1,0 +1,426 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="com.cubrid.cubridmigration.app.feature"
+      label="CUBRID Migration Toolkit Application"
+      version="9.3.0.202204181439"
+      provider-name="CUBRID"
+      plugin="com.cubrid.cubridmigration.app">
+
+   <description url="http://www.cubrid.org">
+      CUBRID Migration Application Feature
+   </description>
+
+   <copyright url="http://www.cubrid.org">
+      Copyright (C) Search Solution Corporation. All rights reserved.
+CUBRID is a registered trademark of Search Solution Corporation
+and 
+CUBRID Migration Toolkit is a name of program for migrating schema
+and data to CUBRID. 
+CUBRID Migration Toolkit is released under BSD license. 
+For more information, please refer to the CUBRID home page(http://www.cubrid.org).
+--------------------------------------------------------------------------------
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions
+are met:
+- Redistributions of source code must retain the above copyright
+notice, this list of conditions and the following disclaimer.
+- Redistributions in binary form must reproduce the above copyright
+notice, this list of conditions and the following disclaimer
+in the documentation and/or other materials provided with the
+distribution.
+- Neither the name of Search Solution Coporation nor the names
+of its contributors may be used to endorse or promote products
+derived from this software without specific prior written permission.
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+&quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT
+NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT
+SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+OF THE POSSIBILITY OF SUCH DAMAGE.
+--------------------------------------------------------------------------------
+Oracle and MySQL JDBC drivers included in the CUBRID Migration
+Toolkit program are 
+released under Oracle Technology Network Development and Distribution
+License Agreement and 
+You shall no right to distribute JDBC drivers in the program
+by the Agreement
+(http://www.oracle.com/technetwork/licenses/distribution-license-152002.html).
+License Rights 
+We grant you a nonexclusive, nontransferable limited license
+to use the programs: (a) for purposes of developing, testing,
+prototyping and running applications you have developed for your
+own internal data processing operations; (b) to distribute the
+programs with applications you have developed to your customers
+provided that each such licensee agrees to license terms consistent
+with the terms of this Agreement, you do not charge your end
+users any additional fees for the use of the programs, and your
+end users may only use the programs to run your applications
+for their own business operations; and (c) to use the programs
+to provide third party demonstrations and training. You are not
+permitted to use the programs for any purpose other than as permitted
+under this Agreement. If you want to use the programs for any
+purpose other than as expressly permitted under this agreement
+you must contact us, or an Oracle reseller, to obtain the appropriate
+license. We may audit your use and distribution of the programs.
+Program documentation is either shipped with the programs, or
+documentation may accessed online at http://otn.oracle.com/docs.
+Ownership and Restrictions 
+We retain all ownership and intellectual property rights in the
+programs. You may make a sufficient number of copies of the programs
+for the licensed use and one copy of the programs for backup
+purposes.
+You may not: 
+- use the programs for any purpose other than as provided above;
+- distribute the programs unless accompanied with your applications;
+- charge your end users for use of the programs; 
+- remove or modify any program markings or any notice of our
+proprietary rights; 
+- use the programs to provide third party training on the content
+and/or functionality of the programs, except for training your
+licensed users; 
+- assign this agreement or give the programs, program access
+or an interest in the programs to any individual or entity except
+as provided under this agreement; 
+- cause or permit reverse engineering (unless required by law
+for interoperability), disassembly or decompilation of the programs;
+- disclose results of any program benchmark tests without our
+prior consent.
+Program Distribution 
+We grant you a nonexclusive, nontransferable right to copy and
+distribute the programs to your end users provided that you do
+not charge your end users for use of the programs and provided
+your end users may only use the programs to run your applications
+for their business operations. Prior to distributing the programs
+you shall require your end users to execute an agreement binding
+them to terms consistent with those contained in this section
+and the sections of this agreement entitled &quot;License Rights,&quot;
+&quot;Ownership and Restrictions,&quot; &quot;Export,&quot; &quot;Disclaimer of Warranties
+and Exclusive Remedies,&quot; &quot;No Technical Support,&quot; &quot;End of Agreement,&quot;
+&quot;Relationship Between the Parties,&quot; and &quot;Open Source.&quot; You must
+also include a provision stating that your end users shall have
+no right to distribute the programs, and a provision specifying
+us as a third party beneficiary of the agreement. You are responsible
+for obtaining these agreements with your end users.
+You agree to: (a) defend and indemnify us against all claims
+and damages caused by your distribution of the programs in breach
+of this agreements and/or failure to include the required contractual
+provisions in your end user agreement as stated above; (b) keep
+executed end user agreements and records of end user information
+including name, address, date of distribution and identity of
+programs distributed; (c) allow us to inspect your end user agreements
+and records upon request; and, (d) enforce the terms of your
+end user agreements so as to effect a timely cure of any end
+user breach, and to notify us of any breach of the terms.
+Export 
+You agree that U.S. export control laws and other applicable
+export and import laws govern your use of the programs, including
+technical data; additional information can be found on Oracle&apos;s
+Global Trade Compliance web site located at http://www.oracle.com/products/export/index.html?content.html.
+You agree that neither the programs nor any direct product thereof
+will be exported, directly, or indirectly, in violation of these
+laws, or will be used for any purpose prohibited by these laws
+including, without limitation, nuclear, chemical, or biological
+weapons proliferation.
+Disclaimer of Warranty and Exclusive Remedies
+THE PROGRAMS ARE PROVIDED &quot;AS IS&quot; WITHOUT WARRANTY OF ANY KIND.
+WE FURTHER DISCLAIM ALL WARRANTIES, EXPRESS AND IMPLIED, INCLUDING
+WITHOUT LIMITATION, ANY IMPLIED WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE OR NONINFRINGEMENT.
+IN NO EVENT SHALL WE BE LIABLE FOR ANY INDIRECT, INCIDENTAL,
+SPECIAL, PUNITIVE OR CONSEQUENTIAL DAMAGES, OR DAMAGES FOR LOSS
+OF PROFITS, REVENUE, DATA OR DATA USE, INCURRED BY YOU OR ANY
+THIRD PARTY, WHETHER IN AN ACTION IN CONTRACT OR TORT, EVEN IF
+WE HAVE BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES. OUR
+ENTIRE LIABILITY FOR DAMAGES HEREUNDER SHALL IN NO EVENT EXCEED
+ONE THOUSAND DOLLARS (U.S. $1,000).
+No Technical Support 
+Our technical support organization will not provide technical
+support, phone support, or updates to you for the programs licensed
+under this agreement.
+Restricted Rights 
+If you distribute a license to the United States government,
+the programs, including documentation, shall be considered commercial
+computer software and you will place a legend, in addition to
+applicable copyright notices, on the documentation, and on the
+media label, substantially similar to the following: 
+NOTICE OF RESTRICTED RIGHTS 
+&quot;Programs delivered subject to the DOD FAR Supplement are &apos;commercial
+computer software&apos; and use, duplication, and disclosure of the
+programs, including documentation, shall be subject to the licensing
+restrictions set forth in the applicable Oracle license agreement.
+Otherwise, programs delivered subject to the Federal Acquisition
+Regulations are &apos;restricted computer software&apos; and use, duplication,
+and disclosure of the programs, including documentation, shall
+be subject to the restrictions in FAR 52.227-19, Commercial Computer
+Software-Restricted Rights (June 1987). Oracle America, Inc.,
+500 Oracle Parkway, Redwood City, CA 94065.&quot;
+End of Agreement 
+You may terminate this agreement by destroying all copies of
+the programs. We have the right to terminate your right to use
+the programs if you fail to comply with any of the terms of this
+agreement, in which case you shall destroy all copies of the
+programs.
+Relationship Between the Parties 
+The relationship between you and us is that of licensee/licensor.
+Neither party will represent that it has any authority to assume
+or create any obligation, express or implied, on behalf of the
+other party, nor to represent the other party as agent, employee,
+franchisee, or in any other capacity. Nothing in this agreement
+shall be construed to limit either party&apos;s right to independently
+develop or distribute software that is functionally similar to
+the other party&apos;s products, so long as proprietary information
+of the other party is not included in such software.
+Open Source 
+&quot;Open Source&quot; software - software available without charge for
+use, modification and distribution - is often licensed under
+terms that require the user to make the user&apos;s modifications
+to the Open Source software or any software that the user &apos;combines&apos;
+with the Open Source software freely available in source code
+form. If you use Open Source software in conjunction with the
+programs, you must ensure that your use does not: (i) create,
+or purport to create, obligations of us with respect to the Oracle
+programs; or (ii) grant, or purport to grant, to any third party
+any rights to or immunities under our intellectual property or
+proprietary rights in the Oracle programs. For example, you may
+not develop a software program using an Oracle program and an
+Open Source program where such use results in a program file(s)
+that contains code from both the Oracle program and the Open
+Source program (including without limitation libraries) if the
+Open Source program is licensed under a license that requires
+any &quot;modifications&quot; be made freely available. You also may not
+combine the Oracle program with programs licensed under the GNU
+General Public License (&quot;GPL&quot;) in any manner that could cause,
+or could be interpreted or asserted to cause, the Oracle program
+or any modifications thereto to become subject to the terms of
+the GPL.
+Entire Agreement 
+You agree that this agreement is the complete agreement for the
+programs and licenses, and this agreement supersedes all prior
+or contemporaneous agreements or representations. If any term
+of this agreement is found to be invalid or unenforceable, the
+remaining provisions will remain effective.
+--------------------------------------------------------------------------------
+MSSQL JDBC drivers included in the CUBRID Migration Toolkit program
+are 
+released under MICROSOFT SOFTWARE LICENSE TERMS and MICROSOFT
+SQL SERVER JDBC DRIVER REDISTRIBUTION LICENSE.  
+You shall no right to distribute JDBC drivers in the program
+by the Agreement
+(http://msdn.microsoft.com/ko-kr/data/aa937726).
+MICROSOFT SOFTWARE LICENSE TERMS
+MICROSOFT SQL SERVER JDBC DRIVER REDISTRIBUTION LICENSE
+These license terms are an agreement between Microsoft Corporation
+(or based on where you live, one of its affiliates) and you.
+Please read them. They apply to the software named above, which
+includes the media on which you received it, if any. The terms
+also apply to any Microsoft
+updates,
+supplements,
+Internet-based services, and
+support services
+for this software, unless other terms accompany those items.
+If so, those terms apply.
+By using the software, you accept these terms. If you do not
+accept them, do not use the software. If you comply with these
+license terms, you have the rights below.
+1.INSTALLATION AND USE RIGHTS. You may use any number of copies
+of the software on your devices.
+2.ADDITIONAL LICENSING REQUIREMENTS AND/OR USE RIGHTS.
+a.Distributable Code. You are permitted to distribute the software
+in programs you develop if you comply with the terms below.
+i.Right to Use and Distribute. The software is &quot;Distributable
+Code.&quot;
+-Distributable Code. You may copy and distribute the object code
+form of the software. You may not modify the software.
+-Third Party Distribution. You may permit distributors of your
+programs to copy and distribute the Distributable Code as part
+of those programs.
+ii.Distribution Requirements. For any Distributable Code you
+distribute, you must
+-add significant primary functionality to it in your programs;
+-require distributors and external end users to agree to terms
+that protect it at least as much as this agreement; 
+-display your valid copyright notice on your programs; and
+-indemnify, defend, and hold harmless Microsoft from any claims,
+including attorneys&apos; fees, related to the distribution or use
+of your programs.
+iii.Distribution Restrictions. You may not
+-alter any copyright, trademark or patent notice in the Distributable
+Code;
+-use Microsoft&apos;s trademarks in your programs&apos; names or in a way
+that suggests your programs come from or are endorsed by Microsoft;
+-include Distributable Code in malicious, deceptive or unlawful
+programs; or
+-modify or distribute the source code of any Distributable Code
+so that any part of it becomes subject to an Excluded License.
+An Excluded License is one that requires, as a condition of use,
+modification or distribution, that
+-the code be disclosed or distributed in source code form; or
+-others have the right to modify it.
+3.SCOPE OF LICENSE. The software is licensed, not sold. This
+agreement only gives you some rights to use the software. Microsoft
+reserves all other rights. Unless applicable law gives you more
+rights despite this limitation, you may use the software only
+as expressly permitted in this agreement. In doing so, you must
+comply with any technical limitations in the software that only
+allow you to use it in certain ways. You may not
+-disclose the results of any benchmark tests of the software
+to any third party without Microsoft&apos;s prior written approval;
+-reverse engineer, decompile or disassemble the software, except
+and only to the extent that applicable law expressly permits,
+despite this limitation;
+-publish the software for others to copy; or
+-rent, lease or lend the software.
+4.TRANSFER TO A THIRD PARTY. The first user of the software may
+transfer it and this agreement directly to a third party. Before
+the transfer, that party must agree that this agreement applies
+to the transfer and use of the software. The first user must
+uninstall the software before transferring it separately from
+the device. The first user may not retain any copies.
+5.EXPORT RESTRICTIONS. The software is subject to United States
+export laws and regulations. You must comply with all domestic
+and international export laws and regulations that apply to the
+software. These laws include restrictions on destinations, end
+users and end use. For additional information, see www.microsoft.com/exporting.
+6.SUPPORT SERVICES. Because this software is &quot;as is,&quot; we may
+not provide support services for it.
+7.ENTIRE AGREEMENT. This agreement, and the terms for supplements,
+updates, Internet-based services and support services that you
+use, are the entire agreement for the software and support services.
+8.APPLICABLE LAW.
+a.United States. If you acquired the software in the United States,
+Washington state law governs the interpretation of this agreement
+and applies to claims for breach of it, regardless of conflict
+of laws principles. The laws of the state where you live govern
+all other claims, including claims under state consumer protection
+laws, unfair competition laws, and in tort.
+b.Outside the United States. If you acquired the software in
+any other country, the laws of that country apply.
+9.LEGAL EFFECT. This agreement describes certain legal rights.
+You may have other rights under the laws of your country. You
+may also have rights with respect to the party from whom you
+acquired the software. This agreement does not change your rights
+under the laws of your country if the laws of your country do
+not permit it to do so.
+10.DISCLAIMER OF WARRANTY. The software is licensed &quot;as-is.&quot;
+You bear the risk of using it. Microsoft gives no express warranties,
+guarantees or conditions. You may have additional consumer rights
+under your local laws which this agreement cannot change. To
+the extent permitted under your local laws, Microsoft excludes
+the implied warranties of merchantability, fitness for a particular
+purpose and non-infringement.
+11.LIMITATION ON AND EXCLUSION OF REMEDIES AND DAMAGES. You can
+recover from Microsoft and its suppliers only direct damages
+up to U.S. $5.00. You cannot recover any other damages, including
+consequential, lost profits, special, indirect or incidental
+damages.
+This limitation applies to
+-anything related to the software, services, content (including
+code) on third party Internet sites, or third party programs;
+and
+-claims for breach of contract, breach of warranty, guarantee
+or condition, strict liability, negligence, or other tort to
+the extent permitted by applicable law.
+It also applies even if Microsoft knew or should have known about
+the possibility of the damages. The above limitation or exclusion
+may not apply to you because your country may not allow the exclusion
+or limitation of incidental, consequential or other damages.
+----------------------------------------------------------------------------------------------------------
+If You have any questions concerning this License Agreement,
+please ask any on CUBRID Forum at http://forum.cubrid.org.
+Sincerely,
+Your CUBRID Tool Development Team.
+   </copyright>
+
+   <license url="http://www.cubrid.org">
+      BSD Licence
+
+Copyright (C) 2009 Search Solution Corporation. All rights reserved by Search Solution.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met: -
+Redistributions of source code must retain the above copyright notice, this
+list of conditions and the following disclaimer. - Redistributions in binary
+form must reproduce the above copyright notice, this list of conditions and
+the following disclaimer in the documentation and/or other materials provided
+with the distribution. - Neither the name of the &lt;ORGANIZATION&gt; nor the names
+of its contributors may be used to endorse or promote products derived from
+this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot;
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+POSSIBILITY OF SUCH DAMAGE.
+   </license>
+
+   <url>
+      <update label="CUBRID Migration Toolkit" url="http://ftp.cubrid.org/sites/rcp/cubridmigration/"/>
+   </url>
+
+   <includes
+         id="org.eclipse.rcp"
+         version="3.6.0.v20100519-9OArFKvFtsd7WLUKh-DcYTS"/>
+
+   <includes
+         id="com.cubrid.common.update"
+         version="9.2.0.202204181439"/>
+
+   <requires>
+      <import plugin="org.eclipse.core.runtime" version="3.6.0" match="compatible"/>
+      <import plugin="com.cubrid.common.configuration" version="9.2.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui" version="3.6.0" match="compatible"/>
+      <import plugin="org.eclipse.equinox.p2.ui" version="2.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.jface" version="3.6.0" match="compatible"/>
+      <import plugin="com.ibm.icu"/>
+      <import plugin="org.eclipse.osgi"/>
+   </requires>
+
+   <plugin
+         id="com.cubrid.cubridmigration.core"
+         download-size="0"
+         install-size="0"
+         version="9.3.0.202204181439"
+         unpack="false"/>
+
+   <plugin
+         id="com.cubrid.cubridmigration.ui"
+         download-size="0"
+         install-size="0"
+         version="9.3.0.202204181439"
+         unpack="false"/>
+
+   <plugin
+         id="com.cubrid.cubridmigration.app"
+         download-size="0"
+         install-size="0"
+         version="9.3.0.202204181439"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.ui.forms"
+         download-size="0"
+         install-size="0"
+         version="3.5.0.v20100427"
+         unpack="false"/>
+
+   <plugin
+         id="com.cubrid.common.configuration"
+         download-size="0"
+         install-size="0"
+         version="9.2.0.202204181439"
+         unpack="false"/>
+
+</feature>

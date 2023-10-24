@@ -1,0 +1,80 @@
+10
+
+dir
+168
+http://svn.platform.nhncorp.cn/devtools/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/configuration
+http://svn.platform.nhncorp.cn/devtools
+
+
+
+2012-09-20T14:57:07.208556Z
+168
+CN14917
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+a45defa0-3301-0010-9946-6f6903298bd5
+
+org.eclipse.equinox.app
+dir
+
+org.eclipse.equinox.source
+dir
+
+org.eclipse.core.runtime
+dir
+
+config.ini
+file
+
+
+
+
+2012-09-07T08:32:15.000000Z
+9ca384a9ffad938a9ce9b1e72cad69c3
+2012-09-20T14:57:07.208556Z
+168
+CN14917
+has-props
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+943
+
+org.eclipse.osgi
+dir
+
+org.eclipse.update
+dir
+
+org.eclipse.equinox.simpleconfigurator
+dir
+

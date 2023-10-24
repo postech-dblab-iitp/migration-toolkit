@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<?artifactRepository version='1.1.0'?>
+<repository name='D:\dailybuild\eclipse\.eclipseextension' type='org.eclipse.equinox.p2.artifact.repository.simpleRepository' version='1.0.0'>
+  <properties size='3'>
+    <property name='p2.timestamp' value='1311067942699'/>
+    <property name='org.eclipse.update.site.policy' value='USER-EXCLUDE'/>
+    <property name='org.eclipse.update.site.list' value=''/>
+  </properties>
+  <mappings size='3'>
+    <rule filter='(&amp; (classifier=osgi.bundle))' output='${repoUrl}/plugins/${id}_${version}.jar'/>
+    <rule filter='(&amp; (classifier=binary))' output='${repoUrl}/binary/${id}_${version}'/>
+    <rule filter='(&amp; (classifier=org.eclipse.update.feature))' output='${repoUrl}/features/${id}_${version}.jar'/>
+  </mappings>
+  <artifacts size='1'>
+    <artifact classifier='osgi.bundle' id='org.apache.log4j' version='1.2.13.v200806030600'>
+      <properties size='3'>
+        <property name='artifact.size' value='387870'/>
+        <property name='download.size' value='387870'/>
+        <property name='download.md5' value='e0fcba2ad215a54d08fb7450d92f3e6e'/>
+      </properties>
+      <repositoryProperties size='2'>
+        <property name='artifact.reference' value='file:/D:/dailybuild/eclipse/plugins/org.apache.log4j_1.2.13.v200806030600.jar'/>
+        <property name='file.name' value='D:\dailybuild\eclipse\plugins\org.apache.log4j_1.2.13.v200806030600.jar'/>
+      </repositoryProperties>
+    </artifact>
+  </artifacts>
+</repository>

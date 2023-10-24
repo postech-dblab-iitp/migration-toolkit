@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature id="org.eclipse.rcp.source" version="3.6.0.v20100519-9OArFKvFtsd7WLUKh-DcYTS" label="%featureName" provider-name="%providerName" image="eclipse_update_120.jpg"    >
+	<description >
+		%description
+	</description>
+	<copyright >
+		%copyright
+	</copyright>
+	<license url="%licenseURL">
+		%license
+	</license>
+	<url>
+		<update url="http://download.eclipse.org/eclipse/updates/3.5" label="%updateSiteName"/>
+	</url>
+	<plugin id="com.ibm.icu.source" version="4.2.1.v20100412"     unpack="false"/>
+	<plugin id="org.eclipse.core.commands.source" version="3.6.0.I20100512-1500"     unpack="false"/>
+	<plugin id="org.eclipse.core.databinding.source" version="1.3.100.I20100601-0800"     unpack="false"/>
+	<plugin id="org.eclipse.core.databinding.observable.source" version="1.3.0.I20100601-0800"     unpack="false"/>
+	<plugin id="org.eclipse.core.databinding.property.source" version="1.3.0.I20100601-0800"     unpack="false"/>
+	<plugin id="org.eclipse.core.databinding.beans.source" version="1.2.100.I20100601-0800"     unpack="false"/>
+	<plugin id="org.eclipse.core.jobs.source" version="3.5.0.v20100515"     unpack="false"/>
+	<plugin id="org.eclipse.core.expressions.source" version="3.4.200.v20100505"     unpack="false"/>
+	<plugin id="org.eclipse.core.runtime.source" version="3.6.0.v20100505"     unpack="false"/>
+	<plugin id="org.eclipse.core.runtime.compatibility.auth.source" version="3.2.200.v20100517"     unpack="false"/>
+	<plugin id="org.eclipse.osgi.source" version="3.6.0.v20100517"     unpack="false"/>
+	<plugin id="org.eclipse.osgi.services.source" version="3.2.100.v20100503"     unpack="false"/>
+	<plugin id="org.eclipse.help.source" version="3.5.0.v20100524"     unpack="false"/>
+	<plugin id="org.eclipse.jface.source" version="3.6.0.I20100601-0800"     unpack="false"/>
+	<plugin id="org.eclipse.jface.databinding.source" version="1.4.0.I20100601-0800"     unpack="false"/>
+	<plugin id="org.eclipse.ui.source" version="3.6.0.I20100603-1100"     unpack="false"/>
+	<plugin id="org.eclipse.ui.workbench.source" version="3.6.0.I20100603-1100"     unpack="false"/>
+	<plugin id="org.eclipse.ui.carbon.source" version="4.0.100.I20100601-0800" os="macosx"  ws="carbon"  unpack="false"/>
+	<plugin id="org.eclipse.ui.cocoa.source" version="1.0.2.I20100601-0800" os="macosx"  ws="cocoa"  unpack="false"/>
+	<plugin id="org.eclipse.update.configurator.source" version="3.3.100.v20100512"     unpack="false"/>
+	<plugin id="org.eclipse.equinox.simpleconfigurator.source" version="1.0.200.v20100503"     unpack="false"/>
+	<plugin id="org.eclipse.swt.win32.win32.x86.source" version="3.6.0.v3650b" os="win32" arch="x86" ws="win32"  unpack="false"/>
+	<plugin id="org.eclipse.swt.win32.win32.x86_64.source" version="3.6.0.v3650b" os="win32" arch="x86_64" ws="win32"  unpack="false"/>
+	<plugin id="org.eclipse.swt.gtk.linux.x86.source" version="3.6.0.v3650b" os="linux" arch="x86" ws="gtk"  unpack="false"/>
+	<plugin id="org.eclipse.swt.gtk.linux.s390x.source" version="3.6.0.v3650b" os="linux" arch="s390x" ws="gtk"  unpack="false"/>
+	<plugin id="org.eclipse.swt.gtk.linux.s390.source" version="3.6.0.v3650b" os="linux" arch="s390" ws="gtk"  unpack="false"/>
+	<plugin id="org.eclipse.swt.gtk.solaris.sparc.source" version="3.6.0.v3650b" os="solaris" arch="sparc" ws="gtk"  unpack="false"/>
+	<plugin id="org.eclipse.swt.gtk.solaris.x86.source" version="3.6.0.v3650b" os="solaris" arch="x86" ws="gtk"  unpack="false"/>
+	<plugin id="org.eclipse.swt.gtk.linux.ppc.source" version="3.6.0.v3650b" os="linux" arch="ppc" ws="gtk"  unpack="false"/>
+	<plugin id="org.eclipse.swt.gtk.linux.ppc64.source" version="3.6.0.v3650b" os="linux" arch="ppc64" ws="gtk"  unpack="false"/>
+	<plugin id="org.eclipse.swt.gtk.linux.x86_64.source" version="3.6.0.v3650b" os="linux" arch="x86_64" ws="gtk"  unpack="false"/>
+	<plugin id="org.eclipse.swt.carbon.macosx.source" version="3.6.0.v3650b" os="macosx" arch="x86" ws="carbon"  unpack="false"/>
+	<plugin id="org.eclipse.swt.cocoa.macosx.source" version="3.6.0.v3650b" os="macosx" arch="x86" ws="cocoa"  unpack="false"/>
+	<plugin id="org.eclipse.swt.cocoa.macosx.x86_64.source" version="3.6.0.v3650b" os="macosx" arch="x86_64" ws="cocoa"  unpack="false"/>
+	<plugin id="org.eclipse.swt.motif.aix.ppc.source" version="3.6.0.v3650b" os="aix" arch="ppc" ws="motif"  unpack="false"/>
+	<plugin id="org.eclipse.swt.motif.hpux.ia64_32.source" version="3.6.0.v3650b" os="hpux" arch="ia64_32" ws="motif"  unpack="false"/>
+	<plugin id="org.eclipse.swt.motif.linux.x86.source" version="3.6.0.v3650b" os="linux" arch="x86" ws="motif"  unpack="false"/>
+	<plugin id="org.eclipse.swt.motif.solaris.sparc.source" version="3.6.0.v3650b" os="solaris" arch="sparc" ws="motif"  unpack="false"/>
+	<plugin id="org.eclipse.swt.photon.qnx.x86.source" version="3.6.0.v3650b" os="qnx" arch="x86" ws="photon"  unpack="false"/>
+	<plugin id="org.eclipse.rcp.source" version="3.6.0.v201006080911"     unpack="false"/>
+	<plugin id="org.eclipse.core.contenttype.source" version="3.4.100.v20100505-1235"     unpack="false"/>
+	<plugin id="org.eclipse.equinox.app.source" version="1.3.0.v20100512"     unpack="false"/>
+	<plugin id="org.eclipse.equinox.common.source" version="3.6.0.v20100503"     unpack="false"/>
+	<plugin id="org.eclipse.equinox.ds.source" version="1.2.0.v20100507"     unpack="false"/>
+	<plugin id="org.eclipse.equinox.util.source" version="1.0.200.v20100503"     unpack="false"/>
+	<plugin id="org.eclipse.equinox.preferences.source" version="3.3.0.v20100503"     unpack="false"/>
+	<plugin id="org.eclipse.equinox.registry.source" version="3.5.0.v20100503"     unpack="false"/>
+	<plugin id="org.eclipse.equinox.launcher.source" version="1.1.0.v20100507"     unpack="false"/>
+</feature>

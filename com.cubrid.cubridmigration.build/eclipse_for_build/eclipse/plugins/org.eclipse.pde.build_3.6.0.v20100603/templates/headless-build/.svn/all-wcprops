@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 157
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/plugins/org.eclipse.pde.build_3.6.0.v20100603/templates/headless-build
+END
+customTargets.xml
+K 25
+svn:wc:ra_dav:version-url
+V 175
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/plugins/org.eclipse.pde.build_3.6.0.v20100603/templates/headless-build/customTargets.xml
+END
+allElements.xml
+K 25
+svn:wc:ra_dav:version-url
+V 173
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/plugins/org.eclipse.pde.build_3.6.0.v20100603/templates/headless-build/allElements.xml
+END
+customAssembly.xml
+K 25
+svn:wc:ra_dav:version-url
+V 176
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/plugins/org.eclipse.pde.build_3.6.0.v20100603/templates/headless-build/customAssembly.xml
+END
+build.properties
+K 25
+svn:wc:ra_dav:version-url
+V 174
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/plugins/org.eclipse.pde.build_3.6.0.v20100603/templates/headless-build/build.properties
+END

@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse
+END
+artifacts.xml
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/artifacts.xml
+END
+eclipse.ini
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/eclipse.ini
+END
+eclipse.exe
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/eclipse.exe
+END
+eclipsec.exe
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/eclipsec.exe
+END

@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<?metadataRepository version='1.1.0'?>
+<repository name='metadata listener dropins' type='org.eclipse.equinox.internal.p2.metadata.repository.LocalMetadataRepository' version='1.0.0'>
+  <properties size='3'>
+    <property name='p2.system' value='true'/>
+    <property name='p2.timestamp' value='1345566838176'/>
+    <property name='dropin.metadataRepositories' value='file:/home/hudson/tools/eclipse_for_build/eclipse/dropins/delta/|file:/home/hudson/tools/eclipse_for_build/eclipse/dropins/language/'/>
+  </properties>
+</repository>

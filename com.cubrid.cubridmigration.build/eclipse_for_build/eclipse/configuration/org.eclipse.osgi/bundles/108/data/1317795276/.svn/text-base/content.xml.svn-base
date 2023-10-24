@@ -1,0 +1,61 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<?metadataRepository version='1.1.0'?>
+<repository name='extension location metadata repository: file:/D:/dailybuild/eclipse/.eclipseextension' type='org.eclipse.equinox.internal.p2.metadata.repository.LocalMetadataRepository' version='1.0.0'>
+  <properties size='3'>
+    <property name='org.eclipse.update.site.policy' value='USER-EXCLUDE'/>
+    <property name='org.eclipse.update.site.list' value=''/>
+    <property name='p2.timestamp' value='1311067942528'/>
+  </properties>
+  <units size='1'>
+    <unit id='org.apache.log4j' version='1.2.13.v200806030600' singleton='false'>
+      <update id='org.apache.log4j' range='[0.0.0,1.2.13.v200806030600)' severity='0'/>
+      <properties size='7'>
+        <property name='df_LT.PLUGIN_NAME' value='Apache Jakarta log4j Plug-in'/>
+        <property name='df_LT.PLUGIN_PROVIDER' value='Eclipse.org'/>
+        <property name='org.eclipse.equinox.p2.name' value='%PLUGIN_NAME'/>
+        <property name='org.eclipse.equinox.p2.provider' value='%PLUGIN_PROVIDER'/>
+        <property name='org.eclipse.equinox.p2.bundle.localization' value='plugin'/>
+        <property name='file.name' value='D:\dailybuild\eclipse\plugins\org.apache.log4j_1.2.13.v200806030600.jar'/>
+        <property name='file.lastModified' value='1310977834671'/>
+      </properties>
+      <provides size='25'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='org.apache.log4j' version='1.2.13.v200806030600'/>
+        <provided namespace='osgi.bundle' name='org.apache.log4j' version='1.2.13.v200806030600'/>
+        <provided namespace='java.package' name='org.apache.log4j' version='0.0.0'/>
+        <provided namespace='java.package' name='org.apache.log4j.chainsaw' version='0.0.0'/>
+        <provided namespace='java.package' name='org.apache.log4j.config' version='0.0.0'/>
+        <provided namespace='java.package' name='org.apache.log4j.helpers' version='0.0.0'/>
+        <provided namespace='java.package' name='org.apache.log4j.jdbc' version='0.0.0'/>
+        <provided namespace='java.package' name='org.apache.log4j.jmx' version='0.0.0'/>
+        <provided namespace='java.package' name='org.apache.log4j.lf5' version='0.0.0'/>
+        <provided namespace='java.package' name='org.apache.log4j.lf5.config' version='0.0.0'/>
+        <provided namespace='java.package' name='org.apache.log4j.lf5.util' version='0.0.0'/>
+        <provided namespace='java.package' name='org.apache.log4j.lf5.viewer' version='0.0.0'/>
+        <provided namespace='java.package' name='org.apache.log4j.lf5.viewer.categoryexplorer' version='0.0.0'/>
+        <provided namespace='java.package' name='org.apache.log4j.lf5.viewer.configure' version='0.0.0'/>
+        <provided namespace='java.package' name='org.apache.log4j.lf5.viewer.images' version='0.0.0'/>
+        <provided namespace='java.package' name='org.apache.log4j.net' version='0.0.0'/>
+        <provided namespace='java.package' name='org.apache.log4j.nt' version='0.0.0'/>
+        <provided namespace='java.package' name='org.apache.log4j.or' version='0.0.0'/>
+        <provided namespace='java.package' name='org.apache.log4j.or.jms' version='0.0.0'/>
+        <provided namespace='java.package' name='org.apache.log4j.or.sax' version='0.0.0'/>
+        <provided namespace='java.package' name='org.apache.log4j.spi' version='0.0.0'/>
+        <provided namespace='java.package' name='org.apache.log4j.varia' version='0.0.0'/>
+        <provided namespace='java.package' name='org.apache.log4j.xml' version='0.0.0'/>
+        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+        <provided namespace='org.eclipse.equinox.p2.localization' name='df_LT' version='1.0.0'/>
+      </provides>
+      <artifacts size='1'>
+        <artifact classifier='osgi.bundle' id='org.apache.log4j' version='1.2.13.v200806030600'/>
+      </artifacts>
+      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+      <touchpointData size='1'>
+        <instructions size='1'>
+          <instruction key='manifest'>
+            Bundle-Vendor: %PLUGIN_PROVIDER&#xA;Bundle-ManifestVersion: 2&#xA;Bundle-RequiredExecutionEnvironment: J2SE-1.4&#xA;Bundle-ClassPath: .&#xA;Bundle-Name: %PLUGIN_NAME&#xA;Bundle-Localization: plugin&#xA;Eclipse-BuddyPolicy: registered&#xA;Manifest-Version: 1.0&#xA;Bundle-SymbolicName: org.apache.log4j&#xA;Bundle-Version: 1.2.13.v200806030600&#xA;Export-Package: org.apache.log4j,org.apache.log4j.chainsaw,org.apache.log4j.config,org.apache.log4j.helpers,org.apache.log4j.jdbc,org.apache.log4j.jmx,org.apache.log4j.lf5,org.apache.log4j.lf5.config,org.apache.log4j.lf5.util,org.apache.log4j.lf5.viewer,org.apache.log4j.lf5.viewer.categoryexplorer,org.apache.log4j.lf5.viewer.configure,org.apache.log4j.lf5.viewer.images,org.apache.log4j.net,org.apache.log4j.nt,org.apache.log4j.or,org.apache.log4j.or.jms,org.apache.log4j.or.sax,org.apache.log4j.spi,org.apache.log4j.varia,org.apache.log4j.xml&#xA;
+          </instruction>
+        </instructions>
+      </touchpointData>
+    </unit>
+  </units>
+</repository>

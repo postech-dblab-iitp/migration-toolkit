@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="com.cubrid.cubridquery.app"
+      label="%featureName"
+      version="8.4.1.201210230308"
+      provider-name="%providerName"
+      plugin="com.cubrid.cubridquery.app">
+
+   <description>
+      %description
+   </description>
+
+   <copyright>
+      %copyright
+   </copyright>
+
+   <license>
+      %licence
+   </license>
+
+   <includes
+         id="com.cubrid.common.update"
+         version="8.4.1.201210230308"/>
+
+   <requires>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.jface.text"/>
+      <import plugin="org.apache.log4j"/>
+      <import plugin="slf4j.api"/>
+      <import plugin="org.eclipse.ui.views"/>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.help.ui"/>
+      <import plugin="org.apache.ant"/>
+      <import plugin="org.eclipse.compare"/>
+      <import plugin="com.cubrid.common.core"/>
+      <import plugin="com.cubrid.cubridmanager.core"/>
+      <import plugin="com.cubrid.common.ui"/>
+      <import plugin="com.cubrid.cubridquery.ui"/>
+      <import plugin="com.cubrid.common.update"/>
+   </requires>
+
+   <plugin
+         id="com.cubrid.common.ui"
+         download-size="0"
+         install-size="0"
+         version="8.4.1.201210230308"
+         unpack="false"/>
+
+   <plugin
+         id="com.cubrid.cubridmanager.core"
+         download-size="0"
+         install-size="0"
+         version="8.4.1.201210230308"
+         unpack="false"/>
+
+   <plugin
+         id="com.cubrid.cubridquery.ui"
+         download-size="0"
+         install-size="0"
+         version="8.4.1.201210230308"
+         unpack="false"/>
+
+   <plugin
+         id="com.cubrid.cubridquery.app"
+         download-size="0"
+         install-size="0"
+         version="8.4.1.201210230308"
+         unpack="false"/>
+
+   <plugin
+         id="com.cubrid.common.core"
+         download-size="0"
+         install-size="0"
+         version="8.4.1.201210230308"
+         unpack="false"/>
+
+</feature>

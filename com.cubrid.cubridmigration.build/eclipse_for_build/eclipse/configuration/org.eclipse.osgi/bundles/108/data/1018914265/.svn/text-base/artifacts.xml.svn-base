@@ -1,0 +1,983 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<?artifactRepository version='1.1.0'?>
+<repository name='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta' type='org.eclipse.equinox.p2.artifact.repository.simpleRepository' version='1'>
+  <properties size='1'>
+    <property name='p2.timestamp' value='1329038557679'/>
+  </properties>
+  <mappings size='3'>
+    <rule filter='(&amp; (classifier=osgi.bundle))' output='${repoUrl}/plugins/${id}_${version}.jar'/>
+    <rule filter='(&amp; (classifier=binary))' output='${repoUrl}/binary/${id}_${version}'/>
+    <rule filter='(&amp; (classifier=org.eclipse.update.feature))' output='${repoUrl}/features/${id}_${version}.jar'/>
+  </mappings>
+  <artifacts size='88'>
+    <artifact classifier='osgi.bundle' id='org.eclipse.swt.gtk.linux.ppc64.source' version='3.6.0.v3650b'>
+      <properties size='3'>
+        <property name='artifact.size' value='1945101'/>
+        <property name='download.size' value='1945101'/>
+        <property name='download.md5' value='00e1c57459c4568b00046c9042fd1753'/>
+      </properties>
+      <repositoryProperties size='2'>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.gtk.linux.ppc64.source_3.6.0.v3650b.jar'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.gtk.linux.ppc64.source_3.6.0.v3650b.jar'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.equinox.launcher.cocoa.macosx.x86_64' version='1.1.0.v20100503'>
+      <properties size='2'>
+        <property name='artifact.size' value='4096'/>
+        <property name='download.size' value='4096'/>
+      </properties>
+      <repositoryProperties size='3'>
+        <property name='artifact.folder' value='true'/>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.equinox.launcher.cocoa.macosx.x86_64_1.1.0.v20100503/'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.equinox.launcher.cocoa.macosx.x86_64_1.1.0.v20100503'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.update.core.linux' version='3.2.200.v20100512'>
+      <properties size='3'>
+        <property name='artifact.size' value='8336'/>
+        <property name='download.size' value='8336'/>
+        <property name='download.md5' value='888af7be8dbeca17203af1381aea8dfc'/>
+      </properties>
+      <repositoryProperties size='2'>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.update.core.linux_3.2.200.v20100512.jar'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.update.core.linux_3.2.200.v20100512.jar'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.compare.win32.source' version='1.0.100.I20100505-1245'>
+      <properties size='3'>
+        <property name='artifact.size' value='19362'/>
+        <property name='download.size' value='19362'/>
+        <property name='download.md5' value='ba0d522618a0e91ae129b3fe7bd4635d'/>
+      </properties>
+      <repositoryProperties size='2'>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.compare.win32.source_1.0.100.I20100505-1245.jar'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.compare.win32.source_1.0.100.I20100505-1245.jar'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.update.core.linux.source' version='3.2.200.v20100512'>
+      <properties size='3'>
+        <property name='artifact.size' value='9334'/>
+        <property name='download.size' value='9334'/>
+        <property name='download.md5' value='ffba05570552cbafba7b22580f84a128'/>
+      </properties>
+      <repositoryProperties size='2'>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.update.core.linux.source_3.2.200.v20100512.jar'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.update.core.linux.source_3.2.200.v20100512.jar'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.equinox.launcher.gtk.linux.x86' version='1.1.0.v20100503'>
+      <properties size='2'>
+        <property name='artifact.size' value='4096'/>
+        <property name='download.size' value='4096'/>
+      </properties>
+      <repositoryProperties size='3'>
+        <property name='artifact.folder' value='true'/>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.equinox.launcher.gtk.linux.x86_1.1.0.v20100503/'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.equinox.launcher.gtk.linux.x86_1.1.0.v20100503'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.jdt.launching.ui.macosx' version='1.0.100.v20100505'>
+      <properties size='3'>
+        <property name='artifact.size' value='54497'/>
+        <property name='download.size' value='54497'/>
+        <property name='download.md5' value='5dc684eaa4b0559375efcc4856d24cf6'/>
+      </properties>
+      <repositoryProperties size='2'>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.jdt.launching.ui.macosx_1.0.100.v20100505.jar'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.jdt.launching.ui.macosx_1.0.100.v20100505.jar'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.swt.motif.hpux.ia64_32.source' version='3.6.0.v3650b'>
+      <properties size='3'>
+        <property name='artifact.size' value='1734541'/>
+        <property name='download.size' value='1734541'/>
+        <property name='download.md5' value='31b110fa68acbf000544fa6e4bd6c942'/>
+      </properties>
+      <repositoryProperties size='2'>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.motif.hpux.ia64_32.source_3.6.0.v3650b.jar'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.motif.hpux.ia64_32.source_3.6.0.v3650b.jar'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.equinox.security.macosx' version='1.100.100.v20100503'>
+      <properties size='3'>
+        <property name='artifact.size' value='15753'/>
+        <property name='download.size' value='15753'/>
+        <property name='download.md5' value='1dafd7ffb4efcc95e8be3780a333ff1e'/>
+      </properties>
+      <repositoryProperties size='2'>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.equinox.security.macosx_1.100.100.v20100503.jar'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.equinox.security.macosx_1.100.100.v20100503.jar'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.swt.cocoa.macosx.source' version='3.6.0.v3650b'>
+      <properties size='3'>
+        <property name='artifact.size' value='1809710'/>
+        <property name='download.size' value='1809710'/>
+        <property name='download.md5' value='17cfcd06ccf6466940e5f7febcab8bb1'/>
+      </properties>
+      <repositoryProperties size='2'>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.cocoa.macosx.source_3.6.0.v3650b.jar'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.cocoa.macosx.source_3.6.0.v3650b.jar'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.core.filesystem.win32.x86_64' version='1.1.200.v20100505-1235'>
+      <properties size='3'>
+        <property name='artifact.size' value='30416'/>
+        <property name='download.size' value='30416'/>
+        <property name='download.md5' value='761c610406202a4cbb41e84656c45138'/>
+      </properties>
+      <repositoryProperties size='2'>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.core.filesystem.win32.x86_64_1.1.200.v20100505-1235.jar'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.core.filesystem.win32.x86_64_1.1.200.v20100505-1235.jar'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.swt.win32.win32.x86' version='3.6.0.v3650b'>
+      <properties size='3'>
+        <property name='artifact.size' value='2429989'/>
+        <property name='download.size' value='2429989'/>
+        <property name='download.md5' value='08d6ad8e48c9363f4e0804c2f153a35b'/>
+      </properties>
+      <repositoryProperties size='2'>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.win32.win32.x86_3.6.0.v3650b.jar'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.win32.win32.x86_3.6.0.v3650b.jar'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.swt.motif.linux.x86.source' version='3.6.0.v3650b'>
+      <properties size='3'>
+        <property name='artifact.size' value='1765390'/>
+        <property name='download.size' value='1765390'/>
+        <property name='download.md5' value='996e8ef3bb3a02f7d8366282b5ffdb62'/>
+      </properties>
+      <repositoryProperties size='2'>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.motif.linux.x86.source_3.6.0.v3650b.jar'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.motif.linux.x86.source_3.6.0.v3650b.jar'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.core.filesystem.aix.ppc' version='1.1.0.v20100505-1235'>
+      <properties size='3'>
+        <property name='artifact.size' value='8771'/>
+        <property name='download.size' value='8771'/>
+        <property name='download.md5' value='4b7687b5bb4bf51467aaf8a3811a0b32'/>
+      </properties>
+      <repositoryProperties size='2'>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.core.filesystem.aix.ppc_1.1.0.v20100505-1235.jar'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.core.filesystem.aix.ppc_1.1.0.v20100505-1235.jar'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.equinox.launcher.gtk.linux.ppc64' version='1.0.0.v20100503'>
+      <properties size='2'>
+        <property name='artifact.size' value='4096'/>
+        <property name='download.size' value='4096'/>
+      </properties>
+      <repositoryProperties size='3'>
+        <property name='artifact.folder' value='true'/>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.equinox.launcher.gtk.linux.ppc64_1.0.0.v20100503/'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.equinox.launcher.gtk.linux.ppc64_1.0.0.v20100503'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.swt.motif.hpux.ia64_32' version='3.6.0.v3650b'>
+      <properties size='3'>
+        <property name='artifact.size' value='1923092'/>
+        <property name='download.size' value='1923092'/>
+        <property name='download.md5' value='f27ed79c86229becb5b4348bb37bf40f'/>
+      </properties>
+      <repositoryProperties size='2'>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.motif.hpux.ia64_32_3.6.0.v3650b.jar'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.motif.hpux.ia64_32_3.6.0.v3650b.jar'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.ui.carbon' version='4.0.100.I20100601-0800'>
+      <properties size='3'>
+        <property name='artifact.size' value='17490'/>
+        <property name='download.size' value='17490'/>
+        <property name='download.md5' value='54ada26baee5bf1bd9e20745d4161373'/>
+      </properties>
+      <repositoryProperties size='2'>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.ui.carbon_4.0.100.I20100601-0800.jar'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.ui.carbon_4.0.100.I20100601-0800.jar'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.equinox.launcher.motif.aix.ppc' version='1.1.0.v20100503'>
+      <properties size='2'>
+        <property name='artifact.size' value='4096'/>
+        <property name='download.size' value='4096'/>
+      </properties>
+      <repositoryProperties size='3'>
+        <property name='artifact.folder' value='true'/>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.equinox.launcher.motif.aix.ppc_1.1.0.v20100503/'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.equinox.launcher.motif.aix.ppc_1.1.0.v20100503'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.swt.win32.win32.x86_64.source' version='3.6.0.v3650b'>
+      <properties size='3'>
+        <property name='artifact.size' value='2273971'/>
+        <property name='download.size' value='2273971'/>
+        <property name='download.md5' value='1e57c9e911e16a0b7103179552f22e7b'/>
+      </properties>
+      <repositoryProperties size='2'>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.win32.win32.x86_64.source_3.6.0.v3650b.jar'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.win32.win32.x86_64.source_3.6.0.v3650b.jar'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.equinox.security.macosx.source' version='1.100.100.v20100503'>
+      <properties size='3'>
+        <property name='artifact.size' value='27251'/>
+        <property name='download.size' value='27251'/>
+        <property name='download.md5' value='5031b70ceac4721fd56ce1134bec2157'/>
+      </properties>
+      <repositoryProperties size='2'>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.equinox.security.macosx.source_1.100.100.v20100503.jar'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.equinox.security.macosx.source_1.100.100.v20100503.jar'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.swt.gtk.linux.ppc64' version='3.6.0.v3650b'>
+      <properties size='3'>
+        <property name='artifact.size' value='2322446'/>
+        <property name='download.size' value='2322446'/>
+        <property name='download.md5' value='382ee98609eb7e82fa0975167a3e1556'/>
+      </properties>
+      <repositoryProperties size='2'>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.gtk.linux.ppc64_3.6.0.v3650b.jar'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.gtk.linux.ppc64_3.6.0.v3650b.jar'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.equinox.launcher.cocoa.macosx' version='1.1.0.v20100503'>
+      <properties size='2'>
+        <property name='artifact.size' value='4096'/>
+        <property name='download.size' value='4096'/>
+      </properties>
+      <repositoryProperties size='3'>
+        <property name='artifact.folder' value='true'/>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.equinox.launcher.cocoa.macosx_1.1.0.v20100503/'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.equinox.launcher.cocoa.macosx_1.1.0.v20100503'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.equinox.launcher.motif.solaris.sparc' version='1.1.0.v20100503'>
+      <properties size='2'>
+        <property name='artifact.size' value='4096'/>
+        <property name='download.size' value='4096'/>
+      </properties>
+      <repositoryProperties size='3'>
+        <property name='artifact.folder' value='true'/>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.equinox.launcher.motif.solaris.sparc_1.1.0.v20100503/'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.equinox.launcher.motif.solaris.sparc_1.1.0.v20100503'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.swt.gtk.linux.ppc' version='3.6.0.v3650b'>
+      <properties size='3'>
+        <property name='artifact.size' value='2347108'/>
+        <property name='download.size' value='2347108'/>
+        <property name='download.md5' value='45b44d854930b9729d875aa17ca02248'/>
+      </properties>
+      <repositoryProperties size='2'>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.gtk.linux.ppc_3.6.0.v3650b.jar'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.gtk.linux.ppc_3.6.0.v3650b.jar'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.jdt.launching.ui.macosx.source' version='1.0.100.v20100505'>
+      <properties size='3'>
+        <property name='artifact.size' value='25113'/>
+        <property name='download.size' value='25113'/>
+        <property name='download.md5' value='19399a30df986fbd6c69672f49c3b145'/>
+      </properties>
+      <repositoryProperties size='2'>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.jdt.launching.ui.macosx.source_1.0.100.v20100505.jar'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.jdt.launching.ui.macosx.source_1.0.100.v20100505.jar'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.core.filesystem.linux.x86_64' version='1.2.0.v20100505-1235'>
+      <properties size='3'>
+        <property name='artifact.size' value='9547'/>
+        <property name='download.size' value='9547'/>
+        <property name='download.md5' value='09264c7690edf9346c59b68a9b6bc134'/>
+      </properties>
+      <repositoryProperties size='2'>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.core.filesystem.linux.x86_64_1.2.0.v20100505-1235.jar'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.core.filesystem.linux.x86_64_1.2.0.v20100505-1235.jar'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.swt.gtk.solaris.sparc' version='3.6.0.v3650b'>
+      <properties size='3'>
+        <property name='artifact.size' value='2216006'/>
+        <property name='download.size' value='2216006'/>
+        <property name='download.md5' value='b8eff51c5936758abdacba2678bc21b5'/>
+      </properties>
+      <repositoryProperties size='2'>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.gtk.solaris.sparc_3.6.0.v3650b.jar'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.gtk.solaris.sparc_3.6.0.v3650b.jar'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.update.core.win32.source' version='3.2.200.v20100512'>
+      <properties size='3'>
+        <property name='artifact.size' value='12905'/>
+        <property name='download.size' value='12905'/>
+        <property name='download.md5' value='ea69aec606a4dea1ce3bd1a27edf5263'/>
+      </properties>
+      <repositoryProperties size='2'>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.update.core.win32.source_3.2.200.v20100512.jar'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.update.core.win32.source_3.2.200.v20100512.jar'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='org.eclipse.update.feature' id='org.eclipse.equinox.executable' version='3.4.0.v20100524-7M7K-FIhIez-egBko15H73'>
+      <properties size='3'>
+        <property name='artifact.size' value='4096'/>
+        <property name='download.size' value='4096'/>
+        <property name='download.contentType' value='application/zip'/>
+      </properties>
+      <repositoryProperties size='3'>
+        <property name='artifact.folder' value='true'/>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/features/org.eclipse.equinox.executable_3.4.0.v20100524-7M7K-FIhIez-egBko15H73/'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/features/org.eclipse.equinox.executable_3.4.0.v20100524-7M7K-FIhIez-egBko15H73'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.core.resources.win32.x86' version='3.5.100.v20100505-1345'>
+      <properties size='3'>
+        <property name='artifact.size' value='17001'/>
+        <property name='download.size' value='17001'/>
+        <property name='download.md5' value='c67ed68db8579a1496cc880be791cf56'/>
+      </properties>
+      <repositoryProperties size='2'>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.core.resources.win32.x86_3.5.100.v20100505-1345.jar'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.core.resources.win32.x86_3.5.100.v20100505-1345.jar'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.swt.gtk.linux.x86_64.source' version='3.6.0.v3650b'>
+      <properties size='3'>
+        <property name='artifact.size' value='1946345'/>
+        <property name='download.size' value='1946345'/>
+        <property name='download.md5' value='13a2801c81941b1366295691c2c59e52'/>
+      </properties>
+      <repositoryProperties size='2'>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.gtk.linux.x86_64.source_3.6.0.v3650b.jar'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.gtk.linux.x86_64.source_3.6.0.v3650b.jar'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.swt.win32.win32.x86.source' version='3.6.0.v3650b'>
+      <properties size='3'>
+        <property name='artifact.size' value='2273589'/>
+        <property name='download.size' value='2273589'/>
+        <property name='download.md5' value='5a52a5e62fe0508fd2d31fd30674fbab'/>
+      </properties>
+      <repositoryProperties size='2'>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.win32.win32.x86.source_3.6.0.v3650b.jar'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.win32.win32.x86.source_3.6.0.v3650b.jar'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.equinox.launcher.motif.hpux.ia64_32' version='1.1.0.v20100503'>
+      <properties size='2'>
+        <property name='artifact.size' value='4096'/>
+        <property name='download.size' value='4096'/>
+      </properties>
+      <repositoryProperties size='3'>
+        <property name='artifact.folder' value='true'/>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.equinox.launcher.motif.hpux.ia64_32_1.1.0.v20100503/'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.equinox.launcher.motif.hpux.ia64_32_1.1.0.v20100503'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.swt.carbon.macosx' version='3.6.0.v3650b'>
+      <properties size='3'>
+        <property name='artifact.size' value='2035577'/>
+        <property name='download.size' value='2035577'/>
+        <property name='download.md5' value='a30857361a38ae996ea2b86bde48656d'/>
+      </properties>
+      <repositoryProperties size='2'>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.carbon.macosx_3.6.0.v3650b.jar'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.carbon.macosx_3.6.0.v3650b.jar'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.ui.cocoa' version='1.0.2.I20100601-0800'>
+      <properties size='3'>
+        <property name='artifact.size' value='21416'/>
+        <property name='download.size' value='21416'/>
+        <property name='download.md5' value='e23bff2b9ea4b9e7fcd149f5dddcfd57'/>
+      </properties>
+      <repositoryProperties size='2'>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.ui.cocoa_1.0.2.I20100601-0800.jar'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.ui.cocoa_1.0.2.I20100601-0800.jar'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.swt.motif.linux.x86' version='3.6.0.v3650b'>
+      <properties size='3'>
+        <property name='artifact.size' value='2889218'/>
+        <property name='download.size' value='2889218'/>
+        <property name='download.md5' value='fa806bfb1f9cb1bd0b60343dddc560a0'/>
+      </properties>
+      <repositoryProperties size='2'>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.motif.linux.x86_3.6.0.v3650b.jar'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.motif.linux.x86_3.6.0.v3650b.jar'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.equinox.launcher.carbon.macosx' version='1.1.0.v20100503'>
+      <properties size='2'>
+        <property name='artifact.size' value='4096'/>
+        <property name='download.size' value='4096'/>
+      </properties>
+      <repositoryProperties size='3'>
+        <property name='artifact.folder' value='true'/>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.equinox.launcher.carbon.macosx_1.1.0.v20100503/'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.equinox.launcher.carbon.macosx_1.1.0.v20100503'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.core.net.win32.x86' version='1.0.100.I20100511-0800'>
+      <properties size='3'>
+        <property name='artifact.size' value='29735'/>
+        <property name='download.size' value='29735'/>
+        <property name='download.md5' value='1fb9af824ab1f361dce0c2947b92329f'/>
+      </properties>
+      <repositoryProperties size='2'>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.core.net.win32.x86_1.0.100.I20100511-0800.jar'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.core.net.win32.x86_1.0.100.I20100511-0800.jar'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.core.filesystem.linux.ppc' version='1.0.200.v20100505-1235'>
+      <properties size='3'>
+        <property name='artifact.size' value='22450'/>
+        <property name='download.size' value='22450'/>
+        <property name='download.md5' value='73285c8ebeb23eb674f995e346208d23'/>
+      </properties>
+      <repositoryProperties size='2'>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.core.filesystem.linux.ppc_1.0.200.v20100505-1235.jar'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.core.filesystem.linux.ppc_1.0.200.v20100505-1235.jar'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.equinox.security.win32.x86.source' version='1.0.200.v20100503'>
+      <properties size='3'>
+        <property name='artifact.size' value='14137'/>
+        <property name='download.size' value='14137'/>
+        <property name='download.md5' value='ac1160f59ece573622b0903d1356c05b'/>
+      </properties>
+      <repositoryProperties size='2'>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.equinox.security.win32.x86.source_1.0.200.v20100503.jar'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.equinox.security.win32.x86.source_1.0.200.v20100503.jar'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.core.net.win32.x86_64' version='1.0.100.I20100505-1245'>
+      <properties size='3'>
+        <property name='artifact.size' value='28201'/>
+        <property name='download.size' value='28201'/>
+        <property name='download.md5' value='4418917d4e27d8cea097cc476228fd1c'/>
+      </properties>
+      <repositoryProperties size='2'>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.core.net.win32.x86_64_1.0.100.I20100505-1245.jar'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.core.net.win32.x86_64_1.0.100.I20100505-1245.jar'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.swt.gtk.solaris.x86.source' version='3.6.0.v3650b'>
+      <properties size='3'>
+        <property name='artifact.size' value='1940610'/>
+        <property name='download.size' value='1940610'/>
+        <property name='download.md5' value='5d66679cc21b5bcafaca7ddf29c937a9'/>
+      </properties>
+      <repositoryProperties size='2'>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.gtk.solaris.x86.source_3.6.0.v3650b.jar'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.gtk.solaris.x86.source_3.6.0.v3650b.jar'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.jdt.launching.macosx.source' version='3.2.100.v20100505'>
+      <properties size='3'>
+        <property name='artifact.size' value='14101'/>
+        <property name='download.size' value='14101'/>
+        <property name='download.md5' value='ebaee35af317539837ef5dac9d8b5a49'/>
+      </properties>
+      <repositoryProperties size='2'>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.jdt.launching.macosx.source_3.2.100.v20100505.jar'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.jdt.launching.macosx.source_3.2.100.v20100505.jar'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.swt.gtk.linux.s390x' version='3.6.0.v3650b'>
+      <properties size='3'>
+        <property name='artifact.size' value='2319681'/>
+        <property name='download.size' value='2319681'/>
+        <property name='download.md5' value='1cb1530a3ba039b94003dc76c7e68603'/>
+      </properties>
+      <repositoryProperties size='2'>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.gtk.linux.s390x_3.6.0.v3650b.jar'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.gtk.linux.s390x_3.6.0.v3650b.jar'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.core.filesystem.macosx' version='1.3.0.v20100505'>
+      <properties size='3'>
+        <property name='artifact.size' value='12609'/>
+        <property name='download.size' value='12609'/>
+        <property name='download.md5' value='e48671c32d7be9b0a8d83f733215f1ce'/>
+      </properties>
+      <repositoryProperties size='2'>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.core.filesystem.macosx_1.3.0.v20100505.jar'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.core.filesystem.macosx_1.3.0.v20100505.jar'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.swt.gtk.linux.x86_64' version='3.6.0.v3650b'>
+      <properties size='3'>
+        <property name='artifact.size' value='2431635'/>
+        <property name='download.size' value='2431635'/>
+        <property name='download.md5' value='ab1cc568701dac7f8286ae26e584ef45'/>
+      </properties>
+      <repositoryProperties size='2'>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.gtk.linux.x86_64_3.6.0.v3650b.jar'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.gtk.linux.x86_64_3.6.0.v3650b.jar'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.equinox.launcher.gtk.linux.s390' version='1.1.0.v20100507'>
+      <properties size='2'>
+        <property name='artifact.size' value='4096'/>
+        <property name='download.size' value='4096'/>
+      </properties>
+      <repositoryProperties size='3'>
+        <property name='artifact.folder' value='true'/>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.equinox.launcher.gtk.linux.s390_1.1.0.v20100507/'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.equinox.launcher.gtk.linux.s390_1.1.0.v20100507'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.core.filesystem.linux.x86' version='1.4.0.v20100505-1235'>
+      <properties size='3'>
+        <property name='artifact.size' value='9261'/>
+        <property name='download.size' value='9261'/>
+        <property name='download.md5' value='af03a7cd408d82b3cdc912c223e9527e'/>
+      </properties>
+      <repositoryProperties size='2'>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.core.filesystem.linux.x86_1.4.0.v20100505-1235.jar'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.core.filesystem.linux.x86_1.4.0.v20100505-1235.jar'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.ui.carbon.source' version='4.0.100.I20100601-0800'>
+      <properties size='3'>
+        <property name='artifact.size' value='11854'/>
+        <property name='download.size' value='11854'/>
+        <property name='download.md5' value='a74fd964a1c466f44469f53719797594'/>
+      </properties>
+      <repositoryProperties size='2'>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.ui.carbon.source_4.0.100.I20100601-0800.jar'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.ui.carbon.source_4.0.100.I20100601-0800.jar'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.swt.photon.qnx.x86' version='3.6.0.v3650b'>
+      <properties size='3'>
+        <property name='artifact.size' value='1198357'/>
+        <property name='download.size' value='1198357'/>
+        <property name='download.md5' value='903239aa2fbf992f504e62db04f0650c'/>
+      </properties>
+      <repositoryProperties size='2'>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.photon.qnx.x86_3.6.0.v3650b.jar'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.photon.qnx.x86_3.6.0.v3650b.jar'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.swt.motif.solaris.sparc.source' version='3.6.0.v3650b'>
+      <properties size='3'>
+        <property name='artifact.size' value='1735487'/>
+        <property name='download.size' value='1735487'/>
+        <property name='download.md5' value='06583a4e840780580181a1e35ee69bc4'/>
+      </properties>
+      <repositoryProperties size='2'>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.motif.solaris.sparc.source_3.6.0.v3650b.jar'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.motif.solaris.sparc.source_3.6.0.v3650b.jar'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.swt.motif.aix.ppc.source' version='3.6.0.v3650b'>
+      <properties size='3'>
+        <property name='artifact.size' value='1735478'/>
+        <property name='download.size' value='1735478'/>
+        <property name='download.md5' value='72ef9935aa505a7cb49eec58e92f1333'/>
+      </properties>
+      <repositoryProperties size='2'>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.motif.aix.ppc.source_3.6.0.v3650b.jar'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.motif.aix.ppc.source_3.6.0.v3650b.jar'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.swt.cocoa.macosx.x86_64.source' version='3.6.0.v3650b'>
+      <properties size='3'>
+        <property name='artifact.size' value='1809763'/>
+        <property name='download.size' value='1809763'/>
+        <property name='download.md5' value='2cb50fc85bdee195cdcbf1a5dcbf36e9'/>
+      </properties>
+      <repositoryProperties size='2'>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.cocoa.macosx.x86_64.source_3.6.0.v3650b.jar'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.cocoa.macosx.x86_64.source_3.6.0.v3650b.jar'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.equinox.launcher.gtk.linux.ppc' version='1.1.0.v20100503'>
+      <properties size='2'>
+        <property name='artifact.size' value='4096'/>
+        <property name='download.size' value='4096'/>
+      </properties>
+      <repositoryProperties size='3'>
+        <property name='artifact.folder' value='true'/>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.equinox.launcher.gtk.linux.ppc_1.1.0.v20100503/'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.equinox.launcher.gtk.linux.ppc_1.1.0.v20100503'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.swt.gtk.linux.x86.source' version='3.6.0.v3650b'>
+      <properties size='3'>
+        <property name='artifact.size' value='1945610'/>
+        <property name='download.size' value='1945610'/>
+        <property name='download.md5' value='e0eadbce030a055d65923b1429d9a000'/>
+      </properties>
+      <repositoryProperties size='2'>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.gtk.linux.x86.source_3.6.0.v3650b.jar'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.gtk.linux.x86.source_3.6.0.v3650b.jar'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.ui.win32.source' version='3.2.200.I20100509-0800'>
+      <properties size='3'>
+        <property name='artifact.size' value='14311'/>
+        <property name='download.size' value='14311'/>
+        <property name='download.md5' value='af259d7827b9831080f83242a230b790'/>
+      </properties>
+      <repositoryProperties size='2'>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.ui.win32.source_3.2.200.I20100509-0800.jar'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.ui.win32.source_3.2.200.I20100509-0800.jar'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.swt.cocoa.macosx' version='3.6.0.v3650b'>
+      <properties size='3'>
+        <property name='artifact.size' value='2218520'/>
+        <property name='download.size' value='2218520'/>
+        <property name='download.md5' value='426ba6194e4d9c4c47d77fe9a77e2ea9'/>
+      </properties>
+      <repositoryProperties size='2'>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.cocoa.macosx_3.6.0.v3650b.jar'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.cocoa.macosx_3.6.0.v3650b.jar'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.swt.gtk.linux.s390' version='3.6.0.v3650b'>
+      <properties size='3'>
+        <property name='artifact.size' value='2284767'/>
+        <property name='download.size' value='2284767'/>
+        <property name='download.md5' value='0ac35e6ad3abbb535aec9ba770efa5d2'/>
+      </properties>
+      <repositoryProperties size='2'>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.gtk.linux.s390_3.6.0.v3650b.jar'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.gtk.linux.s390_3.6.0.v3650b.jar'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.ui.win32' version='3.2.200.I20100509-0800'>
+      <properties size='3'>
+        <property name='artifact.size' value='24633'/>
+        <property name='download.size' value='24633'/>
+        <property name='download.md5' value='76ad93de88d966f116c4ef7d9042b3c6'/>
+      </properties>
+      <repositoryProperties size='2'>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.ui.win32_3.2.200.I20100509-0800.jar'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.ui.win32_3.2.200.I20100509-0800.jar'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.swt.gtk.linux.x86' version='3.6.0.v3650b'>
+      <properties size='3'>
+        <property name='artifact.size' value='2252447'/>
+        <property name='download.size' value='2252447'/>
+        <property name='download.md5' value='60b100c09f3c65f7876fecd1546e81ed'/>
+      </properties>
+      <repositoryProperties size='2'>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.gtk.linux.x86_3.6.0.v3650b.jar'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.gtk.linux.x86_3.6.0.v3650b.jar'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.swt.photon.qnx.x86.source' version='3.6.0.v3650b'>
+      <properties size='3'>
+        <property name='artifact.size' value='1256136'/>
+        <property name='download.size' value='1256136'/>
+        <property name='download.md5' value='2853e59d90bed674bbd2bb63ec3696ae'/>
+      </properties>
+      <repositoryProperties size='2'>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.photon.qnx.x86.source_3.6.0.v3650b.jar'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.photon.qnx.x86.source_3.6.0.v3650b.jar'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.core.net.linux.x86_64' version='1.1.0.I20100505-1245'>
+      <properties size='3'>
+        <property name='artifact.size' value='37750'/>
+        <property name='download.size' value='37750'/>
+        <property name='download.md5' value='a77fa15387408d0daee8d9654efde67c'/>
+      </properties>
+      <repositoryProperties size='2'>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.core.net.linux.x86_64_1.1.0.I20100505-1245.jar'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.core.net.linux.x86_64_1.1.0.I20100505-1245.jar'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.equinox.launcher.gtk.solaris.x86' version='1.1.0.v20100503'>
+      <properties size='2'>
+        <property name='artifact.size' value='4096'/>
+        <property name='download.size' value='4096'/>
+      </properties>
+      <repositoryProperties size='3'>
+        <property name='artifact.folder' value='true'/>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.equinox.launcher.gtk.solaris.x86_1.1.0.v20100503/'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.equinox.launcher.gtk.solaris.x86_1.1.0.v20100503'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.swt.motif.solaris.sparc' version='3.6.0.v3650b'>
+      <properties size='3'>
+        <property name='artifact.size' value='1909919'/>
+        <property name='download.size' value='1909919'/>
+        <property name='download.md5' value='2de56cbd4371044f9e8d1179abfc2859'/>
+      </properties>
+      <repositoryProperties size='2'>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.motif.solaris.sparc_3.6.0.v3650b.jar'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.motif.solaris.sparc_3.6.0.v3650b.jar'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.swt.gtk.solaris.sparc.source' version='3.6.0.v3650b'>
+      <properties size='3'>
+        <property name='artifact.size' value='1941502'/>
+        <property name='download.size' value='1941502'/>
+        <property name='download.md5' value='b1a65d903db2dd84e70463239161e9a4'/>
+      </properties>
+      <repositoryProperties size='2'>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.gtk.solaris.sparc.source_3.6.0.v3650b.jar'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.gtk.solaris.sparc.source_3.6.0.v3650b.jar'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.ui.cocoa.source' version='1.0.2.I20100601-0800'>
+      <properties size='3'>
+        <property name='artifact.size' value='14081'/>
+        <property name='download.size' value='14081'/>
+        <property name='download.md5' value='b8a266398238c7caba6a24e142bf47a9'/>
+      </properties>
+      <repositoryProperties size='2'>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.ui.cocoa.source_1.0.2.I20100601-0800.jar'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.ui.cocoa.source_1.0.2.I20100601-0800.jar'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.swt.motif.aix.ppc' version='3.6.0.v3650b'>
+      <properties size='3'>
+        <property name='artifact.size' value='1992515'/>
+        <property name='download.size' value='1992515'/>
+        <property name='download.md5' value='ddf5d81de476a12a9f8b85c08e3fd4fb'/>
+      </properties>
+      <repositoryProperties size='2'>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.motif.aix.ppc_3.6.0.v3650b.jar'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.motif.aix.ppc_3.6.0.v3650b.jar'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.core.filesystem.hpux.ia64_32' version='1.0.100.v20100505'>
+      <properties size='3'>
+        <property name='artifact.size' value='13490'/>
+        <property name='download.size' value='13490'/>
+        <property name='download.md5' value='ee93ec443d316ba0bf5d679a4dc39ba0'/>
+      </properties>
+      <repositoryProperties size='2'>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.core.filesystem.hpux.ia64_32_1.0.100.v20100505.jar'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.core.filesystem.hpux.ia64_32_1.0.100.v20100505.jar'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.equinox.launcher.gtk.linux.s390x' version='1.1.0.v20100419'>
+      <properties size='2'>
+        <property name='artifact.size' value='4096'/>
+        <property name='download.size' value='4096'/>
+      </properties>
+      <repositoryProperties size='3'>
+        <property name='artifact.folder' value='true'/>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.equinox.launcher.gtk.linux.s390x_1.1.0.v20100419/'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.equinox.launcher.gtk.linux.s390x_1.1.0.v20100419'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.swt.gtk.solaris.x86' version='3.6.0.v3650b'>
+      <properties size='3'>
+        <property name='artifact.size' value='2168129'/>
+        <property name='download.size' value='2168129'/>
+        <property name='download.md5' value='afed882ff3e383c1b64de05f3b2fabc3'/>
+      </properties>
+      <repositoryProperties size='2'>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.gtk.solaris.x86_3.6.0.v3650b.jar'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.gtk.solaris.x86_3.6.0.v3650b.jar'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.swt.cocoa.macosx.x86_64' version='3.6.0.v3650b'>
+      <properties size='3'>
+        <property name='artifact.size' value='2130826'/>
+        <property name='download.size' value='2130826'/>
+        <property name='download.md5' value='629d3e8fb7a0e6c4bc788418fcfc3fe0'/>
+      </properties>
+      <repositoryProperties size='2'>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.cocoa.macosx.x86_64_3.6.0.v3650b.jar'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.cocoa.macosx.x86_64_3.6.0.v3650b.jar'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.equinox.security.win32.x86' version='1.0.200.v20100503'>
+      <properties size='3'>
+        <property name='artifact.size' value='22000'/>
+        <property name='download.size' value='22000'/>
+        <property name='download.md5' value='4dd4b9cf5e65a0139c6a9f1b517c23e4'/>
+      </properties>
+      <repositoryProperties size='2'>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.equinox.security.win32.x86_1.0.200.v20100503.jar'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.equinox.security.win32.x86_1.0.200.v20100503.jar'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.swt.gtk.linux.ppc.source' version='3.6.0.v3650b'>
+      <properties size='3'>
+        <property name='artifact.size' value='1944355'/>
+        <property name='download.size' value='1944355'/>
+        <property name='download.md5' value='dd35da5c34712c52d1636e911c69e1b0'/>
+      </properties>
+      <repositoryProperties size='2'>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.gtk.linux.ppc.source_3.6.0.v3650b.jar'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.gtk.linux.ppc.source_3.6.0.v3650b.jar'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.core.filesystem.solaris.sparc' version='1.2.0.v20100505-1235'>
+      <properties size='3'>
+        <property name='artifact.size' value='9134'/>
+        <property name='download.size' value='9134'/>
+        <property name='download.md5' value='e5ceb8f38a637b804bb4b4fa63983ce1'/>
+      </properties>
+      <repositoryProperties size='2'>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.core.filesystem.solaris.sparc_1.2.0.v20100505-1235.jar'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.core.filesystem.solaris.sparc_1.2.0.v20100505-1235.jar'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.update.core.win32' version='3.2.200.v20100512'>
+      <properties size='3'>
+        <property name='artifact.size' value='86326'/>
+        <property name='download.size' value='86326'/>
+        <property name='download.md5' value='f90d5a05520df6907c99bdd13cf7d1ca'/>
+      </properties>
+      <repositoryProperties size='2'>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.update.core.win32_3.2.200.v20100512.jar'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.update.core.win32_3.2.200.v20100512.jar'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.equinox.launcher.win32.win32.x86_64' version='1.1.0.v20100503'>
+      <properties size='2'>
+        <property name='artifact.size' value='4096'/>
+        <property name='download.size' value='4096'/>
+      </properties>
+      <repositoryProperties size='3'>
+        <property name='artifact.folder' value='true'/>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.equinox.launcher.win32.win32.x86_64_1.1.0.v20100503/'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.equinox.launcher.win32.win32.x86_64_1.1.0.v20100503'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.equinox.launcher.gtk.linux.x86_64' version='1.1.0.v20100503'>
+      <properties size='2'>
+        <property name='artifact.size' value='4096'/>
+        <property name='download.size' value='4096'/>
+      </properties>
+      <repositoryProperties size='3'>
+        <property name='artifact.folder' value='true'/>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.equinox.launcher.gtk.linux.x86_64_1.1.0.v20100503/'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.equinox.launcher.gtk.linux.x86_64_1.1.0.v20100503'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.swt.gtk.linux.s390.source' version='3.6.0.v3650b'>
+      <properties size='3'>
+        <property name='artifact.size' value='1943146'/>
+        <property name='download.size' value='1943146'/>
+        <property name='download.md5' value='3b0b5a4f0a8db0000c845b336629fd7c'/>
+      </properties>
+      <repositoryProperties size='2'>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.gtk.linux.s390.source_3.6.0.v3650b.jar'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.gtk.linux.s390.source_3.6.0.v3650b.jar'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.swt.carbon.macosx.source' version='3.6.0.v3650b'>
+      <properties size='3'>
+        <property name='artifact.size' value='1792529'/>
+        <property name='download.size' value='1792529'/>
+        <property name='download.md5' value='f757a3da259e980382ac671f801ec061'/>
+      </properties>
+      <repositoryProperties size='2'>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.carbon.macosx.source_3.6.0.v3650b.jar'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.carbon.macosx.source_3.6.0.v3650b.jar'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.core.filesystem.win32.x86' version='1.1.200.v20100505-1235'>
+      <properties size='3'>
+        <property name='artifact.size' value='29855'/>
+        <property name='download.size' value='29855'/>
+        <property name='download.md5' value='ad926989d62eaa8057006836424309dd'/>
+      </properties>
+      <repositoryProperties size='2'>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.core.filesystem.win32.x86_1.1.200.v20100505-1235.jar'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.core.filesystem.win32.x86_1.1.200.v20100505-1235.jar'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.swt.gtk.linux.s390x.source' version='3.6.0.v3650b'>
+      <properties size='3'>
+        <property name='artifact.size' value='1943884'/>
+        <property name='download.size' value='1943884'/>
+        <property name='download.md5' value='c67290d5cdeeed2291b5e61824eac8f7'/>
+      </properties>
+      <repositoryProperties size='2'>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.gtk.linux.s390x.source_3.6.0.v3650b.jar'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.gtk.linux.s390x.source_3.6.0.v3650b.jar'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.jdt.launching.macosx' version='3.2.100.v20100505'>
+      <properties size='3'>
+        <property name='artifact.size' value='17533'/>
+        <property name='download.size' value='17533'/>
+        <property name='download.md5' value='1969a90a1d9b056e894d2b262e2fbe74'/>
+      </properties>
+      <repositoryProperties size='2'>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.jdt.launching.macosx_3.2.100.v20100505.jar'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.jdt.launching.macosx_3.2.100.v20100505.jar'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.swt.win32.win32.x86_64' version='3.6.0.v3650b'>
+      <properties size='3'>
+        <property name='artifact.size' value='2453362'/>
+        <property name='download.size' value='2453362'/>
+        <property name='download.md5' value='bbe02f6670f324894b6f351fcdd3204d'/>
+      </properties>
+      <repositoryProperties size='2'>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.win32.win32.x86_64_3.6.0.v3650b.jar'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.swt.win32.win32.x86_64_3.6.0.v3650b.jar'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.compare.win32' version='1.0.100.I20100505-1245'>
+      <properties size='3'>
+        <property name='artifact.size' value='37266'/>
+        <property name='download.size' value='37266'/>
+        <property name='download.md5' value='89018cbdb4952ec980a518031022fd88'/>
+      </properties>
+      <repositoryProperties size='2'>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.compare.win32_1.0.100.I20100505-1245.jar'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.compare.win32_1.0.100.I20100505-1245.jar'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.core.net.linux.x86' version='1.1.0.I20100505-1245'>
+      <properties size='3'>
+        <property name='artifact.size' value='36815'/>
+        <property name='download.size' value='36815'/>
+        <property name='download.md5' value='e0a40c29241acbb378d536aba3a669a0'/>
+      </properties>
+      <repositoryProperties size='2'>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.core.net.linux.x86_1.1.0.I20100505-1245.jar'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.core.net.linux.x86_1.1.0.I20100505-1245.jar'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.equinox.launcher.gtk.solaris.sparc' version='1.1.0.v20100503'>
+      <properties size='2'>
+        <property name='artifact.size' value='4096'/>
+        <property name='download.size' value='4096'/>
+      </properties>
+      <repositoryProperties size='3'>
+        <property name='artifact.folder' value='true'/>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.equinox.launcher.gtk.solaris.sparc_1.1.0.v20100503/'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.equinox.launcher.gtk.solaris.sparc_1.1.0.v20100503'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.equinox.launcher.motif.linux.x86' version='1.1.0.v20100503'>
+      <properties size='2'>
+        <property name='artifact.size' value='4096'/>
+        <property name='download.size' value='4096'/>
+      </properties>
+      <repositoryProperties size='3'>
+        <property name='artifact.folder' value='true'/>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.equinox.launcher.motif.linux.x86_1.1.0.v20100503/'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.equinox.launcher.motif.linux.x86_1.1.0.v20100503'/>
+      </repositoryProperties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='org.eclipse.equinox.launcher.win32.win32.x86' version='1.1.0.v20100503'>
+      <properties size='2'>
+        <property name='artifact.size' value='4096'/>
+        <property name='download.size' value='4096'/>
+      </properties>
+      <repositoryProperties size='3'>
+        <property name='artifact.folder' value='true'/>
+        <property name='artifact.reference' value='file:/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.equinox.launcher.win32.win32.x86_1.1.0.v20100503/'/>
+        <property name='file.name' value='/home/pcraft/workspace/build/eclipse_for_build/eclipse/dropins/delta/eclipse/plugins/org.eclipse.equinox.launcher.win32.win32.x86_1.1.0.v20100503'/>
+      </repositoryProperties>
+    </artifact>
+  </artifacts>
+</repository>

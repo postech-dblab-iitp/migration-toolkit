@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 129
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/p2/org.eclipse.equinox.p2.engine/.settings
+END
+org.eclipse.equinox.p2.artifact.repository.prefs
+K 25
+svn:wc:ra_dav:version-url
+V 178
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/p2/org.eclipse.equinox.p2.engine/.settings/org.eclipse.equinox.p2.artifact.repository.prefs
+END
+org.eclipse.equinox.p2.metadata.repository.prefs
+K 25
+svn:wc:ra_dav:version-url
+V 178
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/p2/org.eclipse.equinox.p2.engine/.settings/org.eclipse.equinox.p2.metadata.repository.prefs
+END

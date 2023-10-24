@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 147
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/plugins/org.eclipse.platform_3.6.0.v201006080911/cheatsheets
+END
+cvs_checkout.xml
+K 25
+svn:wc:ra_dav:version-url
+V 164
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/plugins/org.eclipse.platform_3.6.0.v201006080911/cheatsheets/cvs_checkout.xml
+END
+cvs_merge.xml
+K 25
+svn:wc:ra_dav:version-url
+V 161
+/devtools/!svn/ver/168/trunk/cubridtools_build_scripts/linux/eclipse_for_build/eclipse/plugins/org.eclipse.platform_3.6.0.v201006080911/cheatsheets/cvs_merge.xml
+END

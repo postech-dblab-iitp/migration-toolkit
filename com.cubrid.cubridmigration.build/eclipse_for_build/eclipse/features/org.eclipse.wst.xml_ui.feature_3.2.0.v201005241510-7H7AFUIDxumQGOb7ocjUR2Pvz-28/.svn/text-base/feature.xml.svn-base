@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="org.eclipse.wst.xml_ui.feature"
+      label="%featureName"
+      version="3.2.0.v201005241510-7H7AFUIDxumQGOb7ocjUR2Pvz-28"
+      provider-name="%providerName"
+      plugin="org.eclipse.wst.xml.ui">
+
+   <description>
+      %description
+   </description>
+
+   <copyright>
+      %copyright
+   </copyright>
+
+   <license url="%licenseURL">
+      %license
+   </license>
+
+   <url>
+      <update label="%updateSiteName" url="http://download.eclipse.org/webtools/repository/helios"/>
+   </url>
+
+   <includes
+         id="org.eclipse.wst.common_ui.feature"
+         version="3.2.0.v201005241600-7C78FPcEdhO_mXOgHjYfp_JwVrN5"/>
+
+   <includes
+         id="org.eclipse.wst.xml_userdoc.feature"
+         version="3.2.100.v201005241420-50FXNAkF7B77RBgFFBF"/>
+
+   <includes
+         id="org.eclipse.wst.xml_core.feature"
+         version="3.2.0.v201005241510-7C7OFXTF7RZHQHHxO4IuKe"/>
+
+   <plugin
+         id="org.eclipse.wst.dtd.ui"
+         download-size="0"
+         install-size="0"
+         version="1.0.500.v201004290328"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.wst.dtd.ui.infopop"
+         download-size="0"
+         install-size="0"
+         version="1.0.300.v200805140200"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.wst.sse.ui.infopop"
+         download-size="0"
+         install-size="0"
+         version="1.0.300.v201004150328"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.wst.xml.ui.infopop"
+         download-size="0"
+         install-size="0"
+         version="1.0.400.v201004292007"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.wst.sse.ui"
+         download-size="0"
+         install-size="0"
+         version="1.2.0.v201006030742"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.wst.xml.ui"
+         download-size="0"
+         install-size="0"
+         version="1.1.100.v201006030742"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.wst.xsd.ui"
+         download-size="0"
+         install-size="0"
+         version="1.2.303.v201004290328"
+         unpack="false"/>
+
+</feature>

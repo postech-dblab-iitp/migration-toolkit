@@ -1,0 +1,375 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html4" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>첫 화면 &mdash; MiT 1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/style.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript">
+          var DOCUMENTATION_OPTIONS = {
+              URL_ROOT:'../',
+              VERSION:'1.0',
+              LANGUAGE:'None',
+              COLLAPSE_INDEX:false,
+              FILE_SUFFIX:'.html',
+              HAS_SOURCE:  true,
+              SOURCELINK_SUFFIX: '.txt'
+          };
+      </script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="원본, 대상 DB 선택 페이지" href="1.select_src_tar.html" />
+    <link rel="prev" title="시작하기" href="../start.html" />
+
+    <!-- meta-tags -->
+      
+      
+      
+        
+        
+          
+        
+        
+          
+        
+      
+
+      <!-- keywords & description -->
+      <meta name="keywords" content="첫 화면, MiT 1.0 documentation, guide tool" />
+      <meta name="description" content = "첫 화면 &mdash; MiT 1.0 documentation. Introducing the features of first page " />
+    
+      <!-- og -->
+      <meta property="og:title" content="첫 화면 &mdash; MiT 1.0 documentation"/>
+      <meta property="og:keywords" content="첫 화면, MiT 1.0 documentation, guide tool" />
+      <meta property="og:description" content = "첫 화면 &mdash; MiT 1.0 documentation. Introducing the features of first page " />
+      <meta property="og:type" content="website"/>
+      <meta property="og:site" content="첫 화면 &mdash; MiT 1.0 documentation"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> MiT
+          
+
+          
+          </a>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../toc.html">매뉴얼 소개</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../toc.html#id2">매뉴얼 구성</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../toc.html#id3">용어 정리</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../toc.html#id4">매뉴얼 규약</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../toc.html#id5">버전명 및 버전 문자열 규약</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">프로그램 소개</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../intro.html#id2">주요 기능</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../intro.html#rdb-to-gdb">RDB to GDB 데이터 이관</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../intro.html#id3">데이터 맵핑</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../intro.html#cli">CLI 이관</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../install_upgrade.html">설치</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../install.html">설치와 실행</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../install.html#supported">지원 플랫폼 및 설치 권장 사양</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../install.html#id3">설치와 실행</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="../start.html">시작하기</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">첫 화면</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id2">새 마이그레이션</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">스크립트</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">마이그레이션 이력</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="1.select_src_tar.html">원본, 대상 DB 선택 페이지</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="1.select_src_tar.html#id1">원본 유형</a></li>
+<li class="toctree-l3"><a class="reference internal" href="1.select_src_tar.html#id2">대상 유형</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="2.select_src_conn.html">원본DB 연결 선택 페이지</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="2.select_src_conn.html#id1">연결 생성</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="2.select_src_conn.html#id2">데이터베이스 종류</a></li>
+<li class="toctree-l4"><a class="reference internal" href="2.select_src_conn.html#jdbc">JDBC 드라이버 선택</a></li>
+<li class="toctree-l4"><a class="reference internal" href="2.select_src_conn.html#id3">연결 이름</a></li>
+<li class="toctree-l4"><a class="reference internal" href="2.select_src_conn.html#id4">호스트 주소</a></li>
+<li class="toctree-l4"><a class="reference internal" href="2.select_src_conn.html#id5">연결 포트</a></li>
+<li class="toctree-l4"><a class="reference internal" href="2.select_src_conn.html#id6">데이터베이스 이름</a></li>
+<li class="toctree-l4"><a class="reference internal" href="2.select_src_conn.html#id7">문자 집합</a></li>
+<li class="toctree-l4"><a class="reference internal" href="2.select_src_conn.html#id8">사용자 이름</a></li>
+<li class="toctree-l4"><a class="reference internal" href="2.select_src_conn.html#id9">비밀번호</a></li>
+<li class="toctree-l4"><a class="reference internal" href="2.select_src_conn.html#id10">JDBC 고급 설정</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="2.select_src_conn.html#id11">테스트</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="3.select_tar_conn.html">목표DB 연결 선택 페이지</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="3.select_tar_conn.html#id1">연결 생성</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="3.select_tar_conn.html#id2">데이터베이스 종류</a></li>
+<li class="toctree-l4"><a class="reference internal" href="3.select_tar_conn.html#jdbc">JDBC 드라이버 선택</a></li>
+<li class="toctree-l4"><a class="reference internal" href="3.select_tar_conn.html#id3">연결 이름</a></li>
+<li class="toctree-l4"><a class="reference internal" href="3.select_tar_conn.html#id4">호스트 주소</a></li>
+<li class="toctree-l4"><a class="reference internal" href="3.select_tar_conn.html#id5">연결 포트</a></li>
+<li class="toctree-l4"><a class="reference internal" href="3.select_tar_conn.html#id6">데이터베이스 이름</a></li>
+<li class="toctree-l4"><a class="reference internal" href="3.select_tar_conn.html#id7">문자 집합</a></li>
+<li class="toctree-l4"><a class="reference internal" href="3.select_tar_conn.html#id8">사용자 이름</a></li>
+<li class="toctree-l4"><a class="reference internal" href="3.select_tar_conn.html#id9">비밀번호</a></li>
+<li class="toctree-l4"><a class="reference internal" href="3.select_tar_conn.html#id10">JDBC 고급 설정</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="3.select_tar_conn.html#id11">테스트</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="4.object_mapping.html">객체 맵핑 페이지</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="4.object_mapping.html#id2">테이블 리스트</a></li>
+<li class="toctree-l3"><a class="reference internal" href="4.object_mapping.html#id3">컬럼 리스트</a></li>
+<li class="toctree-l3"><a class="reference internal" href="4.object_mapping.html#id4">그래프</a></li>
+<li class="toctree-l3"><a class="reference internal" href="4.object_mapping.html#rdb-gdb">RDB, GDB 컬럼</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="5.migration_check.html">이관 확인 페이지</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="5.migration_check.html#id2">원본 데이터베이스</a></li>
+<li class="toctree-l3"><a class="reference internal" href="5.migration_check.html#id3">대상 데이터베이스</a></li>
+<li class="toctree-l3"><a class="reference internal" href="5.migration_check.html#vertex">Vertex</a></li>
+<li class="toctree-l3"><a class="reference internal" href="5.migration_check.html#edge">Edge</a></li>
+<li class="toctree-l3"><a class="reference internal" href="5.migration_check.html#graph-design">Graph Design</a></li>
+<li class="toctree-l3"><a class="reference internal" href="5.migration_check.html#id4">이관 실행 예약</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="5.migration_check.html#id5">고급 성능 설정</a></li>
+<li class="toctree-l4"><a class="reference internal" href="5.migration_check.html#id6">스크립트</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="6.migration_progress.html">이관 진행</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="6.migration_progress.html#vertex">vertex</a></li>
+<li class="toctree-l3"><a class="reference internal" href="6.migration_progress.html#edge">Edge</a></li>
+<li class="toctree-l3"><a class="reference internal" href="6.migration_progress.html#console">console 화면</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="7.migration_report.html">이관 보고서</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="7.migration_report.html#id2">요약</a></li>
+<li class="toctree-l3"><a class="reference internal" href="7.migration_report.html#id3">로그</a></li>
+<li class="toctree-l3"><a class="reference internal" href="7.migration_report.html#id4">설정 정보</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../release_note/index.html">릴리스 노트</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../release_note/index.html#id2">공통 정보</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../release_note/index.html#id3">개정 내역</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../release_note/index.html#id4">라이선스</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../release_note/index.html#id5">추가 정보</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../release_note/index.html#id6">주의 사항</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MiT</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../start.html">시작하기</a> &raquo;</li>
+        
+      <li>첫 화면</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/getting_start/0.start_view.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="id1">
+<h1>첫 화면<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
+<p>프로그램의 첫 화면에 있는 기능들을 설명한다.</p>
+<img alt="../_images/first_page.png" src="../_images/first_page.png" />
+<div class="section" id="id2">
+<h2>새 마이그레이션<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<p>새 마이그레이션 기능을 클릭하면 원본, 목표 DB 선택 페이지로 진행한다.</p>
+</div>
+<div class="section" id="id3">
+<h2>스크립트<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<p>마이그레이션이 종료되어서 생성된 script또는 다른 마이그레이션 프로그램에서 추출한 뒤 등록한 script가 표시된다.</p>
+</div>
+<div class="section" id="id4">
+<h2>마이그레이션 이력<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
+<p>마이그레이션이 종료되면 해당 마이그레이션 결과 정보가 저장된다.</p>
+<p>사용자는 항목을 선택하여 상세한 내용을 확인할 수 있다.</p>
+<img alt="../_images/migration_log.png" src="../_images/migration_log.png" />
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="1.select_src_tar.html" class="btn btn-neutral float-right" title="원본, 대상 DB 선택 페이지" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../start.html" class="btn btn-neutral float-left" title="시작하기" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2022, CUBRID Corporation.
+      <span class="lastupdated">
+        Last updated on Oct 26, 2023.
+      </span>
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

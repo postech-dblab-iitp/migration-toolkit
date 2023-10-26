@@ -17,6 +17,8 @@ MiT의 추가된 기능은 다음과 같다.
 
 MiT는 리눅스 환경에 소스 코드 다운로드 후 빌드 스크립트를 통해 빌드할 수 있다.
 
+MiT 사용 방법등은 [사용자 메뉴얼](https://hwany7seo.github.io/mit_manual/start.html)을 참고할 수 있다.
+
 ## 소스 다운로드
 
 ```
@@ -47,6 +49,9 @@ sh build.sh
 
 - CUBRID CMT
     - https://github.com/CUBRID/cubrid-migration.git
+
+- User Manual
+    - https://hwany7seo.github.io/mit_manual
 
 ## 라이센스
 

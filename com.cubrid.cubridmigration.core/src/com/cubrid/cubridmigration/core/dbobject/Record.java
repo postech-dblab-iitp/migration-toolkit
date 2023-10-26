@@ -68,15 +68,37 @@ public class Record {
 	 * @param value Object
 	 */
 	public void addColumnValue(Column column, Object value) {
+		if (value instanceof String) {
+			value = removeLineSeparator((String) value);
+		}
+		
 		columnValueList.add(new ColumnValue(column, value));
 	}
 	
 	public void addColumnValueFront(Column column, Object value) {
+		if (value instanceof String) {
+			value = removeLineSeparator((String) value);
+		}
+		
 		columnValueList.add(1, new ColumnValue(column, value));
 	}
 	
 	public void addColumnValue(ColumnValue colVal) {
+		if (colVal.getValue() instanceof String) {
+			Object newVal = removeLineSeparator((String) colVal.getValue());
+			
+			colVal.setValue(newVal);
+		}
+		
 		columnValueList.add(colVal);
+	}
+	
+	public Object removeLineSeparator(String value) {
+		String separator = System.getProperty("line.separator");
+		
+		value = value.replaceAll(separator, " ");
+		
+		return value;
 	}
 
 	/**
@@ -123,6 +145,10 @@ public class Record {
 
 		public Object getValue() {
 			return value;
+		}
+		
+		public void setValue(Object value) {
+			this.value = value;
 		}
 	}
 

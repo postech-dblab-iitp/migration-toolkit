@@ -43,6 +43,8 @@ import com.cubrid.cubridmigration.mysql.trans.MySQL2CUBRIDTranformHelper;
 import com.cubrid.cubridmigration.mysql.trans.MySQLDataTypeMappingHelper;
 import com.cubrid.cubridmigration.oracle.trans.Oracle2CUBRIDTranformHelper;
 import com.cubrid.cubridmigration.oracle.trans.OracleDataTypeMappingHelper;
+import com.cubrid.cubridmigration.tibero.trans.Tibero2CUBRIDTranformHelper;
+import com.cubrid.cubridmigration.tibero.trans.TiberoDataTypeMappingHelper;
 
 /**
  * MigrationTransFactory will return the DBTransform instance by input source
@@ -76,6 +78,10 @@ public class MigrationTransFactory {
 			new CUBRIDDataTypeMappingHelper(),
 			ToCUBRIDDataConverterFacade.getIntance());
 	
+	private static final Tibero2CUBRIDTranformHelper TIBERO2CUBRID_TRANFORM_HELPER = new Tibero2CUBRIDTranformHelper(
+			new TiberoDataTypeMappingHelper(),
+			ToCUBRIDDataConverterFacade.getIntance());
+	
 	/**
 	 * getTransformHelper of source to target migration
 	 * 
@@ -94,6 +100,8 @@ public class MigrationTransFactory {
 			return CUBRID2CUBRID_TRANFORM_HELPER;
 		} else if (srcDT.getID() == DatabaseType.ORACLE.getID()) {
 			return ORACLE2CUBRID_TRANFORM_HELPER;
+		} else if (srcDT.getID() == DatabaseType.TIBERO.getID()) {
+			return TIBERO2CUBRID_TRANFORM_HELPER;
 		} else if (srcDT.getID() == DatabaseType.MYSQL.getID()) {
 			return MY_SQL2CUBRID_TRANFORM_HELPER;
 		} else if (srcDT.getID() == DatabaseType.MSSQL.getID()) {

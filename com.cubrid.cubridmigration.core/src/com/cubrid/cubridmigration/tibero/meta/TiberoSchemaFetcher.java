@@ -27,7 +27,7 @@
  * OF SUCH DAMAGE. 
  *
  */
-package com.cubrid.cubridmigration.oracle.meta;
+package com.cubrid.cubridmigration.tibero.meta;
 
 import java.io.Reader;
 import java.math.BigInteger;
@@ -43,6 +43,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
 
@@ -74,16 +75,9 @@ import com.cubrid.cubridmigration.core.dbobject.Version;
 import com.cubrid.cubridmigration.core.dbobject.View;
 import com.cubrid.cubridmigration.core.dbtype.DatabaseType;
 import com.cubrid.cubridmigration.core.export.DBExportHelper;
-import com.cubrid.cubridmigration.oracle.OracleDataTypeHelper;
+import com.cubrid.cubridmigration.tibero.TiberoDataTypeHelper;
 
-/**
- * 
- * OracleDBObjectBuilder
- * 
- * @author moulinwang
- * @version 1.0 - 2010-4-15
- */
-public final class OracleSchemaFetcher extends
+public final class TiberoSchemaFetcher extends
 		AbstractJDBCSchemaFetcher {
 	private final static List<Object> COLUMNS_RESET1 = CommonUtils.createListWithArray(new Object[] {
 			"CHAR", "NCHAR", "VARCHAR", "VARCHAR2", "NVARCHAR2", "LONG" });
@@ -91,7 +85,7 @@ public final class OracleSchemaFetcher extends
 	private final static List<Object> COLUMNS_RESET2 = CommonUtils.createListWithArray(new Object[] {
 			"RAW", "LONG RAW" });
 
-	private final static Logger LOG = LogUtil.getLogger(OracleSchemaFetcher.class);
+	private final static Logger LOG = LogUtil.getLogger(TiberoSchemaFetcher.class);
 
 	private static final String OBJECT_TYPE_FUNCTION = "FUNCTION";
 	private static final String OBJECT_TYPE_PROCEDURE = "PROCEDURE";
@@ -149,7 +143,7 @@ public final class OracleSchemaFetcher extends
 
 	//private static final String SHOW_SEQUENCE_MAXVAL = "SELECT ?.CURRVAL  FROM DUAL";
 
-	public OracleSchemaFetcher() {
+	public TiberoSchemaFetcher() {
 		factory = new DBObjectFactory() {
 
 		};
@@ -166,7 +160,7 @@ public final class OracleSchemaFetcher extends
 	 */
 	public Catalog buildCatalog(final Connection conn, ConnParameters cp, IBuildSchemaFilter filter) throws SQLException {
 		final Catalog catalog = super.buildCatalog(conn, cp, filter);
-		catalog.setDatabaseType(DatabaseType.ORACLE);
+		catalog.setDatabaseType(DatabaseType.TIBERO);
 		setCharset(conn, catalog);
 		setCatalogTimezone(catalog);
 		final List<Schema> schemaList = new ArrayList<Schema>(catalog.getSchemas());
@@ -186,6 +180,9 @@ public final class OracleSchemaFetcher extends
 				String ddl = getObjectDDL(conn, schema.getName(), table.getName(),
 						OBJECT_TYPE_TABLE);
 				table.setDDL(ddl);
+				
+				setImportedKeysCount(conn, catalog, schema, table);
+				setExportedKeysCount(conn, catalog, schema, table);
 			}
 			// get views
 			List<View> viewList = schema.getViews();
@@ -201,6 +198,7 @@ public final class OracleSchemaFetcher extends
 				view.setQuerySpec(getQueryText(conn, schema.getName(), view.getName()));
 			}
 			buildPartitions(conn, catalog, schema);
+			
 		}
 		return catalog;
 	}
@@ -370,7 +368,7 @@ public final class OracleSchemaFetcher extends
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("[IN]buildSQLTable()");
 		}
-		OracleDataTypeHelper dtHelper = OracleDataTypeHelper.getInstance(null);
+		TiberoDataTypeHelper dtHelper = TiberoDataTypeHelper.getInstance(null);
 		Table sourceTable = super.buildSQLTable(resultSetMeta);
 		List<Column> columns = sourceTable.getColumns();
 		for (Column column : columns) {
@@ -407,7 +405,7 @@ public final class OracleSchemaFetcher extends
 				LOG.debug("[SQL]" + SQL_GET_COLUMNS + ", 1=" + table.getName() + ", 2="
 						+ schema.getName() + ", 3=" + table.getName());
 			}
-			OracleDataTypeHelper dtHelper = OracleDataTypeHelper.getInstance(null);
+			TiberoDataTypeHelper dtHelper = TiberoDataTypeHelper.getInstance(null);
 			rs = stmt.executeQuery();
 			while (rs.next()) {
 				try {
@@ -427,7 +425,7 @@ public final class OracleSchemaFetcher extends
 					column.setPrecision(precisionStr == null ? null : rs.getInt("DATA_PRECISION"));
 					String scaleStr = rs.getString("DATA_SCALE");
 					column.setScale(scaleStr == null ? null : rs.getInt("DATA_SCALE"));
-					//Oracle Integer
+					//Tibero Integer
 					if (column.getDataType().equals("NUMBER") && precisionStr == null
 							&& "0".equals(scaleStr)) {
 						column.setDataType("INTEGER");
@@ -451,7 +449,7 @@ public final class OracleSchemaFetcher extends
 					column.setCharLength(rs.getInt("CHAR_LENGTH"));
 					//CHAR_USED: C=varchar2(xx char) B=varchar2(xx)
 					column.setCharUsed(rs.getString("CHAR_USED"));
-					resetOracleColumnPrecision(column);
+					resetTiberoColumnPrecision(column);
 
 					String shownDataType = dtHelper.getShownDataType(column);
 					column.setShownDataType(shownDataType);
@@ -530,7 +528,7 @@ public final class OracleSchemaFetcher extends
 					fkName = newFkName;
 					foreignKey = factory.createFK(table);
 					foreignKey.setName(fkName);
-					foreignKey.setUpdateRule(FK.ON_UPDATE_NO_ACTION); //oracle doesn't have update rule
+					foreignKey.setUpdateRule(FK.ON_UPDATE_NO_ACTION); //tibero doesn't have update rule
 					//foreignKey.setDeferability(rs.getInt("DEFERRABILITY"));
 
 					switch (rs.getShort("delete_rule")) {
@@ -716,7 +714,7 @@ public final class OracleSchemaFetcher extends
 			LOG.debug("[IN]buildViewColumns()");
 		}
 		super.buildViewColumns(conn, catalog, schema, view);
-		OracleDataTypeHelper dtHelper = OracleDataTypeHelper.getInstance(null);
+		TiberoDataTypeHelper dtHelper = TiberoDataTypeHelper.getInstance(null);
 		for (Column column : view.getColumns()) {
 			String shownDataType = dtHelper.getShownDataType(column);
 			if (LOG.isDebugEnabled()) {
@@ -819,7 +817,7 @@ public final class OracleSchemaFetcher extends
 	//	}
 
 	/**
-	 * return a list of oracle table name.
+	 * return a list of tibero table name.
 	 * 
 	 * @param conn Connection
 	 * @param catalog Catalog
@@ -919,7 +917,7 @@ public final class OracleSchemaFetcher extends
 	}
 
 	protected DBExportHelper getExportHelper() {
-		return DatabaseType.ORACLE.getExportHelper();
+		return DatabaseType.TIBERO.getExportHelper();
 	}
 
 	/**
@@ -938,7 +936,7 @@ public final class OracleSchemaFetcher extends
 			LOG.debug("[IN]getObjectDDL()");
 		}
 		if (StringUtils.isBlank(objectName)) {
-			throw new IllegalArgumentException("The oracle object name is null!");
+			throw new IllegalArgumentException("The Tibero object name is null!");
 		}
 
 		PreparedStatement preStmt = null; // NOPMD
@@ -964,7 +962,7 @@ public final class OracleSchemaFetcher extends
 			}
 			return ddl;
 		} catch (Exception ex) {
-			LOG.error("Get Oracle Object DDL error:" + objectName, ex);
+			LOG.error("Get Tibero Object DDL error:" + objectName, ex);
 			return "";
 		} finally {
 			Closer.close(rs);
@@ -1187,7 +1185,7 @@ public final class OracleSchemaFetcher extends
 	//			column.setNullable(resultSetMeta.isNullable(i) == ResultSetMetaData.columnNullable);
 	//			columns.add(column);
 	//
-	//			String shownDataType = OracleDataTypeHelper.getShownDataType(column);
+	//			String shownDataType = TiberoDataTypeHelper.getShownDataType(column);
 	//			column.setShownDataType(shownDataType);
 	//		}
 	//
@@ -1295,9 +1293,9 @@ public final class OracleSchemaFetcher extends
 	 * 
 	 * @param column Column
 	 */
-	private void resetOracleColumnPrecision(Column column) {
+	private void resetTiberoColumnPrecision(Column column) {
 		if (LOG.isDebugEnabled()) {
-			LOG.debug("[IN]resetOracleColumnPrecision()");
+			LOG.debug("[IN]resetTiberoColumnPrecision()");
 		}
 		if (column.getPrecision() == null || column.getPrecision() == 0) {
 			String dataType = column.getDataType();
@@ -1330,7 +1328,7 @@ public final class OracleSchemaFetcher extends
 	}
 
 	/**
-	 * get Oracle charset
+	 * get Tibero charset
 	 * 
 	 * @param conn Connection
 	 * @param catalog Catalog
@@ -1364,7 +1362,7 @@ public final class OracleSchemaFetcher extends
 
 	/**
 	 * 
-	 * Oracle schemas; If default schema is specified, it will be returned
+	 * Tibero schemas; If default schema is specified, it will be returned
 	 * directly.
 	 * 
 	 * @param conn Connection
@@ -1406,9 +1404,62 @@ public final class OracleSchemaFetcher extends
 	 * @return DatabaseType
 	 */
 	public DatabaseType getDBType() {
-		return DatabaseType.ORACLE;
+		return DatabaseType.TIBERO;
 	}
 	//	protected void buildAllSchemas(Connection conn, Catalog catalog, Schema schema, Map<String, Table> tables)
 	//			throws SQLException {
 	//	}
+	
+	/**
+	 * setImportedKeysCount
+	 *
+	 * @param conn
+	 * @param catalog
+	 * @param schema
+	 * @param table
+	 * @throws SQLException
+	 */
+	protected void setImportedKeysCount(final Connection conn, final Catalog catalog, final Schema schema,
+			Table table) throws SQLException {
+
+		int importedKeysCount = 0;
+
+		ResultSet rs = null;
+		try {
+			rs = conn.getMetaData().getImportedKeys(getCatalogName(catalog), getSchemaName(schema), table.getName());
+			while (rs.next()) {
+				importedKeysCount++;
+			}
+			table.setImportedKeysCount(importedKeysCount);
+		} finally {
+			Closer.close(rs);
+		}
+	}
+
+	/**
+	 * setExportedKeysCount
+	 *
+	 * @param conn
+	 * @param catalog
+	 * @param schema
+	 * @param table
+	 * @throws SQLException
+	 */
+	protected void setExportedKeysCount(final Connection conn, final Catalog catalog, final Schema schema,
+			Table table) throws SQLException {
+
+		int exportedKeysCount = 0;
+
+		ResultSet rs = null;
+		try {
+			rs = conn.getMetaData().getExportedKeys(getCatalogName(catalog), getSchemaName(schema), table.getName());
+			while (rs.next()) {
+				exportedKeysCount++;
+			}
+			table.setExportedKeysCount(exportedKeysCount);
+		} finally {
+			Closer.close(rs);
+		}
+	}
+	
 }

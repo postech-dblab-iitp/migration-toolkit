@@ -140,6 +140,12 @@
       </page>
       <page
             category="com.cubrid.cubridmigration.ui.common.composite.MigrationConfigPage"
+            class="com.cubrid.cubridmigration.ui.common.composite.Tibero2CUBRIDTypeMapPage"
+            id="com.cubrid.cubridmigration.ui.common.composite.Tibero2CUBRIDTypeMapPage"
+            name="Oracle&gt;&gt;CUBRID">
+      </page>
+      <page
+            category="com.cubrid.cubridmigration.ui.common.composite.MigrationConfigPage"
             class="com.cubrid.cubridmigration.ui.common.composite.SQLServer2CUBRIDTypeMapPage"
             id="com.cubrid.cubridmigration.ui.common.composite.SQLServer2CUBRIDTypeMapPage"
             name="MSSQL&gt;&gt;CUBRID">

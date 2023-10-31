@@ -27,7 +27,7 @@
  * OF SUCH DAMAGE. 
  *
  */
-package com.cubrid.cubridmigration.oracle;
+package com.cubrid.cubridmigration.tibero;
 
 import java.sql.Types;
 import java.util.List;
@@ -39,25 +39,19 @@ import com.cubrid.cubridmigration.core.dbobject.Catalog;
 import com.cubrid.cubridmigration.core.dbobject.Column;
 import com.cubrid.cubridmigration.core.dbtype.DatabaseType;
 
-/**
- * OracleDataTypeHelper Description
- * 
- * @author Kevin Cao
- * @version 1.0 - 2011-11-21 created by Kevin Cao
- */
-public final class OracleDataTypeHelper extends
+public final class TiberoDataTypeHelper extends
 		DBDataTypeHelper {
 	private static final String NUMBER = "NUMBER";
 
-	private static final OracleDataTypeHelper HELPER = new OracleDataTypeHelper();
+	private static final TiberoDataTypeHelper HELPER = new TiberoDataTypeHelper();
 
 	/**
 	 * Singleton
 	 * 
-	 * @param version of oracle database
+	 * @param version of Tibero database
 	 * @return DataTypeHelper
 	 */
-	public static OracleDataTypeHelper getInstance(String version) {
+	public static TiberoDataTypeHelper getInstance(String version) {
 		return HELPER;
 	}
 
@@ -109,12 +103,12 @@ public final class OracleDataTypeHelper extends
 	}
 
 	/**
-	 * return get Oracle data type key
+	 * return get Tibero data type key
 	 * 
 	 * @param dataType String
 	 * @return String
 	 */
-	public static String getOracleDataTypeKey(String dataType) {
+	public static String getTiberoDataTypeKey(String dataType) {
 		String key = dataType;
 
 		if (dataType.matches("TIMESTAMP\\(\\d*\\)")) {
@@ -131,7 +125,7 @@ public final class OracleDataTypeHelper extends
 		return key;
 	}
 
-	private OracleDataTypeHelper() {
+	private TiberoDataTypeHelper() {
 		//Do nothing here.
 	}
 
@@ -141,7 +135,7 @@ public final class OracleDataTypeHelper extends
 	 * @return DatabaseType
 	 */
 	public DatabaseType getDBType() {
-		return DatabaseType.ORACLE;
+		return DatabaseType.TIBERO;
 	}
 
 	/**
@@ -176,25 +170,25 @@ public final class OracleDataTypeHelper extends
 			return Types.INTEGER;
 		}
 
-		String key = getOracleDataTypeKey(dataType);
+		String key = getTiberoDataTypeKey(dataType);
 
 		//REAL, RAW, BLOB, TIMESTAMP WITH TIME ZONE, TIMESTAMP WITH LOCAL TIME ZONE, 
 		//VARCHAR2, LONG RAW, NUMBER, CLOB, CHAR, STRUCT, FLOAT, DATE, LONG, 
 		//INTERVALDS, INTERVALYM, ARRAY, TIMESTAMP, REF
-		Map<String, List<DataType>> supportedDataType = catalog.getSupportedDataType();
 
+		Map<String, List<DataType>> supportedDataType = catalog.getSupportedDataType();
 		List<DataType> dataTypeList = supportedDataType.get(key);
 
 		if (dataTypeList == null) {
 			throw new IllegalArgumentException(
-					"Not supported Oracle data type(" + dataType + ")");
+					"Not supported Tibero data type(" + dataType + ")");
 		}
 
 		if (dataTypeList.size() == 1) {
 			return dataTypeList.get(0).getJdbcDataTypeID();
 		}
 
-		throw new IllegalArgumentException("Not supported Oracle data type("
+		throw new IllegalArgumentException("Not supported Tibero data type("
 				+ dataType + ": p=" + precision + ", s=" + scale + ")");
 
 	}
@@ -257,7 +251,7 @@ public final class OracleDataTypeHelper extends
 	}
 
 	/**
-	 * Oracle server does not support collection type.
+	 * Tibero server does not support collection type.
 	 * 
 	 * @param dataType Integer
 	 * @return false

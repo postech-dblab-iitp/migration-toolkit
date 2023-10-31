@@ -27,7 +27,7 @@
  * OF SUCH DAMAGE. 
  *
  */
-package com.cubrid.cubridmigration.oracle.export;
+package com.cubrid.cubridmigration.tibero.export;
 
 import java.math.BigInteger;
 import java.sql.Connection;
@@ -35,6 +35,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.cubrid.cubridmigration.core.common.Closer;
 import com.cubrid.cubridmigration.core.connection.ConnParameters;
@@ -46,36 +48,30 @@ import com.cubrid.cubridmigration.core.export.DBExportHelper;
 import com.cubrid.cubridmigration.core.export.IExportDataHandler;
 import com.cubrid.cubridmigration.core.export.handler.CharTypeHandler;
 import com.cubrid.cubridmigration.core.export.handler.TimestampTypeHandler;
-import com.cubrid.cubridmigration.oracle.OracleDataTypeHelper;
-import com.cubrid.cubridmigration.oracle.export.handler.OracleBFileTypeHandler;
-import com.cubrid.cubridmigration.oracle.export.handler.OracleIntervalDSTypeHandler;
-import com.cubrid.cubridmigration.oracle.export.handler.OracleIntervalYMTypeHandler;
+import com.cubrid.cubridmigration.tibero.TiberoDataTypeHelper;
+import com.cubrid.cubridmigration.tibero.export.handler.TiberoBFileTypeHandler;
+import com.cubrid.cubridmigration.tibero.export.handler.TiberoIntervalDSTypeHandler;
+import com.cubrid.cubridmigration.tibero.export.handler.TiberoIntervalYMTypeHandler;
 
-/**
- * a class help to export Oracle data and verify Oracle sql statement
- * 
- * @author moulinwang
- * 
- */
-public class OracleExportHelper extends
+public class TiberoExportHelper extends
 		DBExportHelper {
-	//private static final Logger LOG = LogUtil.getLogger(OracleExportHelper.class);
+	//private static final Logger LOG = LogUtil.getLogger(TiberoExportHelper.class);
 
-	//private static final String ORACAL_ROW_NUMBER = "OracleRowNumber";
+	//private static final String ORACAL_ROW_NUMBER = "TiberoRowNumber";
 
 	/**
 	 * constructor
 	 */
-	public OracleExportHelper() {
+	public TiberoExportHelper() {
 		super();
 		handlerMap1.put(Types.DATE, new TimestampTypeHandler());
-		handlerMap2.put("INTERVALDS", new OracleIntervalDSTypeHandler());
-		handlerMap2.put("INTERVALYM", new OracleIntervalYMTypeHandler());
+		handlerMap2.put("INTERVALDS", new TiberoIntervalDSTypeHandler());
+		handlerMap2.put("INTERVALYM", new TiberoIntervalYMTypeHandler());
 		handlerMap2.put("TIMESTAMP WITH LOCAL TIME ZONE", new TimestampTypeHandler());
 		handlerMap2.put("TIMESTAMP WITH TIME ZONE", new CharTypeHandler());
 		handlerMap2.put("ROWID", new CharTypeHandler());
 		handlerMap2.put("UROWID", new CharTypeHandler());
-		handlerMap2.put("BFILE", new OracleBFileTypeHandler());
+		handlerMap2.put("BFILE", new TiberoBFileTypeHandler());
 	}
 
 	/**
@@ -88,7 +84,7 @@ public class OracleExportHelper extends
 	 * @throws SQLException e
 	 */
 	public Object getJdbcObject(final ResultSet rs, final Column column) throws SQLException {
-		String oraType = OracleDataTypeHelper.getOracleDataTypeKey(column.getDataType());
+		String oraType = TiberoDataTypeHelper.getTiberoDataTypeKey(column.getDataType());
 		IExportDataHandler edh = handlerMap2.get(oraType);
 		if (edh != null) {
 			return edh.getJdbcObject(rs, column);
@@ -103,7 +99,7 @@ public class OracleExportHelper extends
 	 * @return String
 	 */
 	protected String getQuotedObjName(String objectName) {
-		return DatabaseType.ORACLE.getSQLHelper(null).getQuotedObjName(objectName);
+		return DatabaseType.TIBERO.getSQLHelper(null).getQuotedObjName(objectName);
 	}
 
 	//	/**
@@ -157,7 +153,7 @@ public class OracleExportHelper extends
 		//		}
 		//
 		//		return buf.toString();
-		//TODO: Oracle page selection SQL
+		//TODO: Tibero page selection SQL
 		return sql;
 	}
 
@@ -167,7 +163,7 @@ public class OracleExportHelper extends
 	 * @return DatabaseType
 	 */
 	public DatabaseType getDBType() {
-		return DatabaseType.ORACLE;
+		return DatabaseType.TIBERO;
 	}
 
 	private static final String SERIAL_CURRENT_VALUE_SQL = "SELECT S.LAST_NUMBER,S.SEQUENCE_OWNER FROM ALL_SEQUENCES S "
@@ -199,5 +195,58 @@ public class OracleExportHelper extends
 			Closer.close(conn);
 		}
 		return null;
+	}
+	
+	public String getGraphPagedSelectSQL(String sql, long pageSize,
+			long exportedRecords, PK pk) {
+		StringBuilder buf = new StringBuilder(sql.trim());
+		String cleanSql = sql.toUpperCase().trim();
+
+		Pattern pattern = Pattern.compile("GROUP\\s+BY", Pattern.MULTILINE
+				| Pattern.CASE_INSENSITIVE);
+		Pattern pattern2 = Pattern.compile("ORDER\\s+BY", Pattern.MULTILINE
+				| Pattern.CASE_INSENSITIVE);
+		Matcher matcher = pattern.matcher(cleanSql);
+		Matcher matcher2 = pattern2.matcher(cleanSql);
+		if (matcher.find()) {
+			//End with group by 
+			if (cleanSql.indexOf("HAVING") < 0) {
+				buf.append(" HAVING ");
+			} else {
+				buf.append(" AND ");
+			}
+			buf.append(" GROUPBY_NUM() ");
+		} else if (matcher2.find()) {
+			//End with order by 
+			buf.append(" FOR ORDERBY_NUM() ");
+		} else {
+			StringBuilder orderby = new StringBuilder();
+			if (pk != null) {
+				// if it has a pk, a pk scan is better than full range scan
+				for (String pkCol : pk.getPkColumns()) {
+					if (orderby.length() > 0) {
+						orderby.append(", ");
+					}
+					orderby.append("\"").append(pkCol).append("\"");
+				}
+			}
+			if (orderby.length() > 0) {
+				buf.append(" ORDER BY ");
+				buf.append(orderby);
+				buf.append(" FOR ORDERBY_NUM() ");
+			} else {
+				if (cleanSql.indexOf("WHERE") < 0) {
+					buf.append(" WHERE");
+				} else {
+					buf.append(" AND");
+				}
+				buf.append(" ROWNUM ");
+			}
+		}
+
+		buf.append(" BETWEEN ").append(exportedRecords + 1L);
+		buf.append(" AND ").append(exportedRecords + pageSize);
+
+		return buf.toString();
 	}
 }

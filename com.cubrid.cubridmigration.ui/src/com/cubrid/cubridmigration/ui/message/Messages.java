@@ -652,6 +652,7 @@ public class Messages extends
 	public static String onlineCUBRIDCommitCount;
 	public static String openConfActionTitle;
 	public static String oracle2CUBRID;
+	public static String tibero2CUBRID;
 	public static String otherSettings;
 	public static String prefTitleGeneral;
 	public static String productName;

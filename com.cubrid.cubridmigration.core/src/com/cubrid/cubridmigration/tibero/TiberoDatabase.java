@@ -27,26 +27,24 @@
  * OF SUCH DAMAGE. 
  *
  */
-package com.cubrid.cubridmigration.oracle;
+package com.cubrid.cubridmigration.tibero;
 
-import java.lang.reflect.Method;
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.Driver;
 import java.sql.SQLException;
 import java.util.Properties;
-import java.util.TimeZone;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.cubrid.cubridmigration.core.common.TimeZoneUtils;
 import com.cubrid.cubridmigration.core.connection.ConnParameters;
 import com.cubrid.cubridmigration.core.connection.IConnHelper;
 import com.cubrid.cubridmigration.core.datatype.DBDataTypeHelper;
 import com.cubrid.cubridmigration.core.dbtype.DBConstant;
 import com.cubrid.cubridmigration.core.dbtype.DatabaseType;
 import com.cubrid.cubridmigration.core.sql.SQLHelper;
-import com.cubrid.cubridmigration.oracle.export.OracleExportHelper;
-import com.cubrid.cubridmigration.oracle.meta.OracleSchemaFetcher;
+import com.cubrid.cubridmigration.tibero.export.TiberoExportHelper;
+import com.cubrid.cubridmigration.tibero.meta.TiberoSchemaFetcher;
 
 /**
  * CUBRID Database Description
@@ -54,15 +52,15 @@ import com.cubrid.cubridmigration.oracle.meta.OracleSchemaFetcher;
  * @author Kevin Cao
  * @version 1.0 - 2012-2-2 created by Kevin Cao
  */
-public class OracleDatabase extends
+public class TiberoDatabase extends
 		DatabaseType {
 
-	public OracleDatabase() {
-		super(DBConstant.DBTYPE_ORACLE,
-				DBConstant.DB_NAMES[DBConstant.DBTYPE_ORACLE],
-				new String[]{DBConstant.JDBC_CLASS_ORACLE },
-				DBConstant.DEF_PORT_ORACLE, new OracleSchemaFetcher(),
-				new OracleExportHelper(), new OracleConnHelper(), false);
+	public TiberoDatabase() {
+		super(DBConstant.DBTYPE_TIBERO,
+				DBConstant.DB_NAMES[DBConstant.DBTYPE_TIBERO],
+				new String[]{DBConstant.JDBC_CLASS_TIBERO},
+				DBConstant.DEF_PORT_TIBERO, new TiberoSchemaFetcher(),
+				new TiberoExportHelper(), new TiberoConnHelper(), false);
 	}
 
 	/**
@@ -70,7 +68,7 @@ public class OracleDatabase extends
 	 * OracleConnHelper
 	 * 
 	 */
-	private static class OracleConnHelper implements
+	private static class TiberoConnHelper implements
 			IConnHelper {
 		/**
 		 * return the jdbc url to connect the database
@@ -83,10 +81,10 @@ public class OracleDatabase extends
 			if (dbName == null) {
 				throw new IllegalArgumentException("DB name can't be NULL.");
 			}
-			String oracleJdbcURLPattern = "jdbc:oracle:thin:@%s:%s:%s";
+			String tiberoJdbcURLPattern = "jdbc:tibero:thin:@%s:%s:%s";
 			//Oracle cluster connecting mode
 			if (dbName.startsWith("/")) {
-				oracleJdbcURLPattern = "jdbc:oracle:thin:@%s:%s/%s";
+				tiberoJdbcURLPattern = "jdbc:tibero:thin:@%s:%s/%s";
 				dbName = dbName.substring(1, dbName.length());
 			}
 			//If the DB name contains schema name, for example: XE/migrationdev
@@ -94,7 +92,7 @@ public class OracleDatabase extends
 			//			if (dbName.indexOf('/') > 0) {
 			//				dbName = dbName.split("/")[0];
 			//			}
-			String url = String.format(oracleJdbcURLPattern,
+			String url = String.format(tiberoJdbcURLPattern,
 					connParameters.getHost(), connParameters.getPort(), dbName);
 			return url;
 		}
@@ -123,32 +121,28 @@ public class OracleDatabase extends
 				} else {
 					conn = driver.connect(conParam.getUserJDBCURL(), props);
 				}
-				//				String tzName = connParameters.getTimeZone();
-				//				String timeZone = connParameters.getTimeZone();
-				//				// "Etc/GMT+0"
-				//				if (tzName == null) {
-				//					timeZone = TimeZoneUtil.getOracleTZID(TimeZoneUtil.getGMTFormat(TimeZone.getDefault().getID()));
-				//				} else {
-				//					String tzID = TimeZoneUtil.getGMTByDisplay(tzName);
-				//					if (tzID == null) {
-				//						timeZone = TimeZoneUtil.getOracleTZID(TimeZoneUtil.getGMTFormat(TimeZone.getDefault().getID()));
-				//					} else {
-				//						timeZone = TimeZoneUtil.getOracleTZID(tzID);
-				//					}
-				//				}
-				Method method = Class.forName("oracle.jdbc.OracleConnection",
-						false, driver.getClass().getClassLoader()).getMethod(
-						"setSessionTimeZone", new Class[]{String.class });
-				String timeZone = TimeZoneUtils.getOracleTZID(TimeZoneUtils.getGMTFormat(TimeZone.getDefault().getID()));
-				method.invoke(conn, timeZone);
-				//				((OracleConnection) conn).setSessionTimeZone(timeZone == null ? "Etc/GMT+0"
-				//						: TimeUtil.getOracleTZID(timeZone));
+				
+				checkDatabase(conn);
+				
 				return conn;
-			} catch (IllegalAccessException e) {
-				throw new RuntimeException(e);
 			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}
+		}
+		
+		private void checkDatabase(Connection conn) 
+		        throws SQLException {
+            try {
+                DatabaseMetaData metaData = conn.getMetaData();
+                if (metaData != null) {
+                    String projectVersion= metaData.getDatabaseProductVersion();
+                    if (projectVersion.equals("Unknown")) {
+                        throw new SQLException("Unable to read database information., Please check name or all setting of database");
+                    }
+                }
+            } catch (SQLException e) {
+                throw e;
+            }
 		}
 	}
 
@@ -159,7 +153,7 @@ public class OracleDatabase extends
 	 * @return SQLHelper
 	 */
 	public SQLHelper getSQLHelper(String version) {
-		return OracleSQLHelper.getInstance(version);
+		return TiberoSQLHelper.getInstance(version);
 	}
 
 	/**
@@ -169,7 +163,7 @@ public class OracleDatabase extends
 	 * @return DBDataTypeHelper
 	 */
 	public DBDataTypeHelper getDataTypeHelper(String version) {
-		return OracleDataTypeHelper.getInstance(version);
+		return TiberoDataTypeHelper.getInstance(version);
 	};
 
 	/**

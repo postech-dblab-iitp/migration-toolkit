@@ -49,6 +49,7 @@ import com.cubrid.cubridmigration.graph.GraphDatabase;
 import com.cubrid.cubridmigration.mssql.MSSQLDatabase;
 import com.cubrid.cubridmigration.mysql.MySQLDatabase;
 import com.cubrid.cubridmigration.oracle.OracleDatabase;
+import com.cubrid.cubridmigration.tibero.TiberoDatabase;
 
 /**
  * Base class of Database Types
@@ -71,8 +72,10 @@ public abstract class DatabaseType {
 	
 	//GDB add graph Database into DB types
 	public static final DatabaseType GRAPH = new GraphDatabase();
+	
+	public static final DatabaseType TIBERO = new TiberoDatabase();
 
-	private static final DatabaseType[] DTS = new DatabaseType[] {MYSQL, CUBRID, ORACLE, MSSQL, GRAPH};
+	private static final DatabaseType[] DTS = new DatabaseType[] {MYSQL, CUBRID, ORACLE, MSSQL, GRAPH, TIBERO};
 
 	/**
 	 * Retrieves all Database types

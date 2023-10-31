@@ -11,6 +11,7 @@
 
 .. toctree::
     :titlesonly:
+    :maxdepth: 2
 
     getting_start/0.start_view.rst
     getting_start/1.select_src_tar.rst

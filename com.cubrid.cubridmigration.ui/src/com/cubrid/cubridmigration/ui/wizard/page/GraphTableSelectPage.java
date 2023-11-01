@@ -467,7 +467,12 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 					edge.setHavePKStartVertex(startVertex.getHasPK());
 					if (getMigrationWizard().getMigrationConfig().targetIsCSV()) {
 						Column startCol = new Column(":START_ID(" + startVertex.getName() + ")");
-						Column endCol = new Column(":END_ID(" + endVertex.getName() + ")");
+						Column endCol;
+						if (endVertex != null) { 
+							endCol = new Column(":END_ID(" + endVertex.getName() + ")");
+						} else {
+							endCol = new Column(":END_ID(" + edge.getEndVertexName() + ")");
+						}
 						
 						startCol.setDataType("ID");
 						endCol.setDataType("ID");

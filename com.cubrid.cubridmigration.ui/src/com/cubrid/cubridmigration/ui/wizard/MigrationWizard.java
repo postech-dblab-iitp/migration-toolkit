@@ -117,6 +117,7 @@ public class MigrationWizard extends
 		supportedDBs.add(DatabaseType.CUBRID.getID());
 		supportedDBs.add(DatabaseType.MSSQL.getID());
 		supportedDBs.add(DatabaseType.GRAPH.getID());
+		supportedDBs.add(DatabaseType.TIBERO.getID());
 		return supportedDBs;
 	}
 

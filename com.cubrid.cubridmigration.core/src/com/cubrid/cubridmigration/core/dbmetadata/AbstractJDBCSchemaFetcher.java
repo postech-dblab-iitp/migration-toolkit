@@ -92,7 +92,7 @@ public abstract class AbstractJDBCSchemaFetcher implements
 		String catalogName;
 
 		DatabaseType databaseType = cp.getDatabaseType();
-		if (DatabaseType.ORACLE == databaseType) {
+		if (DatabaseType.ORACLE == databaseType || DatabaseType.ORACLE == databaseType) {
 			//If DB name is SID/schemaName pattern
 			if (dbName.startsWith("/")) {
 				dbName = dbName.substring(1, dbName.length());
@@ -1072,6 +1072,10 @@ public abstract class AbstractJDBCSchemaFetcher implements
 				} else {
 					List<DataType> list = new ArrayList<DataType>();
 					list.add(dataTypeObj);
+					//temp
+					if (typeName.equals("VARCHAR2")) {
+						supportedDataType.put("VARCHAR", list);
+					}
 					supportedDataType.put(typeName, list);
 				}
 			}

@@ -95,6 +95,12 @@
       </page>
       <page
             category="com.cubrid.cubridmigration.ui.preference.MigrationConfigPage"
+            class="com.cubrid.cubridmigration.ui.preference.Tibero2CUBRIDTypeMapPage"
+            id="com.cubrid.cubridmigration.ui.preference.Tibero2CUBRIDTypeMapPage"
+            name="Oracle&gt;&gt;CUBRID">
+      </page>
+      <page
+            category="com.cubrid.cubridmigration.ui.preference.MigrationConfigPage"
             class="com.cubrid.cubridmigration.ui.preference.SQLServer2CUBRIDTypeMapPage"
             id="com.cubrid.cubridmigration.ui.preference.SQLServer2CUBRIDTypeMapPage"
             name="MSSQL&gt;&gt;CUBRID">

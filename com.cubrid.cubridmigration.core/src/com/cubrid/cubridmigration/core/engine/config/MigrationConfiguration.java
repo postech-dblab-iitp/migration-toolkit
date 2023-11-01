@@ -110,6 +110,7 @@ public class MigrationConfiguration {
 	public static final int SOURCE_TYPE_ORACLE = DatabaseType.ORACLE.getID();
 	public static final int SOURCE_TYPE_MSSQL = DatabaseType.MSSQL.getID();
 	public static final int SOURCE_TYPE_GRAPH = DatabaseType.GRAPH.getID();
+	public static final int SOURCE_TYPE_TIBERO= DatabaseType.TIBERO.getID();
 
 	public static final int SOURCE_TYPE_XML_1 = 101;
 	public static final int SOURCE_TYPE_SQL = 102;
@@ -595,7 +596,7 @@ public class MigrationConfiguration {
 		String catalogName;
 		String defSchemaName;
 		DatabaseType databaseType = sourceConParams.getDatabaseType();
-		if (DatabaseType.ORACLE == databaseType) {
+		if (DatabaseType.ORACLE == databaseType || DatabaseType.TIBERO == databaseType) {
 			//If DB name is SID/schemaName pattern
 			if (dbName.startsWith("/")) {
 				dbName = dbName.substring(1, dbName.length());
@@ -3468,7 +3469,7 @@ public class MigrationConfiguration {
 	public boolean sourceIsOnline() {
 		return (sourceType == SOURCE_TYPE_CUBRID) || (sourceType == SOURCE_TYPE_MYSQL)
 				|| (sourceType == SOURCE_TYPE_ORACLE) || (sourceType == SOURCE_TYPE_MSSQL)
-				|| (sourceType == SOURCE_TYPE_GRAPH);
+				|| (sourceType == SOURCE_TYPE_GRAPH || sourceType == SOURCE_TYPE_TIBERO);
 	}
 
 	/**

@@ -2,11 +2,4 @@ testd
 .metadata
 bin
 .classpath
-com.cubrid.cubridmigration.build/eclipse_for_build/
-com.cubrid.cubridmigration.build/eclipse_for_build/eclipse/
-com.cubrid.cubridmigration.build/cmt-build-3rdparty-libs.tgz
-com.cubrid.cubridmigration.build/lib/
-com.cubrid.cubridmigration.build/plugin_build/
-com.cubrid.cubridmigration.build/plugin_deploy/
-com.cubrid.cubridmigration.build/java/
-cubridmigration-deploy/
+com.cubrid.common.update/.settings/

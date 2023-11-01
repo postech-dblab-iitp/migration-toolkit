@@ -76,6 +76,7 @@ public class GraphSelectSrcTarTypesView {
 	//private Button btnXLSTar;
 
 	private Button btnOnlineCUBRIDSrc;
+	private Button btnOnlineTiberoSrc;
 	private Button btnOnlineGraphSrc;
 	//private Button btnOnlineOracleSrc;
 	//private Button btnOnlineMYSQLSrc;
@@ -110,6 +111,21 @@ public class GraphSelectSrcTarTypesView {
 				Button sourceBtn = (Button) e.getSource();
 				if (sourceBtn.getSelection()) {
 					selectCUBRIDSrc();
+				}
+			}
+		});
+		
+		btnOnlineTiberoSrc = createSrcTarTypeBtn(grpSrc, Messages.btnSrcOnlineTiberoDB,
+				Messages.btnSrcOnlineTiberoDBDes);
+		btnOnlineTiberoSrc.setData(MigrationConfiguration.SOURCE_TYPE_TIBERO);
+		srcButtons.add(btnOnlineTiberoSrc);
+		
+		btnOnlineTiberoSrc.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e){
+				Button sourceBtn = (Button) e.getSource();
+				if (sourceBtn.getSelection()) {
+					selectTIBEROSrc();
 				}
 			}
 		});
@@ -328,6 +344,11 @@ public class GraphSelectSrcTarTypesView {
 	}
 	
 	private void selectCUBRIDSrc() {
+		btnOnlineGraph.setEnabled(true);
+		btnDumpTar.setEnabled(true);
+	}
+	
+	private void selectTIBEROSrc() {
 		btnOnlineGraph.setEnabled(true);
 		btnDumpTar.setEnabled(true);
 	}

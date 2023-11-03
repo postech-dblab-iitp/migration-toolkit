@@ -75,6 +75,7 @@ import com.cubrid.cubridmigration.core.dbobject.Version;
 import com.cubrid.cubridmigration.core.dbobject.View;
 import com.cubrid.cubridmigration.core.dbtype.DatabaseType;
 import com.cubrid.cubridmigration.core.export.DBExportHelper;
+import com.cubrid.cubridmigration.graph.GraphDataTypeHelper;
 import com.cubrid.cubridmigration.tibero.TiberoDataTypeHelper;
 
 public final class TiberoSchemaFetcher extends
@@ -142,7 +143,8 @@ public final class TiberoSchemaFetcher extends
 	private static final String SQL_SHOW_VIEW_QUERYTEXT = "SELECT TEXT from ALL_VIEWS WHERE OWNER=? AND VIEW_NAME=?";
 
 	//private static final String SHOW_SEQUENCE_MAXVAL = "SELECT ?.CURRVAL  FROM DUAL";
-
+	private GraphDataTypeHelper graphDTHelper = GraphDataTypeHelper.getInstance(null);
+	
 	public TiberoSchemaFetcher() {
 		factory = new DBObjectFactory() {
 
@@ -455,6 +457,17 @@ public final class TiberoSchemaFetcher extends
 					column.setShownDataType(shownDataType);
 
 					table.addColumn(column);
+					
+					//Temp Requires redefinition of mutable type.
+					String colDataType = column.getDataType().toLowerCase();
+					if (colDataType.equals("number")) {
+						if (column.getScale() > 0) {
+							colDataType = "number_variable";
+						}
+					}
+					
+					column.setGraphDataType(graphDTHelper.getGraphDataType(colDataType));
+					column.setSupportGraphDataType(graphDTHelper.SupportDataType(colDataType));
 				} catch (Exception ex) {
 					LOG.error("Read table column information error:" + table.getName(), ex);
 				}

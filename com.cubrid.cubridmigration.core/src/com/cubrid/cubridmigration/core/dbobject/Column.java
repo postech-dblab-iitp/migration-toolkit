@@ -421,7 +421,11 @@ public class Column extends
 	}
 	
 	public void setGraphDataType(String type) {
-	    this.graphDataType = type;
+		if (type == null) {
+			this.graphDataType = "string";	
+		} else {
+			this.graphDataType = type;
+		}
 	}
 	
 	public String getGraphDataType() {

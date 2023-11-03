@@ -74,9 +74,11 @@ public final class GraphDataTypeHelper extends
 		//numeric
 		CUBRID_GRAPH_DATATYPE.put("numeric", "integer");
 		//float
-		CUBRID_GRAPH_DATATYPE.put("float", "float");
+		//CUBRID_GRAPH_DATATYPE.put("float", "float");
+		CUBRID_GRAPH_DATATYPE.put("float", "string");
 		//double
-		CUBRID_GRAPH_DATATYPE.put("double", "double");
+		//CUBRID_GRAPH_DATATYPE.put("double", "double");
+		CUBRID_GRAPH_DATATYPE.put("double", "string");
 		//monetary
 		CUBRID_GRAPH_DATATYPE.put("monetary", "string");
 		//char
@@ -90,7 +92,8 @@ public final class GraphDataTypeHelper extends
 		//timestamp
 		CUBRID_GRAPH_DATATYPE.put("timestamp", "string");
 		//datetime
-		CUBRID_GRAPH_DATATYPE.put("datetime", "datetime");
+		//CUBRID_GRAPH_DATATYPE.put("datetime", "datetime");
+		CUBRID_GRAPH_DATATYPE.put("datetime", "string");
 		//bit
 		CUBRID_GRAPH_DATATYPE.put("bit", NOT_SUPPORT);
 		//varbit
@@ -111,10 +114,18 @@ public final class GraphDataTypeHelper extends
 		CUBRID_GRAPH_DATATYPE.put("blob", NOT_SUPPORT);
 		//enum
 		CUBRID_GRAPH_DATATYPE.put("enum", NOT_SUPPORT);
+		
+		CUBRID_GRAPH_DATATYPE.put("number", "integer");
+		
+		CUBRID_GRAPH_DATATYPE.put("number_variable", "string");
 	}
 	
 	public String getGraphDataType(String type) {
-		return CUBRID_GRAPH_DATATYPE.get(type);
+		String ret = CUBRID_GRAPH_DATATYPE.get(type.toLowerCase());
+		if(ret == null) {
+			return NOT_SUPPORT;
+		}
+		return ret;
 	}
 	
 	public boolean SupportDataType(String type) {

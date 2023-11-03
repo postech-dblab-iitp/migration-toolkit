@@ -401,7 +401,6 @@ public class JDBCExporter extends
 		}
 		
 		if (sTable == null) {
-			System.out.println("sTable is null");
 			return true;
 		}
 		
@@ -492,14 +491,14 @@ public class JDBCExporter extends
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("[IN]exportGraphVertexRecords()");
 		}
-		Table sTable = config.getSrcTableSchema(e.getOwner(), e.getEdgeLabel());
+		Table sTable = config.getSrcTableSchemaForEdge(e.getOwner(), e.getEdgeLabel());
 		Connection conn = connManager.getSourceConnection(); //NOPMD
 		
 		long countOfRecords = graphFkEdgeCountSQL(conn, e);
 		
 		try {
 			final DBExportHelper expHelper = getSrcDBExportHelper();
-			CUBRIDExportHelper graphExHelper = (CUBRIDExportHelper) expHelper;
+			DBExportHelper graphExHelper = expHelper;
 //			PK pk = graphExHelper.supportFastSearchWithPK(conn) ? srcPK : null;
 			newRecordProcessor.startExportTable(e.getEdgeLabel());
 			List<Record> records = new ArrayList<Record>();
@@ -542,7 +541,9 @@ public class JDBCExporter extends
 	protected long graphFkEdgeCountSQL(Connection conn, Edge e) {		
 		Map<String, String> fkMapping = e.getfkCol2RefMapping();
 		
-		String sql = editFkRecordCounterSql(e, fkMapping);
+		String sql;
+		
+		sql= editFkRecordCounterSql(e, fkMapping);
 		
 		JDBCObjContainer joc = new JDBCObjContainer();
 		joc.setConn(conn);
@@ -586,23 +587,19 @@ public class JDBCExporter extends
 		StringBuffer buffer = new StringBuffer();
 		buffer.append("SELECT COUNT(1) FROM ");
 		
-		buffer.append("(SELECT ROWNUM as \"START_ID\", ");
+		buffer.append("(SELECT ");
 		buffer.append(fkCol);
 		buffer.append(" FROM ");
 		buffer.append(e.getStartVertexName());
-		buffer.append(" order by ");
-		buffer.append(fkCol);
-		buffer.append(" for orderby_num()) as ");
+		buffer.append(" ) as ");
 		buffer.append(startVertexName);
 		buffer.append(", ");
 		
-		buffer.append("(SELECT ROWNUM as \"END_ID\", ");
+		buffer.append("(SELECT ");
 		buffer.append(refCol);
 		buffer.append(" FROM ");
 		buffer.append(e.getEndVertexName());
-		buffer.append(" order by ");
-		buffer.append(refCol);
-		buffer.append(" for orderby_num()) as ");
+		buffer.append(" ) as ");
 		buffer.append(endVertexName);
 		
 		buffer.append(" where ");
@@ -612,7 +609,6 @@ public class JDBCExporter extends
 		
 		return buffer.toString();
 	}
-	
 	
 	protected void exportGraphJoinEdgeRecords(Edge e, RecordExportedListener newRecordProcessor) { 
 		if (LOG.isDebugEnabled()) {

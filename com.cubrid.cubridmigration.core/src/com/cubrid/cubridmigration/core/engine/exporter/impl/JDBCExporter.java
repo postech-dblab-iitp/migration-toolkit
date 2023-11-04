@@ -59,6 +59,8 @@ import com.cubrid.cubridmigration.core.export.DBExportHelper;
 import com.cubrid.cubridmigration.cubrid.export.CUBRIDExportHelper;
 import com.cubrid.cubridmigration.graph.dbobj.Edge;
 import com.cubrid.cubridmigration.graph.dbobj.Vertex;
+import com.cubrid.cubridmigration.oracle.export.OracleExportHelper;
+import com.cubrid.cubridmigration.tibero.export.TiberoExportHelper;
 
 /**
  * 
@@ -409,6 +411,24 @@ public class JDBCExporter extends
 				|| recordCountOfCurrentPage < config.getPageFetchCount()
 				|| (!config.isImplicitEstimate() && exportedRecords >= sTable.getTableRowCount());
 	}
+	
+	protected boolean isGraphLatestPage(Table sTable, long exportedRecords, long recordCountOfCurrentPage) {
+		int sourceDBTypeID = config.getSourceDBType().getID();
+		if (config.isImplicitEstimate()
+		        && (sourceDBTypeID == DatabaseType.ORACLE.getID()
+		        ||  sourceDBTypeID == DatabaseType.MYSQL.getID() || sourceDBTypeID == DatabaseType.TIBERO.getID())) {
+			return true;
+		}
+		
+		if (sTable == null) {
+			System.out.println("sTable is null");
+			return true;
+		}
+		
+		return recordCountOfCurrentPage == 0
+				|| recordCountOfCurrentPage < config.getPageFetchCount()
+				|| (!config.isImplicitEstimate() && exportedRecords >= sTable.getTableRowCount());
+	}
 
 	public void exportGraphVertexRecords(Vertex v, RecordExportedListener newRecordProcessor) {
 		if (LOG.isDebugEnabled()) {
@@ -422,7 +442,7 @@ public class JDBCExporter extends
 		Connection conn = connManager.getSourceConnection(); //NOPMD
 		try {
 			final DBExportHelper expHelper = getSrcDBExportHelper();
-			DBExportHelper graphExHelper = expHelper;
+			DBExportHelper graphExHelper =  getExportHelperType(expHelper);
 			PK pk = graphExHelper.supportFastSearchWithPK(conn) ? srcPK : null;
 			newRecordProcessor.startExportTable(v.getVertexLabel());
 			List<Record> records = new ArrayList<Record>();
@@ -499,7 +519,7 @@ public class JDBCExporter extends
 		
 		try {
 			final DBExportHelper expHelper = getSrcDBExportHelper();
-			CUBRIDExportHelper graphExHelper = (CUBRIDExportHelper) expHelper;
+			DBExportHelper graphExHelper =  getExportHelperType(expHelper);
 //			PK pk = graphExHelper.supportFastSearchWithPK(conn) ? srcPK : null;
 			newRecordProcessor.startExportTable(e.getEdgeLabel());
 			List<Record> records = new ArrayList<Record>();
@@ -542,7 +562,11 @@ public class JDBCExporter extends
 	protected long graphFkEdgeCountSQL(Connection conn, Edge e) {		
 		Map<String, String> fkMapping = e.getfkCol2RefMapping();
 		
-		String sql = editFkRecordCounterSql(e, fkMapping);
+		DBExportHelper expHelper = getSrcDBExportHelper();
+		
+//		String sql = editFkRecordCounterSql(e, fkMapping);
+		
+		String sql = expHelper.getFkRecordCounterSql(e, fkMapping);
 		
 		JDBCObjContainer joc = new JDBCObjContainer();
 		joc.setConn(conn);
@@ -566,54 +590,6 @@ public class JDBCExporter extends
 		return totalExported;
 	}
 	
-	private String editFkRecordCounterSql(Edge e, Map<String, String> fkMapping) {
-		List<String> keySet = e.getFKColumnNames();
-		
-		String startVertexName;
-		String endVertexName;
-		
-		if (e.getStartVertexName().equals(e.getEndVertexName())) {
-			startVertexName = e.getStartVertexName() + "_1";
-			endVertexName = e.getEndVertexName() + "_2";
-		} else {
-			startVertexName = e.getStartVertexName();
-			endVertexName = e.getEndVertexName();
-		}
-		
-		String fkCol = keySet.get(0);
-		String refCol = fkMapping.get(keySet.get(0));
-		
-		StringBuffer buffer = new StringBuffer();
-		buffer.append("SELECT COUNT(1) FROM ");
-		
-		buffer.append("(SELECT ROWNUM as \"START_ID\", ");
-		buffer.append(fkCol);
-		buffer.append(" FROM ");
-		buffer.append(e.getStartVertexName());
-		buffer.append(" order by ");
-		buffer.append(fkCol);
-		buffer.append(" for orderby_num()) as ");
-		buffer.append(startVertexName);
-		buffer.append(", ");
-		
-		buffer.append("(SELECT ROWNUM as \"END_ID\", ");
-		buffer.append(refCol);
-		buffer.append(" FROM ");
-		buffer.append(e.getEndVertexName());
-		buffer.append(" order by ");
-		buffer.append(refCol);
-		buffer.append(" for orderby_num()) as ");
-		buffer.append(endVertexName);
-		
-		buffer.append(" where ");
-		buffer.append(startVertexName + "." + fkCol);
-		buffer.append(" = ");
-		buffer.append(endVertexName + "." + refCol);
-		
-		return buffer.toString();
-	}
-	
-	
 	protected void exportGraphJoinEdgeRecords(Edge e, RecordExportedListener newRecordProcessor) { 
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("[IN]exportGraphVertexRecords()");
@@ -626,7 +602,7 @@ public class JDBCExporter extends
 		Connection conn = connManager.getSourceConnection(); //NOPMD
 		try {
 			final DBExportHelper expHelper = getSrcDBExportHelper();
-			DBExportHelper graphExHelper = expHelper;
+			DBExportHelper graphExHelper = getExportHelperType(expHelper);
 			PK pk = graphExHelper.supportFastSearchWithPK(conn) ? srcPK : null;
 			newRecordProcessor.startExportTable(e.getEdgeLabel());
 			List<Record> records = new ArrayList<Record>();
@@ -885,6 +861,18 @@ public class JDBCExporter extends
 			newRecordProcessor.processRecords(tableName, records);
 			// After records processed, clear it.
 			records.clear();
+		}
+	}
+	
+	private DBExportHelper getExportHelperType(DBExportHelper exportHelper) {
+		if (exportHelper instanceof CUBRIDExportHelper) {
+			return (CUBRIDExportHelper) exportHelper;
+		} else if (exportHelper instanceof OracleExportHelper) {
+			return (OracleExportHelper) exportHelper;
+		} else if (exportHelper instanceof TiberoExportHelper) {
+			return (TiberoExportHelper) exportHelper;
+		} else {
+			return (CUBRIDExportHelper) exportHelper;
 		}
 	}
 }

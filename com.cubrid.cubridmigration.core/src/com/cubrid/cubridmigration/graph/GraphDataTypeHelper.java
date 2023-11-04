@@ -45,7 +45,7 @@ public final class GraphDataTypeHelper extends
 	private static final Logger LOG = LogUtil.getLogger(GraphDataTypeHelper.class);
 
 	private static final String NOT_SUPPORT = "not support";
-	private static final Map<String, String> CUBRID_GRAPH_DATATYPE = new HashMap<String, String>();
+	private static final Map<String, String> GRAPH_DATATYPE = new HashMap<String, String>();
 
 	private static final GraphDataTypeHelper HELPER = new GraphDataTypeHelper();
 	//init all cubrid datatype
@@ -66,59 +66,67 @@ public final class GraphDataTypeHelper extends
 	//if necessary, change to DataTypeSymbol
 	private static void initCUBRIDGRAPHDataTypes() {
 		//small int
-		CUBRID_GRAPH_DATATYPE.put("short", "integer");
+		GRAPH_DATATYPE.put("short", "integer");
 		//int
-		CUBRID_GRAPH_DATATYPE.put("int", "integer");
+		GRAPH_DATATYPE.put("int", "integer");
 		//bigint
-		CUBRID_GRAPH_DATATYPE.put("bigint", "integer");
+		GRAPH_DATATYPE.put("bigint", "integer");
 		//numeric
-		CUBRID_GRAPH_DATATYPE.put("numeric", "integer");
+		GRAPH_DATATYPE.put("numeric", "string");
 		//float
-		CUBRID_GRAPH_DATATYPE.put("float", "float");
+		GRAPH_DATATYPE.put("float", "float");
 		//double
-		CUBRID_GRAPH_DATATYPE.put("double", "double");
+		GRAPH_DATATYPE.put("double", "double");
 		//monetary
-		CUBRID_GRAPH_DATATYPE.put("monetary", "string");
+		GRAPH_DATATYPE.put("monetary", "string");
 		//char
-		CUBRID_GRAPH_DATATYPE.put("char", "string");
+		GRAPH_DATATYPE.put("char", "string");
 		//varchar
-		CUBRID_GRAPH_DATATYPE.put("varchar", "string");
+		GRAPH_DATATYPE.put("varchar", "string");
 		//time
-		CUBRID_GRAPH_DATATYPE.put("time", "string");
+		GRAPH_DATATYPE.put("time", "string");
 		//date
-		CUBRID_GRAPH_DATATYPE.put("date", "date");
+		GRAPH_DATATYPE.put("date", "date");
 		//timestamp
-		CUBRID_GRAPH_DATATYPE.put("timestamp", "string");
+		GRAPH_DATATYPE.put("timestamp", "string");
 		//datetime
-		CUBRID_GRAPH_DATATYPE.put("datetime", "datetime");
+		GRAPH_DATATYPE.put("datetime", "string");
 		//bit
-		CUBRID_GRAPH_DATATYPE.put("bit", NOT_SUPPORT);
+		GRAPH_DATATYPE.put("bit", NOT_SUPPORT);
 		//varbit
-		CUBRID_GRAPH_DATATYPE.put("varbit", NOT_SUPPORT);
+		GRAPH_DATATYPE.put("varbit", NOT_SUPPORT);
 		//set
-		CUBRID_GRAPH_DATATYPE.put("set",NOT_SUPPORT);
+		GRAPH_DATATYPE.put("set",NOT_SUPPORT);
 		//multiset
-		CUBRID_GRAPH_DATATYPE.put("multiset", NOT_SUPPORT);
+		GRAPH_DATATYPE.put("multiset", NOT_SUPPORT);
 		//sequence
-		CUBRID_GRAPH_DATATYPE.put("sequence", NOT_SUPPORT);
+		GRAPH_DATATYPE.put("sequence", NOT_SUPPORT);
 		//glo
-		CUBRID_GRAPH_DATATYPE.put("glo", NOT_SUPPORT);
+		GRAPH_DATATYPE.put("glo", NOT_SUPPORT);
 		//object
-		CUBRID_GRAPH_DATATYPE.put("object", NOT_SUPPORT);
+		GRAPH_DATATYPE.put("object", NOT_SUPPORT);
 		//clob
-		CUBRID_GRAPH_DATATYPE.put("clob", NOT_SUPPORT);
+		GRAPH_DATATYPE.put("clob", NOT_SUPPORT);
 		//blob
-		CUBRID_GRAPH_DATATYPE.put("blob", NOT_SUPPORT);
+		GRAPH_DATATYPE.put("blob", NOT_SUPPORT);
 		//enum
-		CUBRID_GRAPH_DATATYPE.put("enum", NOT_SUPPORT);
+		GRAPH_DATATYPE.put("enum", NOT_SUPPORT);
+		
+		
+		//oracle type integer
+		GRAPH_DATATYPE.put("integer", "integer");
+		//oracle type integer
+		GRAPH_DATATYPE.put("number", "float");
+		//oracle type varchar2
+		GRAPH_DATATYPE.put("varchar2", "string");
 	}
 	
 	public String getGraphDataType(String type) {
-		return CUBRID_GRAPH_DATATYPE.get(type);
+		return GRAPH_DATATYPE.get(type.toLowerCase());
 	}
 	
 	public boolean SupportDataType(String type) {
-		if (CUBRID_GRAPH_DATATYPE.get(type).equals(NOT_SUPPORT)){
+		if (GRAPH_DATATYPE.get(type).equals(NOT_SUPPORT)){
 			return false;
 		}
 		return true;

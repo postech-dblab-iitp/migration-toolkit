@@ -35,6 +35,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.lang.StringUtils;
 
 import com.cubrid.cubridmigration.core.common.Closer;
 import com.cubrid.cubridmigration.core.connection.ConnParameters;
@@ -46,6 +50,8 @@ import com.cubrid.cubridmigration.core.export.DBExportHelper;
 import com.cubrid.cubridmigration.core.export.IExportDataHandler;
 import com.cubrid.cubridmigration.core.export.handler.CharTypeHandler;
 import com.cubrid.cubridmigration.core.export.handler.TimestampTypeHandler;
+import com.cubrid.cubridmigration.graph.dbobj.Edge;
+import com.cubrid.cubridmigration.graph.dbobj.Vertex;
 import com.cubrid.cubridmigration.oracle.OracleDataTypeHelper;
 import com.cubrid.cubridmigration.oracle.export.handler.OracleBFileTypeHandler;
 import com.cubrid.cubridmigration.oracle.export.handler.OracleIntervalDSTypeHandler;
@@ -199,5 +205,105 @@ public class OracleExportHelper extends
 			Closer.close(conn);
 		}
 		return null;
+	}
+
+	@Override
+	public String getGraphSelectSQL(Vertex v, boolean targetIsCSV) {
+		StringBuffer buf = new StringBuffer(256);
+		buf.append("SELECT ");
+
+		final List<Column> columnList = v.getColumnList();
+		for (int i = 0; i < columnList.size(); i++) {
+			if (i > 0) {
+				buf.append(',');
+			}
+			buf.append(getQuotedObjName(columnList.get(i).getName()));
+		}
+		buf.append(" FROM ");
+		// it will make a query with a schema and table name 
+		// if it required a schema name when there create sql such as SCOTT.EMP
+		addGraphSchemaPrefix(v, buf);
+		buf.append(getQuotedObjName(v.getTableName()));
+
+//		String condition = setc.getCondition();
+//		if (StringUtils.isNotBlank(condition)) {
+//			condition = condition.trim();
+//			if (!condition.toLowerCase(Locale.US).startsWith("where")) {
+//				buf.append(" WHERE ");
+//			}
+//			if (condition.trim().endsWith(";")) {
+//				condition = condition.substring(0, condition.length() - 1);
+//			}
+//			buf.append(" ").append(condition);
+//		}
+		return buf.toString();
+	}
+
+	public String getGraphSelectSQL(Edge e) {
+		StringBuffer buf = new StringBuffer(256);
+		buf.append("SELECT ");
+		final List<Column> columnList = e.getColumnList();
+		for (int i = 0; i < columnList.size(); i++) {
+			if (i > 0) {
+				buf.append(',');
+			}
+			buf.append(getQuotedObjName(columnList.get(i).getName()));
+		}
+		buf.append(" FROM ");
+		// it will make a query with a schema and table name 
+		// if it required a schema name when there create sql such as SCOTT.EMP
+		addGraphSchemaPrefix(e, buf);
+		buf.append(getQuotedObjName(e.getEdgeLabel()));
+
+//		String condition = setc.getCondition();
+//		if (StringUtils.isNotBlank(condition)) {
+//			condition = condition.trim();
+//			if (!condition.toLowerCase(Locale.US).startsWith("where")) {
+//				buf.append(" WHERE ");
+//			}
+//			if (condition.trim().endsWith(";")) {
+//				condition = condition.substring(0, condition.length() - 1);
+//			}
+//			buf.append(" ").append(condition);
+//		}
+		return buf.toString();
+		
+	}
+	
+	@Override
+	public String getPagedSelectSQL(Vertex v, String sql, long realPageCount,
+			long totalExported, PK pk) {
+		// TODO 
+		return sql;
+	}
+	
+	@Override
+	public String getPagedSelectSQL(Edge e, String sql, long realPageCount,
+			long totalExported, PK pk) {
+		// TODO Auto-generated method stub
+		return sql;
+	}
+	
+	@Override
+	public String getGraphSelectSQL(Edge e, boolean targetIsCSV) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	public String getFkRecordCounterSql(Edge e, Map<String, String> fkMapping) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	protected void addGraphSchemaPrefix(Vertex v, StringBuffer buf) {
+		if (StringUtils.isNotBlank(v.getOwner())) {
+			buf.append(getQuotedObjName(v.getOwner())).append(".");
+		}
+	}
+	
+	protected void addGraphSchemaPrefix(Edge e, StringBuffer buf) {
+		if (StringUtils.isNotBlank(e.getOwner())) {
+			buf.append(getQuotedObjName(e.getOwner())).append(".");
+		}
 	}
 }

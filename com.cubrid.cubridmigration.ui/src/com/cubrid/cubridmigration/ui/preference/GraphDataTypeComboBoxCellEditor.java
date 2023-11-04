@@ -37,36 +37,29 @@ public class GraphDataTypeComboBoxCellEditor extends ComboBoxCellEditor {
 			types.add(type);
 			
 			return types;
-		} else { 
+		} else if (type.equals("integer")) {
+			types.add("integer");
+			types.add("string");
+			
+			return types;
+			
+		} else if (type.equals("date")) {
+			types.add("date");
+			types.add("string");
+			
+			return types;
+			
+		} else if (type.equals("datetime")) {
+			types.add("datetime");
+			types.add("string");
+			
+			return types;
+			
+		} else {
 			types.add(type);
 			types.add("string");
 			
 			return types;
 		}
-		
-//		else if (type.equals("integer")) {
-//			types.add("integer");
-//			types.add("string");
-//			
-//			return types;
-//			
-//		} else if (type.equals("date")) {
-//			types.add("date");
-//			types.add("string");
-//			
-//			return types;
-//			
-//		} else if (type.equals("datetime")) {
-//			types.add("datetime");
-//			types.add("string");
-//			
-//			return types;
-//			
-//		} else {
-//			types.add(type);
-//			types.add("string");
-//			
-//			return types;
-//		}
 	}
 }

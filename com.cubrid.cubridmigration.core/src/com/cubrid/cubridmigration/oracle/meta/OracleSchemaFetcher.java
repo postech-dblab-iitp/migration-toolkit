@@ -74,6 +74,7 @@ import com.cubrid.cubridmigration.core.dbobject.Version;
 import com.cubrid.cubridmigration.core.dbobject.View;
 import com.cubrid.cubridmigration.core.dbtype.DatabaseType;
 import com.cubrid.cubridmigration.core.export.DBExportHelper;
+import com.cubrid.cubridmigration.graph.GraphDataTypeHelper;
 import com.cubrid.cubridmigration.oracle.OracleDataTypeHelper;
 
 /**
@@ -93,6 +94,8 @@ public final class OracleSchemaFetcher extends
 
 	private final static Logger LOG = LogUtil.getLogger(OracleSchemaFetcher.class);
 
+	private GraphDataTypeHelper graphDTHelper = GraphDataTypeHelper.getInstance(null);
+	
 	private static final String OBJECT_TYPE_FUNCTION = "FUNCTION";
 	private static final String OBJECT_TYPE_PROCEDURE = "PROCEDURE";
 	private static final String OBJECT_TYPE_SEQUENCE = "SEQUENCE";
@@ -164,6 +167,61 @@ public final class OracleSchemaFetcher extends
 	 * @return Catalog
 	 * @throws SQLException e
 	 */
+	
+	protected void buildTables(final Connection conn, final Catalog catalog, final Schema schema,
+			IBuildSchemaFilter filter) throws SQLException {
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("[IN]buildTables()");
+		}
+		List<String> tableNameList = getAllTableNames(conn, catalog, schema);
+		for (String tableName : tableNameList) {
+			Table table = null;
+			try {
+				if (LOG.isDebugEnabled()) {
+					LOG.debug("[VAR]tableName=" + tableName);
+				}
+				//If names format like xxx.xxx means schema name prefixed
+				String tableOwnerName = null;
+				String tablePureName = null;
+				if (tableName != null && tableName.indexOf(".") != -1) {
+					String[] arr = tableName.split("\\.");
+					tableOwnerName = arr[0];
+					tablePureName = arr[1];
+				} else {
+					tableOwnerName = null;
+					tablePureName = tableName;
+				}
+				if (filter != null && filter.filter(schema.getName(), tablePureName)) {
+					if (LOG.isDebugEnabled()) {
+						LOG.debug("[VAR]tableName=" + tableName + ", skipped object");
+					}
+					continue;
+				}
+				table = factory.createTable();
+				table.setOwner(tableOwnerName);
+				table.setName(tablePureName);
+				if (LOG.isDebugEnabled()) {
+					LOG.debug("[VAR]tableName=" + table.getName() + ", owner=" + table.getOwner());
+				}
+				table.setSchema(schema);
+
+				buildTableColumns(conn, catalog, schema, table);
+				buildTablePK(conn, catalog, schema, table);
+				buildTableFKs(conn, catalog, schema, table);
+				buildTableIndexes(conn, catalog, schema, table);
+				
+				setImportedKeysCount(conn, catalog, schema, table);
+				setExportedKeysCount(conn, catalog, schema, table);
+
+			} catch (Exception ex) {
+				LOG.error("", ex);
+			}
+			if (table != null) {
+				schema.addTable(table);
+			}
+		}
+	}
+	
 	public Catalog buildCatalog(final Connection conn, ConnParameters cp, IBuildSchemaFilter filter) throws SQLException {
 		final Catalog catalog = super.buildCatalog(conn, cp, filter);
 		catalog.setDatabaseType(DatabaseType.ORACLE);
@@ -456,6 +514,8 @@ public final class OracleSchemaFetcher extends
 					String shownDataType = dtHelper.getShownDataType(column);
 					column.setShownDataType(shownDataType);
 
+					column.setGraphDataType(graphDTHelper.getGraphDataType(column.getDataType()));
+					
 					table.addColumn(column);
 				} catch (Exception ex) {
 					LOG.error("Read table column information error:" + table.getName(), ex);
@@ -1408,6 +1468,59 @@ public final class OracleSchemaFetcher extends
 	public DatabaseType getDBType() {
 		return DatabaseType.ORACLE;
 	}
+	
+	/**
+	 * setImportedKeysCount
+	 *
+	 * @param conn
+	 * @param catalog
+	 * @param schema
+	 * @param table
+	 * @throws SQLException
+	 */
+	protected void setImportedKeysCount(final Connection conn, final Catalog catalog, final Schema schema,
+			Table table) throws SQLException {
+
+		int importedKeysCount = 0;
+
+		ResultSet rs = null;
+		try {
+			rs = conn.getMetaData().getImportedKeys(getCatalogName(catalog), getSchemaName(schema), table.getName());
+			while (rs.next()) {
+				importedKeysCount++;
+			}
+			table.setImportedKeysCount(importedKeysCount);
+		} finally {
+			Closer.close(rs);
+		}
+	}
+
+	/**
+	 * setExportedKeysCount
+	 *
+	 * @param conn
+	 * @param catalog
+	 * @param schema
+	 * @param table
+	 * @throws SQLException
+	 */
+	protected void setExportedKeysCount(final Connection conn, final Catalog catalog, final Schema schema,
+			Table table) throws SQLException {
+
+		int exportedKeysCount = 0;
+
+		ResultSet rs = null;
+		try {
+			rs = conn.getMetaData().getExportedKeys(getCatalogName(catalog), getSchemaName(schema), table.getName());
+			while (rs.next()) {
+				exportedKeysCount++;
+			}
+			table.setExportedKeysCount(exportedKeysCount);
+		} finally {
+			Closer.close(rs);
+		}
+	}
+	
 	//	protected void buildAllSchemas(Connection conn, Catalog catalog, Schema schema, Map<String, Table> tables)
 	//			throws SQLException {
 	//	}

@@ -75,6 +75,8 @@ import com.cubrid.cubridmigration.core.dbobject.Version;
 import com.cubrid.cubridmigration.core.dbobject.View;
 import com.cubrid.cubridmigration.core.dbtype.DatabaseType;
 import com.cubrid.cubridmigration.core.export.DBExportHelper;
+import com.cubrid.cubridmigration.graph.GraphDataTypeHelper;
+import com.cubrid.cubridmigration.graph.trans.GraphDataTypeMappingHelper;
 import com.cubrid.cubridmigration.tibero.TiberoDataTypeHelper;
 
 public final class TiberoSchemaFetcher extends
@@ -86,6 +88,8 @@ public final class TiberoSchemaFetcher extends
 			"RAW", "LONG RAW" });
 
 	private final static Logger LOG = LogUtil.getLogger(TiberoSchemaFetcher.class);
+	
+	private GraphDataTypeHelper graphDTHelper = GraphDataTypeHelper.getInstance(null);
 
 	private static final String OBJECT_TYPE_FUNCTION = "FUNCTION";
 	private static final String OBJECT_TYPE_PROCEDURE = "PROCEDURE";
@@ -453,6 +457,8 @@ public final class TiberoSchemaFetcher extends
 
 					String shownDataType = dtHelper.getShownDataType(column);
 					column.setShownDataType(shownDataType);
+					
+					column.setGraphDataType(graphDTHelper.getGraphDataType(column.getDataType()));
 
 					table.addColumn(column);
 				} catch (Exception ex) {

@@ -143,6 +143,15 @@ public class Schema implements
 		}
 		return null;
 	}
+	
+	public Table getTableByFKName(String FKName) {
+		for (Table tbl : tables) {
+			if (tbl.getFKByName(FKName) != null) {
+				return tbl;
+			}
+		}
+		return null;
+	}
 
 	/**
 	 * getViewByName

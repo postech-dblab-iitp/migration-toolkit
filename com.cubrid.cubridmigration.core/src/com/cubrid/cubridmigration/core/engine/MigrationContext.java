@@ -38,6 +38,7 @@ import com.cubrid.cubridmigration.core.engine.executors.ImmediateExecutor;
 import com.cubrid.cubridmigration.core.engine.executors.MultiQueueExecutor;
 import com.cubrid.cubridmigration.core.engine.executors.SingleQueueExecutor;
 import com.cubrid.cubridmigration.cubrid.stmt.CUBRIDParameterSetter;
+import com.cubrid.cubridmigration.graph.stmt.GraphParameterSetter;
 
 /**
  * MigrationResourceManager responses to manage the resources used by migration
@@ -61,6 +62,7 @@ public class MigrationContext {
 	private IRunnableExecutor exportRecExe;
 	private IRunnableExecutor importRecordExecutor;
 	private CUBRIDParameterSetter paramSetter;
+	private GraphParameterSetter graphParamSetter;
 	private JDBCConManager connManager;
 	private MigrationStatusManager statusMgr;
 	private MigrationDirAndFilesManager dirAndFilesMgr;
@@ -83,6 +85,7 @@ public class MigrationContext {
 		final MigrationContext context = new MigrationContext(config, eventsHandler);
 
 		context.setParamSetter(new CUBRIDParameterSetter(config));
+		context.setParamSetter(new GraphParameterSetter(config));
 
 		context.setConnManager(new JDBCConManager(config));
 
@@ -176,6 +179,10 @@ public class MigrationContext {
 	public CUBRIDParameterSetter getParamSetter() {
 		return paramSetter;
 	}
+	
+	public GraphParameterSetter getGraphParamSetter() {
+		return graphParamSetter;
+	}
 
 	public MigrationStatusManager getStatusMgr() {
 		return statusMgr;
@@ -240,6 +247,10 @@ public class MigrationContext {
 
 	}
 
+	protected void setParamSetter(GraphParameterSetter graphParameterSetter) {
+		this.graphParamSetter = graphParameterSetter;
+	}
+	
 	/**
 	 * Set JDBC connection manager
 	 * 

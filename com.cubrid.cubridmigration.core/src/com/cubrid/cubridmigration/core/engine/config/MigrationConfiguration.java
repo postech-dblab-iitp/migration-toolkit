@@ -131,6 +131,11 @@ public class MigrationConfiguration {
 	private static final String[] DATA_FORMAT_EXT = new String[] { ".txt", ".csv", ".sql", ".xls", "", "" };
 	private static final String[] DATA_FORMAT_LABEL = new String[] { "LoadDB", "CSV", "SQL", "XLS" };
 
+	public static final int GRAPH_SUBTYPE_TURBOGRAPH = 1;
+	public static final int GRAPH_SUBTYPE_NEO4J = 2;
+	
+	public int graphSubTypeForCSV = GRAPH_SUBTYPE_TURBOGRAPH;
+	
 	/**
 	 * Retrieves all fomrat exts
 	 * 
@@ -3669,5 +3674,13 @@ public class MigrationConfiguration {
 	
 	public void setGraphDict(GraphDictionary graphDict){
 		this.graphDict = graphDict;
+	}
+	
+	public void setGraphSubTyteForCSV(int type) {
+		this.graphSubTypeForCSV = type;
+	}
+	
+	public int getGraphSubTyteForCSV() {
+		return this.graphSubTypeForCSV;
 	}
 }

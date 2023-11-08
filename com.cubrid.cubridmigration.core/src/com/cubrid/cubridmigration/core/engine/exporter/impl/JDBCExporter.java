@@ -641,7 +641,7 @@ public class JDBCExporter extends
 				String pagesql;
 				
 				if (config.targetIsCSV()) {
-					pagesql = graphExHelper.getPagedSelectSQL(e, sql, realPageCount, totalExported, pk);
+					pagesql = graphExHelper.getPagedSelectSQLForCSV(e, sql, realPageCount, totalExported, pk);
 				} else {
 					pagesql = graphExHelper.getPagedSelectSQL(sql, realPageCount, totalExported, pk);
 				}

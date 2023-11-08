@@ -103,8 +103,6 @@ public class GraphSelectSrcTarTypesView {
 		btnOnlineCUBRIDSrc = createSrcTarTypeBtn(grpSrc, Messages.btnSrcOnlineCUBRIDDB,
 				Messages.btnSrcOnlineCUBRIDDBDes);
 		btnOnlineCUBRIDSrc.setData(MigrationConfiguration.SOURCE_TYPE_CUBRID);
-		srcButtons.add(btnOnlineCUBRIDSrc);
-		
 		btnOnlineCUBRIDSrc.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e){
@@ -114,26 +112,41 @@ public class GraphSelectSrcTarTypesView {
 				}
 			}
 		});
+		srcButtons.add(btnOnlineCUBRIDSrc);
+		
+//		btnOnlineOracleSrc = createSrcTarTypeBtn(grpSrc, Messages.btnSrcOnlineOracleDB,
+//				Messages.btnSrcOnlineOracleDBDes);
+//		btnOnlineOracleSrc.setData(MigrationConfiguration.SOURCE_TYPE_ORACLE);
+//		btnOnlineOracleSrc.addSelectionListener(new SelectionAdapter() {
+//			@Override
+//			public void widgetSelected(SelectionEvent e) {
+//				// TODO Auto-generated method stub
+//				Button sourceBtn = (Button) e.getSource();
+//				if (sourceBtn.getSelection()) {
+//					selectCUBRIDSrc();
+//				}
+//			}
+//		});
+//		
+//		srcButtons.add(btnOnlineOracleSrc);
 		
 		btnOnlineTiberoSrc = createSrcTarTypeBtn(grpSrc, Messages.btnSrcOnlineTiberoDB,
 				Messages.btnSrcOnlineTiberoDBDes);
 		btnOnlineTiberoSrc.setData(MigrationConfiguration.SOURCE_TYPE_TIBERO);
-		srcButtons.add(btnOnlineTiberoSrc);
-		
 		btnOnlineTiberoSrc.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e){
 				Button sourceBtn = (Button) e.getSource();
 				if (sourceBtn.getSelection()) {
-					selectTIBEROSrc();
+					selectCUBRIDSrc();
 				}
 			}
 		});
+		srcButtons.add(btnOnlineTiberoSrc);
 		
 		btnOnlineGraphSrc = createSrcTarTypeBtn(grpSrc, Messages.btnSrcOnlineGraphDB,
 				Messages.btnSrcOnlineGraphDBDes);
 		btnOnlineGraphSrc.setData(MigrationConfiguration.SOURCE_TYPE_GRAPH);
-		
 		btnOnlineGraphSrc.addSelectionListener(new SelectionListener() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -146,7 +159,6 @@ public class GraphSelectSrcTarTypesView {
 			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {}
 		});
-		
 		srcButtons.add(btnOnlineGraphSrc);
 
 //		btnOnlineMYSQLSrc = createSrcTarTypeBtn(grpSrc, Messages.btnSrcOnlineMySQLDB,
@@ -154,10 +166,6 @@ public class GraphSelectSrcTarTypesView {
 //		btnOnlineMYSQLSrc.setData(MigrationConfiguration.SOURCE_TYPE_MYSQL);
 //		srcButtons.add(btnOnlineMYSQLSrc);
 //
-//		btnOnlineOracleSrc = createSrcTarTypeBtn(grpSrc, Messages.btnSrcOnlineOracleDB,
-//				Messages.btnSrcOnlineOracleDBDes);
-//		btnOnlineOracleSrc.setData(MigrationConfiguration.SOURCE_TYPE_ORACLE);
-//		srcButtons.add(btnOnlineOracleSrc);
 //
 //		btnOnlineMSSQLSrc = createSrcTarTypeBtn(grpSrc, Messages.btnSrcOnlineMSSQLDB,
 //				Messages.btnSrcOnlineMSSQLDBDes);
@@ -346,22 +354,21 @@ public class GraphSelectSrcTarTypesView {
 	private void selectCUBRIDSrc() {
 		btnOnlineGraph.setEnabled(true);
 		btnDumpTar.setEnabled(true);
-	}
-	
-	private void selectTIBEROSrc() {
-		btnOnlineGraph.setEnabled(true);
-		btnDumpTar.setEnabled(true);
+		btnCSVTar.setEnabled(true);
 	}
 	
 	private void selectGraphSrc() {
-		btnOnlineGraph.setEnabled(false);
-		btnOnlineGraph.setSelection(false);
-		
 		btnOnlineTar.setEnabled(true);
 		btnOnlineTar.setSelection(true);
 		
+		btnOnlineGraph.setEnabled(false);
+		btnOnlineGraph.setSelection(false);
+		
 		btnDumpTar.setEnabled(false);
 		btnDumpTar.setSelection(false);
+		
+		btnCSVTar.setEnabled(false);
+		btnCSVTar.setSelection(false);
 		
 	}
 
@@ -398,7 +405,7 @@ public class GraphSelectSrcTarTypesView {
 		}
 
 		if (!flag) {
-			//btnOnlineTar.setSelection(true);
+			btnOnlineTar.setSelection(true);
 			btnOnlineGraph.setSelection(true);
 		}
 	}

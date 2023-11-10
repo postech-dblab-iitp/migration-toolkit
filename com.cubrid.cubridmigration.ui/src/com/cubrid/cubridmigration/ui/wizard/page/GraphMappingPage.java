@@ -40,6 +40,8 @@ import org.eclipse.zest.core.viewers.EntityConnectionData;
 import org.eclipse.zest.core.viewers.GraphViewer;
 import org.eclipse.zest.core.viewers.IGraphEntityRelationshipContentProvider;
 import org.eclipse.zest.core.widgets.Graph;
+import org.eclipse.zest.core.widgets.GraphConnection;
+import org.eclipse.zest.core.widgets.GraphItem;
 import org.eclipse.zest.core.widgets.GraphNode;
 import org.eclipse.zest.core.widgets.ZestStyles;
 import org.eclipse.zest.layouts.LayoutStyles;
@@ -62,6 +64,8 @@ import com.cubrid.cubridmigration.ui.wizard.dialog.GraphRenamingDialog;
 public class GraphMappingPage extends MigrationWizardPage {
 	public static final Image CHECK_IMAGE = MigrationUIPlugin.getImage("icon/checked.gif");
 	public static final Image UNCHECK_IMAGE = MigrationUIPlugin.getImage("icon/unchecked.gif");
+	
+	private MigrationConfiguration mConfig;
 	
 	private GraphDictionary gdbDict;
 	
@@ -239,13 +243,13 @@ public class GraphMappingPage extends MigrationWizardPage {
 			
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				ArrayList<GraphNode> selectList = (ArrayList<GraphNode>) graph.getSelection();
-				for (GraphNode selection : selectList) {
-					GraphNode selectedNode = (GraphNode) selection;
-					
-//					selectedNode.unhighlight();
-					
-					for (GraphNode gNode : (ArrayList<GraphNode>) graph.getNodes()) {
+				ArrayList<GraphItem> selectList = (ArrayList<GraphItem>) graph.getSelection();
+				for (GraphItem selection : selectList) {
+					if (selection instanceof GraphConnection) {
+						GraphConnection conntion = (GraphConnection) selection;
+						//conntion.unhighlight();
+					} else if (selection instanceof GraphNode) {
+						GraphNode gNode = (GraphNode) selection;
 						if (gNode.getText().equals(highlightNodeName)) {
 							setHighlight(gNode);
 						}
@@ -265,7 +269,7 @@ public class GraphMappingPage extends MigrationWizardPage {
 		
 		//TODO setting message
 		MenuItem item1 = new MenuItem(popupMenu, SWT.POP_UP);
-		item1.setText("select as start vertex");
+		item1.setText("Select As Start Vertex");
 		
 		item1.addSelectionListener(new SelectionListener() {
 			
@@ -294,7 +298,7 @@ public class GraphMappingPage extends MigrationWizardPage {
 		});
 		
 		MenuItem item2 = new MenuItem(popupMenu, SWT.POP_UP);
-		item2.setText("select as end vertex");
+		item2.setText("Select As End Vertex");
 		
 		item2.addSelectionListener(new SelectionListener() {
 			
@@ -307,7 +311,7 @@ public class GraphMappingPage extends MigrationWizardPage {
 				
 				endVertex = selectedVertex;
 				
-				GraphEdgeSettingDialog edgeSettingDialog = new GraphEdgeSettingDialog(getShell(), gdbDict, startVertex, endVertex);
+				GraphEdgeSettingDialog edgeSettingDialog = new GraphEdgeSettingDialog(getShell(), mConfig, gdbDict, startVertex, endVertex);
 				edgeSettingDialog.open();
 				
 				graphViewer.refresh();
@@ -319,7 +323,7 @@ public class GraphMappingPage extends MigrationWizardPage {
 		});
 		
 		MenuItem item3 = new MenuItem(popupMenu, SWT.POP_UP);
-		item3.setText("cancel");
+		item3.setText("Cancel");
 		
 		item3.addSelectionListener(new SelectionListener() {
 			
@@ -342,7 +346,7 @@ public class GraphMappingPage extends MigrationWizardPage {
 		MenuItem separator = new MenuItem(popupMenu, SWT.SEPARATOR);
 		
 		MenuItem changeName = new MenuItem(popupMenu, SWT.POP_UP);
-		changeName.setText("change name");
+		changeName.setText("Change Name");
 		
 		changeName.addSelectionListener(new SelectionListener() {
 			
@@ -701,7 +705,7 @@ public class GraphMappingPage extends MigrationWizardPage {
 	//GDB GraphMappingPage -> afterShowCurrentPage
 	protected void afterShowCurrentPage(PageChangedEvent event) {
 		final MigrationWizard mw = getMigrationWizard();
-		MigrationConfiguration cfg = mw.getMigrationConfig();
+		mConfig = mw.getMigrationConfig();
 		setTitle(mw.getStepNoMsg(GraphMappingPage.this) + Messages.objectMapPageTitle);
 		setDescription(Messages.objectMapPageDescription);
 		
@@ -709,7 +713,7 @@ public class GraphMappingPage extends MigrationWizardPage {
 		
 		Catalog sourceCatalog = mw.getSourceCatalog();
 	
-		gdbDict = cfg.getGraphDictionary();
+		gdbDict = mConfig.getGraphDictionary();
 		
 		gdbDict.printVertexAndEdge();
 		

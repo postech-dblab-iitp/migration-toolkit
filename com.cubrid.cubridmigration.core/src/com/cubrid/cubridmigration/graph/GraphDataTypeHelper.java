@@ -72,7 +72,7 @@ public final class GraphDataTypeHelper extends
 		//bigint
 		GRAPH_DATATYPE.put("bigint", "long");
 		//numeric
-		GRAPH_DATATYPE.put("numeric", "numeric");
+		GRAPH_DATATYPE.put("numeric", "decimal");
 		GRAPH_DATATYPE.put("numeric_int", "integer");
 		//numeric
 		//GRAPH_DATATYPE.put("decimal", "decimal");
@@ -118,7 +118,7 @@ public final class GraphDataTypeHelper extends
 		GRAPH_DATATYPE.put("enum", NOT_SUPPORT);
 
 		//////// oracle, tibero /////////
-		GRAPH_DATATYPE.put("number", "number");
+		GRAPH_DATATYPE.put("number", "decimal");
 		//GRAPH_DATATYPE.put("number", "decimal");
 		GRAPH_DATATYPE.put("number_int", "integer");
 		GRAPH_DATATYPE.put("integer", "integer");

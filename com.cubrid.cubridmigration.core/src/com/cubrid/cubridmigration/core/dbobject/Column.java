@@ -436,15 +436,29 @@ public class Column extends
     }
 	
 	public String getCSVGraphDataType(int graphType) {
+		int tPrecition = 0;
+		int tScale = 0;
 		if (graphDataType.equals("number") || 
 				graphDataType.equals("numberic") || 
 				graphDataType.equals("decimal")) {
+			tPrecition = this.precision;
+			tScale = this.scale;
+		} else if (graphDataType.equals("float")){
+			tPrecition = 15;
+			tScale = 7;
+		} else if (graphDataType.equals("double")){
+			tPrecition = 15;
+			tScale = 15;
+		}
+		
+		if (tPrecition > 0) {
 			if (graphType == TYPE_TURBOGRAPH) {
-				return "DECIMAL" + "(" + precision + "," + scale + ")";
+				return "DECIMAL" + "(" + tPrecition + "," + tScale + ")";
 			} else {
-				return "DOUBLE" + "(" + precision + "," + scale + ")";
+				return "DOUBLE" + "(" + tPrecition + "," + tScale + ")";
 			}
 		}
+		
 		return graphDataType.toUpperCase();
     }
 	
@@ -467,4 +481,5 @@ public class Column extends
 	public String toString() {
 		return "Column name: " + this.getName() + " | Column type: " + this.getDataType() + "\n";
 	}
+	
 }

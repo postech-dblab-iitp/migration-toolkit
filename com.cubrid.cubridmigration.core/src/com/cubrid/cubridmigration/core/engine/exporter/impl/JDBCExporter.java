@@ -491,7 +491,9 @@ public class JDBCExporter extends
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("[IN]exportGraphVertexRecords()");
 		}
-		Table sTable = config.getSrcTableSchemaForEdge(e.getOwner(), e.getEdgeLabel());
+		
+		//Table sTable = config.getSrcTableSchemaForEdge(e.getOwner(), e.getEdgeLabel());
+		Table sTable = config.getSrcTableSchemaForEdge(e.getOwner(), e.getStartVertexName());
 		Connection conn = connManager.getSourceConnection(); //NOPMD
 		
 		long countOfRecords = graphFkEdgeCountSQL(conn, e);

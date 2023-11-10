@@ -31,12 +31,14 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
 import com.cubrid.cubridmigration.core.dbobject.Column;
+import com.cubrid.cubridmigration.core.engine.config.MigrationConfiguration;
 import com.cubrid.cubridmigration.graph.dbobj.Edge;
 import com.cubrid.cubridmigration.graph.dbobj.GraphDictionary;
 import com.cubrid.cubridmigration.graph.dbobj.Vertex;
 
 public class GraphEdgeSettingDialog extends Dialog {
 	
+	private MigrationConfiguration mConfig;
 	private GraphDictionary gdbDict;
 	
 	private Vertex startVertex;
@@ -99,8 +101,9 @@ public class GraphEdgeSettingDialog extends Dialog {
 			"Column Type"
 	};
 
-	public GraphEdgeSettingDialog(Shell parentShell, GraphDictionary gdbDict, Vertex startVertex, Vertex endVertex) {
+	public GraphEdgeSettingDialog(Shell parentShell, MigrationConfiguration config, GraphDictionary gdbDict, Vertex startVertex, Vertex endVertex) {
 		super(parentShell);
+		this.mConfig = config;
 		this.gdbDict = gdbDict;
 		this.startVertex = startVertex;
 		this.endVertex = endVertex;
@@ -442,6 +445,17 @@ public class GraphEdgeSettingDialog extends Dialog {
 			newEdge.addFKCol2Ref(col.getStartColumnName(), col.getEndColumnName());
 			
 			newEdge.setEdgeType(Edge.CUSTOM_TYPE);
+			
+			if (mConfig.targetIsCSV()) {
+				Column startCol = new Column(":START_ID(" + startVertex.getVertexLabel() + ")");
+				Column endCol = new Column(":END_ID(" + endVertex.getVertexLabel() + ")");
+				
+				startCol.setDataType("ID");
+				endCol.setDataType("ID");
+				
+				newEdge.addColumn(startCol);
+				newEdge.addColumn(endCol);
+			}
 			
 			startVertex.getEndVertexes().add(endVertex);
 			

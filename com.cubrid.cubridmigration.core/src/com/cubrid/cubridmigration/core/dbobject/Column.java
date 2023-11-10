@@ -98,6 +98,9 @@ public class Column extends
 	private boolean isSelected = true;
 	private boolean supportGraphDatatype = true;
 	
+	public static final int TYPE_TURBOGRAPH = 1;
+	public static final int TYPE_NEO4J = 2;
+	
 	public Column() {
 		//do nothing
 	}
@@ -430,6 +433,19 @@ public class Column extends
 	
 	public String getGraphDataType() {
         return this.graphDataType;
+    }
+	
+	public String getCSVGraphDataType(int graphType) {
+		if (graphDataType.equals("number") || 
+				graphDataType.equals("numberic") || 
+				graphDataType.equals("decimal")) {
+			if (graphType == TYPE_TURBOGRAPH) {
+				return "DECIMAL" + "(" + precision + "," + scale + ")";
+			} else {
+				return "DOUBLE" + "(" + precision + "," + scale + ")";
+			}
+		}
+		return graphDataType.toUpperCase();
     }
 	
 	public void setSupportGraphDataType(boolean support) {

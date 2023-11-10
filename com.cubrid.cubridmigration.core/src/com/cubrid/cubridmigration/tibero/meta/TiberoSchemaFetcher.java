@@ -200,7 +200,6 @@ public final class TiberoSchemaFetcher extends
 				view.setQuerySpec(getQueryText(conn, schema.getName(), view.getName()));
 			}
 			buildPartitions(conn, catalog, schema);
-			
 		}
 		return catalog;
 	}
@@ -456,18 +455,11 @@ public final class TiberoSchemaFetcher extends
 					String shownDataType = dtHelper.getShownDataType(column);
 					column.setShownDataType(shownDataType);
 
+					column.setGraphDataType(graphDTHelper.getGraphDataType(
+							column.getDataType(), column.getPrecision(), column.getScale()));
+					
 					table.addColumn(column);
 					
-					//Temp Requires redefinition of mutable type.
-					String colDataType = column.getDataType().toLowerCase();
-					if (colDataType.equals("number")) {
-						if (column.getScale() > 0) {
-							colDataType = "number_variable";
-						}
-					}
-					
-					column.setGraphDataType(graphDTHelper.getGraphDataType(colDataType));
-					column.setSupportGraphDataType(graphDTHelper.SupportDataType(colDataType));
 				} catch (Exception ex) {
 					LOG.error("Read table column information error:" + table.getName(), ex);
 				}
@@ -1422,57 +1414,4 @@ public final class TiberoSchemaFetcher extends
 	//	protected void buildAllSchemas(Connection conn, Catalog catalog, Schema schema, Map<String, Table> tables)
 	//			throws SQLException {
 	//	}
-	
-	/**
-	 * setImportedKeysCount
-	 *
-	 * @param conn
-	 * @param catalog
-	 * @param schema
-	 * @param table
-	 * @throws SQLException
-	 */
-	protected void setImportedKeysCount(final Connection conn, final Catalog catalog, final Schema schema,
-			Table table) throws SQLException {
-
-		int importedKeysCount = 0;
-
-		ResultSet rs = null;
-		try {
-			rs = conn.getMetaData().getImportedKeys(getCatalogName(catalog), getSchemaName(schema), table.getName());
-			while (rs.next()) {
-				importedKeysCount++;
-			}
-			table.setImportedKeysCount(importedKeysCount);
-		} finally {
-			Closer.close(rs);
-		}
-	}
-
-	/**
-	 * setExportedKeysCount
-	 *
-	 * @param conn
-	 * @param catalog
-	 * @param schema
-	 * @param table
-	 * @throws SQLException
-	 */
-	protected void setExportedKeysCount(final Connection conn, final Catalog catalog, final Schema schema,
-			Table table) throws SQLException {
-
-		int exportedKeysCount = 0;
-
-		ResultSet rs = null;
-		try {
-			rs = conn.getMetaData().getExportedKeys(getCatalogName(catalog), getSchemaName(schema), table.getName());
-			while (rs.next()) {
-				exportedKeysCount++;
-			}
-			table.setExportedKeysCount(exportedKeysCount);
-		} finally {
-			Closer.close(rs);
-		}
-	}
-	
 }

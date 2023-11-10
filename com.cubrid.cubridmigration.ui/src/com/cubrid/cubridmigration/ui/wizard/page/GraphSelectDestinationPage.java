@@ -46,6 +46,7 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -189,6 +190,7 @@ public class GraphSelectDestinationPage extends
 	private class UnloadTargetDBView extends
 			AbstractDestinationView {
 		private Composite fileRepositoryContainer;
+		private Composite graphSelectContainer = null;
 		private Text txtFileRepository;
 		private Text txtFilePrefix;
 
@@ -196,6 +198,10 @@ public class GraphSelectDestinationPage extends
 		private Combo targetFileTimezoneCombo;
 
 		private Button btnCSVSetting;
+		
+		private Button btnTurboGraphType;
+		private Button btnNeo4jType;
+		
 		private String fileExt = ".txt";
 
 		private Combo cboCharset;
@@ -243,9 +249,42 @@ public class GraphSelectDestinationPage extends
 		 * @param parent Composite
 		 */
 		public void createControls(Composite parent) {
+			
+			if (graphSelectContainer == null) {
+				graphSelectContainer = new Composite(parent, SWT.BORDER);
+				graphSelectContainer.setLayout(new GridLayout(8, false));
+				graphSelectContainer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
+				graphSelectContainer.setVisible(false);
+				btnTurboGraphType = new Button(graphSelectContainer, SWT.RADIO);
+				btnTurboGraphType.setSelection(true);
+				btnTurboGraphType.addSelectionListener(new SelectionAdapter() {
+					@Override
+					public void widgetSelected(SelectionEvent e) {
+						//btnNeo4jType.setSelection(false);
+						
+					}
+				});
+				final Label labelTurboGraph = new Label(graphSelectContainer, SWT.NONE);
+				labelTurboGraph.setText("Turbograph");
+				btnNeo4jType = new Button(graphSelectContainer, SWT.RADIO);
+				btnNeo4jType.setSelection(false);
+				btnNeo4jType.addSelectionListener(new SelectionAdapter() {
+					@Override
+					public void widgetSelected(SelectionEvent e) {
+						//btnTurboGraphType.setSelection(false);
+						
+					}
+				});
+				
+				
+				final Label labelNeo4j = new Label(graphSelectContainer, SWT.NONE);
+				labelNeo4j.setText("Neo4j");
+			}
+			
 			if (fileRepositoryContainer != null) {
 				return;
 			}
+			
 			fileRepositoryContainer = new Composite(parent, SWT.BORDER);
 			fileRepositoryContainer.setLayout(new GridLayout(3, false));
 			fileRepositoryContainer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
@@ -405,6 +444,13 @@ public class GraphSelectDestinationPage extends
 			if (fileRepositoryContainer == null) {
 				return;
 			}
+			
+			if (graphSelectContainer != null) {
+				GridData graphSelectContainergd = (GridData) graphSelectContainer.getLayoutData();
+				graphSelectContainergd.exclude = true;
+				graphSelectContainer.setVisible(false);
+			}
+			
 			GridData fileRepositorygd = (GridData) fileRepositoryContainer.getLayoutData();
 			fileRepositorygd.exclude = true;
 			fileRepositoryContainer.setVisible(false);
@@ -464,7 +510,6 @@ public class GraphSelectDestinationPage extends
 			cboCharset.setVisible(false);
 			lblLobPath.setVisible(false);
 			txtLobPath.setVisible(false);
-			
 		}
 
 		/**
@@ -492,6 +537,11 @@ public class GraphSelectDestinationPage extends
 			config.setTargetDataFileName(getDataFullName());
 			config.setTargetFileTimeZone(targetFileTimezoneCombo.getItem(targetFileTimezoneCombo.getSelectionIndex()));
 			config.setTargetCharSet(cboCharset.getText());
+			if (btnNeo4jType.getSelection()) {
+				config.setGraphSubTyteForCSV(MigrationConfiguration.GRAPH_SUBTYPE_NEO4J);
+			} else {
+				config.setGraphSubTyteForCSV(MigrationConfiguration.GRAPH_SUBTYPE_TURBOGRAPH);
+			}
 			return true;
 		}
 
@@ -499,6 +549,12 @@ public class GraphSelectDestinationPage extends
 		 * Show view
 		 */
 		public void show() {
+			if (graphSelectContainer != null) {
+				GridData graphSelectContainergd = (GridData) graphSelectContainer.getLayoutData();
+				graphSelectContainergd.exclude = false;
+				graphSelectContainer.setVisible(true);
+			}
+			
 			GridData fileRepositorygd = (GridData) fileRepositoryContainer.getLayoutData();
 			fileRepositorygd.exclude = false;
 			fileRepositoryContainer.setVisible(true);

@@ -61,18 +61,19 @@ import com.cubrid.cubridmigration.core.engine.importer.Importer;
 import com.cubrid.cubridmigration.cubrid.stmt.CUBRIDParameterSetter;
 import com.cubrid.cubridmigration.graph.dbobj.Edge;
 import com.cubrid.cubridmigration.graph.dbobj.Vertex;
+import com.cubrid.cubridmigration.graph.stmt.GraphParameterSetter;
 
 public class GraphJDBCImporter extends
 		Importer {
 
 	private final JDBCConManager connectionManager;
 	private final MigrationConfiguration config;
-	private final CUBRIDParameterSetter parameterSetter;
+	private final GraphParameterSetter parameterSetter;
 	private final ErrorRecords2SQLFileWriter errorRecordsWriter;
 
 	public GraphJDBCImporter(MigrationContext mrManager) {
 		super(mrManager);
-		this.parameterSetter = mrManager.getParamSetter();
+		this.parameterSetter = mrManager.getGraphParamSetter();
 		this.config = mrManager.getConfig();
 		this.connectionManager = mrManager.getConnManager();
 		this.errorRecordsWriter = new ErrorRecords2SQLFileWriter(mrManager);
@@ -173,37 +174,15 @@ public class GraphJDBCImporter extends
 					if (rc == null) {
 						continue;
 					}
-					List<ColumnValue> colVal = getRecord2FKValue(e, rc);
 					
-//					if (colVal.get(0).getColumn().getGraphDataType().equalsIgnoreCase("int") || colVal.get(0).getColumn().getGraphDataType().equalsIgnoreCase("integer")) {
-//						stmt.setInt(1, Integer.parseInt(colVal.get(0).getValue().toString()));
-//						stmt.setInt(2, Integer.parseInt(colVal.get(1).getValue().toString()));
-//					} else {
-//						stmt.setString(1, colVal.get(0).getValue().toString());
-//						stmt.setString(2, colVal.get(1).getValue().toString());
-//					}
-					
-					stmt.setString(1, colVal.get(0).getValue().toString());
-					stmt.setString(2, colVal.get(1).getValue().toString());
-					
-					stmt = setColumnValueParams(stmt, rc);
-					
+					parameterSetter.setEdgeRecord2Statement(rc, stmt);
+
 					rs1 = stmt.executeQuery();
-					
-//					stmt.clearParameters();
-					
-//					stmt.setString(1, colVal.get(1).getValue().toString());
-//					stmt.setString(2, colVal.get(0).getValue().toString());
-//					rs2 = stmt.executeQuery();
 					
 					if (rs1.next()) {
 						result = rs1.getInt("count(r)");
 						resultTotal += result;
 					}
-					
-//					if (rs2.next()) {
-//						resultTotal += rs1.getInt("count(r)");
-//					}
 					
 					stmt.clearParameters();
 				}
@@ -212,6 +191,8 @@ public class GraphJDBCImporter extends
 					eventHandler.handleEvent(new ImportGraphRecordsEvent(e, resultTotal));
 				}
 			} catch (SQLException ex) {
+				ex.printStackTrace();
+				
 				if (isConnectionCutDown(ex)) {
 					throw new JDBCConnectErrorException(ex);
 				}
@@ -257,12 +238,14 @@ public class GraphJDBCImporter extends
 		if (e.getStartVertexName().equals(e.getEndVertexName())) {
 			buffer.append(" where n.").append(e.getREFColumnNames(e.getFKColumnNames().get(1))).append(" = ");
 		} else {
-			buffer.append(" where n.").append(e.getFKColumnNames().get(0)).append(" = ");
+//			buffer.append(" where n.").append(e.getFKColumnNames().get(0)).append(" = ");
+			buffer.append(" where n.").append(e.getREFColumnNames(e.getFKColumnNames().get(0))).append(" = ");
 		}
 		
 		buffer.append("?");
 		buffer.append(" and m.").append(e.getREFColumnNames(e.getFKColumnNames().get(1))).append(" = ");
 		buffer.append("?");
+		
 		buffer.append(" create (n)-[r:").append(e.getEdgeLabel().replaceAll(" ", "_"));
 		if (e.getColumnList() != null) {
 			buffer.append('{');
@@ -413,6 +396,7 @@ public class GraphJDBCImporter extends
 						}
 						eventHandler.handleEvent(new SingleRecordErrorEvent(rc, ex));
 					} catch (Exception ex) {
+						ex.printStackTrace();
 						eventHandler.handleEvent(new SingleRecordErrorEvent(rc, ex));
 					}
 				}
@@ -429,6 +413,9 @@ public class GraphJDBCImporter extends
 					eventHandler.handleEvent(new ImportGraphRecordsEvent(v, result));
 				}
 			} catch (SQLException ex) {
+				
+				ex.printStackTrace();
+				
 				if (isConnectionCutDown(ex)) {
 					throw new JDBCConnectErrorException(ex);
 				}

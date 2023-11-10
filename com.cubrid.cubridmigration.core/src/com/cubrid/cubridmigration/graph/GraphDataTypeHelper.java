@@ -45,7 +45,7 @@ public final class GraphDataTypeHelper extends
 	private static final Logger LOG = LogUtil.getLogger(GraphDataTypeHelper.class);
 
 	private static final String NOT_SUPPORT = "not support";
-	private static final Map<String, String> CUBRID_GRAPH_DATATYPE = new HashMap<String, String>();
+	private static final Map<String, String> GRAPH_DATATYPE = new HashMap<String, String>();
 
 	private static final GraphDataTypeHelper HELPER = new GraphDataTypeHelper();
 	//init all cubrid datatype
@@ -66,70 +66,80 @@ public final class GraphDataTypeHelper extends
 	//if necessary, change to DataTypeSymbol
 	private static void initCUBRIDGRAPHDataTypes() {
 		//small int
-		CUBRID_GRAPH_DATATYPE.put("short", "integer");
+		GRAPH_DATATYPE.put("short", "integer");
 		//int
-		CUBRID_GRAPH_DATATYPE.put("int", "integer");
+		GRAPH_DATATYPE.put("int", "integer");
 		//bigint
-		CUBRID_GRAPH_DATATYPE.put("bigint", "integer");
+		GRAPH_DATATYPE.put("bigint", "long");
 		//numeric
-		CUBRID_GRAPH_DATATYPE.put("numeric", "integer");
+		GRAPH_DATATYPE.put("numeric", "numeric");
+		GRAPH_DATATYPE.put("numeric_int", "integer");
+		//numeric
+		//GRAPH_DATATYPE.put("decimal", "decimal");
+		GRAPH_DATATYPE.put("decimal", "decimal");
 		//float
-		//CUBRID_GRAPH_DATATYPE.put("float", "float");
-		CUBRID_GRAPH_DATATYPE.put("float", "string");
+		GRAPH_DATATYPE.put("float", "float");
 		//double
-		//CUBRID_GRAPH_DATATYPE.put("double", "double");
-		CUBRID_GRAPH_DATATYPE.put("double", "string");
+		GRAPH_DATATYPE.put("double", "double");
 		//monetary
-		CUBRID_GRAPH_DATATYPE.put("monetary", "string");
+		GRAPH_DATATYPE.put("monetary", "string");
 		//char
-		CUBRID_GRAPH_DATATYPE.put("char", "string");
+		GRAPH_DATATYPE.put("char", "string");
 		//varchar
-		CUBRID_GRAPH_DATATYPE.put("varchar", "string");
+		GRAPH_DATATYPE.put("varchar", "string");
 		//time
-		CUBRID_GRAPH_DATATYPE.put("time", "string");
+		GRAPH_DATATYPE.put("time", "string");
 		//date
-		CUBRID_GRAPH_DATATYPE.put("date", "date");
+		GRAPH_DATATYPE.put("date", "date");
 		//timestamp
-		CUBRID_GRAPH_DATATYPE.put("timestamp", "string");
+		GRAPH_DATATYPE.put("timestamp", "string");
 		//datetime
-		//CUBRID_GRAPH_DATATYPE.put("datetime", "datetime");
-		CUBRID_GRAPH_DATATYPE.put("datetime", "string");
+		//GRAPH_DATATYPE.put("datetime", "datetime");
+		GRAPH_DATATYPE.put("datetime", "string");
 		//bit
-		CUBRID_GRAPH_DATATYPE.put("bit", NOT_SUPPORT);
+		GRAPH_DATATYPE.put("bit", NOT_SUPPORT);
 		//varbit
-		CUBRID_GRAPH_DATATYPE.put("varbit", NOT_SUPPORT);
+		GRAPH_DATATYPE.put("varbit", NOT_SUPPORT);
 		//set
-		CUBRID_GRAPH_DATATYPE.put("set",NOT_SUPPORT);
+		GRAPH_DATATYPE.put("set",NOT_SUPPORT);
 		//multiset
-		CUBRID_GRAPH_DATATYPE.put("multiset", NOT_SUPPORT);
+		GRAPH_DATATYPE.put("multiset", NOT_SUPPORT);
 		//sequence
-		CUBRID_GRAPH_DATATYPE.put("sequence", NOT_SUPPORT);
+		GRAPH_DATATYPE.put("sequence", NOT_SUPPORT);
 		//glo
-		CUBRID_GRAPH_DATATYPE.put("glo", NOT_SUPPORT);
+		GRAPH_DATATYPE.put("glo", NOT_SUPPORT);
 		//object
-		CUBRID_GRAPH_DATATYPE.put("object", NOT_SUPPORT);
+		GRAPH_DATATYPE.put("object", NOT_SUPPORT);
 		//clob
-		CUBRID_GRAPH_DATATYPE.put("clob", NOT_SUPPORT);
+		GRAPH_DATATYPE.put("clob", NOT_SUPPORT);
 		//blob
-		CUBRID_GRAPH_DATATYPE.put("blob", NOT_SUPPORT);
+		GRAPH_DATATYPE.put("blob", NOT_SUPPORT);
 		//enum
-		CUBRID_GRAPH_DATATYPE.put("enum", NOT_SUPPORT);
-		
-		CUBRID_GRAPH_DATATYPE.put("number", "integer");
-		
-		CUBRID_GRAPH_DATATYPE.put("number_variable", "string");
+		GRAPH_DATATYPE.put("enum", NOT_SUPPORT);
+
+		//////// oracle, tibero /////////
+		GRAPH_DATATYPE.put("number", "number");
+		//GRAPH_DATATYPE.put("number", "decimal");
+		GRAPH_DATATYPE.put("number_int", "integer");
+		GRAPH_DATATYPE.put("integer", "integer");
+		GRAPH_DATATYPE.put("varchar2", "string");
 	}
 	
-	public String getGraphDataType(String type) {
-		String ret = CUBRID_GRAPH_DATATYPE.get(type.toLowerCase());
+	public String getGraphDataType(String type, int precision, int scale) {
+		
+		String ret = classifyMutabletype(type.toLowerCase(), precision, scale);
+		
+		ret = GRAPH_DATATYPE.get(ret);
+		
 		if(ret == null) {
 			return NOT_SUPPORT;
 		}
+		SupportDataType(ret);
 		return ret;
 	}
 	
-	public boolean SupportDataType(String type) {
-		if (CUBRID_GRAPH_DATATYPE.get(type).equals(NOT_SUPPORT)){
+	private boolean SupportDataType(String type) {
+		if (type.equals(NOT_SUPPORT)){
 			return false;
 		}
 		return true;
@@ -163,5 +173,19 @@ public final class GraphDataTypeHelper extends
 	public boolean isCollection(String dataType) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+	
+	private String classifyMutabletype(String type, int precision, int scale) {
+		String ret = type;
+		if (type.equals("number")) {
+			if (scale == 0) {
+				ret = "number_int"; //for id
+			}
+		} else if (type.equals("numeric")) {
+			if (scale == 0) { //temp
+				ret = "numeric_int"; //for id
+			}
+		}
+		return ret;
 	}
 }

@@ -269,7 +269,7 @@ public class TiberoExportHelper extends
 		return buffer.toString();
 	}
 	
-	public String getPagedSelectSQL(Edge e, String sql, long rows, long exportedRecords, PK pk) {
+	public String getPagedSelectSQLForCSV(Edge e, String sql, long rows, long exportedRecords, PK pk) {
 		String cleanSql = sql.toUpperCase().trim();
 		
 		String editedQuery = editQueryForJoinTableEdge(e, cleanSql);

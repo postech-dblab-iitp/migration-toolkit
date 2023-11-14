@@ -238,6 +238,14 @@ public class MigrationDirAndFilesManager implements
 		return lobFilesDir;
 	}
 
+	public String getGraphListFile() {
+		String ss = "list";
+		if (config.targetIsFile()) {
+			ss = config.getTargetFilePrefix() + "_list";
+		}
+		return mergeFilesDir + ss;
+	}
+	
 	/**
 	 * Add a data file to manager
 	 * 

@@ -1203,6 +1203,8 @@ public abstract class AbstractJDBCSchemaFetcher implements
 				importedKeysCount++;
 			}
 			table.setImportedKeysCount(importedKeysCount);
+		} catch (Exception e) {
+			e.printStackTrace();
 		} finally {
 			Closer.close(rs);
 		}
@@ -1229,6 +1231,8 @@ public abstract class AbstractJDBCSchemaFetcher implements
 				exportedKeysCount++;
 			}
 			table.setExportedKeysCount(exportedKeysCount);
+		} catch (Exception e) {
+			e.printStackTrace();
 		} finally {
 			Closer.close(rs);
 		}

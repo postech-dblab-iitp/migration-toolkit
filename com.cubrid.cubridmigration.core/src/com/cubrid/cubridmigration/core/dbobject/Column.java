@@ -459,6 +459,10 @@ public class Column extends
 			}
 		}
 		
+		if (dataType.equals("ID")) {
+			return graphDataType;
+		}
+		
 		return graphDataType.toUpperCase();
     }
 	

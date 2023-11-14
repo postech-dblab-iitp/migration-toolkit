@@ -440,7 +440,7 @@ public class JDBCExporter extends
 				String pagesql;
 				
 				if (config.targetIsCSV()) {
-					pagesql = graphExHelper.getPagedSelectSQL(v, sql, realPageCount, totalExported, pk);
+					pagesql = graphExHelper.getPagedSelectSQLForVertexCSV(v, sql, realPageCount, totalExported, pk);
 				} else {
 					pagesql = graphExHelper.getPagedSelectSQL(sql, realPageCount, totalExported, pk);
 				}
@@ -643,7 +643,7 @@ public class JDBCExporter extends
 				String pagesql;
 				
 				if (config.targetIsCSV()) {
-					pagesql = graphExHelper.getPagedSelectSQLForCSV(e, sql, realPageCount, totalExported, pk);
+					pagesql = graphExHelper.getPagedSelectSQLForEdgeCSV(e, sql, realPageCount, totalExported, pk);
 				} else {
 					pagesql = graphExHelper.getPagedSelectSQL(sql, realPageCount, totalExported, pk);
 				}

@@ -7,6 +7,7 @@ import java.util.Map;
 
 import com.cubrid.cubridmigration.core.dbobject.Column;
 import com.cubrid.cubridmigration.core.dbobject.DBObject;
+import com.cubrid.cubridmigration.core.dbobject.PK;
 
 public class Vertex extends DBObject {
     
@@ -33,6 +34,8 @@ public class Vertex extends DBObject {
 	private String owner;
 	private String condition;
 	private String ddl;
+	
+	private PK pk;
 	
 	public Vertex() {
 		this.endVertexes = new ArrayList<Vertex>();
@@ -164,5 +167,13 @@ public class Vertex extends DBObject {
 	
 	public void setDDL(String ddl) {
 		this.ddl = ddl;
+	}
+	
+	public void setPK(PK pk) {
+		this.pk = pk;
+	}
+	
+	public PK getPK() {
+		return this.pk;
 	}
 }

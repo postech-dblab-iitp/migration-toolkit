@@ -315,7 +315,6 @@ public class GraphMappingPage extends MigrationWizardPage {
 				edgeSettingDialog.open();
 				
 				graphViewer.refresh();
-				graphViewer.applyLayout();
 			}
 			
 			@Override
@@ -357,7 +356,6 @@ public class GraphMappingPage extends MigrationWizardPage {
 				renameDialog.open();
 				
 				graphViewer.refresh();
-				graphViewer.applyLayout();
 			}
 			
 			@Override

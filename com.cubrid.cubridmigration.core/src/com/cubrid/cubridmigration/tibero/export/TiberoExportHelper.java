@@ -145,6 +145,7 @@ public class TiberoExportHelper extends
 	 * @param pk table's primary key
 	 * @return SQL
 	 */
+	@Override
 	public String getPagedSelectSQL(String sql, long rows, long exportedRecords, PK pk) {
 		return sql;
 	}
@@ -224,6 +225,30 @@ public class TiberoExportHelper extends
 		
 		String fkCol = keySet.get(0);
 		String refCol = fkMapping.get(keySet.get(0));
+		StringBuilder sVertexOrderby = new StringBuilder();
+		StringBuilder eVertexOrderby = new StringBuilder();
+		
+		PK pk = e.getStartVertex().getPK();
+		if (pk != null) {
+			// if it has a pk, a pk scan is better than full range scan
+			for (String pkCol : pk.getPkColumns()) {
+				if (sVertexOrderby.length() > 0) {
+					sVertexOrderby.append(", ");
+				}
+				sVertexOrderby.append(pkCol);
+			}
+		}
+		
+		pk = e.getEndVertex().getPK();
+		if (pk != null) {
+			// if it has a pk, a pk scan is better than full range scan
+			for (String pkCol : pk.getPkColumns()) {
+				if (eVertexOrderby.length() > 0) {
+					eVertexOrderby.append(", ");
+				}
+				eVertexOrderby.append(pkCol);
+			}
+		}
 		
 		StringBuffer buffer = new StringBuffer();
 		buffer.append("SELECT ");
@@ -237,25 +262,32 @@ public class TiberoExportHelper extends
 		buffer.append(" FROM ");
 		
 		buffer.append("(SELECT ROW_NUMBER() OVER(ORDER BY ");
-		buffer.append(fkCol);		
+		buffer.append(sVertexOrderby);		
 		buffer.append(") AS \":START_ID(" + e.getStartVertexName() + ")\", ");
-		buffer.append(fkCol);
+		buffer.append(sVertexOrderby);
+		if (sVertexOrderby.indexOf(fkCol) == -1) {
+			buffer.append(", " + fkCol);
+		}
+		
 		buffer.append(" FROM ");
 		buffer.append(e.getStartVertexName());
 		buffer.append(" ORDER BY ");
-		buffer.append(fkCol);
+		buffer.append(sVertexOrderby);
 		buffer.append(" ) AS ");
 		buffer.append(startVertexName);
 		buffer.append(", ");
 		
 		buffer.append("(SELECT ROW_NUMBER() OVER(ORDER BY ");
-		buffer.append(refCol);
+		buffer.append(eVertexOrderby);
 		buffer.append(") AS \":END_ID(" + e.getEndVertexName() + ")\", ");
-		buffer.append(refCol);
+		buffer.append(eVertexOrderby);
+		if (eVertexOrderby.indexOf(refCol) == -1) {
+			buffer.append(", " + refCol);
+		}
 		buffer.append(" FROM ");
 		buffer.append(e.getEndVertexName());
 		buffer.append(" ORDER BY ");
-		buffer.append(refCol);
+		buffer.append(eVertexOrderby);
 		buffer.append(" ) AS ");
 		buffer.append(endVertexName);
 		
@@ -269,7 +301,8 @@ public class TiberoExportHelper extends
 		return buffer.toString();
 	}
 	
-	public String getPagedSelectSQLForCSV(Edge e, String sql, long rows, long exportedRecords, PK pk) {
+	@Override
+	public String getPagedSelectSQLForEdgeCSV(Edge e, String sql, long rows, long exportedRecords, PK pk) {
 		String cleanSql = sql.toUpperCase().trim();
 		
 		String editedQuery = editQueryForJoinTableEdge(e, cleanSql);
@@ -301,6 +334,31 @@ public class TiberoExportHelper extends
 		
 		String dupStartVertexName = null;
 		String dupEndVertexName = null;
+
+		StringBuilder sVertexOrderby = new StringBuilder();
+		StringBuilder eVertexOrderby = new StringBuilder();
+		
+		PK pk = e.getStartVertex().getPK();
+		if (pk != null) {
+			// if it has a pk, a pk scan is better than full range scan
+			for (String pkCol : pk.getPkColumns()) {
+				if (sVertexOrderby.length() > 0) {
+					sVertexOrderby.append(", ");
+				}
+				sVertexOrderby.append("\"").append(pkCol).append("\"");
+			}
+		}
+		
+		pk = e.getEndVertex().getPK();
+		if (pk != null) {
+			// if it has a pk, a pk scan is better than full range scan
+			for (String pkCol : pk.getPkColumns()) {
+				if (eVertexOrderby.length() > 0) {
+					eVertexOrderby.append(", ");
+				}
+				eVertexOrderby.append("\"").append(pkCol).append("\"");
+			}
+		}
 		
 		if (e.getStartVertexName().equalsIgnoreCase(e.getEndVertexName())) {
 			dupStartVertexName = addDoubleQuote(e.getStartVertexName() + "_1");
@@ -370,7 +428,7 @@ public class TiberoExportHelper extends
 			if (startVertexIdMatcher.find() || endVertexIdMatcher.find()) {
 				buffer.append("FROM " + edgeLabel + " AS \"main\", "); 
 				buffer.append("(SELECT ROW_NUMBER() OVER (ORDER BY ");
-				buffer.append(addDoubleQuote(e.getREFColumnNames(refColList.get(0))));
+				buffer.append(sVertexOrderby);
 				buffer.append(") AS " + startIdCol + ", ");
 				
 				edgeLabel = new String("\"main\"");
@@ -378,22 +436,28 @@ public class TiberoExportHelper extends
 			} else {
 				buffer.append("FROM " + edgeLabel + ", "); 
 				buffer.append("(SELECT ROW_NUMBER() OVER (ORDER BY ");
-				buffer.append(addDoubleQuote(e.getREFColumnNames(refColList.get(0))));
+				buffer.append(sVertexOrderby);
 				buffer.append(") AS " + startIdCol + ", ");
 			}
 			
-			buffer.append(addDoubleQuote(e.getREFColumnNames(refColList.get(0))));
+			buffer.append(sVertexOrderby);
+			if (sVertexOrderby.indexOf(e.getfkCol2RefMapping().get(refColList.get(0))) == -1) {
+				buffer.append(", " + addDoubleQuote(e.getfkCol2RefMapping().get(refColList.get(0))));
+			}
 			buffer.append(" FROM " + startVertexName + " ORDER BY ");
-			buffer.append(addDoubleQuote(e.getREFColumnNames(refColList.get(0))));
+			buffer.append(sVertexOrderby);
 			buffer.append(" ) AS " + dupStartVertexName + ", ");
 			
 			buffer.append("(SELECT ROW_NUMBER() OVER (ORDER BY ");
-			buffer.append(addDoubleQuote(e.getREFColumnNames(refColList.get(1))));
+			buffer.append(eVertexOrderby);
 			buffer.append(") AS " + endIdCol + ", ");
-			buffer.append(addDoubleQuote(e.getREFColumnNames(refColList.get(1))));
+			buffer.append(eVertexOrderby);
+			if (eVertexOrderby.indexOf(e.getfkCol2RefMapping().get(refColList.get(1))) == -1) {
+				buffer.append(", " + addDoubleQuote(e.getfkCol2RefMapping().get(refColList.get(1))));
+			}
 			
 			buffer.append(" FROM " + endVertexName + " ORDER BY ");
-			buffer.append(addDoubleQuote(e.getREFColumnNames(refColList.get(1))));
+			buffer.append(eVertexOrderby);
 			buffer.append(" ) AS " + dupEndVertexName);
 			
 			editString = fromMatcher.replaceFirst(buffer.toString());
@@ -433,7 +497,8 @@ public class TiberoExportHelper extends
 		return editString;
 	}
 	
-	public String getPagedSelectSQL(Vertex v, String sql, long rows, long exportedRecords, PK pk) {
+	@Override
+	public String getPagedSelectSQLForVertexCSV(Vertex v, String sql, long rows, long exportedRecords, PK pk) {
 		StringBuilder orderby = new StringBuilder();
 		if (pk != null) {
 			// if it has a pk, a pk scan is better than full range scan
@@ -443,6 +508,8 @@ public class TiberoExportHelper extends
 				}
 				orderby.append("\"").append(pkCol).append("\"");
 			}
+		} else {
+			System.out.println("Vertex [" + v.getVertexLabel() + "] : pk is null");
 		}
 	
 		String editedQuery = editQueryForVertexCSV(v, sql, orderby.toString());
@@ -469,10 +536,12 @@ public class TiberoExportHelper extends
 			if (orderby != null && !orderby.isEmpty()) {
 				StringBuffer buffer = new StringBuffer("SELECT ROW_NUMBER() OVER (ORDER BY ");
 				buffer.append(orderby);
-				buffer.append(") as ");
+				buffer.append(") AS ");
 				sql = selectMatcher.replaceFirst(buffer.toString());
 			}
 		}
+		
+		sql = sql + " ORDER BY " + orderby;
 		
 		return sql;
 	}

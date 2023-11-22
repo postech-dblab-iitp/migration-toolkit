@@ -35,6 +35,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -64,6 +65,7 @@ import com.cubrid.cubridmigration.core.dbtype.IDependOnDatabaseType;
 import com.cubrid.cubridmigration.core.engine.exception.JDBCConnectErrorException;
 import com.cubrid.cubridmigration.core.export.DBExportHelper;
 import com.cubrid.cubridmigration.core.sql.SQLHelper;
+import com.cubrid.jdbc.proxy.driver.CUBRIDResultSetProxy;
 
 /**
  * AbstractJDBCSchemaFetcher
@@ -458,7 +460,18 @@ public abstract class AbstractJDBCSchemaFetcher implements
 					if (StringUtils.isEmpty(fkTableName)) {
 						continue;
 					}
-					foreignKey.setReferencedTableName(fkTableName);
+					
+					if (catalog.getDatabaseType().getID() == 1) {
+						int major = catalog.getVersion().getDbMajorVersion();
+						int miner = catalog.getVersion().getDbMinorVersion();
+						
+						if ((major * 10 + miner) >= 112) {
+							foreignKey.setReferencedTableName(fkTableName.split("\\.")[1]);
+						} else {
+							foreignKey.setReferencedTableName(fkTableName);
+						}
+					}
+					
 					//foreignKey.setDeferability(rs.getInt("DEFERRABILITY"));
 
 					switch (rs.getShort("DELETE_RULE")) {
@@ -716,6 +729,7 @@ public abstract class AbstractJDBCSchemaFetcher implements
 				buildTablePK(conn, catalog, schema, table);
 				buildTableFKs(conn, catalog, schema, table);
 				buildTableIndexes(conn, catalog, schema, table);
+				
 			} catch (Exception ex) {
 				LOG.error("", ex);
 			}

@@ -34,6 +34,8 @@ public class Vertex extends DBObject {
 	private String condition;
 	private String ddl;
 	
+	private long oid;
+	
 	public Vertex() {
 		this.endVertexes = new ArrayList<Vertex>();
 	}
@@ -164,5 +166,13 @@ public class Vertex extends DBObject {
 	
 	public void setDDL(String ddl) {
 		this.ddl = ddl;
+	}
+
+	public long getOid() {
+		return oid;
+	}
+
+	public void setOid(long oid) {
+		this.oid = oid;
 	}
 }

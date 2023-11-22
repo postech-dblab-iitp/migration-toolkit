@@ -32,6 +32,7 @@ package com.cubrid.cubridmigration.command;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.cubrid.cubridmigration.command.handler.CDCCommandHandler;
 import com.cubrid.cubridmigration.command.handler.LogCommandHandler;
 import com.cubrid.cubridmigration.command.handler.ReportCommandHandler;
 import com.cubrid.cubridmigration.command.handler.ScriptCommandHandler;
@@ -93,6 +94,10 @@ public class DoMigration {
 		} else if ("script".equalsIgnoreCase(exeType)) {
 			JDBCUtil.initialJdbcByPath(PathUtils.getJDBCLibDir());
 			commandHandler = new ScriptCommandHandler();
+			argList.remove(0);
+		} else if ("cdc".equalsIgnoreCase(exeType)) {
+			JDBCUtil.initialJdbcByPath(PathUtils.getJDBCLibDir());
+			commandHandler = new CDCCommandHandler();
 			argList.remove(0);
 		} else {
 			JDBCUtil.initialJdbcByPath(PathUtils.getJDBCLibDir());

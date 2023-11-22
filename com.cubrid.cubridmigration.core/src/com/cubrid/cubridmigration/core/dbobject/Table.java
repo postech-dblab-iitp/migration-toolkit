@@ -55,6 +55,8 @@ public class Table extends
 	private String createSql;
 	private boolean isReuseOID = false;
 
+	private long oid;
+	
 	private int importedKeysCount;
 	private int exportedKeysCount;
 
@@ -362,6 +364,12 @@ public class Table extends
 	public void setExportedKeysCount(int exportedKeysCount) {
 		this.exportedKeysCount = exportedKeysCount;
 	}
-	
 
+	public long getOid() {
+		return oid;
+	}
+
+	public void setOid(long oid) {
+		this.oid = oid;
+	}
 }

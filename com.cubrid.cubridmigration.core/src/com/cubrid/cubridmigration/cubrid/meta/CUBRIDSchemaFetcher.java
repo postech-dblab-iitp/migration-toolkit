@@ -77,6 +77,9 @@ import com.cubrid.cubridmigration.cubrid.CUBRIDDataTypeHelper;
 import com.cubrid.cubridmigration.cubrid.CUBRIDSQLHelper;
 import com.cubrid.cubridmigration.cubrid.dbobj.CUBRIDTrigger;
 import com.cubrid.cubridmigration.graph.GraphDataTypeHelper;
+import com.cubrid.jdbc.proxy.driver.CUBRIDPreparedStatementProxy;
+import com.cubrid.jdbc.proxy.driver.CUBRIDResultSetProxy;
+import com.jcraft.jsch.ConfigRepository.Config;
 
 /**
  * 
@@ -437,6 +440,7 @@ public final class CUBRIDSchemaFetcher extends
 					continue;
 				}
 				Table table = tables.get(tableName);
+				
 				if (table == null) {
 					table = factory.createTable();
 					table.setName(tableName);
@@ -444,6 +448,8 @@ public final class CUBRIDSchemaFetcher extends
 					schema.addTable(table);
 					tables.put(tableName, table);
 				}
+				
+				buildTableOid(conn, table);
 
 				String attrName = rs.getString("attr_name");
 				boolean isShared = "SHARED".equals(rs.getString("attr_type"));
@@ -1460,6 +1466,79 @@ public final class CUBRIDSchemaFetcher extends
 			Closer.close(rs);
 			Closer.close(stmt);
 		}
+	}
+	
+	
+	private void buildTableOid(Connection conn, Table table) {
+		// cdc return table name
+		String sql = "SELECT class_of, class_name FROM _db_class where is_system_class not in (1) and class_name=?";
+		
+		CUBRIDPreparedStatementProxy stmt = null;
+		CUBRIDResultSetProxy rs = null;
+		
+		try {
+			stmt = new CUBRIDPreparedStatementProxy(conn.prepareStatement(sql));
+			
+			stmt.setString(1, table.getName());
+			
+			rs = (CUBRIDResultSetProxy) stmt.executeQuery();
+			
+			while (rs.next()) {
+				long oidValue = oidToLong(rs.getOID(1).getOID());
+				
+				table.setOid(oidValue);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			Closer.close(rs);
+			Closer.close(stmt);
+		}
+	}
+	
+	private long oidToLong(byte[] oid) {
+	      int page_id = 0;
+	      short slot_id = 0;
+	      short volume_id = 0;
+	      long ret = 0;
+
+	      int startIndex = 0;
+	      int endIndex = 4;
+	      
+	      /*page ID*/
+	      for(int i = startIndex; i< endIndex; i++){
+	          page_id <<= 8;
+	          page_id |= (oid[i] & 0xff);
+	      }
+	      startIndex = 4;
+	      endIndex = startIndex + 2;
+	      /*slot ID*/
+	     for(int i = startIndex; i < endIndex; i++){
+	        slot_id <<= 8;
+	        slot_id |= (oid[i] & 0xff);
+	     }
+	      startIndex = 6;
+	      endIndex = startIndex + 2;
+	      /*volume ID*/
+	      for (int i = startIndex; i < endIndex; i++){
+	        volume_id <<=8;
+	        volume_id |= (oid[i] & 0xff);
+	      }
+	      
+	      ret <<=16;
+//	      ret |= volume_data & 0xffff;
+	      ret |= volume_id & 0xffff;
+
+	      ret <<=16;
+//	      ret |= slot_data & 0xffff;
+	      ret|= slot_id & 0xffff;
+
+	      ret <<=32;
+//	      ret |= page_data & 0xffffffff;
+	      ret |= page_id & 0xffffffff;
+
+	      return ret;
 	}
 
 }

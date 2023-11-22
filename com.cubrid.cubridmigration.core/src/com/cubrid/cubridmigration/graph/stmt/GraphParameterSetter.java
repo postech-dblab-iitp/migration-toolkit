@@ -101,7 +101,7 @@ public class GraphParameterSetter {
 	public void setEdgeRecord2Statement(Record record, PreparedStatement pstmt) {
 		int len = record.getColumnValueList().size();
 		try {
-			for (int i = 0; i < len; i++) {
+			for (int i = 0; i < 2; i++) {
 				ColumnValue columnValue = record.getColumnValueList().get(i);
 				Object value = columnValue.getValue();
 				final SetterHandler handler = getHandler(columnValue);

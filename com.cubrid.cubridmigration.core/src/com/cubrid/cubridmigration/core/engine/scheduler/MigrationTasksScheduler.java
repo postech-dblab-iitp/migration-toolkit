@@ -548,23 +548,38 @@ public class MigrationTasksScheduler {
 		List<Vertex> migratedVertexList = gdict.getMigratedVertexList();
 		List<Edge> migratedEdgeList = gdict.getMigratedEdgeList();
 		
-		for ( Vertex v: migratedVertexList) {
-			if (v.getVertexType() == Vertex.SECOND_TYPE) {
-				if (!v.getHasPK()) {
-					executeTask2(taskFactory.createVertexExportTask(v));
+		if (config.isCdc()) {
+			for (Vertex v : migratedVertexList) {
+				if (v.getVertexType() == Vertex.SECOND_TYPE) {
+					if (!v.getHasPK()) {
+						executeTask2(taskFactory.createVertexExportTask(v));
+						for (Edge e : migratedEdgeList) {
+							if (!e.isHavePKStartVertex()
+									&& e.getEdgeType() == Edge.SECOND_FK_TYPE) {
+								executeTask2(taskFactory.createCDCObjectTask(v, e)); 
+							}
+						}
+					}
+				}
+			}
+		} else {
+			for ( Vertex v: migratedVertexList) {
+				if (v.getVertexType() == Vertex.SECOND_TYPE) {
+					if (!v.getHasPK()) {
+						executeTask2(taskFactory.createVertexExportTask(v));
+					}
+				}
+			}
+			
+			await();
+			
+			for ( Edge e : migratedEdgeList) {
+				if (!e.isHavePKStartVertex()
+						&& e.getEdgeType() == Edge.SECOND_FK_TYPE) {
+					executeTask2(taskFactory.GraphEdgeExportTask(e));
 				}
 			}
 		}
-		
-		await();
-		
-		for ( Edge e : migratedEdgeList) {
-			if (!e.isHavePKStartVertex()
-					&& e.getEdgeType() == Edge.SECOND_FK_TYPE) {
-				executeTask2(taskFactory.GraphEdgeExportTask(e));
-			}
-		}
-		
 	}
 	
 	protected void createGraphStep4() {
@@ -573,20 +588,36 @@ public class MigrationTasksScheduler {
 		List<Vertex> migratedVertexList = gdict.getMigratedVertexList();
 		List<Edge> migratedEdgeList = gdict.getMigratedEdgeList();
 		
-		for ( Vertex v: migratedVertexList) {
-			if (v.getVertexType() == Vertex.INTERMEDIATE_TYPE) {
-				if (!v.getHasPK()) {
-					executeTask2(taskFactory.createVertexExportTask(v));
+		if (config.isCdc()) {
+			for ( Vertex v: migratedVertexList) {
+				if (v.getVertexType() == Vertex.INTERMEDIATE_TYPE) {
+					if (!v.getHasPK()) {
+						executeTask2(taskFactory.createVertexExportTask(v));
+						for ( Edge e : migratedEdgeList) {
+							if (!e.isHavePKStartVertex()
+									&& e.getEdgeType() == Edge.INTERMEDIATE_FK_TYPE) {
+								executeTask2(taskFactory.createCDCObjectTask(v, e));
+							}
+						}
+					}
 				}
 			}
-		}
-		
-		await();
-		
-		for ( Edge e : migratedEdgeList) {
-			if (!e.isHavePKStartVertex()
-					&& e.getEdgeType() == Edge.INTERMEDIATE_FK_TYPE) {
-				executeTask2(taskFactory.GraphEdgeExportTask(e));
+		} else {
+			for ( Vertex v: migratedVertexList) {
+				if (v.getVertexType() == Vertex.INTERMEDIATE_TYPE) {
+					if (!v.getHasPK()) {
+						executeTask2(taskFactory.createVertexExportTask(v));
+					}
+				}
+			}
+			
+			await();
+			
+			for ( Edge e : migratedEdgeList) {
+				if (!e.isHavePKStartVertex()
+						&& e.getEdgeType() == Edge.INTERMEDIATE_FK_TYPE) {
+					executeTask2(taskFactory.GraphEdgeExportTask(e));
+				}
 			}
 		}
 	}

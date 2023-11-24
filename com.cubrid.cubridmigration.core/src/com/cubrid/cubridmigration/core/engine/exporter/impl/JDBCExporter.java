@@ -1121,4 +1121,71 @@ public class JDBCExporter extends
 			return (CUBRIDExportHelper) exportHelper;
 		}
 	}
+
+	public void exportCDCObject(Vertex vertex, Edge edge, RecordExportedListener newRecordProcessor) {
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("[IN]exportGraphVertexRecords()");
+		}
+		Table sTable = config.getSrcTableSchema(vertex.getOwner(), vertex.getTableName());
+		if (sTable == null) {
+			throw new NormalMigrationException("Table " + vertex.getVertexLabel() + " was not found.");
+		}
+		final PK srcPK = sTable.getPk();
+		Connection conn = connManager.getSourceConnection(); //NOPMD
+		try {
+			final DBExportHelper expHelper = getSrcDBExportHelper();
+			DBExportHelper graphExHelper =  getExportHelperType(expHelper);
+			PK pk = graphExHelper.supportFastSearchWithPK(conn) ? srcPK : null;
+			newRecordProcessor.startExportTable(vertex.getVertexLabel());
+			List<Record> records = new ArrayList<Record>();
+			long totalExported = 0L;
+			long intPageCount = config.getPageFetchCount();
+			String sql = graphExHelper.getGraphSelectSQL(vertex, config.targetIsCSV());
+			while (true) {
+				if (interrupted) {
+					return;
+				}
+				long realPageCount = intPageCount;
+				if (!config.isImplicitEstimate()) {
+					realPageCount = Math.min(sTable.getTableRowCount() - totalExported,
+							intPageCount);
+				}
+				String pagesql;
+				
+				if (config.targetIsCSV()) {
+					pagesql = graphExHelper.getPagedSelectSQL(vertex, sql, realPageCount, totalExported, pk);
+				} else {
+					pagesql = graphExHelper.getPagedSelectSQL(sql, realPageCount, totalExported, pk);
+				}
+				
+				if (LOG.isDebugEnabled()) {
+					LOG.debug("[SQL]PAGINATED=" + pagesql);
+				}
+				
+				long recordCountOfQuery = 0L;
+				
+				if (config.isCdc()) {
+					recordCountOfQuery = cdcHandleRecord(conn, pagesql, vertex, sTable,
+							records, newRecordProcessor);
+					totalExported = totalExported + recordCountOfQuery;
+				} else {
+					recordCountOfQuery = graphHandleSQL(conn, pagesql, vertex, sTable,
+							records, newRecordProcessor);
+					totalExported = totalExported + recordCountOfQuery;
+				}
+				
+				//Stop fetching condition: no result;less then fetching count;great then total count
+				if (isLatestPage(sTable, totalExported, recordCountOfQuery)) {
+					break;
+				}
+			}
+			if (!records.isEmpty()) {
+				newRecordProcessor.processRecords(vertex.getVertexLabel(), records);
+			}
+		} finally {
+			newRecordProcessor.endExportTable(vertex.getVertexLabel());
+			connManager.closeSrc(conn);
+		}
+		
+	}
 }

@@ -126,6 +126,39 @@ public class GraphParameterSetter {
 			throw new NormalMigrationException(e);
 		}
 	}
+	
+	public void setFkRecord2Statement(String colName, Record record, PreparedStatement pstmt) {
+		try {
+			
+			ColumnValue colVal = null;
+			
+			for (ColumnValue cv : record.getColumnValueList()) {
+				if (cv.getColumn().getName().equals(colName)) {
+					colVal = cv;
+					
+					break;
+				}
+			}
+			
+			if (colVal == null) {
+				return;
+			}
+			
+//			ColumnValue columnValue = record.getColumnValueList().get(i);
+			Object value = colVal.getValue();
+			final SetterHandler handler = getHandler(colVal);
+			if (value == null) {
+				handler.setNull(pstmt, 0);
+			} else {
+				handler.handle(pstmt, 0, colVal);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new NormalMigrationException(e);
+		}
+		
+		
+	}
 
 	/**
 	 * If cannot find hander, return a default handler.

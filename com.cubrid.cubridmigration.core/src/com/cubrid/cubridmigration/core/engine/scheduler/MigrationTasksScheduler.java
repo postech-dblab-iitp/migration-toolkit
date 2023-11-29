@@ -553,6 +553,9 @@ public class MigrationTasksScheduler {
 				if (v.getVertexType() == Vertex.SECOND_TYPE) {
 					if (!v.getHasPK()) {
 						executeTask2(taskFactory.createVertexExportTask(v));
+						
+						await();
+						
 						for (Edge e : migratedEdgeList) {
 							if (!e.isHavePKStartVertex()
 									&& e.getEdgeType() == Edge.SECOND_FK_TYPE) {
@@ -593,6 +596,9 @@ public class MigrationTasksScheduler {
 				if (v.getVertexType() == Vertex.INTERMEDIATE_TYPE) {
 					if (!v.getHasPK()) {
 						executeTask2(taskFactory.createVertexExportTask(v));
+						
+						await();
+						
 						for ( Edge e : migratedEdgeList) {
 							if (!e.isHavePKStartVertex()
 									&& e.getEdgeType() == Edge.INTERMEDIATE_FK_TYPE) {
@@ -666,17 +672,34 @@ public class MigrationTasksScheduler {
 		List<Vertex> migratedVertexList = gdict.getMigratedVertexList();
 		List<Edge> migratedEdgeList = gdict.getMigratedEdgeList();
 		
-		
-		for ( Vertex v: migratedVertexList) {
-			if (v.getVertexType() == Vertex.RECURSIVE_TYPE) {
-				executeTask2(taskFactory.createVertexExportTask(v));
+		if (config.isCdc()) {
+			for ( Vertex v: migratedVertexList) {
+				if (v.getVertexType() == Vertex.RECURSIVE_TYPE) {
+					executeTask2(taskFactory.createVertexExportTask(v));
+					
+					await();
+					
+					for ( Edge e : migratedEdgeList) {
+						if ( e.getEdgeType() == Edge.RECURSIVE_TYPE) {
+							executeTask2(taskFactory.createCDCObjectTask(v, e));
+						}
+					}
+					
+				}
 			}
-		}
-		await();
-		
-		for ( Edge e : migratedEdgeList) {
-			if ( e.getEdgeType() == Edge.RECURSIVE_TYPE) {
-				executeTask2(taskFactory.GraphEdgeExportTask(e));
+		} else {
+			for ( Vertex v: migratedVertexList) {
+				if (v.getVertexType() == Vertex.RECURSIVE_TYPE) {
+					executeTask2(taskFactory.createVertexExportTask(v));
+				}
+			}
+			
+			await();
+			
+			for ( Edge e : migratedEdgeList) {
+				if ( e.getEdgeType() == Edge.RECURSIVE_TYPE) {
+					executeTask2(taskFactory.GraphEdgeExportTask(e));
+				}
 			}
 		}
 	}

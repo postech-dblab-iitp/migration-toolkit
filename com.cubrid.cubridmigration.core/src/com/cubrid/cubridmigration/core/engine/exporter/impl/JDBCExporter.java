@@ -522,9 +522,10 @@ public class JDBCExporter extends
 		}
 	}
 	
-	protected Record createGraphNewRecordForEdgeCDC(Edge e, List<Column> cols, Connection conn) {
+	protected List<Record> createGraphNewRecordForEdgeCDC(Edge e, List<Column> cols, Connection conn) {
 		try {
-			Record rec = new Record();
+			List<Record> recList = new ArrayList<Record>();
+			
 			String cubridEnv = System.getenv("CUBRID");
 			String cdcOutputDir = cubridEnv + File.separator + "cdc_output";
 			File dir = new File(cdcOutputDir);
@@ -532,6 +533,8 @@ public class JDBCExporter extends
 			String[] fileNameArr = dir.list();
 			
 			for (String fileName : fileNameArr) {
+				Record rec = new Record();
+				
 				BufferedReader reader = new BufferedReader(new FileReader(cdcOutputDir + File.separator + fileName));
 				
 				String line = reader.readLine();
@@ -563,12 +566,14 @@ public class JDBCExporter extends
 						
 						rec.addColumnValue(col, value);
 					}
+					
+					recList.add(rec);
 				} else {
 					LOG.info("oid is not same");
 				}
 			}
 			
-			return rec;
+			return recList;
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			System.out.println("exception from export file data part");
@@ -745,8 +750,6 @@ public class JDBCExporter extends
 				
 				if (config.targetIsCSV()) {
 					record = createGraphNewRecordForVertexCSV(vertex, vertex.getColumnList(), joc.getRs());
-				} else if (config.isCdc()) { 
-					record = createGraphNewRecordForVertexCDC(vertex, vertex.getColumnList(), conn);
 				} else {
 					record = createGraphNewRecord(sTable, vertex.getColumnList(), joc.getRs());
 				}
@@ -805,15 +808,15 @@ public class JDBCExporter extends
 //		}
 		
 		long totalExported = 0;
-		Record record;
+		List<Record> recordList;
 		
-		record = createGraphNewRecordForVertexCDC(vertex, vertex.getColumnList(), conn);
+		recordList = createGraphNewRecordForVertexCDC(vertex, vertex.getColumnList(), conn);
 		
-		if (record != null) {
-			totalExported++;
+		if (recordList != null) {
+			totalExported = recordList.size();
 		}
 		
-		records.add(record);
+		records.addAll(recordList);
 		
 		return totalExported;
 	}
@@ -858,15 +861,15 @@ public class JDBCExporter extends
 //		}
 		
 		long totalExported = 0;
-		Record record;
+		List<Record> recordList;
 		
-		record = createGraphNewRecordForEdgeCDC(edge, edge.getColumnList(), conn);
+		recordList = createGraphNewRecordForEdgeCDC(edge, edge.getColumnList(), conn);
 		
-		if (record != null) {
-			totalExported++;
+		if (recordList != null) {
+			totalExported = recordList.size();
 		}
 		
-		records.add(record);
+		records.addAll(recordList);
 		
 		return totalExported;
 	}
@@ -892,8 +895,6 @@ public class JDBCExporter extends
 				
 				if (config.targetIsCSV()) {
 					record = createGraphNewRecordForFkCSV(edge, edge.getColumnList(), joc.getRs());
-				} else if (config.isCdc()) {
-					record = createGraphNewRecordForEdgeCDC(edge, edge.getColumnList(), conn);
 				} else {
 					record = createGraphNewRecord(sTable, edge.getColumnList(), joc.getRs());
 				}
@@ -947,9 +948,10 @@ public class JDBCExporter extends
 		return null;
 	}
 	
-	protected Record createGraphNewRecordForVertexCDC(Vertex v, List<Column> cols, Connection conn) {
+	protected List<Record> createGraphNewRecordForVertexCDC(Vertex v, List<Column> cols, Connection conn) {
 		try {
-			Record rec = new Record();
+			List<Record> recList = new ArrayList<Record>();
+			
 			String cubridEnv = System.getenv("CUBRID");
 			String cdcOutputDir = cubridEnv + File.separator + "cdc_output";
 			File dir = new File(cdcOutputDir);
@@ -957,6 +959,8 @@ public class JDBCExporter extends
 			String[] fileNameArr = dir.list();
 			
 			for (String fileName : fileNameArr) {
+				Record rec = new Record();
+				
 				BufferedReader reader = new BufferedReader(new FileReader(cdcOutputDir + File.separator + fileName));
 				
 				String line = reader.readLine();
@@ -988,12 +992,14 @@ public class JDBCExporter extends
 						
 						rec.addColumnValue(col, value);
 					}
+					
+					recList.add(rec);
 				} else {
 					LOG.info("oid is not same");
 				}
 			}
 			
-			return rec;
+			return recList;
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			System.out.println("exception from export file data part");

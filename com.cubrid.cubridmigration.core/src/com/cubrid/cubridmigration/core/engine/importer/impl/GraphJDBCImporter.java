@@ -275,35 +275,34 @@ public class GraphJDBCImporter extends
 //				}
 //			}
 			
-			int i = 0;
-			
 			for (Record rec : vRecs) {
-				String sql = getCDCFkEdge(edge, i, rec);
 				
-				i++;
-				
-				try {
-					stmt = conn.prepareStatement(sql);
+				for (int i = 0; i < edge.getfkCol2RefMapping().size(); i++){
+					String sql = getCDCFkEdge(edge, i);
 					
-					parameterSetter.setFkRecord2Statement(edge.getFKColumnNames().get(0), rec, stmt);
-					
-					//int ret = stmt.executeUpdate();
-					ResultSet rs = stmt.executeQuery();
-					if (rs.next()) {
-						result += rs.getInt("count(r)");
+					try {
+						stmt = conn.prepareStatement(sql);
+						
+ 						parameterSetter.setFkRecord2Statement(edge.getFKColumnNames().get(i), rec, stmt);
+						
+						//int ret = stmt.executeUpdate();
+						ResultSet rs = stmt.executeQuery();
+						if (rs.next()) {
+							result += rs.getInt("count(r)");
+						}
+						DBUtils.commit(conn);
+						
+						if (result > 0) {
+							eventHandler.handleEvent(new ImportGraphRecordsEvent(edge, result));
+						}
+						
+					} catch (SQLException ex) {
+						if (isConnectionCutDown(ex)) {
+							throw new JDBCConnectErrorException(ex);
+						}
+						ex.printStackTrace();
+						DBUtils.rollback(conn);
 					}
-					DBUtils.commit(conn);
-					
-					if (result > 0) {
-						eventHandler.handleEvent(new ImportGraphRecordsEvent(edge, result));
-					}
-					
-				} catch (SQLException ex) {
-					if (isConnectionCutDown(ex)) {
-						throw new JDBCConnectErrorException(ex);
-					}
-					ex.printStackTrace();
-					DBUtils.rollback(conn);
 				}
 			}
 			
@@ -319,7 +318,7 @@ public class GraphJDBCImporter extends
 		return result;
 	}
 	
-	private String getCDCFkEdge(Edge edge, int index, Record rec) {
+	private String getCDCFkEdge(Edge edge, int index) {
 		StringBuffer buffer = new StringBuffer();
 		
 		buffer.append("match (n:").append(edge.getStartVertexName()).append("), ");

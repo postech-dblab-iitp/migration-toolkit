@@ -973,16 +973,16 @@ public class JDBCExporter extends
 				} else {
 					return null;
 				}
-				
-				LOG.info("vertex Label : " + v.getVertexLabel());
-				LOG.info("vertex oid Value : " + v.getOid());
-				LOG.info("file oid Value : " + oid);
-				
+//				
+//				LOG.info("vertex Label : " + v.getVertexLabel());
+//				LOG.info("vertex oid Value : " + v.getOid());
+//				LOG.info("file oid Value : " + oid);
+//				
 				String longToString = String.valueOf(v.getOid());
 				
 				if (oid.equals(longToString)) {
 					
-					LOG.info("each of oid is same");
+//					LOG.info("each of oid is same");
 					
 					while ((line = reader.readLine()) != null) {
 						String[] colVal = line.split(":");
@@ -995,7 +995,7 @@ public class JDBCExporter extends
 					
 					recList.add(rec);
 				} else {
-					LOG.info("oid is not same");
+//					LOG.info("oid is not same");
 				}
 			}
 			
@@ -1129,6 +1129,9 @@ public class JDBCExporter extends
 	}
 
 	public void exportCDCObject(Vertex vertex, Edge edge, RecordExportedListener newRecordProcessor) {
+		
+		LOG.info("vertex name: " + vertex.getVertexLabel());
+		
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("[IN]exportGraphVertexRecords()");
 		}

@@ -29,12 +29,11 @@ public class GraphCDCObjectExportTask extends ExportTask {
 		// TODO Auto-generated method stub
 		exporter.exportCDCObject(vertex, edge, new RecordExportedListener(){
 			public void processRecords(String sourceTableName, List<Record> records) {
-				eventHandler.handleEvent(new ExportGraphRecordEvent(vertex, records.size()));
+//				eventHandler.handleEvent(new ExportGraphRecordEvent(vertex, records.size()));
 				ImportTask task = taskFactory.createCDCRecordsTask(vertex, edge, records);
 
 				importTaskExecutor = mrManager.getImportRecordExecutor();
 				importTaskExecutor.execute((Runnable) task);
-				//mrManager.getStatusMgr().addExpCount(null, vertex.getVertexLabel(), records.size());
 				mrManager.getStatusMgr().addExpCount(null, vertex.getVertexLabel(), records.size());
 			}
 

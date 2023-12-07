@@ -70,9 +70,13 @@ public final class GraphDataTypeHelper extends
 		//int
 		GRAPH_DATATYPE.put("int", "integer");
 		//bigint
-		GRAPH_DATATYPE.put("bigint", "integer");
+		GRAPH_DATATYPE.put("bigint", "long");
 		//numeric
-		GRAPH_DATATYPE.put("numeric", "string");
+		GRAPH_DATATYPE.put("numeric", "decimal");
+		GRAPH_DATATYPE.put("numeric_int", "integer");
+		//numeric
+		//GRAPH_DATATYPE.put("decimal", "decimal");
+		GRAPH_DATATYPE.put("decimal", "decimal");
 		//float
 		GRAPH_DATATYPE.put("float", "float");
 		//double
@@ -90,6 +94,7 @@ public final class GraphDataTypeHelper extends
 		//timestamp
 		GRAPH_DATATYPE.put("timestamp", "string");
 		//datetime
+		//GRAPH_DATATYPE.put("datetime", "datetime");
 		GRAPH_DATATYPE.put("datetime", "string");
 		//bit
 		GRAPH_DATATYPE.put("bit", NOT_SUPPORT);
@@ -111,22 +116,30 @@ public final class GraphDataTypeHelper extends
 		GRAPH_DATATYPE.put("blob", NOT_SUPPORT);
 		//enum
 		GRAPH_DATATYPE.put("enum", NOT_SUPPORT);
-		
-		
-		//oracle type integer
+
+		//////// oracle, tibero /////////
+		GRAPH_DATATYPE.put("number", "decimal");
+		//GRAPH_DATATYPE.put("number", "decimal");
+		GRAPH_DATATYPE.put("number_int", "integer");
 		GRAPH_DATATYPE.put("integer", "integer");
-		//oracle type integer
-		GRAPH_DATATYPE.put("number", "float");
-		//oracle type varchar2
 		GRAPH_DATATYPE.put("varchar2", "string");
 	}
 	
-	public String getGraphDataType(String type) {
-		return GRAPH_DATATYPE.get(type.toLowerCase());
+	public String getGraphDataType(String type, int precision, int scale) {
+		
+		String ret = classifyMutabletype(type.toLowerCase(), precision, scale);
+		
+		ret = GRAPH_DATATYPE.get(ret);
+		
+		if(ret == null) {
+			return NOT_SUPPORT;
+		}
+		SupportDataType(ret);
+		return ret;
 	}
 	
-	public boolean SupportDataType(String type) {
-		if (GRAPH_DATATYPE.get(type).equals(NOT_SUPPORT)){
+	private boolean SupportDataType(String type) {
+		if (type.equals(NOT_SUPPORT)){
 			return false;
 		}
 		return true;
@@ -160,5 +173,19 @@ public final class GraphDataTypeHelper extends
 	public boolean isCollection(String dataType) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+	
+	private String classifyMutabletype(String type, int precision, int scale) {
+		String ret = type;
+		if (type.equals("number")) {
+			if (scale == 0) {
+				ret = "number_int"; //for id
+			}
+		} else if (type.equals("numeric")) {
+			if (scale == 0) { //temp
+				ret = "numeric_int"; //for id
+			}
+		}
+		return ret;
 	}
 }

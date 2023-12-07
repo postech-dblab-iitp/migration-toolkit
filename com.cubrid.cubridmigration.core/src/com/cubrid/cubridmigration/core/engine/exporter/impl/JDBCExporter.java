@@ -403,7 +403,6 @@ public class JDBCExporter extends
 		}
 		
 		if (sTable == null) {
-			System.out.println("sTable is null");
 			return true;
 		}
 		
@@ -461,7 +460,7 @@ public class JDBCExporter extends
 				String pagesql;
 				
 				if (config.targetIsCSV()) {
-					pagesql = graphExHelper.getPagedSelectSQL(v, sql, realPageCount, totalExported, pk);
+					pagesql = graphExHelper.getPagedSelectSQLForVertexCSV(v, sql, realPageCount, totalExported, pk);
 				} else {
 					pagesql = graphExHelper.getPagedSelectSQL(sql, realPageCount, totalExported, pk);
 				}
@@ -512,14 +511,16 @@ public class JDBCExporter extends
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("[IN]exportGraphVertexRecords()");
 		}
-		Table sTable = config.getSrcTableSchema(e.getOwner(), e.getEdgeLabel());
+		
+		//Table sTable = config.getSrcTableSchemaForEdge(e.getOwner(), e.getEdgeLabel());
+		Table sTable = config.getSrcTableSchemaForEdge(e.getOwner(), e.getStartVertexName());
 		Connection conn = connManager.getSourceConnection(); //NOPMD
 		
 		long countOfRecords = graphFkEdgeCountSQL(conn, e);
 		
 		try {
 			final DBExportHelper expHelper = getSrcDBExportHelper();
-			DBExportHelper graphExHelper =  getExportHelperType(expHelper);
+			DBExportHelper graphExHelper = expHelper;
 //			PK pk = graphExHelper.supportFastSearchWithPK(conn) ? srcPK : null;
 			newRecordProcessor.startExportTable(e.getEdgeLabel());
 			List<Record> records = new ArrayList<Record>();
@@ -562,11 +563,9 @@ public class JDBCExporter extends
 	protected long graphFkEdgeCountSQL(Connection conn, Edge e) {		
 		Map<String, String> fkMapping = e.getfkCol2RefMapping();
 		
-		DBExportHelper expHelper = getSrcDBExportHelper();
+		String sql;
 		
-//		String sql = editFkRecordCounterSql(e, fkMapping);
-		
-		String sql = expHelper.getFkRecordCounterSql(e, fkMapping);
+		sql= editFkRecordCounterSql(e, fkMapping);
 		
 		JDBCObjContainer joc = new JDBCObjContainer();
 		joc.setConn(conn);
@@ -588,6 +587,49 @@ public class JDBCExporter extends
 			ex.printStackTrace();
 		}
 		return totalExported;
+	}
+	
+	private String editFkRecordCounterSql(Edge e, Map<String, String> fkMapping) {
+		List<String> keySet = e.getFKColumnNames();
+		
+		String startVertexName;
+		String endVertexName;
+		
+		if (e.getStartVertexName().equals(e.getEndVertexName())) {
+			startVertexName = e.getStartVertexName() + "_1";
+			endVertexName = e.getEndVertexName() + "_2";
+		} else {
+			startVertexName = e.getStartVertexName();
+			endVertexName = e.getEndVertexName();
+		}
+		
+		String fkCol = keySet.get(0);
+		String refCol = fkMapping.get(keySet.get(0));
+		
+		StringBuffer buffer = new StringBuffer();
+		buffer.append("SELECT COUNT(1) FROM ");
+		
+		buffer.append("(SELECT ");
+		buffer.append(fkCol);
+		buffer.append(" FROM ");
+		buffer.append(e.getStartVertexName());
+		buffer.append(" ) as ");
+		buffer.append(startVertexName);
+		buffer.append(", ");
+		
+		buffer.append("(SELECT ");
+		buffer.append(refCol);
+		buffer.append(" FROM ");
+		buffer.append(e.getEndVertexName());
+		buffer.append(" ) as ");
+		buffer.append(endVertexName);
+		
+		buffer.append(" where ");
+		buffer.append(startVertexName + "." + fkCol);
+		buffer.append(" = ");
+		buffer.append(endVertexName + "." + refCol);
+		
+		return buffer.toString();
 	}
 	
 	protected void exportGraphJoinEdgeRecords(Edge e, RecordExportedListener newRecordProcessor) { 
@@ -621,7 +663,7 @@ public class JDBCExporter extends
 				String pagesql;
 				
 				if (config.targetIsCSV()) {
-					pagesql = graphExHelper.getPagedSelectSQL(e, sql, realPageCount, totalExported, pk);
+					pagesql = graphExHelper.getPagedSelectSQLForEdgeCSV(e, sql, realPageCount, totalExported, pk);
 				} else {
 					pagesql = graphExHelper.getPagedSelectSQL(sql, realPageCount, totalExported, pk);
 				}

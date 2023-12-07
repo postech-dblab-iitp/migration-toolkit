@@ -98,6 +98,9 @@ public class Column extends
 	private boolean isSelected = true;
 	private boolean supportGraphDatatype = true;
 	
+	public static final int TYPE_TURBOGRAPH = 1;
+	public static final int TYPE_NEO4J = 2;
+	
 	public Column() {
 		//do nothing
 	}
@@ -421,11 +424,46 @@ public class Column extends
 	}
 	
 	public void setGraphDataType(String type) {
-	    this.graphDataType = type;
+		if (type == null) {
+			this.graphDataType = "string";	
+		} else {
+			this.graphDataType = type;
+		}
 	}
 	
 	public String getGraphDataType() {
         return this.graphDataType;
+    }
+	
+	public String getCSVGraphDataType(int graphType) {
+		int tPrecition = 0;
+		int tScale = 0;
+		if (graphDataType.equals("number") || 
+				graphDataType.equals("numberic") || 
+				graphDataType.equals("decimal")) {
+			tPrecition = this.precision;
+			tScale = this.scale;
+		} else if (graphDataType.equals("float")){
+			tPrecition = 15;
+			tScale = 7;
+		} else if (graphDataType.equals("double")){
+			tPrecition = 15;
+			tScale = 15;
+		}
+		
+		if (tPrecition > 0) {
+			if (graphType == TYPE_TURBOGRAPH) {
+				return "DECIMAL" + "(" + tPrecition + "," + tScale + ")";
+			} else {
+				return "DOUBLE" + "(" + tPrecition + "," + tScale + ")";
+			}
+		}
+		
+		if (dataType.equals("ID")) {
+			return graphDataType;
+		}
+		
+		return graphDataType.toUpperCase();
     }
 	
 	public void setSupportGraphDataType(boolean support) {
@@ -447,4 +485,5 @@ public class Column extends
 	public String toString() {
 		return "Column name: " + this.getName() + " | Column type: " + this.getDataType() + "\n";
 	}
+	
 }

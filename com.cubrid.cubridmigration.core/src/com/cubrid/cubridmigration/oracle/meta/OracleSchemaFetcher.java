@@ -151,7 +151,7 @@ public final class OracleSchemaFetcher extends
 	private static final String SQL_SHOW_VIEW_QUERYTEXT = "SELECT TEXT from ALL_VIEWS WHERE OWNER=? AND VIEW_NAME=?";
 
 	//private static final String SHOW_SEQUENCE_MAXVAL = "SELECT ?.CURRVAL  FROM DUAL";
-
+	
 	public OracleSchemaFetcher() {
 		factory = new DBObjectFactory() {
 
@@ -244,6 +244,9 @@ public final class OracleSchemaFetcher extends
 				String ddl = getObjectDDL(conn, schema.getName(), table.getName(),
 						OBJECT_TYPE_TABLE);
 				table.setDDL(ddl);
+				
+				setImportedKeysCount(conn, catalog, schema, table);
+				setExportedKeysCount(conn, catalog, schema, table);
 			}
 			// get views
 			List<View> viewList = schema.getViews();
@@ -514,9 +517,11 @@ public final class OracleSchemaFetcher extends
 					String shownDataType = dtHelper.getShownDataType(column);
 					column.setShownDataType(shownDataType);
 
-					column.setGraphDataType(graphDTHelper.getGraphDataType(column.getDataType()));
+					column.setGraphDataType(graphDTHelper.getGraphDataType(
+							column.getDataType(), column.getPrecision(), column.getScale()));
 					
 					table.addColumn(column);
+					
 				} catch (Exception ex) {
 					LOG.error("Read table column information error:" + table.getName(), ex);
 				}

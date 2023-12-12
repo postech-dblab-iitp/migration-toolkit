@@ -204,7 +204,7 @@ public class OracleExportHelper extends
 	}
 
 	@Override
-	public String getPagedFkRecords(Edge e, String sql, long rows, long exportedRecords) {
+	public String getPagedFkRecords(Edge e, String sql, long rows, long exportedRecords, boolean hasMultiSchema) {
 		String cleanSql = sql.toUpperCase().trim();
 		
 		String editedQuery = editQueryForFk(e, cleanSql);

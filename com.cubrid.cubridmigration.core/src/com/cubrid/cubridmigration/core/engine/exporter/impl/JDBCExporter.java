@@ -362,6 +362,7 @@ public class JDBCExporter extends
 				ThreadUtils.threadSleep(2000, eventHandler);
 				retryCount++;
 				if (retryCount == 3) {
+					System.out.println(sql);
 					throw new NormalMigrationException(ex);
 				}
 			}
@@ -538,7 +539,7 @@ public class JDBCExporter extends
 				}
 				String pageSql;
 				
-				pageSql = graphExHelper.getPagedFkRecords(e, sql, realPageCount, totalExported);
+				pageSql = graphExHelper.getPagedFkRecords(e, sql, realPageCount, totalExported, hasMultiSchema(conn));
 				
 				if (LOG.isDebugEnabled()) {
 					LOG.debug("[SQL]PAGINATED=" + pageSql);
@@ -663,7 +664,7 @@ public class JDBCExporter extends
 				String pagesql;
 				
 				if (config.targetIsCSV()) {
-					pagesql = graphExHelper.getPagedSelectSQLForEdgeCSV(e, sql, realPageCount, totalExported, pk);
+					pagesql = graphExHelper.getPagedSelectSQLForEdgeCSV(e, sql, realPageCount, totalExported, pk, hasMultiSchema(conn));
 				} else {
 					pagesql = graphExHelper.getPagedSelectSQL(sql, realPageCount, totalExported, pk);
 				}
@@ -904,6 +905,19 @@ public class JDBCExporter extends
 			// After records processed, clear it.
 			records.clear();
 		}
+	}
+	
+	private boolean hasMultiSchema(Connection con) {
+		int versionValue = 0;
+		try {
+			versionValue = (con.getMetaData().getDatabaseMajorVersion() * 10) + con.getMetaData().getDatabaseMinorVersion();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			
+			return true;
+		}
+		
+		return versionValue >= 112;
 	}
 	
 	private DBExportHelper getExportHelperType(DBExportHelper exportHelper) {

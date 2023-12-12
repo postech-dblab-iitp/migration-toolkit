@@ -55,7 +55,13 @@ public class GraphExportHelper extends DBExportHelper {
 
 	@Override
 	public String getPagedSelectSQLForEdgeCSV(Edge e, String sql, long realPageCount,
-			long totalExported, PK pk) {
+			long totalExported, PK pk, boolean hasMultiSchema) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getGraphSelectSQL(Edge e, boolean targetIsCSV) {
 		// TODO Auto-generated method stub
 		return null;
 	}

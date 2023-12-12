@@ -523,7 +523,7 @@ public abstract class DBExportHelper implements
 		return buf.toString(); 
 	}
 	
-	public String getPagedSelectSQLForEdgeCSV(Edge e, String sql, long rows, long exportedRecords, PK pk) {
+	public String getPagedSelectSQLForEdgeCSV(Edge e, String sql, long rows, long exportedRecords, PK pk, boolean hasMultiSchema) {
 		String cleanSql = sql.toUpperCase().trim();
 		
 		String editedQuery = editQueryForJoinTableEdge(e, cleanSql);
@@ -535,6 +535,9 @@ public abstract class DBExportHelper implements
 		
 		Pattern pattern2 = Pattern.compile("ORDER\\s+BY", Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
 		Matcher matcher2 = pattern2.matcher(editedQuery);
+		
+		Pattern pattern3 = Pattern.compile("FOR ORDERBY_NUM\\(\\)", Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
+		Matcher matcher3 = pattern3.matcher(editedQuery);
 		
 		if (matcher.find()) {
 			//End with group by 
@@ -575,6 +578,10 @@ public abstract class DBExportHelper implements
 		buf.append(" BETWEEN ").append(exportedRecords + 1L);
 		buf.append(" AND ").append(exportedRecords + rows);
 
+		if (hasMultiSchema && matcher3.find()) {
+			return buf.toString().replaceAll("for orderby_num\\(\\)", "");
+		}
+		
 		return buf.toString();
 	}
 	
@@ -827,7 +834,8 @@ public abstract class DBExportHelper implements
 			buffer.append(" for orderby_num()) as " + dupStartVertexName + ", (SELECT ROWNUM as " + endIdCol + ", ");
 			
 			buffer.append(eVertexOrderby);
-			if (eVertexOrderby.indexOf(e.getfkCol2RefMapping().get(refColList.get(1))) == -1) {
+			if (eVertexOrderby.indexOf(e.getfkCol2RefMapping().get(refColList.get(1))) == -1 
+					&& e.getEndVertex().getColumnByName(refColList.get(1)) != null) {
 				buffer.append(", " + addDoubleQuote(e.getfkCol2RefMapping().get(refColList.get(1))));
 			}
 			
@@ -851,21 +859,25 @@ public abstract class DBExportHelper implements
 		
 		whereBuffer.append(addDoubleQuote(refColList.get(0)));
 		
-		whereBuffer.append(" and " + dupEndVertexName + ".");
-		
-		whereBuffer.append(addDoubleQuote(e.getfkCol2RefMapping().get(refColList.get(1))));
-		
-		whereBuffer.append(" = " + edgeLabel + ".");
-		
-		whereBuffer.append(addDoubleQuote(refColList.get(1)));
+		if (e.getEndVertex().getColumnByName(refColList.get(1)) != null) {
+			whereBuffer.append(" and " + dupEndVertexName + ".");
+			
+			whereBuffer.append(addDoubleQuote(e.getfkCol2RefMapping().get(refColList.get(1))));
+			
+			whereBuffer.append(" = " + edgeLabel + ".");
+			
+			whereBuffer.append(addDoubleQuote(refColList.get(1)));			
+		}
 		
 		whereBuffer.append(" order by " + edgeLabel + ".");
 		
 		whereBuffer.append(addDoubleQuote(refColList.get(0)));
 		
-		whereBuffer.append(", " + edgeLabel + ".");
-		
-		whereBuffer.append(addDoubleQuote(refColList.get(1)));
+		if (e.getEndVertex().getColumnByName(refColList.get(1)) != null) {
+			whereBuffer.append(", " + edgeLabel + ".");
+			
+			whereBuffer.append(addDoubleQuote(refColList.get(1)));
+		}
 		
 		originalString.append(whereBuffer.toString());
 		
@@ -1024,7 +1036,7 @@ public abstract class DBExportHelper implements
 		return null;
 	}
 	
-	public String getPagedFkRecords(Edge e, String sql, long rows, long exportedRecords) {
+	public String getPagedFkRecords(Edge e, String sql, long rows, long exportedRecords, boolean hasMultiSchema) {
 		String cleanSql = sql.toUpperCase().trim();
 		
 		String editedQuery = editQueryForFk(e, cleanSql);
@@ -1036,6 +1048,9 @@ public abstract class DBExportHelper implements
 		
 		Pattern pattern2 = Pattern.compile("ORDER\\s+BY", Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
 		Matcher matcher2 = pattern2.matcher(editedQuery);
+		
+		Pattern pattern3 = Pattern.compile("FOR ORDERBY_NUM\\(\\)", Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
+		Matcher matcher3 = pattern3.matcher(editedQuery);
 		
 		if (matcher.find()) {
 			//End with group by 
@@ -1076,6 +1091,10 @@ public abstract class DBExportHelper implements
 		buf.append(" BETWEEN ").append(exportedRecords + 1L);
 		buf.append(" AND ").append(exportedRecords + rows);
 
+		if (hasMultiSchema && matcher3.find()) {
+			return buf.toString().replaceAll("for orderby_num\\(\\)", "");
+		}
+		
 		return buf.toString();
 	}
 	
@@ -1163,6 +1182,18 @@ public abstract class DBExportHelper implements
 		buffer.append(" order by " + startVertexName + "." + fkCol);
 		
 		return buffer.toString();
+	}
+
+	public String getPagedSelectSQL(Vertex v, String sql, long realPageCount,
+			long totalExported, PK pk) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public String getPagedSelectSQL(Edge e, String sql, long realPageCount,
+			long totalExported, PK pk) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

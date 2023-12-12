@@ -453,11 +453,18 @@ public abstract class AbstractJDBCSchemaFetcher implements
 					fkName = newFkName;
 					foreignKey = factory.createFK(table);
 					foreignKey.setName(fkName);
-					final String fkTableName = rs.getString("PKTABLE_NAME");
+					String fkTableName = rs.getString("PKTABLE_NAME");
 					//Ignore invalid foreign key.
 					if (StringUtils.isEmpty(fkTableName)) {
 						continue;
 					}
+					
+					int versionValue = (catalog.getVersion().getDbMajorVersion() * 10) + catalog.getVersion().getDbMinorVersion();
+					
+					if (versionValue >= 112) {
+						fkTableName = fkTableName.split("\\.")[1];
+					}
+					
 					foreignKey.setReferencedTableName(fkTableName);
 					//foreignKey.setDeferability(rs.getInt("DEFERRABILITY"));
 

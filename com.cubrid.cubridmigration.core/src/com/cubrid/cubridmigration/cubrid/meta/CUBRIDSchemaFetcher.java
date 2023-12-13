@@ -469,11 +469,12 @@ public final class CUBRIDSchemaFetcher extends
 					column.setJdbcIDOfDataType(cubDTHelper.getCUBRIDDataTypeID(standardDataType));
 				}
 				
-				column.setGraphDataType(graphDTHelper.getGraphDataType(column.getDataType()));
-				column.setSupportGraphDataType(graphDTHelper.SupportDataType(column.getDataType()));
 				column.setPrecision(prec);
 				column.setScale(scale);
 
+				column.setGraphDataType(graphDTHelper.getGraphDataType(
+						column.getDataType(), column.getPrecision(), column.getScale()));
+				
 				String isNull = rs.getString("is_nullable");
 				column.setNullable(isYes(isNull));
 
@@ -893,11 +894,12 @@ public final class CUBRIDSchemaFetcher extends
 					column.setDataType(standardDataType);
 					column.setJdbcIDOfDataType(cubDTHelper.getCUBRIDDataTypeID(standardDataType));
 				}
-				column.setGraphDataType(graphDTHelper.getGraphDataType(column.getDataType()));
-				column.setSupportGraphDataType(graphDTHelper.SupportDataType(column.getDataType()));
-
 				column.setPrecision(prec);
 				column.setScale(scale);
+				
+				column.setGraphDataType(graphDTHelper.getGraphDataType(
+						column.getDataType(), column.getPrecision(), column.getScale()));
+				
 				table.addColumn(column);
 
 				if (isYes(isNull)) { // null
@@ -1053,58 +1055,6 @@ public final class CUBRIDSchemaFetcher extends
 		for (Table table : tables.values()) {
 			setImportedKeysCount(conn, catalog, schema, table);
 			setExportedKeysCount(conn, catalog, schema, table);
-		}
-	}
-
-	/**
-	 * setImportedKeysCount
-	 *
-	 * @param conn
-	 * @param catalog
-	 * @param schema
-	 * @param table
-	 * @throws SQLException
-	 */
-	protected void setImportedKeysCount(final Connection conn, final Catalog catalog, final Schema schema,
-			Table table) throws SQLException {
-
-		int importedKeysCount = 0;
-
-		ResultSet rs = null;
-		try {
-			rs = conn.getMetaData().getImportedKeys(getCatalogName(catalog), getSchemaName(schema), table.getName());
-			while (rs.next()) {
-				importedKeysCount++;
-			}
-			table.setImportedKeysCount(importedKeysCount);
-		} finally {
-			Closer.close(rs);
-		}
-	}
-
-	/**
-	 * setExportedKeysCount
-	 *
-	 * @param conn
-	 * @param catalog
-	 * @param schema
-	 * @param table
-	 * @throws SQLException
-	 */
-	protected void setExportedKeysCount(final Connection conn, final Catalog catalog, final Schema schema,
-			Table table) throws SQLException {
-
-		int exportedKeysCount = 0;
-
-		ResultSet rs = null;
-		try {
-			rs = conn.getMetaData().getExportedKeys(getCatalogName(catalog), getSchemaName(schema), table.getName());
-			while (rs.next()) {
-				exportedKeysCount++;
-			}
-			table.setExportedKeysCount(exportedKeysCount);
-		} finally {
-			Closer.close(rs);
 		}
 	}
 

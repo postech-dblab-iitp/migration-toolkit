@@ -936,7 +936,7 @@ public abstract class OfflineImporter extends
 				} else {
 					sb.append(col.getName());
 					sb.append(":");
-					sb.append(col.getDataType().toUpperCase());
+					sb.append(col.getCSVGraphDataType(config.getGraphSubTyteForCSV()));
 				}
 				
 				header.add(sb.toString());
@@ -960,7 +960,7 @@ public abstract class OfflineImporter extends
 				
 				sb.append(col.getName());
 				sb.append(":");
-				sb.append(col.getGraphDataType().toUpperCase());
+				sb.append(col.getCSVGraphDataType(config.getGraphSubTyteForCSV()));
 				
 				header.add(sb.toString());
 			}

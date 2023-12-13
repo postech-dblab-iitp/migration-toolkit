@@ -41,14 +41,8 @@ public class GraphExportHelper extends DBExportHelper {
 	}
 
 	@Override
-	public String getPagedSelectSQL(Vertex v, String sql, long realPageCount,
+	public String getPagedSelectSQLForVertexCSV(Vertex v, String sql, long realPageCount,
 			long totalExported, PK pk) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getGraphSelectSQL(Edge e, boolean targetIsCSV) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -60,8 +54,14 @@ public class GraphExportHelper extends DBExportHelper {
 	}
 
 	@Override
-	public String getPagedSelectSQL(Edge e, String sql, long realPageCount,
-			long totalExported, PK pk) {
+	public String getPagedSelectSQLForEdgeCSV(Edge e, String sql, long realPageCount,
+			long totalExported, PK pk, boolean hasMultiSchema) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getGraphSelectSQL(Edge e, boolean targetIsCSV) {
 		// TODO Auto-generated method stub
 		return null;
 	}

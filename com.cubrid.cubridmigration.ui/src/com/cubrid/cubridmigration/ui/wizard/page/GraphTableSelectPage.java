@@ -31,6 +31,8 @@ import org.eclipse.swt.widgets.TableColumn;
 import com.cubrid.cubridmigration.core.dbobject.Catalog;
 import com.cubrid.cubridmigration.core.dbobject.Column;
 import com.cubrid.cubridmigration.core.dbobject.FK;
+import com.cubrid.cubridmigration.core.dbobject.Index;
+import com.cubrid.cubridmigration.core.dbobject.PK;
 import com.cubrid.cubridmigration.core.dbobject.Schema;
 import com.cubrid.cubridmigration.core.dbobject.Table;
 import com.cubrid.cubridmigration.core.engine.config.MigrationConfiguration;
@@ -404,6 +406,39 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 			vertex.setVertexType(Vertex.FIRST_TYPE);
 			vertex.setHasPK(table.hasPK());
 			
+			if (!table.hasPK()) {
+				String tColName = null;
+				for (Index index : table.getIndexes()) {
+					for (String idxCol : index.getColumnNames()) {
+						tColName = idxCol;
+						break;
+					}
+					if (tColName != null) {
+						break;
+					}
+				}
+				
+				if (tColName == null) {
+					for (Column col : table.getColumns()) {
+						tColName = col.getName();
+						break;
+					}
+				}
+				
+				if (tColName == null) {
+					return;
+				}
+
+				PK pk = new PK(table);
+				pk.setName("new_pk_" + tColName);
+				pk.addColumn(tColName);
+				table.setPk(pk);
+				vertex.setHasPK(true);
+				vertex.setPK(pk);
+			} else {
+				vertex.setPK(table.getPk());
+			}
+			
 			gdbDict.addMigratedVertexList(vertex);
 		}
 	}
@@ -428,6 +463,7 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 			
 			startVertex.setVertexType(Vertex.SECOND_TYPE);
 			startVertex.setHasPK(table.hasPK());
+			startVertex.setPK(table.getPk());
 			Edge edge;
 			gdbDict.addMigratedVertexList(startVertex);
 			
@@ -511,6 +547,7 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 			
 			startVertex.setVertexType(Vertex.INTERMEDIATE_TYPE);
 			startVertex.setHasPK(table.hasPK());
+			startVertex.setPK(table.getPk());
 
 			gdbDict.addMigratedVertexList(startVertex);
 			
@@ -617,6 +654,8 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 			FK fk2 = fkList.get(1);
 			
 			edge.setOwner(table.getOwner());
+			edge.setStartVertex(gdbDict.getMigratedVertexByName(fk1.getReferencedTableName()));
+			edge.setEndVertex(gdbDict.getMigratedVertexByName(fk2.getReferencedTableName()));
 			edge.setStartVertexName(fk1.getReferencedTableName());
 			edge.setEndVertexName(fk2.getReferencedTableName());
 			edge.setColumnList(table.getColumns());
@@ -666,7 +705,7 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 			
 			startVertex.setVertexType(Vertex.RECURSIVE_TYPE);
 			startVertex.setHasPK(table.hasPK());
-			
+			startVertex.setPK(table.getPk());
 //			gdbDict.addMigratedVertexList(startVertex);
 			
 			Edge edge;

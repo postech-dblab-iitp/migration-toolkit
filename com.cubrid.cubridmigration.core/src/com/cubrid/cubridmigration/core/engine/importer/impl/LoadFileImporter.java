@@ -29,7 +29,9 @@
  */
 package com.cubrid.cubridmigration.core.engine.importer.impl;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -105,6 +107,8 @@ public class LoadFileImporter extends
 		super(mrManager);
 		unloadFileUtil = new Data2StrTranslator(mrManager.getDirAndFilesMgr().getMergeFilesDir(),
 				config, config.getDestType());
+		createGraphListFile();
+		
 	}
 
 	/**
@@ -195,7 +199,7 @@ public class LoadFileImporter extends
 			if (es == null) {
 				final StringBuffer sb = new StringBuffer(
 						mrManager.getDirAndFilesMgr().getMergeFilesDir()).append(
-						config.getFullTargetFilePrefix()).append(removeSpace(e.getEdgeLabel()));
+						config.getFullTargetFilePrefix()).append(removeSpace(e.getEdgeLabel() + "_Edge"));
 				es = new CurrentDataFileInfo(sb.toString(), config.getDataFileExt());
 				PathUtils.deleteFile(new File(es.fileFullName));
 				tableFiles.put(removeSpace(e.getEdgeLabel()), es);
@@ -250,7 +254,7 @@ public class LoadFileImporter extends
 			if (es == null) {
 				final StringBuffer sb = new StringBuffer(
 						mrManager.getDirAndFilesMgr().getMergeFilesDir()).append(
-						config.getFullTargetFilePrefix()).append(removeSpace(v.getVertexLabel()));
+						config.getFullTargetFilePrefix()).append(removeSpace(v.getVertexLabel() + "_Node"));
 				es = new CurrentDataFileInfo(sb.toString(), config.getDataFileExt());
 				PathUtils.deleteFile(new File(es.fileFullName));
 				tableFiles.put(removeSpace(v.getVertexLabel()), es);
@@ -305,10 +309,17 @@ public class LoadFileImporter extends
 			if (es == null) {
 				final StringBuffer sb = new StringBuffer(
 						mrManager.getDirAndFilesMgr().getMergeFilesDir()).append(
-						config.getFullTargetFilePrefix()).append(removeSpace(e.getEdgeLabel()));
+						config.getFullTargetFilePrefix()).append(removeSpace(e.getEdgeLabel() + "_Edge"));
 				es = new CurrentDataFileInfo(sb.toString(), config.getDataFileExt());
 				PathUtils.deleteFile(new File(es.fileFullName));
 				tableFiles.put(removeSpace(e.getEdgeLabel()), es);
+				
+				if (config.targetIsCSV()) {
+					final String inputFileName = 
+							config.getFullTargetFilePrefix() + removeSpace(e.getEdgeLabel() + "_Edge") + config.getDataFileExt();
+					
+					writeGraphListFile(mdfm.getGraphListFile(), inputFileName, e);
+				}
 			}
 			//If the target file is full. 
 			if (mdfm.isDataFileFull(es.fileFullName)) {
@@ -359,10 +370,17 @@ public class LoadFileImporter extends
 			if (es == null) {
 				final StringBuffer sb = new StringBuffer(
 						mrManager.getDirAndFilesMgr().getMergeFilesDir()).append(
-						config.getFullTargetFilePrefix()).append(removeSpace(v.getVertexLabel()));
+						config.getFullTargetFilePrefix()).append(removeSpace(v.getVertexLabel() + "_Node"));
 				es = new CurrentDataFileInfo(sb.toString(), config.getDataFileExt());
 				PathUtils.deleteFile(new File(es.fileFullName));
 				tableFiles.put(removeSpace(v.getVertexLabel()), es);
+				
+				if (config.targetIsCSV()) {
+					final String inputFileName = 
+							config.getFullTargetFilePrefix() + removeSpace(v.getVertexLabel() + "_Node") + config.getDataFileExt();
+					
+					writeGraphListFile(mdfm.getGraphListFile(), inputFileName, v);
+				}
 			}
 			//If the target file is full. 
 			if (mdfm.isDataFileFull(es.fileFullName)) {
@@ -455,6 +473,48 @@ public class LoadFileImporter extends
 		return 0;
 	}
 
+	
+	protected void createGraphListFile () {
+		final String listFile =	mrManager.getDirAndFilesMgr().getGraphListFile();
+		File file = new File(listFile);
+		try {
+			if (file.exists()) {
+				file.delete();
+				file.createNewFile();
+			} else {
+				file.createNewFile();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	protected void writeGraphListFile (String listFile, String inputFile, Object gInstance) {
+		File file = new File(listFile);
+		try {
+			if (file.exists()) {
+				 FileWriter fw = new FileWriter(file, true);
+				 BufferedWriter writer = new BufferedWriter(fw);
+				 StringBuffer sb = new StringBuffer();
+				 if (gInstance instanceof Vertex) {
+					 Vertex v = (Vertex) gInstance;
+					 sb.append("--nodes:")
+					 .append(v.getVertexLabel());
+				 } else if (gInstance instanceof Edge) {
+					 Edge e = (Edge) gInstance;
+					 sb.append("--relationships:")
+					 .append(e.getEdgeLabel());
+				 }
+				 sb.append(" ${base_dir}")
+				 .append(inputFile);
+				 writer.write(" \\\n" + sb.toString());
+
+				 writer.close();
+			} 
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 //	public int importVertex(Vertex e, List<Record> records) {
 //		return 0;
 //	}

@@ -40,8 +40,9 @@ import com.cubrid.cubridmigration.core.engine.exception.NormalMigrationException
 import com.cubrid.cubridmigration.cubrid.stmt.handler.DefaultHandler;
 import com.cubrid.cubridmigration.cubrid.stmt.handler.SetterHandler;
 import com.cubrid.cubridmigration.graph.stmt.handler.GraphDateHandler;
+import com.cubrid.cubridmigration.graph.stmt.handler.GraphDoubleHandler;
+import com.cubrid.cubridmigration.graph.stmt.handler.GraphFloatHandler;
 import com.cubrid.cubridmigration.graph.stmt.handler.GraphIntHandler;
-import com.cubrid.cubridmigration.graph.stmt.handler.GraphNumberHandler;
 import com.cubrid.cubridmigration.graph.stmt.handler.GraphStringHandler;
 
 /**
@@ -69,8 +70,14 @@ public class GraphParameterSetter {
 		GraphStringHandler stringHandler = new GraphStringHandler();
 		handlerMap.put("string", stringHandler);
 		
-		GraphNumberHandler numberHandler = new GraphNumberHandler();
-		handlerMap.put("float", numberHandler);
+		GraphFloatHandler floatHandler = new GraphFloatHandler();
+		handlerMap.put("float", floatHandler);
+		
+		GraphDoubleHandler doubleHandler = new GraphDoubleHandler();
+		handlerMap.put("double", doubleHandler);
+		handlerMap.put("number", doubleHandler);
+		handlerMap.put("numeric", doubleHandler);
+		handlerMap.put("decimal", doubleHandler);
 	}
 
 	/**

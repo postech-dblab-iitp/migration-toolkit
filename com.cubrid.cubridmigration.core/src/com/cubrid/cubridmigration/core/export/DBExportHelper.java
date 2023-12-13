@@ -468,7 +468,7 @@ public abstract class DBExportHelper implements
 	 */
 	public abstract String getPagedSelectSQL(String sql, long pageSize, long exportedRecords, PK pk);
 
-	public String getPagedSelectSQL(Vertex v, String sql, long rows, long exportedRecords, PK pk) {
+	public String getPagedSelectSQLForVertexCSV(Vertex v, String sql, long rows, long exportedRecords, PK pk) {
 		String cleanSql = sql.toUpperCase().trim();
 		
 		String editedQuery = editQueryForVertexCSV(v, sql);
@@ -523,7 +523,7 @@ public abstract class DBExportHelper implements
 		return buf.toString(); 
 	}
 	
-	public String getPagedSelectSQL(Edge e, String sql, long rows, long exportedRecords, PK pk) {
+	public String getPagedSelectSQLForEdgeCSV(Edge e, String sql, long rows, long exportedRecords, PK pk, boolean hasMultiSchema) {
 		String cleanSql = sql.toUpperCase().trim();
 		
 		String editedQuery = editQueryForJoinTableEdge(e, cleanSql);
@@ -535,6 +535,9 @@ public abstract class DBExportHelper implements
 		
 		Pattern pattern2 = Pattern.compile("ORDER\\s+BY", Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
 		Matcher matcher2 = pattern2.matcher(editedQuery);
+		
+		Pattern pattern3 = Pattern.compile("FOR ORDERBY_NUM\\(\\)", Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
+		Matcher matcher3 = pattern3.matcher(editedQuery);
 		
 		if (matcher.find()) {
 			//End with group by 
@@ -575,6 +578,10 @@ public abstract class DBExportHelper implements
 		buf.append(" BETWEEN ").append(exportedRecords + 1L);
 		buf.append(" AND ").append(exportedRecords + rows);
 
+		if (hasMultiSchema && matcher3.find()) {
+			return buf.toString().replaceAll("for orderby_num\\(\\)", "");
+		}
+		
 		return buf.toString();
 	}
 	
@@ -733,6 +740,31 @@ public abstract class DBExportHelper implements
 			dupEndVertexName = endVertexName;
 		}
 		
+		StringBuilder sVertexOrderby = new StringBuilder();
+		StringBuilder eVertexOrderby = new StringBuilder();
+		
+		PK pk = e.getStartVertex().getPK();
+		if (pk != null) {
+			// if it has a pk, a pk scan is better than full range scan
+			for (String pkCol : pk.getPkColumns()) {
+				if (sVertexOrderby.length() > 0) {
+					sVertexOrderby.append(", ");
+				}
+				sVertexOrderby.append(addDoubleQuote(pkCol));
+			}
+		}
+		
+		pk = e.getEndVertex().getPK();
+		if (pk != null) {
+			// if it has a pk, a pk scan is better than full range scan
+			for (String pkCol : pk.getPkColumns()) {
+				if (eVertexOrderby.length() > 0) {
+					eVertexOrderby.append(", ");
+				}
+				eVertexOrderby.append(addDoubleQuote(pkCol));
+			}
+		}
+		
 		String edgeLabel = addDoubleQuote(e.getEdgeLabel().toUpperCase());
 		
 		Pattern startVertexIdPattern = Pattern.compile(addDoubleQuote(refColList.get(0)), Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
@@ -790,19 +822,26 @@ public abstract class DBExportHelper implements
 				buffer.append("FROM " + edgeLabel + ", " + "(SELECT ROWNUM as " + startIdCol + ", ");
 			}
 			
-			buffer.append(addDoubleQuote(e.getREFColumnNames(refColList.get(0))));
+			buffer.append(sVertexOrderby);
+			if (sVertexOrderby.indexOf(e.getfkCol2RefMapping().get(refColList.get(0))) == -1) {
+				buffer.append(", " + addDoubleQuote(e.getfkCol2RefMapping().get(refColList.get(0))));
+			}
 			
 			buffer.append(" from " + startVertexName + " order by ");
 			
-			buffer.append(addDoubleQuote(e.getREFColumnNames(refColList.get(0))));
+			buffer.append(sVertexOrderby);
 			
 			buffer.append(" for orderby_num()) as " + dupStartVertexName + ", (SELECT ROWNUM as " + endIdCol + ", ");
 			
-			buffer.append(addDoubleQuote(e.getREFColumnNames(refColList.get(1))));
+			buffer.append(eVertexOrderby);
+			if (eVertexOrderby.indexOf(e.getfkCol2RefMapping().get(refColList.get(1))) == -1 
+					&& e.getEndVertex().getColumnByName(refColList.get(1)) != null) {
+				buffer.append(", " + addDoubleQuote(e.getfkCol2RefMapping().get(refColList.get(1))));
+			}
 			
 			buffer.append(" from " + endVertexName + " order by ");
 			
-			buffer.append(addDoubleQuote(e.getREFColumnNames(refColList.get(1))));
+			buffer.append(eVertexOrderby);
 			
 			buffer.append(" for orderby_num()) as " + dupEndVertexName);
 			
@@ -820,21 +859,25 @@ public abstract class DBExportHelper implements
 		
 		whereBuffer.append(addDoubleQuote(refColList.get(0)));
 		
-		whereBuffer.append(" and " + dupEndVertexName + ".");
-		
-		whereBuffer.append(addDoubleQuote(e.getfkCol2RefMapping().get(refColList.get(1))));
-		
-		whereBuffer.append(" = " + edgeLabel + ".");
-		
-		whereBuffer.append(addDoubleQuote(refColList.get(1)));
+		if (e.getEndVertex().getColumnByName(refColList.get(1)) != null) {
+			whereBuffer.append(" and " + dupEndVertexName + ".");
+			
+			whereBuffer.append(addDoubleQuote(e.getfkCol2RefMapping().get(refColList.get(1))));
+			
+			whereBuffer.append(" = " + edgeLabel + ".");
+			
+			whereBuffer.append(addDoubleQuote(refColList.get(1)));			
+		}
 		
 		whereBuffer.append(" order by " + edgeLabel + ".");
 		
 		whereBuffer.append(addDoubleQuote(refColList.get(0)));
 		
-		whereBuffer.append(", " + edgeLabel + ".");
-		
-		whereBuffer.append(addDoubleQuote(refColList.get(1)));
+		if (e.getEndVertex().getColumnByName(refColList.get(1)) != null) {
+			whereBuffer.append(", " + edgeLabel + ".");
+			
+			whereBuffer.append(addDoubleQuote(refColList.get(1)));
+		}
 		
 		originalString.append(whereBuffer.toString());
 		
@@ -843,7 +886,7 @@ public abstract class DBExportHelper implements
 		return editString;
 	}
 	
-	private String addDoubleQuote(String str) {
+	public String addDoubleQuote(String str) {
 		return "\"" + str + "\"";
 	}
 	
@@ -988,13 +1031,167 @@ public abstract class DBExportHelper implements
 		}
 	}
 
-	public String getPagedFkRecords(Edge e, String sql, long realPageCount,
-			long totalExported) {
+	public String getFkRecordCounterSql(Edge e, Map<String, String> fkMapping) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	public String getPagedFkRecords(Edge e, String sql, long rows, long exportedRecords, boolean hasMultiSchema) {
+		String cleanSql = sql.toUpperCase().trim();
+		
+		String editedQuery = editQueryForFk(e, cleanSql);
+		
+		StringBuilder buf = new StringBuilder(editedQuery.trim());
+
+		Pattern pattern = Pattern.compile("GROUP\\s+BY", Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
+		Matcher matcher = pattern.matcher(editedQuery); 
+		
+		Pattern pattern2 = Pattern.compile("ORDER\\s+BY", Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
+		Matcher matcher2 = pattern2.matcher(editedQuery);
+		
+		Pattern pattern3 = Pattern.compile("FOR ORDERBY_NUM\\(\\)", Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
+		Matcher matcher3 = pattern3.matcher(editedQuery);
+		
+		if (matcher.find()) {
+			//End with group by 
+			if (cleanSql.indexOf("HAVING") < 0) {
+				buf.append(" HAVING ");
+			} else {
+				buf.append(" AND ");
+			}
+			buf.append(" GROUPBY_NUM() ");
+		} else if (matcher2.find()) {
+			//End with order by 
+			buf.append(" FOR ORDERBY_NUM() ");
+		} else {
+			StringBuilder orderby = new StringBuilder();
+//			if (pk != null) {
+//				// if it has a pk, a pk scan is better than full range scan
+//				for (String pkCol : pk.getPkColumns()) {
+//					if (orderby.length() > 0) {
+//						orderby.append(", ");
+//					}
+//					orderby.append("\"").append(pkCol).append("\"");
+//				}
+//			}
+//			if (orderby.length() > 0) {
+//				buf.append(" ORDER BY ");
+//				buf.append(orderby);
+//				buf.append(" FOR ORDERBY_NUM() ");
+//			} else {
+//				if (cleanSql.indexOf("WHERE") < 0) {
+//					buf.append(" WHERE");
+//				} else {
+//					buf.append(" AND");
+//				}
+//				buf.append(" ROWNUM ");
+//			}
+		}
+
+		buf.append(" BETWEEN ").append(exportedRecords + 1L);
+		buf.append(" AND ").append(exportedRecords + rows);
+
+		if (hasMultiSchema && matcher3.find()) {
+			return buf.toString().replaceAll("for orderby_num\\(\\)", "");
+		}
+		
+		return buf.toString();
+	}
+	
+	private String editQueryForFk(Edge e, String sql) {
+		Map<String, String> fkMapping = e.getfkCol2RefMapping();
+		List<String> keySet = e.getFKColumnNames();
+		
+		String startVertexName;
+		String endVertexName;
+		
+		if (e.getStartVertexName().equals(e.getEndVertexName())) {
+			startVertexName = e.getStartVertexName() + "_1";
+			endVertexName = e.getEndVertexName() + "_2";
+		} else {
+			startVertexName = e.getStartVertexName();
+			endVertexName = e.getEndVertexName();
+		}
+		
+		String fkCol = keySet.get(0);
+		String refCol = fkMapping.get(keySet.get(0));
+		
+		StringBuilder sVertexOrderby = new StringBuilder();
+		StringBuilder eVertexOrderby = new StringBuilder();
+		
+		PK pk = e.getStartVertex().getPK();
+		if (pk != null) {
+			// if it has a pk, a pk scan is better than full range scan
+			for (String pkCol : pk.getPkColumns()) {
+				if (sVertexOrderby.length() > 0) {
+					sVertexOrderby.append(", ");
+				}
+				sVertexOrderby.append(pkCol);
+			}
+		}
+		
+		pk = e.getEndVertex().getPK();
+		if (pk != null) {
+			// if it has a pk, a pk scan is better than full range scan
+			for (String pkCol : pk.getPkColumns()) {
+				if (eVertexOrderby.length() > 0) {
+					eVertexOrderby.append(", ");
+				}
+				eVertexOrderby.append(pkCol);
+			}
+		}
+		
+		StringBuffer buffer = new StringBuffer();
+		buffer.append("SELECT ");
+		buffer.append(startVertexName + ".\":START_ID(" + e.getStartVertexName() + ")\"");
+		buffer.append(", ");
+		buffer.append(endVertexName + ".\":END_ID(" + e.getEndVertexName() + ")\"");
+		
+		buffer.append(" FROM ");
+		
+		buffer.append("(SELECT ROWNUM as \":START_ID(" + e.getStartVertexName() + ")\", ");
+		buffer.append(sVertexOrderby);
+		if (sVertexOrderby.indexOf(fkCol) == -1) {
+			buffer.append(", " + fkCol);
+		}
+		buffer.append(" FROM ");
+		buffer.append(e.getStartVertexName());
+		buffer.append(" order by ");
+		buffer.append(sVertexOrderby);
+		buffer.append(" for orderby_num()) as ");
+		buffer.append(startVertexName);
+		buffer.append(", ");
+		
+		buffer.append("(SELECT ROWNUM as \":END_ID(" + e.getEndVertexName() + ")\", ");
+		buffer.append(eVertexOrderby);
+		if (eVertexOrderby.indexOf(refCol) == -1) {
+			buffer.append(", " + refCol);
+		}
+		buffer.append(" FROM ");
+		buffer.append(e.getEndVertexName());
+		buffer.append(" order by ");
+		buffer.append(eVertexOrderby);
+		buffer.append(" for orderby_num()) as ");
+		buffer.append(endVertexName);
+		
+		buffer.append(" where ");
+		buffer.append(startVertexName + "." + fkCol);
+		buffer.append(" = ");
+		buffer.append(endVertexName + "." + refCol);
+		
+		buffer.append(" order by " + startVertexName + "." + fkCol);
+		
+		return buffer.toString();
+	}
+
+	public String getPagedSelectSQL(Vertex v, String sql, long realPageCount,
+			long totalExported, PK pk) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public String getFkRecordCounterSql(Edge e, Map<String, String> fkMapping) {
+	public String getPagedSelectSQL(Edge e, String sql, long realPageCount,
+			long totalExported, PK pk) {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -455,7 +455,7 @@ public abstract class AbstractJDBCSchemaFetcher implements
 					fkName = newFkName;
 					foreignKey = factory.createFK(table);
 					foreignKey.setName(fkName);
-					final String fkTableName = rs.getString("PKTABLE_NAME");
+					String fkTableName = rs.getString("PKTABLE_NAME");
 					//Ignore invalid foreign key.
 					if (StringUtils.isEmpty(fkTableName)) {
 						continue;
@@ -1194,5 +1194,61 @@ public abstract class AbstractJDBCSchemaFetcher implements
 	 */
 	public static final boolean isYes(String value) {
 		return "YES".equalsIgnoreCase(value);
+	}
+	
+	/**
+	 * setImportedKeysCount
+	 *
+	 * @param conn
+	 * @param catalog
+	 * @param schema
+	 * @param table
+	 * @throws SQLException
+	 */
+	protected void setImportedKeysCount(final Connection conn, final Catalog catalog, final Schema schema,
+			Table table) throws SQLException {
+
+		int importedKeysCount = 0;
+
+		ResultSet rs = null;
+		try {
+			rs = conn.getMetaData().getImportedKeys(getCatalogName(catalog), getSchemaName(schema), table.getName());
+			while (rs.next()) {
+				importedKeysCount++;
+			}
+			table.setImportedKeysCount(importedKeysCount);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			Closer.close(rs);
+		}
+	}
+
+	/**
+	 * setExportedKeysCount
+	 *
+	 * @param conn
+	 * @param catalog
+	 * @param schema
+	 * @param table
+	 * @throws SQLException
+	 */
+	protected void setExportedKeysCount(final Connection conn, final Catalog catalog, final Schema schema,
+			Table table) throws SQLException {
+
+		int exportedKeysCount = 0;
+
+		ResultSet rs = null;
+		try {
+			rs = conn.getMetaData().getExportedKeys(getCatalogName(catalog), getSchemaName(schema), table.getName());
+			while (rs.next()) {
+				exportedKeysCount++;
+			}
+			table.setExportedKeysCount(exportedKeysCount);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			Closer.close(rs);
+		}
 	}
 }

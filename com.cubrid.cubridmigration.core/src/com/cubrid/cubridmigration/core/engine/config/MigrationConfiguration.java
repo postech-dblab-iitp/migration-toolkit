@@ -131,6 +131,11 @@ public class MigrationConfiguration {
 	private static final String[] DATA_FORMAT_EXT = new String[] { ".txt", ".csv", ".sql", ".xls", "", "" };
 	private static final String[] DATA_FORMAT_LABEL = new String[] { "LoadDB", "CSV", "SQL", "XLS" };
 
+	public static final int GRAPH_SUBTYPE_TURBOGRAPH = 1;
+	public static final int GRAPH_SUBTYPE_NEO4J = 2;
+	
+	public int graphSubTypeForCSV = GRAPH_SUBTYPE_TURBOGRAPH;
+	
 	/**
 	 * Retrieves all fomrat exts
 	 * 
@@ -2366,6 +2371,53 @@ public class MigrationConfiguration {
 		return table;
 	}
 
+	public Table getSrcTableSchemaForEdge(String schema, String name) {
+		
+
+		if (!(expSQLTables.isEmpty())) {
+			Table table = null;
+
+			List<Table> tblList = getSrcSQLSchema2Exp();
+			
+			for (Table tbl : tblList) {
+				if (tbl.getName().equals(name)) {
+					table = tbl;
+					break;
+				}
+			}
+			
+			return table;
+		}
+		
+		if (srcCatalog == null) {
+			return null;
+		}
+		if (srcCatalog.getSchemas().isEmpty()) {
+			return null;
+		}
+		final Schema sc;
+		if (schema == null || schema.isEmpty()) {
+			//retrieves default schema.
+			sc = srcCatalog.getSchemas().get(0);
+		} else {
+			sc = srcCatalog.getSchemaByName(schema);
+		}
+		if (sc == null) {
+			return null;
+		}
+		Table table = sc.getTableByName(name);
+		if (table == null) {
+			table = getSrcSQLSchema(name);
+		}
+		
+		if (table == null) {
+			table = sc.getTableByFKName(name);
+		}
+		
+		return table;
+	}
+
+	
 	/**
 	 * getSourceView
 	 * 
@@ -3650,5 +3702,12 @@ public class MigrationConfiguration {
 	
 	public String getTableNameFromOid(String oid) {
 		return this.oidMap.get(oid);
+	
+	public void setGraphSubTyteForCSV(int type) {
+		this.graphSubTypeForCSV = type;
+	}
+	
+	public int getGraphSubTyteForCSV() {
+		return this.graphSubTypeForCSV;
 	}
 }

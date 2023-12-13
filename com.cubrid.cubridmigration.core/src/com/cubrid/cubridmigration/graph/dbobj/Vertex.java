@@ -35,6 +35,7 @@ public class Vertex extends DBObject {
 	private String condition;
 	private String ddl;
 	
+	private long oid;
 	private PK pk;
 	
 	public Vertex() {
@@ -167,6 +168,14 @@ public class Vertex extends DBObject {
 	
 	public void setDDL(String ddl) {
 		this.ddl = ddl;
+	}
+
+	public long getOid() {
+		return oid;
+	}
+
+	public void setOid(long oid) {
+		this.oid = oid;
 	}
 	
 	public void setPK(PK pk) {

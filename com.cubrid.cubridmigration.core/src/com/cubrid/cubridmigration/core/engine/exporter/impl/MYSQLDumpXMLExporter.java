@@ -305,4 +305,10 @@ public class MYSQLDumpXMLExporter extends
 			RecordExportedListener oneNewRecord) {
 		
 	}
+
+	public void exportCDCObject(Vertex vertex, Edge edge,
+			RecordExportedListener mrManager) {
+		// TODO Auto-generated method stub
+		
+	}
 }

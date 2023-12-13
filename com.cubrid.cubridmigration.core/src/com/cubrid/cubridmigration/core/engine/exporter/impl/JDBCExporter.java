@@ -29,6 +29,9 @@
  */
 package com.cubrid.cubridmigration.core.engine.exporter.impl;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -469,9 +472,19 @@ public class JDBCExporter extends
 				if (LOG.isDebugEnabled()) {
 					LOG.debug("[SQL]PAGINATED=" + pagesql);
 				}
-				long recordCountOfQuery = graphHandleSQL(conn, pagesql, v, sTable,
-						records, newRecordProcessor);
-				totalExported = totalExported + recordCountOfQuery;
+				
+				long recordCountOfQuery = 0L;
+				
+				if (config.isCdc()) {
+					recordCountOfQuery = cdcHandleRecord(conn, pagesql, v, sTable,
+							records, newRecordProcessor);
+					totalExported = totalExported + recordCountOfQuery;
+				} else {
+					recordCountOfQuery = graphHandleSQL(conn, pagesql, v, sTable,
+							records, newRecordProcessor);
+					totalExported = totalExported + recordCountOfQuery;
+				}
+				
 				//Stop fetching condition: no result;less then fetching count;great then total count
 				if (isLatestPage(sTable, totalExported, recordCountOfQuery)) {
 					break;
@@ -508,6 +521,67 @@ public class JDBCExporter extends
 			newRecordProcessor.endExportTable(e.getEdgeLabel());
 		}
 	}
+	
+	protected List<Record> createGraphNewRecordForEdgeCDC(Edge e, List<Column> cols, Connection conn) {
+		try {
+			List<Record> recList = new ArrayList<Record>();
+			
+			String cubridEnv = System.getenv("CUBRID");
+			String cdcOutputDir = cubridEnv + File.separator + "cdc_output";
+			File dir = new File(cdcOutputDir);
+			
+			String[] fileNameArr = dir.list();
+			
+			for (String fileName : fileNameArr) {
+				Record rec = new Record();
+				
+				BufferedReader reader = new BufferedReader(new FileReader(cdcOutputDir + File.separator + fileName));
+				
+				String line = reader.readLine();
+				String oid = null;
+				
+				if (line != null) {
+					String[] valueArr = line.split(":");
+					
+					oid = valueArr[1];
+				} else {
+					return null;
+				}
+				
+				LOG.info("edge Label : " + e.getEdgeLabel());
+				LOG.info("edge oid Value : " + e.getOid());
+				LOG.info("file oid Value : " + oid);
+				
+				String longToString = String.valueOf(e.getOid());
+				
+				if (oid.equals(longToString)) {
+					
+					LOG.info("each of oid is same");
+					
+					while ((line = reader.readLine()) != null) {
+						String[] colVal = line.split(":");
+						
+						Column col = cols.get(Integer.parseInt(colVal[0]));
+						String value = colVal[1];
+						
+						rec.addColumnValue(col, value);
+					}
+					
+					recList.add(rec);
+				} else {
+					LOG.info("oid is not same");
+				}
+			}
+			
+			return recList;
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			System.out.println("exception from export file data part");
+		}
+		
+		return null;
+	}
+	
 	protected void exportGraphEdgeRecordForCSV(Edge e, RecordExportedListener newRecordProcessor) { 
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("[IN]exportGraphVertexRecords()");
@@ -671,9 +745,20 @@ public class JDBCExporter extends
 				if (LOG.isDebugEnabled()) {
 					LOG.debug("[SQL]PAGINATED=" + pagesql);
 				}
-				long recordCountOfQuery = graphEdgeHandleSQL(conn, pagesql, e, sTable,
-						records, newRecordProcessor);
-				totalExported = totalExported + recordCountOfQuery;
+				
+				long recordCountOfQuery;
+				
+				if (config.isCdc()) {
+					recordCountOfQuery = cdcHandleRecord(conn, pagesql, e, sTable,
+							records, newRecordProcessor);
+					totalExported = totalExported + recordCountOfQuery;					
+				} else {
+					recordCountOfQuery = graphEdgeHandleSQL(conn, pagesql, e, sTable,
+							records, newRecordProcessor);
+					totalExported = totalExported + recordCountOfQuery;					
+				}
+				
+				
 				//Stop fetching condition: no result;less then fetching count;great then total count
 				if (isLatestPage(sTable, totalExported, recordCountOfQuery)) {
 					break;
@@ -718,11 +803,118 @@ public class JDBCExporter extends
 				records.add(record);
 				handleGraphCommit(vertex.getVertexLabel(), newRecsHandler, sTable, records);
 			}
+			
 			return totalExported;
 		} finally {
 			Closer.close(joc.getRs());
 			Closer.close(joc.getStmt());
 		}
+	}
+	
+	protected long cdcHandleRecord(Connection conn, String sql, Vertex vertex, Table sTable, List<Record> records,
+			RecordExportedListener newRecsHandler) {
+//		JDBCObjContainer joc = new JDBCObjContainer();
+//		joc.setConn(conn);
+//		try {
+//			long totalExported = 0;
+//			//Execute SQL with retry
+//			joc = getResultSet(sql, null, joc);
+//			if (joc.getRs() == null) {
+//				return totalExported;
+//			}
+//			while (nextRecord(joc.getRs())) {
+//				if (interrupted) {
+//					return totalExported;
+//				}
+//				totalExported++;
+//				Record record;
+//				
+//				if (config.targetIsCSV()) {
+//					record = createGraphNewRecordForVertexCSV(vertex, vertex.getColumnList(), joc.getRs());
+//				} else if (config.isCdc()) { 
+//					record = createGraphNewRecordForVertexCDC(vertex, vertex.getColumnList(), conn);
+//				} else {
+//					record = createGraphNewRecord(sTable, vertex.getColumnList(), joc.getRs());
+//				}
+//				
+//				if (record == null) {
+//					continue;
+//				}
+//				records.add(record);
+//				handleGraphCommit(vertex.getVertexLabel(), newRecsHandler, sTable, records);
+//			}
+//			
+//			return totalExported;
+//		} finally {
+//			Closer.close(joc.getRs());
+//			Closer.close(joc.getStmt());
+//		}
+		
+		long totalExported = 0;
+		List<Record> recordList;
+		
+		recordList = createGraphNewRecordForVertexCDC(vertex, vertex.getColumnList(), conn);
+		
+		if (recordList != null) {
+			totalExported = recordList.size();
+		}
+		
+		records.addAll(recordList);
+		
+		return totalExported;
+	}
+	
+	protected long cdcHandleRecord(Connection conn, String sql, Edge edge, Table sTable, List<Record> records,
+			RecordExportedListener newRecsHandler) {
+//		JDBCObjContainer joc = new JDBCObjContainer();
+//		joc.setConn(conn);
+//		try {
+//			long totalExported = 0;
+//			//Execute SQL with retry
+//			joc = getResultSet(sql, null, joc);
+//			if (joc.getRs() == null) {
+//				return totalExported;
+//			}
+//			while (nextRecord(joc.getRs())) {
+//				if (interrupted) {
+//					return totalExported;
+//				}
+//				totalExported++;
+//				Record record;
+//				
+//				if (config.targetIsCSV()) {
+//					record = createGraphNewRecordForVertexCSV(vertex, vertex.getColumnList(), joc.getRs());
+//				} else if (config.isCdc()) { 
+//					record = createGraphNewRecordForVertexCDC(vertex, vertex.getColumnList(), conn);
+//				} else {
+//					record = createGraphNewRecord(sTable, vertex.getColumnList(), joc.getRs());
+//				}
+//				
+//				if (record == null) {
+//					continue;
+//				}
+//				records.add(record);
+//				handleGraphCommit(vertex.getVertexLabel(), newRecsHandler, sTable, records);
+//			}
+//			
+//			return totalExported;
+//		} finally {
+//			Closer.close(joc.getRs());
+//			Closer.close(joc.getStmt());
+//		}
+		
+		long totalExported = 0;
+		List<Record> recordList;
+		
+		recordList = createGraphNewRecordForEdgeCDC(edge, edge.getColumnList(), conn);
+		
+		if (recordList != null) {
+			totalExported = recordList.size();
+		}
+		
+		records.addAll(recordList);
+		
+		return totalExported;
 	}
 	
 
@@ -773,7 +965,7 @@ public class JDBCExporter extends
 					continue;
 				}
 				Column sCol = st.getColumnByName(cc.getName());
-				Object value = srcDBExportHelper.getJdbcObject(rs, sCol);;
+				Object value = srcDBExportHelper.getJdbcObject(rs, sCol);
 				
 				// Tibero JDBC DATE TYPE Issue
 				if (sCol.getDataType().equals("DATE")) {
@@ -796,6 +988,66 @@ public class JDBCExporter extends
 			eventHandler.handleEvent(new MigrationErrorEvent(new NormalMigrationException(
 					"Transform table [" + st.getName() + "] record error.", e)));
 		}
+		return null;
+	}
+	
+	protected List<Record> createGraphNewRecordForVertexCDC(Vertex v, List<Column> cols, Connection conn) {
+		try {
+			List<Record> recList = new ArrayList<Record>();
+			
+			String cubridEnv = System.getenv("CUBRID");
+			String cdcOutputDir = cubridEnv + File.separator + "cdc_output";
+			File dir = new File(cdcOutputDir);
+			
+			String[] fileNameArr = dir.list();
+			
+			for (String fileName : fileNameArr) {
+				Record rec = new Record();
+				
+				BufferedReader reader = new BufferedReader(new FileReader(cdcOutputDir + File.separator + fileName));
+				
+				String line = reader.readLine();
+				String oid = null;
+				
+				if (line != null) {
+					String[] valueArr = line.split(":");
+					
+					oid = valueArr[1];
+				} else {
+					return null;
+				}
+//				
+//				LOG.info("vertex Label : " + v.getVertexLabel());
+//				LOG.info("vertex oid Value : " + v.getOid());
+//				LOG.info("file oid Value : " + oid);
+//				
+				String longToString = String.valueOf(v.getOid());
+				
+				if (oid.equals(longToString)) {
+					
+//					LOG.info("each of oid is same");
+					
+					while ((line = reader.readLine()) != null) {
+						String[] colVal = line.split(":");
+						
+						Column col = cols.get(Integer.parseInt(colVal[0]));
+						String value = colVal[1];
+						
+						rec.addColumnValue(col, value);
+					}
+					
+					recList.add(rec);
+				} else {
+//					LOG.info("oid is not same");
+				}
+			}
+			
+			return recList;
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			System.out.println("exception from export file data part");
+		}
+		
 		return null;
 	}
 	
@@ -930,5 +1182,75 @@ public class JDBCExporter extends
 		} else {
 			return (CUBRIDExportHelper) exportHelper;
 		}
+	}
+
+	public void exportCDCObject(Vertex vertex, Edge edge, RecordExportedListener newRecordProcessor) {
+		
+		LOG.info("vertex name: " + vertex.getVertexLabel());
+		
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("[IN]exportGraphVertexRecords()");
+		}
+		Table sTable = config.getSrcTableSchema(vertex.getOwner(), vertex.getTableName());
+		if (sTable == null) {
+			throw new NormalMigrationException("Table " + vertex.getVertexLabel() + " was not found.");
+		}
+		final PK srcPK = sTable.getPk();
+		Connection conn = connManager.getSourceConnection(); //NOPMD
+		try {
+			final DBExportHelper expHelper = getSrcDBExportHelper();
+			DBExportHelper graphExHelper =  getExportHelperType(expHelper);
+			PK pk = graphExHelper.supportFastSearchWithPK(conn) ? srcPK : null;
+			newRecordProcessor.startExportTable(vertex.getVertexLabel());
+			List<Record> records = new ArrayList<Record>();
+			long totalExported = 0L;
+			long intPageCount = config.getPageFetchCount();
+			String sql = graphExHelper.getGraphSelectSQL(vertex, config.targetIsCSV());
+			while (true) {
+				if (interrupted) {
+					return;
+				}
+				long realPageCount = intPageCount;
+				if (!config.isImplicitEstimate()) {
+					realPageCount = Math.min(sTable.getTableRowCount() - totalExported,
+							intPageCount);
+				}
+				String pagesql;
+				
+				if (config.targetIsCSV()) {
+					pagesql = graphExHelper.getPagedSelectSQL(vertex, sql, realPageCount, totalExported, pk);
+				} else {
+					pagesql = graphExHelper.getPagedSelectSQL(sql, realPageCount, totalExported, pk);
+				}
+				
+				if (LOG.isDebugEnabled()) {
+					LOG.debug("[SQL]PAGINATED=" + pagesql);
+				}
+				
+				long recordCountOfQuery = 0L;
+				
+				if (config.isCdc()) {
+					recordCountOfQuery = cdcHandleRecord(conn, pagesql, vertex, sTable,
+							records, newRecordProcessor);
+					totalExported = totalExported + recordCountOfQuery;
+				} else {
+					recordCountOfQuery = graphHandleSQL(conn, pagesql, vertex, sTable,
+							records, newRecordProcessor);
+					totalExported = totalExported + recordCountOfQuery;
+				}
+				
+				//Stop fetching condition: no result;less then fetching count;great then total count
+				if (isLatestPage(sTable, totalExported, recordCountOfQuery)) {
+					break;
+				}
+			}
+			if (!records.isEmpty()) {
+				newRecordProcessor.processRecords(vertex.getVertexLabel(), records);
+			}
+		} finally {
+			newRecordProcessor.endExportTable(vertex.getVertexLabel());
+			connManager.closeSrc(conn);
+		}
+		
 	}
 }

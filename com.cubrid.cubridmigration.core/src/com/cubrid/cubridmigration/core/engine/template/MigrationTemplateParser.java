@@ -376,6 +376,7 @@ public final class MigrationTemplateParser {
 			vertexElement.setAttribute("vertex_type", "" + vertex.getVertexType());
 			vertexElement.setAttribute("table_name", vertex.getTableName());
 			vertexElement.setAttribute("table_owner", vertex.getOwner());
+			vertexElement.setAttribute("table_oid", String.valueOf(vertex.getOid()));
 			
 			HashMap<String, String> properties = (HashMap) vertex.getVertexProperties();
 			List<Column> columnList = vertex.getColumnList();
@@ -422,35 +423,50 @@ public final class MigrationTemplateParser {
 			
 			edgeElement.setAttribute(TemplateTags.ATTR_LABEL, edge.getEdgeLabel());
 			edgeElement.setAttribute("edge_type", "" + edge.getEdgeType());
-			
 			edgeElement.setAttribute(TemplateTags.ATTR_START_VERTEX, edge.getStartVertexName());
 			edgeElement.setAttribute(TemplateTags.ATTR_END_VERTEX, edge.getEndVertexName());
+			edgeElement.setAttribute("table_oid", String.valueOf(edge.getOid()));
 			
 			ArrayList<Column> columnList = (ArrayList<Column>) edge.getColumnList();
 			HashMap<String, String> properties = (HashMap) edge.getEdgeProperties();
 			TreeMap<String, String> fkRefers = (TreeMap<String, String>) edge.getfkCol2RefMapping();
 			
-			if (!properties.isEmpty() || properties != null) {
-				Element propertiesElement = createElement(doc, edges, "properties");
+			Element columnsElement = createElement(doc, edgeElement, "properties");
+			
+			for (Column col : columnList) {
+				String colName = col.getName();
+				String colType = col.getDataType();
 				
-				Iterator<String> propertyIter = properties.keySet().iterator();
+				Element property = createElement(doc, columnsElement, "edge_property");
 				
-				while (propertyIter.hasNext()) {
-					
-					Element property = createElement(doc, propertiesElement, "edge_property");
-					String key = propertyIter.next();
-					
-					String typeValue = properties.get(key);
-					
-					property.setAttribute(TemplateTags.ATTR_NAME, key);
-					property.setAttribute(TemplateTags.ATTR_TYPE, properties.get(key));
-					for (Column col : columnList) {
-						if (col.getName().equals(key)) {
-							property.setAttribute("graph_type", col.getGraphDataType());
-						}
-					}
-				}
+				property.setAttribute(TemplateTags.ATTR_NAME, colName);
+				property.setAttribute(TemplateTags.ATTR_TYPE, colType);
+				property.setAttribute("graph_type", col.getGraphDataType());
 			}
+			
+//			if (!properties.isEmpty() || properties != null) {
+//				edgeElement.setAttribute("table_oid", String.valueOf(edge.getOid()));
+//				
+//				Element propertiesElement = createElement(doc, edges, "properties");
+//				
+//				Iterator<String> propertyIter = properties.keySet().iterator();
+//				
+//				while (propertyIter.hasNext()) {
+//					
+//					Element property = createElement(doc, propertiesElement, "edge_property");
+//					String key = propertyIter.next();
+//					
+//					String typeValue = properties.get(key);
+//					
+//					property.setAttribute(TemplateTags.ATTR_NAME, key);
+//					property.setAttribute(TemplateTags.ATTR_TYPE, properties.get(key));
+//					for (Column col : columnList) {
+//						if (col.getName().equals(key)) {
+//							property.setAttribute("graph_type", col.getGraphDataType());
+//						}
+//					}
+//				}
+//			}
 			
 			if (!fkRefers.isEmpty() || fkRefers != null) {
 				Element fkRefersElement = createElement(doc, edges, "fks");

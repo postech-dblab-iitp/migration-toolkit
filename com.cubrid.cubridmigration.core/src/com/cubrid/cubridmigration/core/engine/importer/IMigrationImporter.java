@@ -140,5 +140,6 @@ public interface IMigrationImporter {
 	public int importEdgeHeader(Edge e);
 	
     public int importEdge(Edge e, List<Record> records);
-
+    
+    public int importCDCObject(Vertex vertex, Edge e, List<Record> records);
 }

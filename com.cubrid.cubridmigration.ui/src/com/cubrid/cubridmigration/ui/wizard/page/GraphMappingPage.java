@@ -176,7 +176,6 @@ public class GraphMappingPage extends MigrationWizardPage {
 				ArrayList<Edge> allEdgeList = (ArrayList<Edge>) gdbDict.getMigratedEdgeList();
 				ArrayList<Edge> currentEdgeList = new ArrayList<Edge>();
 				
-				
 				for (Edge edge : allEdgeList) {
 					if (edge.getStartVertexName().equals(startVertex.getVertexLabel())
 							&& edge.getEndVertexName().equals(endVertex.getVertexLabel())) {

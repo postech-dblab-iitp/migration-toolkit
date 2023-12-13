@@ -411,4 +411,9 @@ public class JDBCImporter extends
 		return 0;
 	}
 
+	public int importCDCObject(Vertex vertex, Edge e, List<Record> records) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

@@ -53,6 +53,7 @@ import com.cubrid.cubridmigration.core.engine.task.exp.CSVExportTask;
 import com.cubrid.cubridmigration.core.engine.task.exp.CSVTableSchemaExportTask;
 import com.cubrid.cubridmigration.core.engine.task.exp.FKExportTask;
 import com.cubrid.cubridmigration.core.engine.task.exp.FunctionExportTask;
+import com.cubrid.cubridmigration.core.engine.task.exp.GraphCDCObjectExportTask;
 import com.cubrid.cubridmigration.core.engine.task.exp.GraphEdgeExportTask;
 import com.cubrid.cubridmigration.core.engine.task.exp.GraphVertexExportTask;
 import com.cubrid.cubridmigration.core.engine.task.exp.IndexExportTask;
@@ -70,6 +71,7 @@ import com.cubrid.cubridmigration.core.engine.task.imp.CleanDBTask;
 import com.cubrid.cubridmigration.core.engine.task.imp.ExecuteSQLTask;
 import com.cubrid.cubridmigration.core.engine.task.imp.FKImportTask;
 import com.cubrid.cubridmigration.core.engine.task.imp.FunctionImportTask;
+import com.cubrid.cubridmigration.core.engine.task.imp.GraphCDCRecordsImportTask;
 import com.cubrid.cubridmigration.core.engine.task.imp.GraphEdgeHeaderImportTask;
 import com.cubrid.cubridmigration.core.engine.task.imp.GraphEdgeImportTask;
 import com.cubrid.cubridmigration.core.engine.task.imp.GraphVertexHeaderImportTask;
@@ -545,6 +547,18 @@ public class MigrationTaskFactory {
 	public ImportTask createVertexCSVHeaderTask(Vertex v) {
 		ImportTask task = new GraphVertexHeaderImportTask(v);
 		initImportTask(task);
+		return task;
+	}
+	
+	public ImportTask createCDCRecordsTask(Vertex v, Edge e, List<Record> vRecords) {
+		ImportTask task = new GraphCDCRecordsImportTask(v, e, vRecords);
+		initImportTask(task);
+		return task;
+	}
+	
+	public GraphCDCObjectExportTask createCDCObjectTask(Vertex v, Edge e) {
+		GraphCDCObjectExportTask task = new GraphCDCObjectExportTask(v, e, context);
+		initExportTask(task, true);
 		return task;
 	}
 }

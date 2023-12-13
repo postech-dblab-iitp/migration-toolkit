@@ -17,6 +17,8 @@ public class Edge {
     public static final int RECURSIVE_TYPE = 4;
     public static final int CUSTOM_TYPE = 5;
     
+    private long oid;
+    
 	private int id;
 	
 	//GDB isSelected for check page
@@ -189,5 +191,13 @@ public class Edge {
 			
 			edgeProperties.put(col.getName(), col.getDataType());
 		}
+	}
+
+	public long getOid() {
+		return oid;
+	}
+
+	public void setOid(long oid) {
+		this.oid = oid;
 	}
 }

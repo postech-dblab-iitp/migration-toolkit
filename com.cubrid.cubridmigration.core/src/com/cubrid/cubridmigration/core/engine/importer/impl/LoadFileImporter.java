@@ -468,6 +468,11 @@ public class LoadFileImporter extends
 		return label.trim().replaceAll(" ", "_"); 
 	}
 
+	public int importCDCObject(Vertex vertex, Edge e, List<Record> records) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 	
 	protected void createGraphListFile () {
 		final String listFile =	mrManager.getDirAndFilesMgr().getGraphListFile();

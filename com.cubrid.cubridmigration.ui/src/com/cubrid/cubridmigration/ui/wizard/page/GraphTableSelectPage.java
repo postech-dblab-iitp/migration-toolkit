@@ -394,6 +394,8 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 			vertex.setTableName(table.getName());
 			vertex.setColumnList(table.getColumns());
 			
+			vertex.setOid(table.getOid());
+			
 			if (getMigrationWizard().getMigrationConfig().targetIsCSV()) {
 				Column idCol = new Column("id", vertex.getVertexLabel());
 				idCol.setDataType("ID");
@@ -450,6 +452,8 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 			startVertex.setTableName(table.getName());
 			startVertex.setColumnList(table.getColumns());
 			
+			startVertex.setOid(table.getOid());
+			
 			if (getMigrationWizard().getMigrationConfig().targetIsCSV()) {
 				Column idCol = new Column("id", startVertex.getVertexLabel());
 				idCol.setDataType("ID");
@@ -486,6 +490,7 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 						if (selectedTable.getName().equals(fk.getReferencedTableName())) {
 							migratedVertex.setVertexLabel(fk.getReferencedTableName());
 							migratedVertex.setColumnList(selectedTable.getColumns());
+							migratedVertex.setOid(selectedTable.getOid());
 							
 							if (gdbDict.getMigratedVertexByName(migratedVertex.getVertexLabel()) != null) {
 								gdbDict.addMigratedVertexList(migratedVertex);
@@ -531,6 +536,8 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 			startVertex.setTableName(table.getName());
 			startVertex.setColumnList(table.getColumns());
 			
+			startVertex.setOid(table.getOid());
+			
 			if (getMigrationWizard().getMigrationConfig().targetIsCSV()) {
 				Column idCol = new Column("id", startVertex.getVertexLabel());
 				idCol.setDataType("ID");
@@ -569,6 +576,8 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 							migratedVertex.setOwner(table.getOwner());
 							migratedVertex.setVertexLabel(fk.getReferencedTableName());
 							migratedVertex.setColumnList(selectedTable.getColumns());
+							
+							migratedVertex.setOid(table.getOid());
 							
 							if (gdbDict.getMigratedVertexByName(migratedVertex.getVertexLabel()) != null) {
 								gdbDict.addMigratedVertexList(migratedVertex);
@@ -653,6 +662,8 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 			edge.setEdgeLabel(table.getName());
             edge.setEdgeType(Edge.JOINTABLE_TYPE);
             
+            edge.setOid(table.getOid());
+            
             String col1 = fk1.getColumnNames().get(0);
             String col2 = fk2.getColumnNames().get(0);
             edge.addFKCol2Ref(col1, fk1.getRefColumns(col1));
@@ -682,6 +693,8 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 			startVertex.setVertexLabel(table.getName());
 			startVertex.setTableName(table.getName());
 			startVertex.setColumnList(table.getColumns());
+			
+			startVertex.setOid(table.getOid());
 			
 			if (getMigrationWizard().getMigrationConfig().targetIsCSV()) {
 				Column idCol = new Column("id", startVertex.getVertexLabel());

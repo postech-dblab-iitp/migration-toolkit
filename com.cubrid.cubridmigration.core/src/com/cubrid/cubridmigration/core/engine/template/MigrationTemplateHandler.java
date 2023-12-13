@@ -728,6 +728,7 @@ public final class MigrationTemplateHandler extends
 		vertex.setVertexType(Integer.parseInt(attr.getValue("vertex_type")));
 		vertex.setTableName(attr.getValue("table_name"));
 		vertex.setOwner(attr.getValue("table_owner"));
+		vertex.setOid(Long.parseLong(attr.getValue("table_oid")));
 		vertex.putVertexProperties(attr.getValue(TemplateTags.ATTR_NAME), attr.getValue(TemplateTags.ATTR_TYPE));
 		
 		targetVertex = vertex;
@@ -740,6 +741,8 @@ public final class MigrationTemplateHandler extends
 		
 		edge.setEdgeLabel(attr.getValue(TemplateTags.ATTR_LABEL));
 		edge.setEdgeType(Integer.parseInt(attr.getValue("edge_type")));
+		edge.setOid(Long.parseLong(attr.getValue("table_oid")));
+		
 		edge.putVertexProperties(attr.getValue(TemplateTags.ATTR_NAME), attr.getValue(TemplateTags.ATTR_TYPE));
 		
 		edge.setStartVertexName(attr.getValue(TemplateTags.ATTR_START_VERTEX));

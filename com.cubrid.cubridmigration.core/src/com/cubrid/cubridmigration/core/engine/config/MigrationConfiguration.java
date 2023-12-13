@@ -217,6 +217,10 @@ public class MigrationConfiguration {
 	//True by default
 	private boolean updateStatistics = true;
 
+	//cdc config
+	private boolean isCdc = false;
+	private Map<String, String> oidMap = new HashMap<String, String>();
+	
 	/**
 	 * Add a CSV file to exporting list.
 	 * 
@@ -3675,7 +3679,31 @@ public class MigrationConfiguration {
 	public void setGraphDict(GraphDictionary graphDict){
 		this.graphDict = graphDict;
 	}
+
+	public boolean isCdc() {
+		return isCdc;
+	}
+
+	public void setCdcOps(boolean isCdc) {
+		this.isCdc = isCdc;
+	}
+
+	public Map<String, String> getOidMap() {
+		return oidMap;
+	}
+
+	public void setOidMap(Map<String, String> oidMap) {
+		this.oidMap = oidMap;
+	}
 	
+	public void addOidMap(String oid, String tableName){
+		oidMap.put(oid, tableName);
+	}
+	
+	public String getTableNameFromOid(String oid) {
+		return this.oidMap.get(oid);
+	}
+		
 	public void setGraphSubTyteForCSV(int type) {
 		this.graphSubTypeForCSV = type;
 	}

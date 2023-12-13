@@ -174,6 +174,116 @@ public class CUBRIDExportHelper extends
 		return buf.toString(); 
 	}
 	
+	public String getPagedFkRecords(Edge e, String sql, long rows, long exportedRecords) {
+		String cleanSql = sql.toUpperCase().trim();
+		
+		String editedQuery = editQueryForFk(e, cleanSql);
+		
+		StringBuilder buf = new StringBuilder(editedQuery.trim());
+
+		Pattern pattern = Pattern.compile("GROUP\\s+BY", Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
+		Matcher matcher = pattern.matcher(editedQuery); 
+		
+		Pattern pattern2 = Pattern.compile("ORDER\\s+BY", Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
+		Matcher matcher2 = pattern2.matcher(editedQuery);
+		
+		if (matcher.find()) {
+			//End with group by 
+			if (cleanSql.indexOf("HAVING") < 0) {
+				buf.append(" HAVING ");
+			} else {
+				buf.append(" AND ");
+			}
+			buf.append(" GROUPBY_NUM() ");
+		} else if (matcher2.find()) {
+			//End with order by 
+			buf.append(" FOR ORDERBY_NUM() ");
+		} else {
+			StringBuilder orderby = new StringBuilder();
+//			if (pk != null) {
+//				// if it has a pk, a pk scan is better than full range scan
+//				for (String pkCol : pk.getPkColumns()) {
+//					if (orderby.length() > 0) {
+//						orderby.append(", ");
+//					}
+//					orderby.append("\"").append(pkCol).append("\"");
+//				}
+//			}
+//			if (orderby.length() > 0) {
+//				buf.append(" ORDER BY ");
+//				buf.append(orderby);
+//				buf.append(" FOR ORDERBY_NUM() ");
+//			} else {
+//				if (cleanSql.indexOf("WHERE") < 0) {
+//					buf.append(" WHERE");
+//				} else {
+//					buf.append(" AND");
+//				}
+//				buf.append(" ROWNUM ");
+//			}
+		}
+
+		buf.append(" BETWEEN ").append(exportedRecords + 1L);
+		buf.append(" AND ").append(exportedRecords + rows);
+
+		return buf.toString();
+	}
+	
+	private String editQueryForFk(Edge e, String sql) {
+		Map<String, String> fkMapping = e.getfkCol2RefMapping();
+		List<String> keySet = e.getFKColumnNames();
+		
+		String startVertexName;
+		String endVertexName;
+		
+		if (e.getStartVertexName().equals(e.getEndVertexName())) {
+			startVertexName = e.getStartVertexName() + "_1";
+			endVertexName = e.getEndVertexName() + "_2";
+		} else {
+			startVertexName = e.getStartVertexName();
+			endVertexName = e.getEndVertexName();
+		}
+		
+		String fkCol = keySet.get(0);
+		String refCol = fkMapping.get(keySet.get(0));
+		
+		StringBuffer buffer = new StringBuffer();
+		buffer.append("SELECT ");
+		buffer.append(startVertexName + ".\":START_ID(" + e.getStartVertexName() + ")\"");
+		buffer.append(", ");
+		buffer.append(endVertexName + ".\":END_ID(" + e.getEndVertexName() + ")\"");
+		
+		buffer.append(" FROM ");
+		
+		buffer.append("(SELECT ROWNUM as \":START_ID(" + e.getStartVertexName() + ")\", ");
+		buffer.append(fkCol);
+		buffer.append(" FROM ");
+		buffer.append(e.getStartVertexName());
+		buffer.append(" order by ");
+		buffer.append(fkCol);
+		buffer.append(" for orderby_num()) as ");
+		buffer.append(startVertexName);
+		buffer.append(", ");
+		
+		buffer.append("(SELECT ROWNUM as \":END_ID(" + e.getEndVertexName() + ")\", ");
+		buffer.append(refCol);
+		buffer.append(" FROM ");
+		buffer.append(e.getEndVertexName());
+		buffer.append(" order by ");
+		buffer.append(refCol);
+		buffer.append(" for orderby_num()) as ");
+		buffer.append(endVertexName);
+		
+		buffer.append(" where ");
+		buffer.append(startVertexName + "." + fkCol);
+		buffer.append(" = ");
+		buffer.append(endVertexName + "." + refCol);
+		
+		buffer.append(" order by " + startVertexName + "." + fkCol);
+		
+		return buffer.toString();
+	}
+	
 	/**
 	 * Is support fast search with PK.
 	 * 
@@ -292,6 +402,7 @@ public class CUBRIDExportHelper extends
 		return buf.toString();
 	}
 	
+	@Override
 	public String getGraphSelectSQL(Vertex v, boolean isTargetCSV) {
 		StringBuffer buf = new StringBuffer(256);
 		buf.append("SELECT ");
@@ -388,5 +499,58 @@ public class CUBRIDExportHelper extends
 		if (StringUtils.isNotBlank(e.getOwner())) {
 			buf.append(getQuotedObjName(e.getOwner())).append(".");
 		}
+	}
+
+	@Override
+	public String getGraphSelectSQL(Edge e, boolean targetIsCSV) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	public String getFkRecordCounterSql(Edge e, Map<String, String> fkMapping) {
+		List<String> keySet = e.getFKColumnNames();
+		
+		String startVertexName;
+		String endVertexName;
+		
+		if (e.getStartVertexName().equals(e.getEndVertexName())) {
+			startVertexName = e.getStartVertexName() + "_1";
+			endVertexName = e.getEndVertexName() + "_2";
+		} else {
+			startVertexName = e.getStartVertexName();
+			endVertexName = e.getEndVertexName();
+		}
+		
+		String fkCol = keySet.get(0);
+		String refCol = fkMapping.get(keySet.get(0));
+		
+		StringBuffer buffer = new StringBuffer();
+		buffer.append("SELECT COUNT(1) FROM ");
+		
+		buffer.append("(SELECT ROWNUM as \"START_ID\", ");
+		buffer.append(fkCol);
+		buffer.append(" FROM ");
+		buffer.append(e.getStartVertexName());
+		buffer.append(" order by ");
+		buffer.append(fkCol);
+		buffer.append(" for orderby_num()) as ");
+		buffer.append(startVertexName);
+		buffer.append(", ");
+		
+		buffer.append("(SELECT ROWNUM as \"END_ID\", ");
+		buffer.append(refCol);
+		buffer.append(" FROM ");
+		buffer.append(e.getEndVertexName());
+		buffer.append(" order by ");
+		buffer.append(refCol);
+		buffer.append(" for orderby_num()) as ");
+		buffer.append(endVertexName);
+		
+		buffer.append(" where ");
+		buffer.append(startVertexName + "." + fkCol);
+		buffer.append(" = ");
+		buffer.append(endVertexName + "." + refCol);
+		
+		return buffer.toString();
 	}
 }

@@ -5,13 +5,13 @@ import java.sql.SQLException;
 
 import com.cubrid.cubridmigration.core.dbobject.Record.ColumnValue;
 
-public class GraphIntHandler extends DefaultHandler {
+public class GraphNumberHandler extends DefaultHandler {
 	@Override
 	public void handle(PreparedStatement stmt, int idx, ColumnValue columnValue) throws SQLException {
 		Object value = columnValue.getValue();
 		String strValue = value.toString();
-		int intValue = Integer.parseInt(strValue);
+		float intValue = Float.parseFloat(strValue);
 		
-		stmt.setInt(idx + 1, intValue);
+		stmt.setFloat(idx + 1, intValue);
 	}
 }

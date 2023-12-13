@@ -191,7 +191,7 @@ public class TiberoExportHelper extends
 	}
 	
 	@Override
-	public String getPagedFkRecords(Edge e, String sql, long rows, long exportedRecords) {
+	public String getPagedFkRecords(Edge e, String sql, long rows, long exportedRecords, boolean hasMultiSchema) {
 		String cleanSql = sql.toUpperCase().trim();
 		
 		String editedQuery = editQueryForFk(e, cleanSql);
@@ -302,7 +302,7 @@ public class TiberoExportHelper extends
 	}
 	
 	@Override
-	public String getPagedSelectSQLForEdgeCSV(Edge e, String sql, long rows, long exportedRecords, PK pk) {
+	public String getPagedSelectSQLForEdgeCSV(Edge e, String sql, long rows, long exportedRecords, PK pk, boolean hasMultiSchema) {
 		String cleanSql = sql.toUpperCase().trim();
 		
 		String editedQuery = editQueryForJoinTableEdge(e, cleanSql);
@@ -549,5 +549,11 @@ public class TiberoExportHelper extends
 	@Override
 	public boolean supportFastSearchWithPK(Connection conn) {
 		return true;
+	}
+
+	@Override
+	public String getGraphSelectSQL(Edge e, boolean targetIsCSV) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

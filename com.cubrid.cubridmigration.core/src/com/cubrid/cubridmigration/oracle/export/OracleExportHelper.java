@@ -37,6 +37,8 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.commons.lang.StringUtils;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -194,9 +196,15 @@ public class OracleExportHelper extends
 		}
 		return null;
 	}
-	
+
 	@Override
-	public String getPagedFkRecords(Edge e, String sql, long rows, long exportedRecords) {
+	public String getGraphSelectSQL(Edge e, boolean targetIsCSV) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getPagedFkRecords(Edge e, String sql, long rows, long exportedRecords, boolean hasMultiSchema) {
 		String cleanSql = sql.toUpperCase().trim();
 		
 		String editedQuery = editQueryForFk(e, cleanSql);
@@ -481,6 +489,87 @@ public class OracleExportHelper extends
 		}
 		
 		return sql;
+	}
+
+	@Override
+	public String getGraphSelectSQL(Vertex v, boolean targetIsCSV) {
+		StringBuffer buf = new StringBuffer(256);
+		buf.append("SELECT ");
+
+		final List<Column> columnList = v.getColumnList();
+		for (int i = 0; i < columnList.size(); i++) {
+			if (i > 0) {
+				buf.append(',');
+			}
+			buf.append(getQuotedObjName(columnList.get(i).getName()));
+		}
+		buf.append(" FROM ");
+		// it will make a query with a schema and table name 
+		// if it required a schema name when there create sql such as SCOTT.EMP
+		addGraphSchemaPrefix(v, buf);
+		buf.append(getQuotedObjName(v.getTableName()));
+
+//		String condition = setc.getCondition();
+//		if (StringUtils.isNotBlank(condition)) {
+//			condition = condition.trim();
+//			if (!condition.toLowerCase(Locale.US).startsWith("where")) {
+//				buf.append(" WHERE ");
+//			}
+//			if (condition.trim().endsWith(";")) {
+//				condition = condition.substring(0, condition.length() - 1);
+//			}
+//			buf.append(" ").append(condition);
+//		}
+		return buf.toString();
+	}
+
+	public String getGraphSelectSQL(Edge e) {
+		StringBuffer buf = new StringBuffer(256);
+		buf.append("SELECT ");
+		final List<Column> columnList = e.getColumnList();
+		for (int i = 0; i < columnList.size(); i++) {
+			if (i > 0) {
+				buf.append(',');
+			}
+			buf.append(getQuotedObjName(columnList.get(i).getName()));
+		}
+		buf.append(" FROM ");
+		// it will make a query with a schema and table name 
+		// if it required a schema name when there create sql such as SCOTT.EMP
+		addGraphSchemaPrefix(e, buf);
+		buf.append(getQuotedObjName(e.getEdgeLabel()));
+
+//		String condition = setc.getCondition();
+//		if (StringUtils.isNotBlank(condition)) {
+//			condition = condition.trim();
+//			if (!condition.toLowerCase(Locale.US).startsWith("where")) {
+//				buf.append(" WHERE ");
+//			}
+//			if (condition.trim().endsWith(";")) {
+//				condition = condition.substring(0, condition.length() - 1);
+//			}
+//			buf.append(" ").append(condition);
+//		}
+		return buf.toString();
+		
+	}
+
+	
+	public String getFkRecordCounterSql(Edge e, Map<String, String> fkMapping) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	protected void addGraphSchemaPrefix(Vertex v, StringBuffer buf) {
+		if (StringUtils.isNotBlank(v.getOwner())) {
+			buf.append(getQuotedObjName(v.getOwner())).append(".");
+		}
+	}
+	
+	protected void addGraphSchemaPrefix(Edge e, StringBuffer buf) {
+		if (StringUtils.isNotBlank(e.getOwner())) {
+			buf.append(getQuotedObjName(e.getOwner())).append(".");
+		}
 	}
 	
 	@Override

@@ -59,6 +59,8 @@ import com.cubrid.cubridmigration.core.export.DBExportHelper;
 import com.cubrid.cubridmigration.cubrid.export.CUBRIDExportHelper;
 import com.cubrid.cubridmigration.graph.dbobj.Edge;
 import com.cubrid.cubridmigration.graph.dbobj.Vertex;
+import com.cubrid.cubridmigration.oracle.export.OracleExportHelper;
+import com.cubrid.cubridmigration.tibero.export.TiberoExportHelper;
 
 /**
  * 
@@ -360,6 +362,7 @@ public class JDBCExporter extends
 				ThreadUtils.threadSleep(2000, eventHandler);
 				retryCount++;
 				if (retryCount == 3) {
+					System.out.println(sql);
 					throw new NormalMigrationException(ex);
 				}
 			}
@@ -408,6 +411,24 @@ public class JDBCExporter extends
 				|| recordCountOfCurrentPage < config.getPageFetchCount()
 				|| (!config.isImplicitEstimate() && exportedRecords >= sTable.getTableRowCount());
 	}
+	
+	protected boolean isGraphLatestPage(Table sTable, long exportedRecords, long recordCountOfCurrentPage) {
+		int sourceDBTypeID = config.getSourceDBType().getID();
+		if (config.isImplicitEstimate()
+		        && (sourceDBTypeID == DatabaseType.ORACLE.getID()
+		        ||  sourceDBTypeID == DatabaseType.MYSQL.getID() || sourceDBTypeID == DatabaseType.TIBERO.getID())) {
+			return true;
+		}
+		
+		if (sTable == null) {
+			System.out.println("sTable is null");
+			return true;
+		}
+		
+		return recordCountOfCurrentPage == 0
+				|| recordCountOfCurrentPage < config.getPageFetchCount()
+				|| (!config.isImplicitEstimate() && exportedRecords >= sTable.getTableRowCount());
+	}
 
 	public void exportGraphVertexRecords(Vertex v, RecordExportedListener newRecordProcessor) {
 		if (LOG.isDebugEnabled()) {
@@ -421,7 +442,7 @@ public class JDBCExporter extends
 		Connection conn = connManager.getSourceConnection(); //NOPMD
 		try {
 			final DBExportHelper expHelper = getSrcDBExportHelper();
-			DBExportHelper graphExHelper = expHelper;
+			DBExportHelper graphExHelper =  getExportHelperType(expHelper);
 			PK pk = graphExHelper.supportFastSearchWithPK(conn) ? srcPK : null;
 			newRecordProcessor.startExportTable(v.getVertexLabel());
 			List<Record> records = new ArrayList<Record>();
@@ -518,7 +539,7 @@ public class JDBCExporter extends
 				}
 				String pageSql;
 				
-				pageSql = graphExHelper.getPagedFkRecords(e, sql, realPageCount, totalExported);
+				pageSql = graphExHelper.getPagedFkRecords(e, sql, realPageCount, totalExported, hasMultiSchema(conn));
 				
 				if (LOG.isDebugEnabled()) {
 					LOG.debug("[SQL]PAGINATED=" + pageSql);
@@ -624,7 +645,7 @@ public class JDBCExporter extends
 		Connection conn = connManager.getSourceConnection(); //NOPMD
 		try {
 			final DBExportHelper expHelper = getSrcDBExportHelper();
-			DBExportHelper graphExHelper = expHelper;
+			DBExportHelper graphExHelper = getExportHelperType(expHelper);
 			PK pk = graphExHelper.supportFastSearchWithPK(conn) ? srcPK : null;
 			newRecordProcessor.startExportTable(e.getEdgeLabel());
 			List<Record> records = new ArrayList<Record>();
@@ -643,7 +664,7 @@ public class JDBCExporter extends
 				String pagesql;
 				
 				if (config.targetIsCSV()) {
-					pagesql = graphExHelper.getPagedSelectSQLForEdgeCSV(e, sql, realPageCount, totalExported, pk);
+					pagesql = graphExHelper.getPagedSelectSQLForEdgeCSV(e, sql, realPageCount, totalExported, pk, hasMultiSchema(conn));
 				} else {
 					pagesql = graphExHelper.getPagedSelectSQL(sql, realPageCount, totalExported, pk);
 				}
@@ -883,6 +904,31 @@ public class JDBCExporter extends
 			newRecordProcessor.processRecords(tableName, records);
 			// After records processed, clear it.
 			records.clear();
+		}
+	}
+	
+	private boolean hasMultiSchema(Connection con) {
+		int versionValue = 0;
+		try {
+			versionValue = (con.getMetaData().getDatabaseMajorVersion() * 10) + con.getMetaData().getDatabaseMinorVersion();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			
+			return true;
+		}
+		
+		return versionValue >= 112;
+	}
+	
+	private DBExportHelper getExportHelperType(DBExportHelper exportHelper) {
+		if (exportHelper instanceof CUBRIDExportHelper) {
+			return (CUBRIDExportHelper) exportHelper;
+		} else if (exportHelper instanceof OracleExportHelper) {
+			return (OracleExportHelper) exportHelper;
+		} else if (exportHelper instanceof TiberoExportHelper) {
+			return (TiberoExportHelper) exportHelper;
+		} else {
+			return (CUBRIDExportHelper) exportHelper;
 		}
 	}
 }

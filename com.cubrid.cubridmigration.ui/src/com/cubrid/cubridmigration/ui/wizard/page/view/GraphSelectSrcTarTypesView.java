@@ -78,7 +78,7 @@ public class GraphSelectSrcTarTypesView {
 	private Button btnOnlineCUBRIDSrc;
 	private Button btnOnlineTiberoSrc;
 	private Button btnOnlineGraphSrc;
-	//private Button btnOnlineOracleSrc;
+	private Button btnOnlineOracleSrc;
 	//private Button btnOnlineMYSQLSrc;
 	//private Button btnOnlineMSSQLSrc;
 
@@ -166,6 +166,10 @@ public class GraphSelectSrcTarTypesView {
 //		btnOnlineMYSQLSrc.setData(MigrationConfiguration.SOURCE_TYPE_MYSQL);
 //		srcButtons.add(btnOnlineMYSQLSrc);
 //
+//		btnOnlineOracleSrc = createSrcTarTypeBtn(grpSrc, Messages.btnSrcOnlineOracleDB,
+//			Messages.btnSrcOnlineOracleDBDes);
+//		btnOnlineOracleSrc.setData(MigrationConfiguration.SOURCE_TYPE_ORACLE);
+//		srcButtons.add(btnOnlineOracleSrc);
 //
 //		btnOnlineMSSQLSrc = createSrcTarTypeBtn(grpSrc, Messages.btnSrcOnlineMSSQLDB,
 //				Messages.btnSrcOnlineMSSQLDBDes);
@@ -386,14 +390,14 @@ public class GraphSelectSrcTarTypesView {
 				btn.setSelection(true);
 				flag = true;
 				
-				if (srcType == MigrationConfiguration.SOURCE_TYPE_GRAPH) {
-					selectGraphSrc();
-				}
+//				if (srcType == MigrationConfiguration.SOURCE_TYPE_GRAPH) {
+//					selectGraphSrc();
+//				}
 			}
 		}
 		if (!flag) {
 			btnOnlineCUBRIDSrc.setSelection(true);
-			selectGraphSrc();
+//			selectGraphSrc();
 		}
 		flag = false;
 		for (Button btn : tarButtons) {

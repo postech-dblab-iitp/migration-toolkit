@@ -3702,7 +3702,8 @@ public class MigrationConfiguration {
 	
 	public String getTableNameFromOid(String oid) {
 		return this.oidMap.get(oid);
-	
+	}
+		
 	public void setGraphSubTyteForCSV(int type) {
 		this.graphSubTypeForCSV = type;
 	}

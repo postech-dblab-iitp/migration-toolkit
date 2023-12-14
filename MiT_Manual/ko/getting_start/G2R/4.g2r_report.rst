@@ -1,0 +1,32 @@
+:meta-keywords: guide tool
+:meta-description: Introducing the features of migration progress page
+
+************
+결과
+************
+
+이관 결과를 확인할 수 있다
+
+.. image:: G2R_image/g2r_report.png
+
+========
+Table
+========
+
+입력한 쿼리들로부터 몇개의 테이블이 생성되었는지 표시해준다
+
+========
+record
+========
+
+입력한 쿼리들로부터 몇개의 데이터가 추출되었고 생성되었는지 표시해준다.
+
+=============
+Detail
+=============
+
+.. image:: G2R_image/g2r_detail.png
+
+이관 결과를 좀 더 자세히 확인할 수 있다.
+
+이 외의 옵션은 다른 이관과 동일하거나 추후 삭제될 예정인 항목이다.

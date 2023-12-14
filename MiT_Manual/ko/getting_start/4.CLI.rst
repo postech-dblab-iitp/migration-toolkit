@@ -1,0 +1,14 @@
+:meta-keywords: guide tool
+:meta-description: GDB to RDB CLI migration
+
+************************
+CLI 환경에서 이관하기
+************************
+
+CLI(CommandLine Interface) 환경에서 미리 생성된 script를 통해 이관을 진행하는 기능이다.
+
+해당 기능을 수행하기 위해서는 GUI 환경에서 최소 한번 이관하여 생성된 script파일이 필요하다.
+
+.. toctree::
+    CLI/0.cli_prepare.rst
+    CLI/1.cdc_execute.rst

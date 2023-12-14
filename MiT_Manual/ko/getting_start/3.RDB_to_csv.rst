@@ -1,0 +1,16 @@
+:meta-keywords: guide tool
+:meta-description: RDB to csv
+
+************************
+RDB to csv 파일 출력
+************************
+
+csv를 통해 GDB로 데이터를 간편하게 입력할 수 있도록 양식에 맞게 csv를 출력하는 기능이다.
+
+.. toctree::
+
+    R2C/0.csv_dest.rst
+    R2C/1.csv_object_mapping.rst
+    R2C/2.csv_confirmation_page.rst
+    R2C/3.csv_progress.rst
+    R2C/4.csv_result.rst

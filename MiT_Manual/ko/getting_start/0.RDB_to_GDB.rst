@@ -1,0 +1,17 @@
+:meta-keywords: guide tool
+:meta-description: RDB to GDB migration
+
+************************
+RDB to GDB 이관하기
+************************
+
+본 프로그램의 핵심 목적인 Relation DataBase를 Graph DataBase로 이관하는 작업이다.
+
+.. toctree::
+    :titlesonly:
+    
+    R2G/3.select_tar_conn.rst
+    R2G/4.object_mapping.rst
+    R2G/5.migration_check.rst
+    R2G/6.migration_progress.rst
+    R2G/7.migration_report.rst

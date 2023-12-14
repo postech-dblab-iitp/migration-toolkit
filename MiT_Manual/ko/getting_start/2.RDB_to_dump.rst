@@ -1,0 +1,17 @@
+:meta-keywords: guide tool
+:meta-description: RDB to dump migration
+
+*******************************
+RDB to dump file 이관하기
+*******************************
+
+RDB의 데이터를 쿼리 편집기를 통해 실행시킬 수 있도록 GQL형태로 변환하여 출력하는 기능이다.
+
+.. toctree::
+    :titlesonly:
+
+    R2D/0.set_dest.rst
+    R2D/1.object_mapping.rst
+    R2D/2.dump_confirm_page.rst
+    R2D/3.dump_progress.rst
+    R2D/4.dump_result.rst

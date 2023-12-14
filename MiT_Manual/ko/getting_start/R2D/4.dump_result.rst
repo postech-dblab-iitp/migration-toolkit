@@ -1,0 +1,40 @@
+:meta-keywords: guide tool
+:meta-description: Introducing the features of migration page
+
+**********************
+이관 보고서
+**********************
+
+.. image:: R2D_image/dump_result.png
+
+이관 완료 후 결과를 표시한다.
+
+===============
+Overview
+===============
+
+vertex와 edge의 추출 개수, 입력 개수, 실패한 개수, 진행도 등을 확인할 수 있다.
+
+=========
+Logs
+=========
+
+.. image:: R2D_image/dump_result_log.png
+
+이관 진행 페이지에서 console 화면에 표시되었던 내용이 저장된다.
+
+==========================
+Configuration History
+==========================
+
+.. image:: R2D_image/dump_result_conf_history.png
+
+이관 확인 페이지에서 표시되었던 정보들을 확인할 수 있다.
+
+==========================
+결과 확인
+==========================
+
+.. image:: R2D_image/dump_result_file.png
+
+파일을 확인해 보면 vertex와 edge를 생성하는 GQL문이 생성된 것을 확인할 수 있다.

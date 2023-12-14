@@ -1,0 +1,22 @@
+:meta-keywords: guide tool
+:meta-description: execute cdc data feature
+
+****************************************************
+CDC 기능 실행
+****************************************************
+
+===============
+실행 command
+===============
+
+아래의 옵션을 작성하여 기능을 실행할 수 있다.
+
+``migration.jar cdc [script위치]``
+
+예시)
+
+.. image:: cdc_image/cdc_example_line.png
+
+아래와 같이 결과를 확인할 수 있으며 vertex, edge의 export, import 개수가 동일하면 성공적으로 완료된 것이다.
+
+.. image:: cdc_image/cdc_migration_success.png

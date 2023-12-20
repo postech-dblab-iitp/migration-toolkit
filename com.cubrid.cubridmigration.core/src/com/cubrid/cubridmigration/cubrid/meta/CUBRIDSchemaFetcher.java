@@ -449,7 +449,10 @@ public final class CUBRIDSchemaFetcher extends
 					tables.put(tableName, table);
 				}
 				
-				buildTableOid(conn, table);
+				if ((conn.getMetaData().getDatabaseMajorVersion() * 10) + conn.getMetaData().getDatabaseMinorVersion() >= 112) {
+					buildTableOid(conn, table);
+				}
+				
 
 				String attrName = rs.getString("attr_name");
 				boolean isShared = "SHARED".equals(rs.getString("attr_type"));

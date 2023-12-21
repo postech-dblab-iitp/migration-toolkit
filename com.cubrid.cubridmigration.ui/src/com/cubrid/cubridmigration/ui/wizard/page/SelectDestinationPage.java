@@ -387,6 +387,11 @@ public class SelectDestinationPage extends
 								return cfg.getSourceConParams().isSameDB(cp);
 							}
 							return false; */
+							
+							if (cfg.getDestType() == 5){
+								return 1 != cp.getDatabaseType().getID();
+							}
+							
 							return cfg.getDestType() != cp.getDatabaseType().getID();
 						}
 					});
@@ -441,6 +446,12 @@ public class SelectDestinationPage extends
 			final MigrationConfiguration config = getMigrationWizard().getMigrationConfig();
 			List<Integer> dts = new ArrayList<Integer>();
 			dts.add(config.getDestType());
+			
+			if (dts.size() == 1 && dts.get(0) == 5){
+				dts.clear();
+				dts.add(1);
+			}
+			
 			conMgrView.setSupportedDBType(dts);
 			conMgrView.init(config.getTargetConParams(), null);
 			btnWriteErrorRecords.setSelection(config.isWriteErrorRecords());

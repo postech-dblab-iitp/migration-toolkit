@@ -1,5 +1,6 @@
 package com.cubrid.cubridmigration.graph;
 
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -172,9 +173,14 @@ public class GraphSQLHelper extends SQLHelper {
 				buffer.append(")");
 				
 			} else if (columns.get(i).getGraphDataType().equals("string")){
-				buffer.append("\"");
+				String colVal;
 				
-				String colVal = (String) colValMap.get(columnName);
+				if (colValMap.get(columnName) instanceof Timestamp) {
+					colVal = colValMap.get(columnName).toString();
+				} else {
+					buffer.append("\"");
+					colVal = (String) colValMap.get(columnName);
+				}
 				
 				if (colVal != null) {
 					colVal = colVal.trim();

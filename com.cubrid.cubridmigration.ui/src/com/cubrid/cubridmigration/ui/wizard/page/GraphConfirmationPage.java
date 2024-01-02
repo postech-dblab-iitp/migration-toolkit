@@ -160,38 +160,43 @@ public class GraphConfirmationPage extends
 			text.append(migration.getTargetSchemaFileName());
 			text.append(lineSeparator).append(tabSeparator);
 
-			text.append(Messages.confrimIndex).append("  ");
-			if (styleRanges != null) {
-				styleRanges.add(new StyleRange(text.length(),
-						migration.getTargetIndexFileName().length(),
-						SWTResourceConstents.COLOR_BLUE, null));
-			}
-			text.append(migration.getTargetIndexFileName());
-			text.append(lineSeparator).append(tabSeparator);
+//			text.append(Messages.confrimIndex).append("  ");
+//			if (styleRanges != null) {
+//				styleRanges.add(new StyleRange(text.length(),
+//						migration.getTargetIndexFileName().length(),
+//						SWTResourceConstents.COLOR_BLUE, null));
+//			}
+//			text.append(migration.getTargetIndexFileName());
+//			text.append(lineSeparator).append(tabSeparator);
 
-			text.append(Messages.confrimData).append("  ");
-			int oldLength = text.length();
-			if (migration.isOneTableOneFile()) {
-				text.append(Messages.btnOneTableOneFile).append(lineSeparator).append(tabSeparator);
-			} else {
-				if (migration.getDestType() == MigrationConfiguration.DEST_DB_UNLOAD
-						|| migration.getDestType() == MigrationConfiguration.DEST_SQL) {
-					text.append(migration.getTargetDataFileName());
+			if (!(migration.getDestType() == MigrationConfiguration.DEST_DB_UNLOAD
+					|| migration.getDestType() == MigrationConfiguration.DEST_SQL)) {
+				
+				text.append(Messages.confrimData).append("  ");
+				int oldLength = text.length();
+				if (migration.isOneTableOneFile()) {
+					text.append(Messages.btnOneTableOneFile).append(lineSeparator).append(tabSeparator);
 				} else {
-					text.append(migration.getFileRepositroyPath());
-					//text.append("data").append(File.separator);
-					text.append(migration.getTargetFilePrefix()).append(
-							Messages.lblConfirmDataFormat);
-					text.append(migration.getDataFileExt());
+					if (migration.getDestType() == MigrationConfiguration.DEST_DB_UNLOAD
+							|| migration.getDestType() == MigrationConfiguration.DEST_SQL) {
+						text.append(migration.getTargetDataFileName());
+					} else {
+						text.append(migration.getFileRepositroyPath());
+						//text.append("data").append(File.separator);
+						text.append(migration.getTargetFilePrefix()).append(
+								Messages.lblConfirmDataFormat);
+						text.append(migration.getDataFileExt());
+					}
+					text.append(lineSeparator);
+					text.append(tabSeparator);
 				}
-				text.append(lineSeparator);
-				text.append(tabSeparator);
+				
+				if (styleRanges != null) {
+					styleRanges.add(new StyleRange(oldLength, text.length() - oldLength,
+							SWTResourceConstents.COLOR_BLUE, null));
+				}
 			}
-			if (styleRanges != null) {
-				styleRanges.add(new StyleRange(oldLength, text.length() - oldLength,
-						SWTResourceConstents.COLOR_BLUE, null));
-			}
-
+			
 			int length = migration.getTargetFileTimeZone().length() > 9 ? 9
 					: migration.getTargetFileTimeZone().length();
 			text.append(Messages.confirmTimezone).append(" ").append(

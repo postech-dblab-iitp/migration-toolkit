@@ -33,12 +33,14 @@ import java.sql.PreparedStatement;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.cubrid.cubridmigration.core.dbobject.Column;
 import com.cubrid.cubridmigration.core.dbobject.Record;
 import com.cubrid.cubridmigration.core.dbobject.Record.ColumnValue;
 import com.cubrid.cubridmigration.core.engine.config.MigrationConfiguration;
 import com.cubrid.cubridmigration.core.engine.exception.NormalMigrationException;
 import com.cubrid.cubridmigration.cubrid.stmt.handler.DefaultHandler;
 import com.cubrid.cubridmigration.cubrid.stmt.handler.SetterHandler;
+import com.cubrid.cubridmigration.graph.dbobj.Edge;
 import com.cubrid.cubridmigration.graph.stmt.handler.GraphDateHandler;
 import com.cubrid.cubridmigration.graph.stmt.handler.GraphDoubleHandler;
 import com.cubrid.cubridmigration.graph.stmt.handler.GraphFloatHandler;
@@ -128,6 +130,49 @@ public class GraphParameterSetter {
 					handler.handle(pstmt, i + 2, columnValue);
 				}
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new NormalMigrationException(e);
+		}
+	}
+	
+	public void setEdgeRecord2Statement(Edge edge, Record record, PreparedStatement pstmt) {
+		int refColSize = edge.getfkCol2RefMappingSize();
+		int colListSize = edge.getColumnList().size();
+		
+		try {
+			for (int i = 0; i < refColSize; i++) {
+				String startColName = edge.getREFColumnNames(edge.getFKColumnNames().get(i));
+				
+				for (ColumnValue colVal : record.getColumnValueList()) {
+					if (colVal.getColumn().getName().equals(startColName)) {
+						final SetterHandler handler = getHandler(colVal);
+						
+						if (colVal.getValue() != null) {
+							handler.handle(pstmt, i, colVal);
+						} else {
+							handler.setNull(pstmt, i);
+						}
+					}
+				}
+			}
+			
+			for (int i = 0; i < colListSize; i++) {
+				String colName = edge.getColumnList().get(i).getName();
+				
+				for (ColumnValue colVal : record.getColumnValueList()) {
+					if (colVal.getColumn().getName().equals(colName)) {
+						final SetterHandler handler = getHandler(colVal);
+						
+						if (colVal.getValue() != null) {
+							handler.handle(pstmt, i + 2, colVal);
+						} else {
+							handler.setNull(pstmt, i + 2);
+						}
+					}
+				}
+			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new NormalMigrationException(e);

@@ -180,7 +180,7 @@ public class GraphJDBCImporter extends
 						continue;
 					}
 					
-					parameterSetter.setEdgeRecord2Statement(rc, stmt);
+					parameterSetter.setEdgeRecord2Statement(e, rc, stmt);
 
 					rs1 = stmt.executeQuery();
 					

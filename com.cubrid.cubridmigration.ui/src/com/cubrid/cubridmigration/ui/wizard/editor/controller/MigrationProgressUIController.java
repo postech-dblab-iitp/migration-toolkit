@@ -270,7 +270,14 @@ public class MigrationProgressUIController {
 		int index = 0;
 		tableItems = new String[expStcs.size()][6];
 		for (Vertex v : expStcs) {
-			Table tbl = config.getSrcTableSchema(v.getOwner(), v.getVertexLabel());
+			Table tbl;
+			
+			if (!v.isNameChanged()) {
+				tbl = config.getSrcTableSchema(v.getOwner(), v.getTableName());
+			} else {
+				tbl = config.getSrcTableSchema(v.getOwner(), v.getVertexLabel());
+			}
+			
 			if (config.isImplicitEstimate()) {
 				tableItems[index] = new String[] {v.getVertexLabel(), NA_STRING, NA_STRING, NA_STRING,
 						NA_STRING, v.getOwner()};

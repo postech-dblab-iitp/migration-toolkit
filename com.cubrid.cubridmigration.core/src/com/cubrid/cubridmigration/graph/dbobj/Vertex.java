@@ -20,6 +20,7 @@ public class Vertex extends DBObject {
 	private int id;
 
 	//GDB is selected for select page
+	private boolean isNameChanged;
 	private boolean isSelected;
 	private String tableName;
 	private String vertexLabel;
@@ -184,5 +185,13 @@ public class Vertex extends DBObject {
 	
 	public PK getPK() {
 		return this.pk;
+	}
+	
+	public boolean isNameChanged() {
+		return tableName.equals(vertexLabel);
+	}
+
+	public void setNameChanged(boolean isNameChanged) {
+		this.isNameChanged = isNameChanged;
 	}
 }

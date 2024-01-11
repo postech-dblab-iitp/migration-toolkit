@@ -708,14 +708,22 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 			startVertex.setPK(table.getPk());
 //			gdbDict.addMigratedVertexList(startVertex);
 			
+			// make second edge
 			Edge edge;
 			for (FK fk : table.getFks()) {
 				edge = new Edge();
 				edge.setOwner(table.getOwner());
 				edge.setStartVertexName(table.getName());
 				edge.setHavePKStartVertex(startVertex.getHasPK());
-				edge.setEndVertexName(table.getName());
-				edge.setEdgeType(Edge.RECURSIVE_TYPE);
+				
+				if (!(fk.getReferencedTableName().equals(table.getName()))) {
+					edge.setEndVertexName(fk.getReferencedTableName());
+					edge.setEdgeType(Edge.SECOND_FK_TYPE);
+				} else {
+					edge.setEndVertexName(table.getName());
+					edge.setEdgeType(Edge.RECURSIVE_TYPE);
+				}
+				
 				edge.setEdgeLabel(fk.getName());
 				edge.setFKSring(fk.getFKString());
 				for (String columName : fk.getColumnNames()) {

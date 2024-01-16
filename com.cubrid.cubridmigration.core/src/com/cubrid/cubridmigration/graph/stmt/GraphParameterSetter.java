@@ -137,12 +137,13 @@ public class GraphParameterSetter {
 	}
 	
 	public void setEdgeRecord2Statement(Edge edge, Record record, PreparedStatement pstmt) {
-		int refColSize = edge.getfkCol2RefMappingSize();
+		int refColSize = edge.getFKColumnNames().size();
 		int colListSize = edge.getColumnList().size();
 		
 		try {
 			for (int i = 0; i < refColSize; i++) {
-				String startColName = edge.getREFColumnNames(edge.getFKColumnNames().get(i));
+//				String startColName = edge.getREFColumnNames(edge.getFKColumnNames().get(i));
+				String startColName = edge.getFKColumnNames().get(i);
 				
 				for (ColumnValue colVal : record.getColumnValueList()) {
 					if (colVal.getColumn().getName().equals(startColName)) {

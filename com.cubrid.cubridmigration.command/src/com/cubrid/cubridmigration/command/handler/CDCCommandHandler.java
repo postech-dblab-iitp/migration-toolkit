@@ -70,6 +70,9 @@ import com.cubrid.cubridmigration.core.engine.report.MigrationReport;
 import com.cubrid.cubridmigration.core.engine.report.RecordMigrationResult;
 import com.cubrid.cubridmigration.core.engine.template.MigrationTemplateParser;
 import com.cubrid.cubridmigration.cubrid.CUBRIDTimeUtil;
+import com.cubrid.cubridmigration.graph.dbobj.Edge;
+import com.cubrid.cubridmigration.graph.dbobj.GraphDictionary;
+import com.cubrid.cubridmigration.graph.dbobj.Vertex;
 import com.cubrid.cubridmigration.mysql.trans.MySQL2CUBRIDMigParas;
 
 /**
@@ -409,6 +412,9 @@ public class CDCCommandHandler implements
 		loadDBProperties();
 		//Create migration configuration and initialize it.
 		MigrationConfiguration config = getConfig(scriptFile);
+		
+		mapVertexToEdge(config.getGraphDictionary());
+		
 		if (config == null) {
 			return;
 		}
@@ -594,6 +600,21 @@ public class CDCCommandHandler implements
 			return null;
 		}
 
+	}
+	
+	private void mapVertexToEdge(GraphDictionary gdbDict) {
+		List<Edge> edgeList = gdbDict.getMigratedEdgeList();
+		List<Vertex> vertexList = gdbDict.getMigratedVertexList();
+		
+		for (Edge edge : edgeList) {
+			String vertexName = edge.getEndVertexName();
+			
+			for (Vertex vertex : vertexList) {
+				if (vertex.getVertexLabel().equals(vertexName)) {
+					edge.setEndVertex(vertex);
+				}
+			}
+		}
 	}
 	//	/**
 	//	 * Login cubrid database

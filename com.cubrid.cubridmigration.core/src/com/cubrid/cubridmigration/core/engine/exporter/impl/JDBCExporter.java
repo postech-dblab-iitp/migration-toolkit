@@ -555,16 +555,9 @@ public class JDBCExporter extends
 					return null;
 				}
 				
-				LOG.info("edge Label : " + e.getEdgeLabel());
-				LOG.info("edge oid Value : " + e.getOid());
-				LOG.info("file oid Value : " + oid);
-				
 				String longToString = String.valueOf(e.getOid());
 				
 				if (oid.equals(longToString)) {
-					
-					LOG.info("each of oid is same");
-					
 					while ((line = reader.readLine()) != null) {
 						String[] colVal = line.split(":");
 						
@@ -623,17 +616,9 @@ public class JDBCExporter extends
 					return null;
 				}
 				
-//				LOG.info("edge Label : " + e.getEdgeLabel());
-//				LOG.info("edge oid Value : " + e.getOid());
-//				LOG.info("file oid Value : " + oid);
-				
-//				String longToString = String.valueOf(e.getOid());
 				String longToString = String.valueOf(endVertex.getOid());
 				
 				if (oid.equals(longToString)) {
-					
-//					LOG.info("each of oid is same");
-					
 					while ((line = reader.readLine()) != null) {
 						String[] colVal = line.split(":");
 						
@@ -665,7 +650,6 @@ public class JDBCExporter extends
 			LOG.debug("[IN]exportGraphVertexRecords()");
 		}
 		
-		//Table sTable = config.getSrcTableSchemaForEdge(e.getOwner(), e.getEdgeLabel());
 		Table sTable = config.getSrcTableSchemaForEdge(e.getOwner(), e.getStartVertexName());
 		Connection conn = connManager.getSourceConnection(); //NOPMD
 		
@@ -1072,14 +1056,13 @@ public class JDBCExporter extends
 	
 	protected List<Record> createGraphNewRecordForVertexCDC(Vertex v, List<Column> cols, Connection conn) {
 		BufferedReader reader = null;
-		File dir = null;
 		
 		try {
 			List<Record> recList = new ArrayList<Record>();
 			
 			String cubridEnv = System.getenv("CUBRID");
 			String cdcOutputDir = cubridEnv + File.separator + "cdc_output";
-			dir = new File(cdcOutputDir);
+			File dir = new File(cdcOutputDir);
 			
 			String[] fileNameArr = dir.list();
 			
@@ -1098,16 +1081,10 @@ public class JDBCExporter extends
 				} else {
 					return null;
 				}
-//				
-//				LOG.info("vertex Label : " + v.getVertexLabel());
-//				LOG.info("vertex oid Value : " + v.getOid());
-//				LOG.info("file oid Value : " + oid);
-//				
+				
 				String longToString = String.valueOf(v.getOid());
 				
 				if (oid.equals(longToString)) {
-					
-//					LOG.info("each of oid is same");
 					
 					while ((line = reader.readLine()) != null) {
 						String[] colVal = line.split(":");
@@ -1120,7 +1097,7 @@ public class JDBCExporter extends
 					
 					recList.add(rec);
 				} else {
-//					LOG.info("oid is not same");
+					LOG.info("oid is not same");
 				}
 			}
 			

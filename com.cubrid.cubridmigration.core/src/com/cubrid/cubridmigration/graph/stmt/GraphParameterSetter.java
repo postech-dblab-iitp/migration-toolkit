@@ -182,7 +182,6 @@ public class GraphParameterSetter {
 	
 	public void setFkRecord2Statement(String colName, Record record, PreparedStatement pstmt) {
 		try {
-			
 			ColumnValue colVal = null;
 			
 			for (ColumnValue cv : record.getColumnValueList()) {
@@ -197,7 +196,6 @@ public class GraphParameterSetter {
 				return;
 			}
 			
-//			ColumnValue columnValue = record.getColumnValueList().get(i);
 			Object value = colVal.getValue();
 			final SetterHandler handler = getHandler(colVal);
 			if (value == null) {

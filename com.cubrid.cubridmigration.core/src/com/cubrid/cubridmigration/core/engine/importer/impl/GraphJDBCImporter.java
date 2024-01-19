@@ -356,7 +356,6 @@ public class GraphJDBCImporter extends
 		buffer.append(" where ");
 		buffer.append("n.").append(edge.getFKColumnNames().get(index)).append(" = ");
 		buffer.append("m.").append(edge.getREFColumnNames(edge.getFKColumnNames().get(index))).append(" ");
-//		buffer.append("and n.").append(edge.getFKColumnNames().get(index)).append(" = ");
 		buffer.append("and m.").append(edge.getREFColumnNames(edge.getFKColumnNames().get(index))).append(" = ");
 		buffer.append("? ");
 		buffer.append("create (n)-[r:").append(edge.getEdgeLabel()).append("]->(m) return count(r)");
@@ -371,6 +370,7 @@ public class GraphJDBCImporter extends
 		buf.append("n.").append(e.getFKColumnNames().get(idx)).append(" = ");
 		buf.append("m.").append(e.getREFColumnNames(e.getFKColumnNames().get(idx))).append(" ");
 		buf.append("create (n)-[r:").append(e.getEdgeLabel()).append("]->(m) return count(r)");
+		
 		return buf.toString();
 	}
 	

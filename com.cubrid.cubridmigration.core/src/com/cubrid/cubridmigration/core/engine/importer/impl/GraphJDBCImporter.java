@@ -86,9 +86,9 @@ public class GraphJDBCImporter extends
 				if (e.getEdgeType() == Edge.JOINTABLE_TYPE) {
 					return createJoinEdgeImport(e, records);
 				} else {
-//					if (config.isCdc()) {
-//						return createEdgeImportForCDC(e, records);
-//					}
+					if (config.isCdc()) {
+						return createEdgeImportForCDC(e, records);
+					}
 					
 					return createEdgeImport(e);
 				}
@@ -107,6 +107,60 @@ public class GraphJDBCImporter extends
 		}
 	}
 	
+	private int createEdgeImportForCDC(Edge edge, List<Record> records) throws SQLException {
+		int result = 0;
+		boolean prvAutoCommitStatus = false;
+		Connection conn = connectionManager.getTargetConnection(); //NOPMD
+		if (conn.getAutoCommit()) {
+			prvAutoCommitStatus = true;
+			conn.setAutoCommit(false);
+		}
+		
+		PreparedStatement stmt = null; //NOPMD
+		
+		try {
+			for (Record rec : records) {
+				
+				for (int i = 0; i < edge.getfkCol2RefMapping().size(); i++){
+					String sql = getCDCFkEdge(edge, i);
+					
+					try {
+						stmt = conn.prepareStatement(sql);
+						
+ 						parameterSetter.setFkRecord2Statement(edge.getREFColumnNames(edge.getFKColumnNames().get(i)), rec, stmt);
+						
+						//int ret = stmt.executeUpdate();
+						ResultSet rs = stmt.executeQuery();
+						if (rs.next()) {
+							result += rs.getInt("count(r)");
+						}
+						DBUtils.commit(conn);
+						
+						if (result > 0) {
+							eventHandler.handleEvent(new ImportGraphRecordsEvent(edge, result));
+						}
+						
+					} catch (SQLException ex) {
+						if (isConnectionCutDown(ex)) {
+							throw new JDBCConnectErrorException(ex);
+						}
+						ex.printStackTrace();
+						DBUtils.rollback(conn);
+					}
+				}
+			}
+			
+		} finally {
+			Closer.close(stmt);
+			if (prvAutoCommitStatus) {
+				conn.setAutoCommit(true);
+			}
+			connectionManager.closeTar(conn);
+		}
+		
+		return result;
+	}
+
 	private int createEdgeImport(Edge e) throws SQLException {
 		int result = 0;
 		boolean prvAutoCommitStatus = false;
@@ -252,29 +306,6 @@ public class GraphJDBCImporter extends
 		PreparedStatement stmt = null; //NOPMD
 		
 		try {
-//			for (int i=0 ; i < edge.getfkCol2RefMappingSize(); i++) {
-//				String sql = getCDCFkEdge(edge, i, vRecs);
-//				try {
-//					stmt = conn.prepareStatement(sql);
-//					//int ret = stmt.executeUpdate();
-//					ResultSet rs = stmt.executeQuery();
-//					if (rs.next()) {
-//						result += rs.getInt("count(r)");
-//					}
-//					DBUtils.commit(conn);
-//					
-//					if (result > 0) {
-//						eventHandler.handleEvent(new ImportGraphRecordsEvent(edge, result));
-//					}
-//					
-//				} catch (SQLException ex) {
-//					if (isConnectionCutDown(ex)) {
-//						throw new JDBCConnectErrorException(ex);
-//					}
-//					DBUtils.rollback(conn);
-//				}
-//			}
-			
 			for (Record rec : vRecs) {
 				
 				for (int i = 0; i < edge.getfkCol2RefMapping().size(); i++){
@@ -314,7 +345,6 @@ public class GraphJDBCImporter extends
 			connectionManager.closeTar(conn);
 		}
 		
-		
 		return result;
 	}
 	
@@ -326,7 +356,7 @@ public class GraphJDBCImporter extends
 		buffer.append(" where ");
 		buffer.append("n.").append(edge.getFKColumnNames().get(index)).append(" = ");
 		buffer.append("m.").append(edge.getREFColumnNames(edge.getFKColumnNames().get(index))).append(" ");
-		buffer.append("and n.").append(edge.getFKColumnNames().get(index)).append(" = ");
+		buffer.append("and m.").append(edge.getREFColumnNames(edge.getFKColumnNames().get(index))).append(" = ");
 		buffer.append("? ");
 		buffer.append("create (n)-[r:").append(edge.getEdgeLabel()).append("]->(m) return count(r)");
 		
@@ -340,6 +370,7 @@ public class GraphJDBCImporter extends
 		buf.append("n.").append(e.getFKColumnNames().get(idx)).append(" = ");
 		buf.append("m.").append(e.getREFColumnNames(e.getFKColumnNames().get(idx))).append(" ");
 		buf.append("create (n)-[r:").append(e.getEdgeLabel()).append("]->(m) return count(r)");
+		
 		return buf.toString();
 	}
 	

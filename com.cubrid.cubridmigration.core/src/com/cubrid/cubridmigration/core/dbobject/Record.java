@@ -116,8 +116,7 @@ public class Record {
 			}
 			ColumnValue item = columnValueList.get(i);
 
-			buf.append(item.getColumn().getName()).append("=").append(
-					item.getValue());
+			buf.append(item.getColumn().getName()).append("=").append(item.getValue());
 		}
 
 		buf.append("]\"");
@@ -165,7 +164,4 @@ public class Record {
 		}
 		return result;
 	}
-
-
-
 }

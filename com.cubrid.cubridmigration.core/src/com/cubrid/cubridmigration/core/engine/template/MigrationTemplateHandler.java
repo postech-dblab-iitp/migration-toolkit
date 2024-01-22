@@ -759,6 +759,8 @@ public final class MigrationTemplateHandler extends
 		col.setDataType(attr.getValue("type"));
 		col.setSupportGraphDataType(Boolean.valueOf(attr.getValue("datatype_support")));
 		col.setGraphDataType(attr.getValue("graph_type"));
+		col.setPrecision(Integer.valueOf(attr.getValue("precision")));
+		col.setScale(Integer.valueOf(attr.getValue("scale")));
 		
 		targetVertex.addColumn(col);
 	}

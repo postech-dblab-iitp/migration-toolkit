@@ -393,6 +393,9 @@ public final class MigrationTemplateParser {
 				property.setAttribute(TemplateTags.ATTR_TYPE, colType);
 				property.setAttribute("graph_type", col.getGraphDataType());
 				property.setAttribute("datatype_support", String.valueOf(col.getSupportGraphDataType()));
+				
+				property.setAttribute("precision", col.getPrecision().toString());
+				property.setAttribute("scale", col.getScale().toString());
 			}
 			
 //			if (properties.isEmpty() || properties != null) {

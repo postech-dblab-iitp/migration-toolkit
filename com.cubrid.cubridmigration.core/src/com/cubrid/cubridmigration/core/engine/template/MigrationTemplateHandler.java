@@ -728,7 +728,11 @@ public final class MigrationTemplateHandler extends
 		vertex.setVertexType(Integer.parseInt(attr.getValue("vertex_type")));
 		vertex.setTableName(attr.getValue("table_name"));
 		vertex.setOwner(attr.getValue("table_owner"));
-		vertex.setOid(Long.parseLong(attr.getValue("table_oid")));
+		
+		if (config.isCdc()) {
+			vertex.setOid(Long.parseLong(attr.getValue("table_oid")));
+		}
+		
 		vertex.putVertexProperties(attr.getValue(TemplateTags.ATTR_NAME), attr.getValue(TemplateTags.ATTR_TYPE));
 		
 		targetVertex = vertex;

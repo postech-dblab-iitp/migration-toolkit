@@ -79,6 +79,7 @@ import com.cubrid.cubridmigration.core.engine.task.imp.GraphVertexImportTask;
 import com.cubrid.cubridmigration.core.engine.task.imp.IndexImportTask;
 import com.cubrid.cubridmigration.core.engine.task.imp.PKImportTask;
 import com.cubrid.cubridmigration.core.engine.task.imp.ProcedureImportTask;
+import com.cubrid.cubridmigration.core.engine.task.imp.QuickScriptImportTask;
 import com.cubrid.cubridmigration.core.engine.task.imp.RecordImportTask;
 import com.cubrid.cubridmigration.core.engine.task.imp.SQLImportTask;
 import com.cubrid.cubridmigration.core.engine.task.imp.SequenceImportTask;
@@ -536,6 +537,12 @@ public class MigrationTaskFactory {
 		ImportTask task = new GraphEdgeImportTask(e, recordsTobeImport);
 		initImportTask(task);
 		return new ImportDataTaskDecorator(context, task);
+	}
+	
+	public ImportTask createQuickScriptTask() {
+		ImportTask task = new QuickScriptImportTask();
+		initImportTask(task);
+		return task;
 	}
 	
 	public ImportTask createEdgeCSVHeaderTask(Edge e) {

@@ -767,4 +767,8 @@ public class GraphJDBCImporter extends
 		return 0;
 	}
 
+	public int importQuickScript() {
+		return 0;
+	}
+
 }

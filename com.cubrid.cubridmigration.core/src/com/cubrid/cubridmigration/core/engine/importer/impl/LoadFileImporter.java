@@ -37,9 +37,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.JPopupMenu.Separator;
+
 import org.apache.log4j.Logger;
 
 import com.cubrid.cubridmigration.core.common.CUBRIDIOUtils;
+import com.cubrid.cubridmigration.core.common.Closer;
 import com.cubrid.cubridmigration.core.common.PathUtils;
 import com.cubrid.cubridmigration.core.common.log.LogUtil;
 import com.cubrid.cubridmigration.core.dbobject.Record;
@@ -301,6 +304,58 @@ public class LoadFileImporter extends
 		}
 	}
 	
+	@Override
+	protected void handleListFileHeader() {
+		synchronized (lockObj) {
+			MigrationDirAndFilesManager mdfm = mrManager.getDirAndFilesMgr();
+			
+			File file = new File(mdfm.getGraphListFile());
+			FileWriter fileWriter = null;
+			BufferedWriter bufferWriter = null;
+			
+			try {
+				if (file.exists()) {
+					fileWriter = new FileWriter(file, true);
+					bufferWriter = new BufferedWriter(fileWriter);
+					
+					StringBuffer buffer = new StringBuffer();
+					buffer.append("#!/bin/bash");
+					buffer.append("\n");
+					buffer.append("\n");
+					
+					buffer.append("shell_dir=\"$( cd \"$( dirname \"$0\")\" && pwd -P )\"");
+					buffer.append("\n");
+					buffer.append("base_dir=$shell_dir/");
+					buffer.append("\n");
+					buffer.append("execute_tools=\"(enter execute tools path here)\"");
+					buffer.append("\n");
+					buffer.append("\n");
+					
+					buffer.append("echo \"base_dir : $base_dir\"");
+					buffer.append("\n");
+					buffer.append("echo \"execute_tools : $execute_tools\"");
+					buffer.append("\n");
+					buffer.append("\n");
+					
+					buffer.append("${execute_tools}");
+					buffer.append("\n");
+					
+					buffer.append("\t--output_dir:\"(enter output dir path here)\"");
+					
+					bufferWriter.write(buffer.toString());
+					
+					bufferWriter.close();
+					
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				Closer.close(bufferWriter);
+				Closer.close(fileWriter);
+			}
+		}
+	}
+	
 	protected void handleDataFileHeader(String fileName, final Edge e, final int impCount,
 			final int expCount) {
 		synchronized (lockObj) {
@@ -498,11 +553,11 @@ public class LoadFileImporter extends
 				 StringBuffer sb = new StringBuffer();
 				 if (gInstance instanceof Vertex) {
 					 Vertex v = (Vertex) gInstance;
-					 sb.append("--nodes:")
+					 sb.append("\t--nodes:")
 					 .append(v.getVertexLabel());
 				 } else if (gInstance instanceof Edge) {
 					 Edge e = (Edge) gInstance;
-					 sb.append("--relationships:")
+					 sb.append("\t--relationships:")
 					 .append(e.getEdgeLabel());
 				 }
 				 sb.append(" ${base_dir}")
@@ -522,5 +577,4 @@ public class LoadFileImporter extends
 //    public int importEdge(Edge e, List<Record> records) {
 //		return 0;
 //	}
-
 }

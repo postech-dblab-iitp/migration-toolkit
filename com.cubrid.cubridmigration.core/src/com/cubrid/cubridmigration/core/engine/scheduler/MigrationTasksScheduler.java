@@ -509,6 +509,8 @@ public class MigrationTasksScheduler {
 		List<Vertex> vertexList = gdbDict.getMigratedVertexList();
 		List<Edge> edgeList = gdbDict.getMigratedEdgeList();
 		
+		executeTask2(taskFactory.createQuickScriptTask());
+		
 		for (Vertex v : vertexList) {
 			executeTask2(taskFactory.createVertexCSVHeaderTask(v));
 		}

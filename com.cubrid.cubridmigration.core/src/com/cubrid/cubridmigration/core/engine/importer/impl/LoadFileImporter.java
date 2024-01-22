@@ -337,7 +337,7 @@ public class LoadFileImporter extends
 					buffer.append("\n");
 					buffer.append("\n");
 					
-					buffer.append("${execute_tools}");
+					buffer.append("${execute_tools} \\");
 					buffer.append("\n");
 					
 					buffer.append("\t--output_dir:\"(enter output dir path here)\"");
@@ -554,11 +554,11 @@ public class LoadFileImporter extends
 				 if (gInstance instanceof Vertex) {
 					 Vertex v = (Vertex) gInstance;
 					 sb.append("\t--nodes:")
-					 .append(v.getVertexLabel());
+					 .append(v.getVertexLabel().replaceAll(" ", "_"));
 				 } else if (gInstance instanceof Edge) {
 					 Edge e = (Edge) gInstance;
 					 sb.append("\t--relationships:")
-					 .append(e.getEdgeLabel());
+					 .append(e.getEdgeLabel().replaceAll(" ", "_"));
 				 }
 				 sb.append(" ${base_dir}")
 				 .append(inputFile);

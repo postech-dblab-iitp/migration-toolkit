@@ -412,7 +412,7 @@ public final class MigrationTemplateHandler extends
 		PK pk = new PK(targetTable);
 		targetTable.setPk(pk);
 		pk.setPkColumns(getStringList(attributes.getValue(TemplateTags.ATTR_FIELDS)));
-
+		
 	}
 
 	/**
@@ -765,11 +765,22 @@ public final class MigrationTemplateHandler extends
 		targetVertex.addColumn(col);
 	}
 	
+	private void parseVertexPKInfo(Attributes attr) {
+		PK pk = new PK();
+		
+		pk.addColumn(attr.getValue("col_name"));
+		
+		targetVertex.addPK(pk);
+	}
+	
 	private void parseEdgePropertyInfo(Attributes attr) {
 		Column col = new Column();
 		col.setName(attr.getValue("name"));
 		col.setDataType(attr.getValue("type"));
 		col.setGraphDataType(attr.getValue("graph_type"));
+		
+		col.setPrecision(Integer.valueOf(attr.getValue("precision")));
+		col.setScale(Integer.valueOf(attr.getValue("scale")));
 		
 		String referCol = attr.getValue("reference_to");
 		
@@ -805,6 +816,8 @@ public final class MigrationTemplateHandler extends
 				parseTargetJDBC(attr);
 			} else if (TemplateTags.TAG_PROPERTY.equals(qName)) {
 				parsePropertyInfo(attr);
+			} else if ("pk".equals(qName)) {
+				parseVertexPKInfo(attr);
 			} else if ("edge_property".equals(qName)) {
 				parseEdgePropertyInfo(attr);
 			} else if ("fk".equals(qName)) {

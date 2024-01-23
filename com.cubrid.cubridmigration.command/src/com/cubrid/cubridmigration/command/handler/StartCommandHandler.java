@@ -70,6 +70,9 @@ import com.cubrid.cubridmigration.core.engine.report.MigrationReport;
 import com.cubrid.cubridmigration.core.engine.report.RecordMigrationResult;
 import com.cubrid.cubridmigration.core.engine.template.MigrationTemplateParser;
 import com.cubrid.cubridmigration.cubrid.CUBRIDTimeUtil;
+import com.cubrid.cubridmigration.graph.dbobj.Edge;
+import com.cubrid.cubridmigration.graph.dbobj.GraphDictionary;
+import com.cubrid.cubridmigration.graph.dbobj.Vertex;
 import com.cubrid.cubridmigration.mysql.trans.MySQL2CUBRIDMigParas;
 
 /**
@@ -409,9 +412,15 @@ public class StartCommandHandler implements
 		loadDBProperties();
 		//Create migration configuration and initialize it.
 		MigrationConfiguration config = getConfig(scriptFile);
+		
 		if (config == null) {
 			return;
 		}
+		
+		if (config.targetIsCSV()) {
+			mapVertexToEdge(config);
+		}
+		
 		//Start migration 
 		final ConsoleMigrationReporter migrationReporter = new ConsoleMigrationReporter(config,
 				MigrationBriefReport.SM_USER);
@@ -592,31 +601,28 @@ public class StartCommandHandler implements
 		}
 
 	}
-	//	/**
-	//	 * Login cubrid database
-	//	 * 
-	//	 * @param config MigrationConfiguration
-	//	 */
-	//	private  void loginDB(MigrationConfiguration config) {
-	//		CMSManager sm = CMSManager.getInstance();
-	//		CMSInfo server = sm.findServer(config.getCmServer().getHost(),
-	//				config.getCmServer().getPort(), config.getCmServer().getUser());
-	//		server.setCubridManagerUser(config.getCmServer().getUser());
-	//		server.setCubridManagerPassword(config.getCmServer().getPassword());
-	//		if (!server.isConnected()) {
-	//			String errorMsg = server.connect();
-	//			if (errorMsg != null) {
-	//				throw new BreakMigrationException(errorMsg);
-	//			}
-	//		}
-	//
-	//		//Login database
-	//		BaseDatabaseConfig offlineDBInfo = config.getOfflineTargetDBInfo();
-	//		LoginDatabaseTask task = new LoginDatabaseTask(server);
-	//		task.setDbName(offlineDBInfo.getName());
-	//		task.setCMUser(config.getCmServer().getUser());
-	//		task.setDbPassword(offlineDBInfo.getPassword());
-	//		task.setDbUser(offlineDBInfo.getUser());
-	//		task.execute();
-	//	}
+	
+	private void mapVertexToEdge(MigrationConfiguration config) {
+		GraphDictionary gdbDict = config.getGraphDictionary();
+		List<Edge> edgeList = gdbDict.getMigratedEdgeList();
+		List<Vertex> vertexList = gdbDict.getMigratedVertexList();
+		
+		for (Edge edge : edgeList) {
+			String startVertexName = edge.getStartVertexName();
+			String endVertexName = edge.getEndVertexName();
+			
+			for (Vertex vertex : vertexList) {
+				if (vertex.getTableName().equals(startVertexName)) {
+					edge.setStartVertex(vertex);
+					
+					if (edge.getEdgeType() == 4) {
+						edge.setEndVertex(vertex);
+					}
+					
+				} else if (vertex.getTableName().equals(endVertexName)) {
+					edge.setEndVertex(vertex);
+				}
+			}
+		}
+	}
 }

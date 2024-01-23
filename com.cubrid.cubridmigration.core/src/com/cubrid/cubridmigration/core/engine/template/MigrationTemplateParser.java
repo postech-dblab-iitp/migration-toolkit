@@ -398,21 +398,15 @@ public final class MigrationTemplateParser {
 				property.setAttribute("scale", col.getScale().toString());
 			}
 			
-//			if (properties.isEmpty() || properties != null) {
-//				
-//				Iterator<String> propertyIter = properties.keySet().iterator();
-//				
-//				while (propertyIter.hasNext()) {
-//					
-//					Element property = createElement(doc, vertexElement, TemplateTags.TAG_PROPERTY);
-//					String key = propertyIter.next();
-//					
-//					String typeValue = properties.get(key);
-//					
-//					property.setAttribute(TemplateTags.ATTR_NAME, key);
-//					property.setAttribute(TemplateTags.ATTR_TYPE, typeValue);
-//				}
-//			}
+			Element pkElement = createElement(doc, vertexElement, "pks");
+			
+			PK pk = vertex.getPK();
+			
+			for (String pkCol : pk.getPkColumns()) {
+				Element pkProperty = createElement(doc, pkElement, "pk");
+				
+				pkProperty.setAttribute("col_name", pkCol);
+			}
 		}
 	}
 	
@@ -445,31 +439,10 @@ public final class MigrationTemplateParser {
 				property.setAttribute(TemplateTags.ATTR_NAME, colName);
 				property.setAttribute(TemplateTags.ATTR_TYPE, colType);
 				property.setAttribute("graph_type", col.getGraphDataType());
+				
+				property.setAttribute("precision", col.getPrecision().toString());
+				property.setAttribute("scale", col.getScale().toString());
 			}
-			
-//			if (!properties.isEmpty() || properties != null) {
-//				edgeElement.setAttribute("table_oid", String.valueOf(edge.getOid()));
-//				
-//				Element propertiesElement = createElement(doc, edges, "properties");
-//				
-//				Iterator<String> propertyIter = properties.keySet().iterator();
-//				
-//				while (propertyIter.hasNext()) {
-//					
-//					Element property = createElement(doc, propertiesElement, "edge_property");
-//					String key = propertyIter.next();
-//					
-//					String typeValue = properties.get(key);
-//					
-//					property.setAttribute(TemplateTags.ATTR_NAME, key);
-//					property.setAttribute(TemplateTags.ATTR_TYPE, properties.get(key));
-//					for (Column col : columnList) {
-//						if (col.getName().equals(key)) {
-//							property.setAttribute("graph_type", col.getGraphDataType());
-//						}
-//					}
-//				}
-//			}
 			
 			if (!fkRefers.isEmpty() || fkRefers != null) {
 				Element fkRefersElement = createElement(doc, edges, "fks");

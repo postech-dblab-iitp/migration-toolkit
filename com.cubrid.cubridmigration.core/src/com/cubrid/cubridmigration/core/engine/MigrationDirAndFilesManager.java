@@ -243,7 +243,7 @@ public class MigrationDirAndFilesManager implements
 		if (config.targetIsFile()) {
 			ss = config.getTargetFilePrefix() + "_list";
 		}
-		return mergeFilesDir + ss;
+		return mergeFilesDir + ss + ".sh";
 	}
 	
 	/**

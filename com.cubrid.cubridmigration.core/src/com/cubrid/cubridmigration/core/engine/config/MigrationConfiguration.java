@@ -3708,7 +3708,7 @@ public class MigrationConfiguration {
 		this.graphSubTypeForCSV = type;
 	}
 	
-	public int getGraphSubTyteForCSV() {
+	public int getGraphSubTypeForCSV() {
 		return this.graphSubTypeForCSV;
 	}
 }

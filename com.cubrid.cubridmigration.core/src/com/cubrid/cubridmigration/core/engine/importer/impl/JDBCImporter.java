@@ -416,4 +416,9 @@ public class JDBCImporter extends
 		return 0;
 	}
 
+	public int importQuickScript() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

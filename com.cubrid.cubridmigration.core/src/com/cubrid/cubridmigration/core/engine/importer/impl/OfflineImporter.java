@@ -411,6 +411,8 @@ public abstract class OfflineImporter extends
 	protected abstract void handleDataFileHeader(String fileName, final Edge e, final int impCount, final int expCount);
 	
 	protected abstract void handleDataFileHeader(String fileName, final Vertex v, final int impCount, final int expCount);
+	
+	protected abstract void handleListFileHeader();
 
 	/**
 	 * Send schema file and data file to server for loadDB command.
@@ -839,6 +841,15 @@ public abstract class OfflineImporter extends
 			return 0;
 		}
 	}
+	
+	public int importQuickScript() {
+		// call load file importer
+		// create upper line
+		
+		handleListFileHeader();
+		
+		return 0;
+	}
 
 	public void importVertexToCSV(Vertex v) {
 		String tmpDataFileName = getRandomTempFileName() + config.getDataFileExt();
@@ -936,7 +947,7 @@ public abstract class OfflineImporter extends
 				} else {
 					sb.append(col.getName());
 					sb.append(":");
-					sb.append(col.getCSVGraphDataType(config.getGraphSubTyteForCSV()));
+					sb.append(col.getCSVGraphDataType(config.getGraphSubTypeForCSV()));
 				}
 				
 				header.add(sb.toString());
@@ -960,7 +971,7 @@ public abstract class OfflineImporter extends
 				
 				sb.append(col.getName());
 				sb.append(":");
-				sb.append(col.getCSVGraphDataType(config.getGraphSubTyteForCSV()));
+				sb.append(col.getCSVGraphDataType(config.getGraphSubTypeForCSV()));
 				
 				header.add(sb.toString());
 			}

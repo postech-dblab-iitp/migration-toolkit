@@ -743,25 +743,29 @@ public abstract class DBExportHelper implements
 		StringBuilder sVertexOrderby = new StringBuilder();
 		StringBuilder eVertexOrderby = new StringBuilder();
 		
-		PK pk = e.getStartVertex().getPK();
-		if (pk != null) {
-			// if it has a pk, a pk scan is better than full range scan
-			for (String pkCol : pk.getPkColumns()) {
-				if (sVertexOrderby.length() > 0) {
-					sVertexOrderby.append(", ");
+		if (e.getStartVertex() != null) {
+			PK pk = e.getStartVertex().getPK();
+			if (pk != null) {
+				// if it has a pk, a pk scan is better than full range scan
+				for (String pkCol : pk.getPkColumns()) {
+					if (sVertexOrderby.length() > 0) {
+						sVertexOrderby.append(", ");
+					}
+					sVertexOrderby.append(addDoubleQuote(pkCol));
 				}
-				sVertexOrderby.append(addDoubleQuote(pkCol));
 			}
 		}
 		
-		pk = e.getEndVertex().getPK();
-		if (pk != null) {
-			// if it has a pk, a pk scan is better than full range scan
-			for (String pkCol : pk.getPkColumns()) {
-				if (eVertexOrderby.length() > 0) {
-					eVertexOrderby.append(", ");
+		if (e.getEndVertex() != null) {
+			PK pk = e.getEndVertex().getPK();
+			if (pk != null) {
+				// if it has a pk, a pk scan is better than full range scan
+				for (String pkCol : pk.getPkColumns()) {
+					if (eVertexOrderby.length() > 0) {
+						eVertexOrderby.append(", ");
+					}
+					eVertexOrderby.append(addDoubleQuote(pkCol));
 				}
-				eVertexOrderby.append(addDoubleQuote(pkCol));
 			}
 		}
 		
@@ -1119,25 +1123,30 @@ public abstract class DBExportHelper implements
 		StringBuilder sVertexOrderby = new StringBuilder();
 		StringBuilder eVertexOrderby = new StringBuilder();
 		
-		PK pk = e.getStartVertex().getPK();
-		if (pk != null) {
-			// if it has a pk, a pk scan is better than full range scan
-			for (String pkCol : pk.getPkColumns()) {
-				if (sVertexOrderby.length() > 0) {
-					sVertexOrderby.append(", ");
+		if (e.getStartVertex() != null) {
+			PK pk = e.getStartVertex().getPK();
+			if (pk != null) {
+				// if it has a pk, a pk scan is better than full range scan
+				for (String pkCol : pk.getPkColumns()) {
+					if (sVertexOrderby.length() > 0) {
+						sVertexOrderby.append(", ");
+					}
+					sVertexOrderby.append(pkCol);
 				}
-				sVertexOrderby.append(pkCol);
 			}
 		}
 		
-		pk = e.getEndVertex().getPK();
+		if (e.getEndVertex() != null) {
+		
+		PK pk = e.getEndVertex().getPK();
 		if (pk != null) {
-			// if it has a pk, a pk scan is better than full range scan
-			for (String pkCol : pk.getPkColumns()) {
-				if (eVertexOrderby.length() > 0) {
-					eVertexOrderby.append(", ");
+				// if it has a pk, a pk scan is better than full range scan
+				for (String pkCol : pk.getPkColumns()) {
+					if (eVertexOrderby.length() > 0) {
+						eVertexOrderby.append(", ");
+					}
+					eVertexOrderby.append(pkCol);
 				}
-				eVertexOrderby.append(pkCol);
 			}
 		}
 		
@@ -1149,8 +1158,12 @@ public abstract class DBExportHelper implements
 		
 		buffer.append(" FROM ");
 		
-		buffer.append("(SELECT ROWNUM as \":START_ID(" + e.getStartVertexName() + ")\", ");
-		buffer.append(sVertexOrderby);
+		buffer.append("(SELECT ROWNUM as \":START_ID(" + e.getStartVertexName() + ")\"");
+		
+		if (sVertexOrderby.length() != 0) {
+			buffer.append(" ," + sVertexOrderby);
+		}
+		
 		if (sVertexOrderby.indexOf(fkCol) == -1) {
 			buffer.append(", " + fkCol);
 		}
@@ -1162,8 +1175,12 @@ public abstract class DBExportHelper implements
 		buffer.append(startVertexName);
 		buffer.append(", ");
 		
-		buffer.append("(SELECT ROWNUM as \":END_ID(" + e.getEndVertexName() + ")\", ");
-		buffer.append(eVertexOrderby);
+		buffer.append("(SELECT ROWNUM as \":END_ID(" + e.getEndVertexName() + ")\"");
+		
+		if (eVertexOrderby.length() != 0) {
+			buffer.append(" ," + eVertexOrderby);
+		}
+		
 		if (eVertexOrderby.indexOf(refCol) == -1) {
 			buffer.append(", " + refCol);
 		}

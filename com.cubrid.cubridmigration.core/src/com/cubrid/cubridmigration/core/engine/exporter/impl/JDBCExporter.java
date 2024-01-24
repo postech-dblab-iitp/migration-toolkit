@@ -337,6 +337,8 @@ public class JDBCExporter extends
 		if (joc.getConn() == null) {
 			throw new IllegalArgumentException("Connection can't be NULL.");
 		}
+		LOG.info("query = " + sql);
+		
 		//Reset objects.
 		joc.setStmt(null);
 		joc.setRs(null);

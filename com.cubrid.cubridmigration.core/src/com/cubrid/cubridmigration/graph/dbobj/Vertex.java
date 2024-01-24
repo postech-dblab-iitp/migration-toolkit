@@ -183,6 +183,16 @@ public class Vertex extends DBObject {
 		this.pk = pk;
 	}
 	
+	public void addPK(PK pk) {
+		if (this.pk == null) {
+			this.setPK(pk);
+		} else {
+			for (String col_name : pk.getPkColumns()) {
+				this.pk.addColumn(col_name);				
+			}
+		}
+	}
+	
 	public PK getPK() {
 		return this.pk;
 	}

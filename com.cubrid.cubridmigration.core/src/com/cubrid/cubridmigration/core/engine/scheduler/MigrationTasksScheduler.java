@@ -159,6 +159,7 @@ public class MigrationTasksScheduler {
 		createGraphStep9();
 		await();
 		createGraphStep10();
+		await();
 	}
 	
 	/**

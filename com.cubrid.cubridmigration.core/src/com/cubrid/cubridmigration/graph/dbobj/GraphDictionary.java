@@ -33,6 +33,18 @@ public class GraphDictionary {
 		this.migratedEdgeList.add(migratedEdge);
 	}
 	
+	public void removeEdge(String edgeName) {
+		int listSize = migratedEdgeList.size();
+		
+		for (int i = 0; i < listSize; i++) {
+			Edge edge = migratedEdgeList.get(i);
+			if (edge.getEdgeLabel().equals(edgeName)) {
+				migratedEdgeList.remove(i);
+				return;
+			}
+		}
+	}
+	
 	public void printVertexAndEdge(){
 		StringBuilder relationVertexes = new StringBuilder();
 		

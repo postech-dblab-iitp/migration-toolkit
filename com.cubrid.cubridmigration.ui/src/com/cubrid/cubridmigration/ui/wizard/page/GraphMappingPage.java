@@ -6,7 +6,6 @@ import java.util.List;
 import org.eclipse.jface.dialogs.PageChangedEvent;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ColumnWeightData;
-import org.eclipse.jface.viewers.ComboBoxCellEditor;
 import org.eclipse.jface.viewers.ICellModifier;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -47,7 +46,6 @@ import org.eclipse.zest.core.widgets.ZestStyles;
 import org.eclipse.zest.layouts.LayoutStyles;
 import org.eclipse.zest.layouts.algorithms.GridLayoutAlgorithm;
 
-import com.cubrid.cubridmigration.core.dbobject.Catalog;
 import com.cubrid.cubridmigration.core.dbobject.Column;
 import com.cubrid.cubridmigration.core.engine.config.MigrationConfiguration;
 import com.cubrid.cubridmigration.graph.dbobj.Edge;
@@ -78,9 +76,10 @@ public class GraphMappingPage extends MigrationWizardPage {
 	private Vertex startVertex;
 	private Vertex endVertex;
 	
+	private Edge selectedEdge;
+	
 	private Object selectedObject;
 	
-	private TableViewer columnViewer;
 	private TableViewer gdbTable;
 	private TableViewer rdbTable;
 	
@@ -133,10 +132,6 @@ public class GraphMappingPage extends MigrationWizardPage {
 		TabItem folder1 = new TabItem(tabFolder, SWT.NONE);
 		folder1.setText("Vertex");
 		folder1.setControl(graphViewer.getControl());
-		
-		TabItem folder2 = new TabItem(tabFolder, SWT.NONE);
-		folder2.setText("Edge");
-		
 	}
 	
 	public void createGraph(Composite parent) {
@@ -205,7 +200,6 @@ public class GraphMappingPage extends MigrationWizardPage {
 		});
 		
 		graphViewer.addSelectionChangedListener(new ISelectionChangedListener() {
-			@SuppressWarnings("unchecked")
 			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
 				IStructuredSelection selection = (IStructuredSelection) event.getSelection();
@@ -222,13 +216,16 @@ public class GraphMappingPage extends MigrationWizardPage {
 //					}
 					
 					menuHandler();
+					deleteMenuHandler(true);
 					System.out.println("select object: " + ((Vertex) selectedObject).getVertexLabel());
 				}
 				
 				if (selection.getFirstElement() instanceof Edge) {
 					selectedObject = (Edge) selection.getFirstElement();
+					selectedEdge = (Edge) selection.getFirstElement();
 					
 					menuHandler();
+					deleteMenuHandler(false);
 					System.out.println("selected object: " + ((Edge) selectedObject).getEdgeLabel());
 				}
 				
@@ -361,10 +358,40 @@ public class GraphMappingPage extends MigrationWizardPage {
 			public void widgetDefaultSelected(SelectionEvent e) {}
 		});
 		
+		MenuItem deleteEdge = new MenuItem(popupMenu, SWT.POP_UP);
+		deleteEdge.setText("Delete Edge");
+		
+		deleteEdge.addSelectionListener(new SelectionListener() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				
+				GraphDictionary gdbDict = mConfig.getGraphDictionary();
+				List<Edge> migratedEdgeList = gdbDict.getMigratedEdgeList();
+				
+				for (Edge edge : migratedEdgeList) {
+					if (edge.getEdgeLabel().equalsIgnoreCase(selectedEdge.getEdgeLabel())) {
+						gdbDict.removeEdge(edge.getEdgeLabel());
+						
+						break;
+					}
+				}
+				
+				graphViewer.refresh();
+			}
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+				// TODO Auto-generated method stub
+			}
+		});
+		
 		item1.setEnabled(true);
 		item2.setEnabled(false);
 		item3.setEnabled(false);
+
 		changeName.setEnabled(true);
+		deleteEdge.setEnabled(true);
 	}
 	
 	public void setHighlight(GraphNode node) {
@@ -374,6 +401,16 @@ public class GraphMappingPage extends MigrationWizardPage {
 		node.setHighlightColor(new Color(dis, 153, 204, 102));
 		node.setNodeStyle(GraphNode.HIGHLIGHT_ON);
 		node.highlight();
+	}
+	
+	public void deleteMenuHandler(boolean isVertex) {
+		MenuItem[] items = popupMenu.getItems();
+		
+		if (isVertex) {
+			items[5].setEnabled(false);
+		} else {
+			items[5].setEnabled(true);
+		}
 	}
 	
 	public void menuHandler() {
@@ -601,7 +638,6 @@ public class GraphMappingPage extends MigrationWizardPage {
 			}
 		});
 		
-		
 		gdbTable.setContentProvider(new IStructuredContentProvider() {
 			
 			@Override
@@ -644,7 +680,6 @@ public class GraphMappingPage extends MigrationWizardPage {
 			
 			@Override
 			public Image getColumnImage(Object element, int columnIndex) {
-
 				return null;
 			}
 			
@@ -695,10 +730,6 @@ public class GraphMappingPage extends MigrationWizardPage {
 		graphViewer.setInput(vertexList);
 	}
 	
-	public void createEdgeView() {
-		
-	}
-	
 	//GDB GraphMappingPage -> afterShowCurrentPage
 	protected void afterShowCurrentPage(PageChangedEvent event) {
 		final MigrationWizard mw = getMigrationWizard();
@@ -708,12 +739,9 @@ public class GraphMappingPage extends MigrationWizardPage {
 		
 		setErrorMessage(null);
 		
-		Catalog sourceCatalog = mw.getSourceCatalog();
-	
 		gdbDict = mConfig.getGraphDictionary();
 		
 		gdbDict.printVertexAndEdge();
-		
 		
 		showGraphData(gdbDict.getMigratedVertexList());
 	}

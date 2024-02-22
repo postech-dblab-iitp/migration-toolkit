@@ -31,6 +31,7 @@ package com.cubrid.cubridmigration.core.export;
 
 import java.math.BigInteger;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -45,6 +46,7 @@ import java.util.regex.Pattern;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
+import com.cubrid.cubridmigration.core.common.Closer;
 import com.cubrid.cubridmigration.core.common.log.LogUtil;
 import com.cubrid.cubridmigration.core.connection.ConnParameters;
 import com.cubrid.cubridmigration.core.dbobject.Column;
@@ -524,24 +526,20 @@ public abstract class DBExportHelper implements
 	}
 	
 	public String getPagedSelectSQLForEdgeCSV(Edge e, String sql, long rows, long exportedRecords, PK pk, boolean hasMultiSchema) {
-		String cleanSql = sql.toUpperCase().trim();
-		
-		String editedQuery = editQueryForJoinTableEdge(e, cleanSql);
-		
-		StringBuilder buf = new StringBuilder(editedQuery.trim());
+		StringBuilder buf = new StringBuilder(sql.trim());
 
 		Pattern pattern = Pattern.compile("GROUP\\s+BY", Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
-		Matcher matcher = pattern.matcher(editedQuery); 
+		Matcher matcher = pattern.matcher(sql); 
 		
 		Pattern pattern2 = Pattern.compile("ORDER\\s+BY", Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
-		Matcher matcher2 = pattern2.matcher(editedQuery);
+		Matcher matcher2 = pattern2.matcher(sql);
 		
 		Pattern pattern3 = Pattern.compile("FOR ORDERBY_NUM\\(\\)", Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
-		Matcher matcher3 = pattern3.matcher(editedQuery);
+		Matcher matcher3 = pattern3.matcher(sql);
 		
 		if (matcher.find()) {
 			//End with group by 
-			if (cleanSql.indexOf("HAVING") < 0) {
+			if (sql.indexOf("HAVING") < 0) {
 				buf.append(" HAVING ");
 			} else {
 				buf.append(" AND ");
@@ -566,7 +564,7 @@ public abstract class DBExportHelper implements
 				buf.append(orderby);
 				buf.append(" FOR ORDERBY_NUM() ");
 			} else {
-				if (cleanSql.indexOf("WHERE") < 0) {
+				if (sql.indexOf("WHERE") < 0) {
 					buf.append(" WHERE");
 				} else {
 					buf.append(" AND");
@@ -585,141 +583,10 @@ public abstract class DBExportHelper implements
 		return buf.toString();
 	}
 	
-//	private String editQueryForJoinTableEdge(Edge e, String sql) {
-//		String editString = new String(sql);
-//		
-//		List<String> refColList = e.getFKColumnNames();
-//		
-//		String startVertexName = addDoubleQuote(e.getStartVertexName().toUpperCase());
-//		String endVertexName = addDoubleQuote(e.getEndVertexName().toUpperCase());
-//		
-//		String startIdCol = "\":START_ID(" + e.getStartVertexName().toUpperCase() + ")\"";
-//		String endIdCol = "\":END_ID(" + e.getEndVertexName().toUpperCase() + ")\"";
-//		
-//		String dupStartVertexName = null;
-//		String dupEndVertexName = null;
-//		
-//		if (e.getStartVertexName().equalsIgnoreCase(e.getEndVertexName())) {
-//			dupStartVertexName = addDoubleQuote(e.getStartVertexName() + "_1");
-//			dupEndVertexName = addDoubleQuote(e.getEndVertexName() + "_2");
-//		} else {
-//			dupStartVertexName = startVertexName;
-//			dupEndVertexName = endVertexName;
-//		}
-//		
-//		String edgeLabel = addDoubleQuote(e.getEdgeLabel().toUpperCase());
-//		
-//		Pattern startVertexIdPattern = Pattern.compile(addDoubleQuote(refColList.get(0)), Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
-//		Matcher startVertexIdMatcher = startVertexIdPattern.matcher(editString);
-//		
-//		if (startVertexIdMatcher.find()) {
-//			String column = "\"main\"." + addDoubleQuote(refColList.get(0));
-//			
-//			editString = startVertexIdMatcher.replaceFirst(column);
-//		}
-//		
-//		Pattern startIdPattern = Pattern.compile("\":START_ID", Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
-//		Matcher startIdMatcher = startIdPattern.matcher(editString);
-//		
-//		if (startIdMatcher.find()) {
-//			String startId = dupStartVertexName + ".\":START_ID";
-//			
-//			editString = startIdMatcher.replaceFirst(startId);
-//		}
-//		
-//		Pattern endIdPattern = Pattern.compile("\":END_ID", Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);;
-//		Matcher endIdMatcher = endIdPattern.matcher(editString);
-//		
-//		if (endIdMatcher.find()) {
-//			String endId = dupEndVertexName + ".\":END_ID";
-//			
-//			editString = endIdMatcher.replaceFirst(endId);
-//		}
-//		
-//		Pattern endVertexIdPattern = Pattern.compile(addDoubleQuote(refColList.get(1)), Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
-//		Matcher endVertexIdMatcher = endVertexIdPattern.matcher(editString);
-//		
-//		if (endVertexIdMatcher.find()) {
-//			
-//			String column = "\"main\"." + addDoubleQuote(refColList.get(1));
-//			
-//			editString = endVertexIdMatcher.replaceFirst(column);
-//		}
-//		
-//		Pattern fromPattern = Pattern.compile("FROM\\s.*$", Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
-//		Matcher fromMatcher = fromPattern.matcher(editString);
-//		
-//		if (fromMatcher.find()) {
-//			StringBuffer buffer = new StringBuffer();
-//			
-//			startVertexIdMatcher.reset();
-//			endVertexIdMatcher.reset();
-//			
-//			if (startVertexIdMatcher.find() || endVertexIdMatcher.find()) {
-//				buffer.append("FROM " + edgeLabel + " as main, " + "(SELECT ROWNUM as " + startIdCol + ", ");
-//				
-//				edgeLabel = new String("\"main\"");
-//				
-//			} else {
-//				buffer.append("FROM " + edgeLabel + ", " + "(SELECT ROWNUM as " + startIdCol + ", ");
-//			}
-//			
-//			buffer.append(addDoubleQuote(e.getREFColumnNames(refColList.get(0))));
-//			
-//			buffer.append(" from " + startVertexName + " order by ");
-//			
-//			buffer.append(addDoubleQuote(e.getREFColumnNames(refColList.get(0))));
-//			
-//			buffer.append(" for orderby_num()) as " + dupStartVertexName + ", (SELECT ROWNUM as " + endIdCol + ", ");
-//			
-//			buffer.append(addDoubleQuote(e.getREFColumnNames(refColList.get(1))));
-//			
-//			buffer.append(" from " + endVertexName + " order by ");
-//			
-//			buffer.append(addDoubleQuote(e.getREFColumnNames(refColList.get(1))));
-//			
-//			buffer.append(" for orderby_num()) as " + dupEndVertexName);
-//			
-//			editString = fromMatcher.replaceFirst(buffer.toString());
-//		}
-//		
-//		StringBuffer originalString = new StringBuffer(editString);
-//		StringBuffer whereBuffer = new StringBuffer();
-//		
-//		whereBuffer.append(" where " + dupStartVertexName + ".");
-//		
-//		whereBuffer.append(addDoubleQuote(e.getfkCol2RefMapping().get(refColList.get(0))));
-//		
-//		whereBuffer.append(" = " + edgeLabel + ".");
-//		
-//		whereBuffer.append(addDoubleQuote(refColList.get(0)));
-//		
-//		whereBuffer.append(" and " + dupEndVertexName + ".");
-//		
-//		whereBuffer.append(addDoubleQuote(e.getfkCol2RefMapping().get(refColList.get(1))));
-//		
-//		whereBuffer.append(" = " + edgeLabel + ".");
-//		
-//		whereBuffer.append(addDoubleQuote(refColList.get(1)));
-//		
-//		whereBuffer.append(" order by " + edgeLabel + ".");
-//		
-//		whereBuffer.append(addDoubleQuote(refColList.get(0)));
-//		
-//		whereBuffer.append(", " + edgeLabel + ".");
-//		
-//		whereBuffer.append(addDoubleQuote(refColList.get(1)));
-//		
-//		originalString.append(whereBuffer.toString());
-//		
-//		editString = originalString.toString();
-//		
-//		return editString;
-//	}
-	
-	
-	private String editQueryForJoinTableEdge(Edge e, String sql) {
+	private String editQueryForJoinTableEdge(Edge e, String sql, Connection conn, long innerTotalExport, long pageCount) {
 		String editString = new String(sql);
+		
+		String innerTableName = addDoubleQuote(getInnerTable(conn, e));
 		
 		List<String> refColList = e.getFKColumnNames();
 		
@@ -831,11 +698,16 @@ public abstract class DBExportHelper implements
 				buffer.append(", " + addDoubleQuote(e.getfkCol2RefMapping().get(refColList.get(0))));
 			}
 			
-			buffer.append(" from " + startVertexName + " order by ");
+			buffer.append(" from " + startVertexName);
 			
-			buffer.append(sVertexOrderby);
+			if (innerTableName.equalsIgnoreCase(startVertexName)) {
+				buffer.append(" order by " + sVertexOrderby);
+				buffer.append(" for orderby_num()");
+				buffer.append(" between ").append(innerTotalExport + 1L);
+				buffer.append(" and ").append(innerTotalExport + pageCount);
+			}
 			
-			buffer.append(" for orderby_num()) as " + dupStartVertexName + ", (SELECT ROWNUM as " + endIdCol + ", ");
+			buffer.append(") as " + dupStartVertexName + ", (SELECT ROWNUM as " + endIdCol + ", ");
 			
 			buffer.append(eVertexOrderby);
 			if (eVertexOrderby.indexOf(e.getfkCol2RefMapping().get(refColList.get(1))) == -1 
@@ -843,11 +715,16 @@ public abstract class DBExportHelper implements
 				buffer.append(", " + addDoubleQuote(e.getfkCol2RefMapping().get(refColList.get(1))));
 			}
 			
-			buffer.append(" from " + endVertexName + " order by ");
+			buffer.append(" from " + endVertexName);
 			
-			buffer.append(eVertexOrderby);
+			if (innerTableName.equalsIgnoreCase(endVertexName)) {
+				buffer.append(" order by " + eVertexOrderby);
+				buffer.append(" for orderby_num()");
+				buffer.append(" between ").append(innerTotalExport + 1L);
+				buffer.append(" and ").append(innerTotalExport + pageCount);
+			}
 			
-			buffer.append(" for orderby_num()) as " + dupEndVertexName);
+			buffer.append(") as " + dupEndVertexName);
 			
 			editString = fromMatcher.replaceFirst(buffer.toString());
 		}
@@ -1040,71 +917,102 @@ public abstract class DBExportHelper implements
 		return null;
 	}
 	
+//	public String getPagedFkRecords(Edge e, String sql, long rows, long exportedRecords, boolean hasMultiSchema) {
+//		String cleanSql = sql.toUpperCase().trim();
+//		
+//		String editedQuery = editQueryForFk(e, cleanSql);
+//		
+//		StringBuilder buf = new StringBuilder(editedQuery.trim());
+//
+//		Pattern pattern = Pattern.compile("GROUP\\s+BY", Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
+//		Matcher matcher = pattern.matcher(editedQuery); 
+//		
+//		Pattern pattern2 = Pattern.compile("ORDER\\s+BY", Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
+//		Matcher matcher2 = pattern2.matcher(editedQuery);
+//		
+//		Pattern pattern3 = Pattern.compile("FOR ORDERBY_NUM\\(\\)", Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
+//		Matcher matcher3 = pattern3.matcher(editedQuery);
+//		
+//		if (matcher.find()) {
+//			//End with group by 
+//			if (cleanSql.indexOf("HAVING") < 0) {
+//				buf.append(" HAVING ");
+//			} else {
+//				buf.append(" AND ");
+//			}
+//			buf.append(" GROUPBY_NUM() ");
+//		} else if (matcher2.find()) {
+//			//End with order by 
+//			buf.append(" FOR ORDERBY_NUM() ");
+//		} else {
+//			StringBuilder orderby = new StringBuilder();
+//		}
+//
+//		buf.append(" BETWEEN ").append(exportedRecords + 1L);
+//		buf.append(" AND ").append(exportedRecords + rows);
+//
+//		if (hasMultiSchema && matcher3.find()) {
+//			return buf.toString().replaceAll("for orderby_num\\(\\)", "");
+//		}
+//		
+//		return buf.toString();
+//	}
+	
 	public String getPagedFkRecords(Edge e, String sql, long rows, long exportedRecords, boolean hasMultiSchema) {
-		String cleanSql = sql.toUpperCase().trim();
 		
-		String editedQuery = editQueryForFk(e, cleanSql);
-		
-		StringBuilder buf = new StringBuilder(editedQuery.trim());
+		StringBuilder buf = new StringBuilder(sql.trim());
 
 		Pattern pattern = Pattern.compile("GROUP\\s+BY", Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
-		Matcher matcher = pattern.matcher(editedQuery); 
+		Matcher matcher = pattern.matcher(sql); 
 		
 		Pattern pattern2 = Pattern.compile("ORDER\\s+BY", Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
-		Matcher matcher2 = pattern2.matcher(editedQuery);
+		Matcher matcher2 = pattern2.matcher(sql);
 		
 		Pattern pattern3 = Pattern.compile("FOR ORDERBY_NUM\\(\\)", Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
-		Matcher matcher3 = pattern3.matcher(editedQuery);
+		Matcher matcher3 = pattern3.matcher(sql);
 		
-		if (matcher.find()) {
-			//End with group by 
-			if (cleanSql.indexOf("HAVING") < 0) {
-				buf.append(" HAVING ");
-			} else {
-				buf.append(" AND ");
-			}
-			buf.append(" GROUPBY_NUM() ");
-		} else if (matcher2.find()) {
-			//End with order by 
-			buf.append(" FOR ORDERBY_NUM() ");
-		} else {
-			StringBuilder orderby = new StringBuilder();
-//			if (pk != null) {
-//				// if it has a pk, a pk scan is better than full range scan
-//				for (String pkCol : pk.getPkColumns()) {
-//					if (orderby.length() > 0) {
-//						orderby.append(", ");
-//					}
-//					orderby.append("\"").append(pkCol).append("\"");
-//				}
-//			}
-//			if (orderby.length() > 0) {
-//				buf.append(" ORDER BY ");
-//				buf.append(orderby);
-//				buf.append(" FOR ORDERBY_NUM() ");
+//		if (matcher.find()) {
+//			//End with group by 
+//			if (sql.indexOf("HAVING") < 0) {
+//				buf.append(" HAVING ");
 //			} else {
-//				if (cleanSql.indexOf("WHERE") < 0) {
-//					buf.append(" WHERE");
-//				} else {
-//					buf.append(" AND");
-//				}
-//				buf.append(" ROWNUM ");
+//				buf.append(" AND ");
 //			}
-		}
-
+//			buf.append(" GROUPBY_NUM() ");
+//		} else if (matcher2.find()) {
+//			//End with order by 
+//			buf.append(" FOR ORDERBY_NUM() ");
+//		} else {
+//			StringBuilder orderby = new StringBuilder();
+//		}
+		
 		buf.append(" BETWEEN ").append(exportedRecords + 1L);
 		buf.append(" AND ").append(exportedRecords + rows);
 
-		if (hasMultiSchema && matcher3.find()) {
-			return buf.toString().replaceAll("for orderby_num\\(\\)", "");
-		}
+//		if (hasMultiSchema && matcher3.find()) {
+//			return buf.toString().replaceAll("for orderby_num\\(\\)", "");
+//		}
 		
 		return buf.toString();
 	}
 	
-	private String editQueryForFk(Edge e, String sql) {
+	public String getInnerQuery(Edge e, String sql, Connection conn, long exportedCount, long rows) {
+		String cleanSql = sql.toUpperCase().trim();
+		
+		return editQueryForFk(e, cleanSql, conn, exportedCount, rows);
+	}
+	
+	public String getJoinTableInnerQuery(Edge e, String sql, Connection conn, long innerTotalExported, long pageCount) {
+		String cleanSql = sql.trim();
+		
+		return editQueryForJoinTableEdge(e, cleanSql, conn, innerTotalExported, pageCount);
+	}
+	
+	private String editQueryForFk(Edge e, String sql, Connection conn, long exportedCount, long rows) {
 		Map<String, String> fkMapping = e.getfkCol2RefMapping();
 		List<String> keySet = e.getFKColumnNames();
+		
+		String innerTableName = getInnerTable(conn, e);
 		
 		String startVertexName;
 		String endVertexName;
@@ -1171,7 +1079,17 @@ public abstract class DBExportHelper implements
 		buffer.append(e.getStartVertexName());
 		buffer.append(" order by ");
 		buffer.append(sVertexOrderby);
-		buffer.append(" for orderby_num()) as ");
+//		buffer.append(" for orderby_num()) as ");
+		
+		
+		if (startVertexName.equals(innerTableName)) {
+			buffer.append(" for orderby_num()");
+			buffer.append(" BETWEEN ").append(exportedCount + 1L);
+			buffer.append(" AND ").append(exportedCount + rows);
+		}
+		
+		buffer.append(") as ");
+		
 		buffer.append(startVertexName);
 		buffer.append(", ");
 		
@@ -1188,7 +1106,17 @@ public abstract class DBExportHelper implements
 		buffer.append(e.getEndVertexName());
 		buffer.append(" order by ");
 		buffer.append(eVertexOrderby);
-		buffer.append(" for orderby_num()) as ");
+//		buffer.append(" for orderby_num()) as ");
+		
+		
+		if (endVertexName.equals(innerTableName)) {
+			buffer.append(" for orderby_num()");
+			buffer.append(" BETWEEN ").append(exportedCount + 1L);
+			buffer.append(" AND ").append(exportedCount + rows);
+		}
+		
+		buffer.append(") as ");
+		
 		buffer.append(endVertexName);
 		
 		buffer.append(" where ");
@@ -1196,9 +1124,66 @@ public abstract class DBExportHelper implements
 		buffer.append(" = ");
 		buffer.append(endVertexName + "." + refCol);
 		
-		buffer.append(" order by " + startVertexName + "." + fkCol);
+		buffer.append(" and \":START_ID(" + e.getStartVertexName() + ")\"");
 		
 		return buffer.toString();
+	}
+	
+	/**
+	 * return table record cound
+	 * 
+	 * need to fine inner table
+	 * 
+	 * @param conn
+	 * @param e
+	 * @return count of table record
+	 */
+	
+	protected String getInnerTable(Connection conn, Edge e) {
+		String startTableName = e.getStartVertex().getVertexLabel();
+		String endTableName = e.getEndVertex().getVertexLabel();
+		String returnString = null;
+		
+		PreparedStatement stmt1 = null;
+		PreparedStatement stmt2 = null;
+		
+		ResultSet rs1 = null;
+		ResultSet rs2 = null;
+		
+		try {
+			stmt1 = conn.prepareStatement("SELECT count(*) FROM " + startTableName);
+			stmt2 = conn.prepareStatement("SELECT count(*) FROM " + endTableName);
+			
+			rs1 = stmt1.executeQuery();
+			rs2 = stmt2.executeQuery();
+			
+			rs1.next();
+			rs2.next();
+			
+			int startTableRecordCount = rs1.getInt(1);
+			int endTableRecordCount = rs2.getInt(1);
+			
+			if (startTableRecordCount > endTableRecordCount) {
+				returnString = endTableName;
+			} else {
+				returnString = startTableName;
+			}
+			
+		} catch (Exception exception) {
+			exception.printStackTrace();
+		} finally {
+			Closer.close(stmt1);
+			Closer.close(stmt2);
+			
+			Closer.close(rs1);
+			Closer.close(rs2);
+		}
+		
+		if (returnString != null) {
+			return returnString;
+		} else {
+			return null;
+		}
 	}
 
 	public String getPagedSelectSQL(Vertex v, String sql, long realPageCount,
@@ -1212,5 +1197,4 @@ public abstract class DBExportHelper implements
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
 }

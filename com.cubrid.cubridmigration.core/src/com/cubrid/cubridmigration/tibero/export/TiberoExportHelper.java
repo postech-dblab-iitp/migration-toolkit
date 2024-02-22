@@ -192,20 +192,27 @@ public class TiberoExportHelper extends
 	
 	@Override
 	public String getPagedFkRecords(Edge e, String sql, long rows, long exportedRecords, boolean hasMultiSchema) {
-		String cleanSql = sql.toUpperCase().trim();
+//		String cleanSql = sql.toUpperCase().trim();
+//		
+//		String editedQuery = editQueryForFk(e, cleanSql);
+//		
+//		StringBuilder buf = new StringBuilder();
+//
+//		buf.append("SELECT * FROM ( ");
+//		
+//		buf.append(editedQuery.trim());
+//		
+//		buf.append(" ) WHERE \"MAIN_ROWNUM\" BETWEEN ").append(exportedRecords + 1L);
+//		buf.append(" AND ").append(exportedRecords + rows);
+//
+//		return buf.toString();
 		
-		String editedQuery = editQueryForFk(e, cleanSql);
+		StringBuffer buffer = new StringBuffer(sql);
 		
-		StringBuilder buf = new StringBuilder();
-
-		buf.append("SELECT * FROM ( ");
+		buffer.append(" AND ROWNUM BETWEEN " + (exportedRecords + 1L));
+		buffer.append(" AND " + (exportedRecords + rows));
 		
-		buf.append(editedQuery.trim());
-		
-		buf.append(" ) WHERE \"MAIN_ROWNUM\" BETWEEN ").append(exportedRecords + 1L);
-		buf.append(" AND ").append(exportedRecords + rows);
-
-		return buf.toString();
+		return buffer.toString();
 	}
 	
 	private String editQueryForFk(Edge e, String sql) {
@@ -319,6 +326,246 @@ public class TiberoExportHelper extends
 		buf.append(" AND ").append(exportedRecords + rows);
 
 		return buf.toString();
+	}
+	
+	@Override
+	public String getInnerQuery(Edge e, String sql, Connection conn, long exportedCount, long rows) {
+		StringBuffer buffer = new StringBuffer();
+		
+		Map<String, String> fkMapping = e.getfkCol2RefMapping();
+		List<String> keySet = e.getFKColumnNames();
+		
+		String innerTableName = getInnerTable(conn, e);
+		
+		String startVertexName;
+		String endVertexName;
+		
+		if (e.getStartVertexName().equals(e.getEndVertexName())) {
+			startVertexName = e.getStartVertexName() + "_1";
+			endVertexName = e.getEndVertexName() + "_2";
+		} else {
+			startVertexName = e.getStartVertexName();
+			endVertexName = e.getEndVertexName();
+		}
+		
+		String fkCol = keySet.get(0);
+		String refCol = fkMapping.get(keySet.get(0));
+		
+		StringBuilder sVertexOrderby = new StringBuilder();
+		StringBuilder eVertexOrderby = new StringBuilder();
+		
+		if (e.getStartVertex() != null) {
+			PK pk = e.getStartVertex().getPK();
+			if (pk != null) {
+				// if it has a pk, a pk scan is better than full range scan
+				for (String pkCol : pk.getPkColumns()) {
+					if (sVertexOrderby.length() > 0) {
+						sVertexOrderby.append(", ");
+					}
+					sVertexOrderby.append(pkCol);
+				}
+			}
+		}
+		
+		if (e.getEndVertex() != null) {
+		
+		PK pk = e.getEndVertex().getPK();
+		if (pk != null) {
+				// if it has a pk, a pk scan is better than full range scan
+				for (String pkCol : pk.getPkColumns()) {
+					if (eVertexOrderby.length() > 0) {
+						eVertexOrderby.append(", ");
+					}
+					eVertexOrderby.append(pkCol);
+				}
+			}
+		}
+		
+		String innerTableWhere = null;
+		
+		buffer.append("SELECT rownum, ");
+		buffer.append(startVertexName + ".\":START_ID(" + e.getStartVertexName() + ")\"");
+		buffer.append(", ");
+		buffer.append(endVertexName + ".\":END_ID(" + e.getEndVertexName() + ")\"");
+		
+		buffer.append(" FROM ");
+		
+		if (innerTableName.equals(e.getStartVertexName())) {
+			buffer.append("(SELECT ROW_NUMBER() OVER (ORDER BY " + fkCol + ") as \":START_ID(" + e.getStartVertexName() + ")\"");
+			
+			innerTableWhere = "\":START_ID(" + e.getStartVertexName() + ")\"";
+		} else {
+			buffer.append("(SELECT ROWNUM as \":START_ID(" + e.getStartVertexName() + ")\"");
+		}
+		
+		if (sVertexOrderby.toString().contains(fkCol)) {
+			buffer.append(", " + sVertexOrderby);
+		} else {
+			buffer.append(", " + sVertexOrderby + ", " + fkCol);						
+		}
+		
+		buffer.append(" FROM " + e.getStartVertexName() + ") as " + e.getStartVertexName() + ", ");
+		
+		if (innerTableName.equals(e.getEndVertexName())) {
+			buffer.append("(SELECT ROW_NUMBER() OVER (ORDER BY " + refCol + ") as \":END_ID(" + e.getEndVertexName() + ")\"");
+			
+			innerTableWhere = "\":END_ID(" + e.getEndVertexName() + ")\"";
+		} else {
+			buffer.append("(SELECT ROWNUM as \":END_ID(" + e.getEndVertexName() + ")\"");
+		}
+		
+		if (eVertexOrderby.toString().contains(refCol)) {
+			buffer.append(", " + eVertexOrderby);
+		} else {
+			buffer.append(", " + eVertexOrderby + ", " + refCol);
+		}
+		
+		buffer.append(" FROM " + e.getEndVertexName() + ") as " + e.getEndVertexName());
+		
+		buffer.append(" WHERE ");
+		
+		buffer.append(startVertexName + "." + fkCol);
+		buffer.append(" = ");
+		buffer.append(endVertexName + "." + refCol);
+		
+		buffer.append(" AND " + innerTableWhere + " BETWEEN " + (exportedCount + 1L) + " AND " + (exportedCount + rows));
+		
+		return buffer.toString();
+	}
+	
+	@Override
+	public String getJoinTableInnerQuery(Edge e, String sql, Connection conn, long innerTotalExported, long realPageCount) {
+		String buffer = new String(sql);
+		
+		Map<String, String> fkMapping = e.getfkCol2RefMapping();
+		List<String> keySet = e.getFKColumnNames();
+		
+		String innerTableName = getInnerTable(conn, e);
+		
+		String startVertexName;
+		String endVertexName;
+		
+		if (e.getStartVertexName().equals(e.getEndVertexName())) {
+			startVertexName = e.getStartVertexName() + "_1";
+			endVertexName = e.getEndVertexName() + "_2";
+		} else {
+			startVertexName = e.getStartVertexName();
+			endVertexName = e.getEndVertexName();
+		}
+		
+		String fkCol = keySet.get(0);
+		String refCol = fkMapping.get(keySet.get(0));
+		
+		String endFkCol = keySet.get(1);
+		String endRefCol = fkMapping.get(keySet.get(1));
+		
+		StringBuilder sVertexOrderby = new StringBuilder();
+		StringBuilder eVertexOrderby = new StringBuilder();
+		
+		if (e.getStartVertex() != null) {
+			PK pk = e.getStartVertex().getPK();
+			if (pk != null) {
+				// if it has a pk, a pk scan is better than full range scan
+				for (String pkCol : pk.getPkColumns()) {
+					if (sVertexOrderby.length() > 0) {
+						sVertexOrderby.append(", ");
+					}
+					sVertexOrderby.append(pkCol);
+				}
+			}
+		}
+		
+		if (e.getEndVertex() != null) {
+		
+		PK pk = e.getEndVertex().getPK();
+		if (pk != null) {
+				// if it has a pk, a pk scan is better than full range scan
+				for (String pkCol : pk.getPkColumns()) {
+					if (eVertexOrderby.length() > 0) {
+						eVertexOrderby.append(", ");
+					}
+					eVertexOrderby.append(pkCol);
+				}
+			}
+		}
+		
+		String innerTableWhere = null;
+		
+		Pattern startIdPattern = Pattern.compile("\":START_ID", Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
+		Matcher startIdMatcher = startIdPattern.matcher(buffer);
+		
+		if (startIdMatcher.find()) {
+			String startId = startVertexName + ".\":START_ID";
+			
+			innerTableWhere = startId;
+			
+			buffer = startIdMatcher.replaceFirst(startId);
+		}
+		
+		Pattern endIdPattern = Pattern.compile("\":END_ID", Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
+		Matcher endIdMatcher = endIdPattern.matcher(buffer);
+		
+		if (endIdMatcher.find()) {
+			String endId = endVertexName + ".\":END_ID";
+			
+			innerTableWhere = endId;
+			
+			buffer = endIdMatcher.replaceFirst(endId);
+		}
+		
+		buffer = buffer += (" as main, ");
+		
+		StringBuffer conditionBuffer = new StringBuffer(buffer);
+		
+		conditionBuffer.append("(SELECT ");
+		
+		if (startVertexName.equals(innerTableName)) {
+			conditionBuffer.append("ROW_NUMBER() OVER (ORDER BY " + refCol + ")");
+		} else {
+			conditionBuffer.append("ROWNUM");
+		}
+		
+		conditionBuffer.append(" AS \":START_ID(" + startVertexName + ")\", ");
+		
+		conditionBuffer.append(sVertexOrderby).append(" FROM " + startVertexName + ")");
+		
+		conditionBuffer.append(" AS " + startVertexName + ", ");
+		
+		conditionBuffer.append("(SELECT ");
+		
+		if (endVertexName.equals(innerTableName)) {
+			conditionBuffer.append("ROW_NUMBER() OVER (ORDER BY " + endRefCol + ")");
+		} else {
+			conditionBuffer.append("ROWNUM");
+		}
+		
+		conditionBuffer.append(" AS \":END_ID(" + endVertexName + ")\", ");
+		
+		conditionBuffer.append(eVertexOrderby).append(" FROM " + endVertexName + ")");
+		
+		conditionBuffer.append(" AS " + endVertexName + " ");
+		
+		//append where query
+		
+		conditionBuffer.append("WHERE " + startVertexName + ".");
+		
+		conditionBuffer.append(addDoubleQuote(e.getfkCol2RefMapping().get(keySet.get(0))));
+		
+		conditionBuffer.append(" = MAIN.");
+		
+		conditionBuffer.append(addDoubleQuote(keySet.get(0)));
+		
+		conditionBuffer.append(" AND " + endVertexName + ".");
+		
+		conditionBuffer.append(addDoubleQuote(e.getfkCol2RefMapping().get(keySet.get(1))));
+		
+		conditionBuffer.append(" = MAIN.");
+		
+		conditionBuffer.append(addDoubleQuote(keySet.get(1)));
+		
+		conditionBuffer.append(" AND " + innerTableWhere + "\" BETWEEN " + (innerTotalExported + 1L) + " AND " + (innerTotalExported + realPageCount));
+		
+		return conditionBuffer.toString();
 	}
 	
 	private String editQueryForJoinTableEdge(Edge e, String sql) {

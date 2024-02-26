@@ -508,6 +508,8 @@ public class JDBCExporter extends
 		
 		if (e.getEdgeType() == Edge.JOINTABLE_TYPE && config.targetIsCSV()) {
 			exportGraphJoinTableEdgeRecordForCSV(e, newRecordProcessor);
+			return;
+			
 		} else if (e.getEdgeType() == Edge.JOINTABLE_TYPE) {
 			exportGraphJoinEdgeRecords(e, newRecordProcessor);
 			return;

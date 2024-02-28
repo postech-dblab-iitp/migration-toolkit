@@ -707,7 +707,6 @@ public class JDBCExporter extends
 							records, newRecordProcessor);
 					totalExported = totalExported + recordCountOfQuery;					
 				}
-				totalExported = totalExported + recordCountOfQuery;
 				outerTotalExported += realPageCount;
 				
 				//Stop fetching condition: no result;less then fetching count;great then total count
@@ -716,7 +715,7 @@ public class JDBCExporter extends
 				}
 				
 				innerTotalExported += realPageCount;
-				outerTotalExported += 0;
+				outerTotalExported = 0;
 				
 				innerQuery = graphExHelper.getJoinTableInnerQuery(e, sql, conn, innerTotalExported, realPageCount);
 				

@@ -209,7 +209,7 @@ public class TiberoExportHelper extends
 		
 		StringBuffer buffer = new StringBuffer(sql);
 		
-		buffer.append(" AND ROWNUM BETWEEN " + (exportedRecords + 1L));
+		buffer.append(" WHERE rnum BETWEEN " + (exportedRecords + 1L));
 		buffer.append(" AND " + (exportedRecords + rows));
 		
 		return buffer.toString();
@@ -311,21 +311,14 @@ public class TiberoExportHelper extends
 	@Override
 	public String getPagedSelectSQLForEdgeCSV(Edge e, String sql, long rows, long exportedRecords, PK pk, boolean hasMultiSchema) {
 		String cleanSql = sql.toUpperCase().trim();
-		
-		String editedQuery = editQueryForJoinTableEdge(e, cleanSql);
-		
 		StringBuilder buf = new StringBuilder();
 
-		buf.append("SELECT * FROM (");
-		
-		buf.append(editedQuery.trim());
-		
-		buf.append(" ) WHERE \"MAIN_ROWNUM\"");
+		buf.append(" WHERE \"RNUM\"");
 
 		buf.append(" BETWEEN ").append(exportedRecords + 1L);
 		buf.append(" AND ").append(exportedRecords + rows);
 
-		return buf.toString();
+		return cleanSql + buf.toString();
 	}
 	
 	@Override
@@ -383,7 +376,8 @@ public class TiberoExportHelper extends
 		
 		String innerTableWhere = null;
 		
-		buffer.append("SELECT rownum, ");
+		buffer.append("SELECT * FROM (");
+		buffer.append("SELECT rownum as rnum, ");
 		buffer.append(startVertexName + ".\":START_ID(" + e.getStartVertexName() + ")\"");
 		buffer.append(", ");
 		buffer.append(endVertexName + ".\":END_ID(" + e.getEndVertexName() + ")\"");
@@ -430,11 +424,16 @@ public class TiberoExportHelper extends
 		
 		buffer.append(" AND " + innerTableWhere + " BETWEEN " + (exportedCount + 1L) + " AND " + (exportedCount + rows));
 		
+		buffer.append(")");
+		
 		return buffer.toString();
 	}
 	
 	@Override
 	public String getJoinTableInnerQuery(Edge e, String sql, Connection conn, long innerTotalExported, long realPageCount) {
+		
+		sql = sql.replaceFirst("SELECT", "SELECT ROWNUM AS rnum, ");
+		
 		String buffer = new String(sql);
 		
 		Map<String, String> fkMapping = e.getfkCol2RefMapping();
@@ -497,7 +496,7 @@ public class TiberoExportHelper extends
 		if (startIdMatcher.find()) {
 			String startId = startVertexName + ".\":START_ID";
 			
-			innerTableWhere = startId;
+			innerTableWhere = startId + "(" + startVertexName + ")";
 			
 			buffer = startIdMatcher.replaceFirst(startId);
 		}
@@ -508,12 +507,12 @@ public class TiberoExportHelper extends
 		if (endIdMatcher.find()) {
 			String endId = endVertexName + ".\":END_ID";
 			
-			innerTableWhere = endId;
+			innerTableWhere = endId + "(" + endVertexName + ")";
 			
 			buffer = endIdMatcher.replaceFirst(endId);
 		}
 		
-		buffer = buffer += (" as main, ");
+		buffer = buffer += (" AS MAIN, ");
 		
 		StringBuffer conditionBuffer = new StringBuffer(buffer);
 		
@@ -564,6 +563,10 @@ public class TiberoExportHelper extends
 		conditionBuffer.append(addDoubleQuote(keySet.get(1)));
 		
 		conditionBuffer.append(" AND " + innerTableWhere + "\" BETWEEN " + (innerTotalExported + 1L) + " AND " + (innerTotalExported + realPageCount));
+		
+		conditionBuffer.insert(0, "SELECT * FROM (");
+		
+		conditionBuffer.append(")");
 		
 		return conditionBuffer.toString();
 	}

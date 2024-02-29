@@ -962,8 +962,6 @@ public class JDBCExporter extends
 			PK pk = graphExHelper.supportFastSearchWithPK(conn) ? srcPK : null;
 			newRecordProcessor.startExportTable(e.getEdgeLabel());
 			List<Record> records = new ArrayList<Record>();
-			long innerTotalExported = 0L;
-			long innerCounter = 0L;
 			long totalExported = 0L;
 			long intPageCount = config.getPageFetchCount();
 			String sql = graphExHelper.getGraphSelectSQL(e);

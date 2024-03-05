@@ -671,7 +671,6 @@ public class JDBCExporter extends
 			
 			long outerTotalExported = 0L;
 			long innerTotalExported = 0L;
-			long innerCounter = 0L;
 			long totalExported = 0L;
 			long intPageCount = config.getPageFetchCount();
 			String sql = graphExHelper.getGraphSelectSQL(e);
@@ -759,7 +758,6 @@ public class JDBCExporter extends
 			long totalExported = 0L;
 			long intPageCount = config.getPageFetchCount();
 			long outerTotalExport = 0L;
-			long innerCounter = 0L;
 			long innerTotalExported = 0L;
 			
 			// can delete this maybe

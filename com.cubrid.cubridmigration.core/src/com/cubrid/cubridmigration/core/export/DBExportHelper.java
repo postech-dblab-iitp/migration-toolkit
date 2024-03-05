@@ -805,14 +805,7 @@ public abstract class DBExportHelper implements
 		return null;
 	}
 	
-//	public abstract String getGraphSelectSQL(Vertex v, boolean targetIsCSV);
-	
 	public abstract String getGraphSelectSQL(Edge e, boolean targetIsCSV);
-//	public abstract String getGraphSelectSQL(Edge e);
-//	
-//	public abstract String getPagedSelectSQL(Vertex v, String sql, long realPageCount, long totalExported, PK pk);
-//	
-//	public abstract String getPagedSelectSQL(Edge e, String sql, long realPageCount, long totalExported, PK pk);
 
 	public String getGraphSelectSQL(Vertex v, boolean isTargetCSV) {
 		StringBuffer buf = new StringBuffer(256);
@@ -916,50 +909,8 @@ public abstract class DBExportHelper implements
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-//	public String getPagedFkRecords(Edge e, String sql, long rows, long exportedRecords, boolean hasMultiSchema) {
-//		String cleanSql = sql.toUpperCase().trim();
-//		
-//		String editedQuery = editQueryForFk(e, cleanSql);
-//		
-//		StringBuilder buf = new StringBuilder(editedQuery.trim());
-//
-//		Pattern pattern = Pattern.compile("GROUP\\s+BY", Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
-//		Matcher matcher = pattern.matcher(editedQuery); 
-//		
-//		Pattern pattern2 = Pattern.compile("ORDER\\s+BY", Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
-//		Matcher matcher2 = pattern2.matcher(editedQuery);
-//		
-//		Pattern pattern3 = Pattern.compile("FOR ORDERBY_NUM\\(\\)", Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
-//		Matcher matcher3 = pattern3.matcher(editedQuery);
-//		
-//		if (matcher.find()) {
-//			//End with group by 
-//			if (cleanSql.indexOf("HAVING") < 0) {
-//				buf.append(" HAVING ");
-//			} else {
-//				buf.append(" AND ");
-//			}
-//			buf.append(" GROUPBY_NUM() ");
-//		} else if (matcher2.find()) {
-//			//End with order by 
-//			buf.append(" FOR ORDERBY_NUM() ");
-//		} else {
-//			StringBuilder orderby = new StringBuilder();
-//		}
-//
-//		buf.append(" BETWEEN ").append(exportedRecords + 1L);
-//		buf.append(" AND ").append(exportedRecords + rows);
-//
-//		if (hasMultiSchema && matcher3.find()) {
-//			return buf.toString().replaceAll("for orderby_num\\(\\)", "");
-//		}
-//		
-//		return buf.toString();
-//	}
-	
+
 	public String getPagedFkRecords(Edge e, String sql, long rows, long exportedRecords, boolean hasMultiSchema) {
-		
 		StringBuilder buf = new StringBuilder(sql.trim());
 
 		Pattern pattern = Pattern.compile("GROUP\\s+BY", Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
@@ -988,10 +939,6 @@ public abstract class DBExportHelper implements
 		
 		buf.append(" BETWEEN ").append(exportedRecords + 1L);
 		buf.append(" AND ").append(exportedRecords + rows);
-
-//		if (hasMultiSchema && matcher3.find()) {
-//			return buf.toString().replaceAll("for orderby_num\\(\\)", "");
-//		}
 		
 		return buf.toString();
 	}

@@ -412,7 +412,9 @@ public abstract class OfflineImporter extends
 	
 	protected abstract void handleDataFileHeader(String fileName, final Vertex v, final int impCount, final int expCount);
 	
-	protected abstract void handleListFileHeader();
+	protected abstract void handleListFileHeaderTurboGraph();
+	
+	protected abstract void handleListFileHeaderForNEO4J();
 
 	/**
 	 * Send schema file and data file to server for loadDB command.
@@ -846,8 +848,11 @@ public abstract class OfflineImporter extends
 		// call load file importer
 		// create upper line
 		
-		handleListFileHeader();
-		
+		if(config.getGraphSubTypeForCSV() == 1) {
+			handleListFileHeaderTurboGraph();			
+		} else {
+			handleListFileHeaderForNEO4J();
+		}
 		return 0;
 	}
 
@@ -857,10 +862,14 @@ public abstract class OfflineImporter extends
 		
 		try {
 			if (v != null) {
-				int counter = writeGraphHeader(file, v);
+				int counter = 0;
 				
-//				RunnableResultHandler resultHandler = createResultHandler(v, counter);
-				
+				if (config.getGraphSubTypeForCSV() == 1) {
+					counter = writeGraphHeaderForTurboGraph(file, v);
+				} else {
+					counter = writeGraphHeaderForNEO4J(file, v);
+				}
+
 				handleDataFileHeader(tmpDataFileName, v, counter, 1);
 			}
 		} catch (Exception exception) {
@@ -893,10 +902,15 @@ public abstract class OfflineImporter extends
 		
 		try {
 			if (e != null) {
-				int counter = writeGraphHeader(file, e);
 				
-//				RunnableResultHandler resultHandler = createResultHandler(e, counter);
+				int counter = 0;
 				
+				if (config.getGraphSubTypeForCSV() == 1) {
+					counter = writeGraphHeaderForTurboGraph(file, e);
+				} else {
+					counter = writeGraphHeaderForNEO4J(file, e);
+				}
+
 				handleDataFileHeader(tmpDataFileName, e, counter, 1);
 			}
 		} catch (Exception exception) {
@@ -923,7 +937,7 @@ public abstract class OfflineImporter extends
 		}
 	}
 	
-	public int writeGraphHeader(File file, Object obj) throws Exception {
+	public int writeGraphHeaderForTurboGraph(File file, Object obj) throws Exception {
 		CSVWriter writer = new CSVWriter(new OutputStreamWriter(new FileOutputStream(file),
 				config.getTargetCharSet()), config.getCsvSettings().getSeparateChar(),
 				config.getCsvSettings().getQuoteChar(), config.getCsvSettings().getEscapeChar());
@@ -972,6 +986,71 @@ public abstract class OfflineImporter extends
 				sb.append(col.getName());
 				sb.append(":");
 				sb.append(col.getCSVGraphDataType(config.getGraphSubTypeForCSV()));
+				
+				header.add(sb.toString());
+			}
+			
+			writer.writeNext(header.toArray(new String[header.size()]));
+		}
+		
+		writer.flush();
+		
+		return 0;
+	}
+	
+	public int writeGraphHeaderForNEO4J(File file, Object obj) throws Exception {
+		CSVWriter writer = new CSVWriter(new OutputStreamWriter(new FileOutputStream(file),
+				config.getTargetCharSet()), config.getCsvSettings().getSeparateChar(),
+				config.getCsvSettings().getQuoteChar(), config.getCsvSettings().getEscapeChar());
+		
+		if (obj instanceof Edge) {
+			Edge edge = (Edge) obj;
+			
+			List<String> header = new ArrayList<String>();
+			
+			List<Column> edgeColumnList = edge.getColumnList();
+			for (Column col : edgeColumnList) {
+				
+				if (col.getGraphDataType().equals("not support")) {
+					continue;
+				}
+				
+				StringBuffer sb = new StringBuffer();
+				
+				if (col.getDataType().equals("ID")) {
+					sb.append(col.getName());
+				} else {
+					sb.append(col.getName());
+//					sb.append(":");
+//					sb.append(col.getCSVGraphDataType(config.getGraphSubTypeForCSV()));
+				}
+				
+				header.add(sb.toString());
+			}
+			
+			writer.writeNext(header.toArray(new String[header.size()]));
+			
+		} else if (obj instanceof Vertex) {
+			Vertex vertex = (Vertex) obj;
+			
+			List<String> header = new ArrayList<String>();
+			
+			List<Column> vertexColumnList = vertex.getColumnList();
+			for (Column col : vertexColumnList) {
+				
+				if (col.getGraphDataType().equals("not support")) {
+					continue;
+				}
+				
+				StringBuffer sb = new StringBuffer();
+				
+				if (col.getDataType().equals("ID")) {
+					sb.append(col.getName());
+					sb.append(":");
+					sb.append(col.getCSVGraphDataType(config.getGraphSubTypeForCSV()));
+				} else {
+					sb.append(col.getName());
+				}
 				
 				header.add(sb.toString());
 			}

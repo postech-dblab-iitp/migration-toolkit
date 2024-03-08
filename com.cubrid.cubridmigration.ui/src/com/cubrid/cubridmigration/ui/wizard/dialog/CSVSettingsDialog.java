@@ -135,7 +135,12 @@ public class CSVSettingsDialog extends
 		if (config.getCsvSettings().getSeparateChar() == MigrationConfiguration.CSV_NO_CHAR) {
 			txtSeparator.setText("");
 		} else {
-			txtSeparator.setText(String.valueOf(config.getCsvSettings().getSeparateChar()));
+			
+			if (config.getGraphSubTypeForCSV() == 1) {
+				txtSeparator.setText("|");
+			} else {
+				txtSeparator.setText(",");
+			}
 		}
 		if (config.getCsvSettings().getQuoteChar() == MigrationConfiguration.CSV_NO_CHAR) {
 			txtQuoteChar.setText("");

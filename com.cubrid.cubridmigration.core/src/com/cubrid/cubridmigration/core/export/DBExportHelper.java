@@ -912,30 +912,6 @@ public abstract class DBExportHelper implements
 
 	public String getPagedFkRecords(Edge e, String sql, long rows, long exportedRecords, boolean hasMultiSchema) {
 		StringBuilder buf = new StringBuilder(sql.trim());
-
-		Pattern pattern = Pattern.compile("GROUP\\s+BY", Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
-		Matcher matcher = pattern.matcher(sql); 
-		
-		Pattern pattern2 = Pattern.compile("ORDER\\s+BY", Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
-		Matcher matcher2 = pattern2.matcher(sql);
-		
-		Pattern pattern3 = Pattern.compile("FOR ORDERBY_NUM\\(\\)", Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
-		Matcher matcher3 = pattern3.matcher(sql);
-		
-//		if (matcher.find()) {
-//			//End with group by 
-//			if (sql.indexOf("HAVING") < 0) {
-//				buf.append(" HAVING ");
-//			} else {
-//				buf.append(" AND ");
-//			}
-//			buf.append(" GROUPBY_NUM() ");
-//		} else if (matcher2.find()) {
-//			//End with order by 
-//			buf.append(" FOR ORDERBY_NUM() ");
-//		} else {
-//			StringBuilder orderby = new StringBuilder();
-//		}
 		
 		buf.append(" BETWEEN ").append(exportedRecords + 1L);
 		buf.append(" AND ").append(exportedRecords + rows);

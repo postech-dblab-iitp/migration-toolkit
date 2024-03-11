@@ -640,11 +640,4 @@ public class LoadFileImporter extends
 			e.printStackTrace();
 		}
 	}
-//	public int importVertex(Vertex e, List<Record> records) {
-//		return 0;
-//	}
-//    
-//    public int importEdge(Edge e, List<Record> records) {
-//		return 0;
-//	}
 }

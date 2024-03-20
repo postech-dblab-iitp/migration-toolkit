@@ -219,8 +219,8 @@ public class CUBRIDExportHelper extends
 //			}
 //		}
 
-		buf.append(" BETWEEN ").append(exportedRecords + 1L);
-		buf.append(" AND ").append(exportedRecords + rows);
+//		buf.append(" BETWEEN ").append(exportedRecords + 1L);
+//		buf.append(" AND ").append(exportedRecords + rows);
 
 		return buf.toString();
 	}
@@ -250,12 +250,26 @@ public class CUBRIDExportHelper extends
 		String fkCol = keySet.get(0);
 		String refCol = fkMapping.get(keySet.get(0));
 		
+		String startVertexRownumColumnName = "ROWNUM";
+		String endVertexRownumColumnName = "ROWNUM";
+		
 		StringBuilder sVertexOrderby = new StringBuilder();
 		StringBuilder eVertexOrderby = new StringBuilder();
+		
+		StringBuffer subQuery1 = new StringBuffer();
+		StringBuffer subQuery2 = new StringBuffer();
 		
 		if (e.getStartVertex() != null) {
 			PK pk = e.getStartVertex().getPK();
 			if (pk != null) {
+
+//				if (pk.getPkColumns().size() == 1) {
+//					String columnDataType = e.getStartVertex().getColumnByName(pk.getPkColumns().get(0)).getGraphDataType();
+//					if (columnDataType.equalsIgnoreCase("INTEGER")) {
+//						startVertexRownumColumnName = pk.getPkColumns().get(0);
+//					}
+//				}
+				
 				// if it has a pk, a pk scan is better than full range scan
 				for (String pkCol : pk.getPkColumns()) {
 					if (sVertexOrderby.length() > 0) {
@@ -267,9 +281,16 @@ public class CUBRIDExportHelper extends
 		}
 		
 		if (e.getEndVertex() != null) {
-		
-		PK pk = e.getEndVertex().getPK();
-		if (pk != null) {
+			PK pk = e.getEndVertex().getPK();
+			if (pk != null) {
+				
+//				if (pk.getPkColumns().size() == 1) {
+//					String columnDataType = e.getEndVertex().getColumnByName(pk.getPkColumns().get(0)).getGraphDataType();
+//					if (columnDataType.equalsIgnoreCase("INTEGER")) {
+//						endVertexRownumColumnName = pk.getPkColumns().get(0);
+//					}
+//				}
+				
 				// if it has a pk, a pk scan is better than full range scan
 				for (String pkCol : pk.getPkColumns()) {
 					if (eVertexOrderby.length() > 0) {
@@ -281,72 +302,82 @@ public class CUBRIDExportHelper extends
 		}
 		
 		StringBuffer buffer = new StringBuffer();
-		buffer.append("SELECT ");
+		buffer.append("SELECT /*+ use_merge */ ");
 		buffer.append(startVertexName + ".\":START_ID(" + e.getStartVertexName() + ")\"");
 		buffer.append(", ");
 		buffer.append(endVertexName + ".\":END_ID(" + e.getEndVertexName() + ")\"");
 		
 		buffer.append(" FROM ");
 		
-		buffer.append("(SELECT ROWNUM as \":START_ID(" + e.getStartVertexName() + ")\"");
+		subQuery1.append("(SELECT "+ startVertexRownumColumnName +" as \":START_ID(" + e.getStartVertexName() + ")\"");
 		
 		if (sVertexOrderby.length() != 0) {
-			buffer.append(" ," + sVertexOrderby);
+			subQuery1.append(" ," + sVertexOrderby);
 		}
 		
 		if (sVertexOrderby.indexOf(fkCol) == -1) {
-			buffer.append(", " + fkCol);
+			subQuery1.append(", " + fkCol);
 		}
-		buffer.append(" FROM ");
-		buffer.append(e.getStartVertexName());
-		buffer.append(" order by ");
-		buffer.append(sVertexOrderby);
-//		buffer.append(" for orderby_num()) as ");
+		subQuery1.append(" FROM ");
+		subQuery1.append(e.getStartVertexName());
+//		buffer.append(" order by ");
+//		buffer.append(sVertexOrderby);
 		
+//		if (startVertexName.equals(innerTableName)) {
+//			subQuery1.append(" for orderby_num()");
+//			subQuery1.append(" BETWEEN ").append(exportedCount + 1L);
+//			subQuery1.append(" AND ").append(exportedCount + rows);
+//		}
 		
-		if (startVertexName.equals(innerTableName)) {
-			buffer.append(" for orderby_num()");
-			buffer.append(" BETWEEN ").append(exportedCount + 1L);
-			buffer.append(" AND ").append(exportedCount + rows);
-		}
+		subQuery1.append(") as ");
 		
-		buffer.append(") as ");
+		subQuery1.append(startVertexName);
 		
-		buffer.append(startVertexName);
-		buffer.append(", ");
+//		buffer.append(", ");
 		
-		buffer.append("(SELECT ROWNUM as \":END_ID(" + e.getEndVertexName() + ")\"");
+		subQuery2.append("(SELECT " + endVertexRownumColumnName + " as \":END_ID(" + e.getEndVertexName() + ")\"");
 		
 		if (eVertexOrderby.length() != 0) {
-			buffer.append(" ," + eVertexOrderby);
+			subQuery2.append(" ," + eVertexOrderby);
 		}
 		
 		if (eVertexOrderby.indexOf(refCol) == -1) {
-			buffer.append(", " + refCol);
+			subQuery2.append(", " + refCol);
 		}
-		buffer.append(" FROM ");
-		buffer.append(e.getEndVertexName());
-		buffer.append(" order by ");
-		buffer.append(eVertexOrderby);
-//		buffer.append(" for orderby_num()) as ");
+		subQuery2.append(" FROM ");
+		subQuery2.append(e.getEndVertexName());
+//		buffer.append(" order by ");
+//		buffer.append(eVertexOrderby);
 		
+//		if (endVertexName.equals(innerTableName)) {
+//			subQuery2.append(" for orderby_num()");
+//			subQuery2.append(" BETWEEN ").append(exportedCount + 1L);
+//			subQuery2.append(" AND ").append(exportedCount + rows);
+//		}
 		
-		if (endVertexName.equals(innerTableName)) {
-			buffer.append(" for orderby_num()");
-			buffer.append(" BETWEEN ").append(exportedCount + 1L);
-			buffer.append(" AND ").append(exportedCount + rows);
+		subQuery2.append(") as ");
+		
+		subQuery2.append(endVertexName);
+		
+		if (startVertexName.equals(innerTableName)) {
+			buffer.append(subQuery1);
+			buffer.append(", ");
+			buffer.append(subQuery2);
+			
+			buffer.append(" where ");
+			buffer.append(startVertexName + "." + fkCol);
+			buffer.append(" = ");
+			buffer.append(endVertexName + "." + refCol);
+		} else {
+			buffer.append(subQuery2);
+			buffer.append(", ");
+			buffer.append(subQuery1);
+			
+			buffer.append(" where ");
+			buffer.append(endVertexName + "." + refCol);
+			buffer.append(" = ");
+			buffer.append(startVertexName + "." + fkCol);
 		}
-		
-		buffer.append(") as ");
-		
-		buffer.append(endVertexName);
-		
-		buffer.append(" where ");
-		buffer.append(startVertexName + "." + fkCol);
-		buffer.append(" = ");
-		buffer.append(endVertexName + "." + refCol);
-		
-		buffer.append(" and \":START_ID(" + e.getStartVertexName() + ")\"");
 		
 		return buffer.toString();
 	}
@@ -373,6 +404,9 @@ public class CUBRIDExportHelper extends
 		String dupStartVertexName = null;
 		String dupEndVertexName = null;
 		
+		String startVertexRownumColumnName = "ROWNUM";
+		String endVertexRownumColumnName = "ROWNUM";
+		
 		if (e.getStartVertexName().equalsIgnoreCase(e.getEndVertexName())) {
 			dupStartVertexName = addDoubleQuote(e.getStartVertexName() + "_1");
 			dupEndVertexName = addDoubleQuote(e.getEndVertexName() + "_2");
@@ -387,6 +421,14 @@ public class CUBRIDExportHelper extends
 		if (e.getStartVertex() != null) {
 			PK pk = e.getStartVertex().getPK();
 			if (pk != null) {
+				
+//				if (pk.getPkColumns().size() == 1) {
+//					String columnDataType = e.getStartVertex().getColumnByName(pk.getPkColumns().get(0)).getGraphDataType();
+//					if (columnDataType.equalsIgnoreCase("INTEGER")) {
+//						startVertexRownumColumnName = pk.getPkColumns().get(0);
+//					}
+//				}
+				
 				// if it has a pk, a pk scan is better than full range scan
 				for (String pkCol : pk.getPkColumns()) {
 					if (sVertexOrderby.length() > 0) {
@@ -400,6 +442,14 @@ public class CUBRIDExportHelper extends
 		if (e.getEndVertex() != null) {
 			PK pk = e.getEndVertex().getPK();
 			if (pk != null) {
+				
+//				if (pk.getPkColumns().size() == 1) {
+//					String columnDataType = e.getEndVertex().getColumnByName(pk.getPkColumns().get(0)).getGraphDataType();
+//					if (columnDataType.equalsIgnoreCase("INTEGER")) {
+//						endVertexRownumColumnName = pk.getPkColumns().get(0);
+//					}
+//				}
+				
 				// if it has a pk, a pk scan is better than full range scan
 				for (String pkCol : pk.getPkColumns()) {
 					if (eVertexOrderby.length() > 0) {
@@ -459,12 +509,12 @@ public class CUBRIDExportHelper extends
 			endVertexIdMatcher.reset();
 			
 			if (startVertexIdMatcher.find() || endVertexIdMatcher.find()) {
-				buffer.append("FROM " + edgeLabel + " as main, " + "(SELECT ROWNUM as " + startIdCol + ", ");
+				buffer.append("FROM " + edgeLabel + " as main, " + "(SELECT " + startVertexRownumColumnName + " as " + startIdCol + ", ");
 				
 				edgeLabel = new String("\"main\"");
 				
 			} else {
-				buffer.append("FROM " + edgeLabel + ", " + "(SELECT ROWNUM as " + startIdCol + ", ");
+				buffer.append("FROM " + edgeLabel + ", " + "(SELECT " + startVertexRownumColumnName + " as " + startIdCol + ", ");
 			}
 			
 			buffer.append(sVertexOrderby);
@@ -476,12 +526,12 @@ public class CUBRIDExportHelper extends
 			
 			if (innerTableName.equalsIgnoreCase(startVertexName)) {
 				buffer.append(" order by " + sVertexOrderby);
-				buffer.append(" for orderby_num()");
-				buffer.append(" between ").append(innerTotalExport + 1L);
-				buffer.append(" and ").append(innerTotalExport + pageCount);
+//				buffer.append(" for orderby_num()");
+//				buffer.append(" between ").append(innerTotalExport + 1L);
+//				buffer.append(" and ").append(innerTotalExport + pageCount);
 			}
 			
-			buffer.append(") as " + dupStartVertexName + ", (SELECT ROWNUM as " + endIdCol + ", ");
+			buffer.append(") as " + dupStartVertexName + ", (SELECT " + endVertexRownumColumnName + " as " + endIdCol + ", ");
 			
 			buffer.append(eVertexOrderby);
 			if (eVertexOrderby.indexOf(e.getfkCol2RefMapping().get(refColList.get(1))) == -1 
@@ -493,9 +543,9 @@ public class CUBRIDExportHelper extends
 			
 			if (innerTableName.equalsIgnoreCase(endVertexName)) {
 				buffer.append(" order by " + eVertexOrderby);
-				buffer.append(" for orderby_num()");
-				buffer.append(" between ").append(innerTotalExport + 1L);
-				buffer.append(" and ").append(innerTotalExport + pageCount);
+//				buffer.append(" for orderby_num()");
+//				buffer.append(" between ").append(innerTotalExport + 1L);
+//				buffer.append(" and ").append(innerTotalExport + pageCount);
 			}
 			
 			buffer.append(") as " + dupEndVertexName);
@@ -554,48 +604,51 @@ public class CUBRIDExportHelper extends
 		Pattern pattern3 = Pattern.compile("FOR ORDERBY_NUM\\(\\)", Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
 		Matcher matcher3 = pattern3.matcher(sql);
 		
-		if (matcher.find()) {
-			//End with group by 
-			if (sql.indexOf("HAVING") < 0) {
-				buf.append(" HAVING ");
-			} else {
-				buf.append(" AND ");
-			}
-			buf.append(" GROUPBY_NUM() ");
-		} else if (matcher2.find()) {
-			//End with order by 
-			buf.append(" FOR ORDERBY_NUM() ");
-		} else {
-			StringBuilder orderby = new StringBuilder();
-			if (pk != null) {
-				// if it has a pk, a pk scan is better than full range scan
-				for (String pkCol : pk.getPkColumns()) {
-					if (orderby.length() > 0) {
-						orderby.append(", ");
-					}
-					orderby.append("\"").append(pkCol).append("\"");
-				}
-			}
-			if (orderby.length() > 0) {
-				buf.append(" ORDER BY ");
-				buf.append(orderby);
-				buf.append(" FOR ORDERBY_NUM() ");
-			} else {
-				if (sql.indexOf("WHERE") < 0) {
-					buf.append(" WHERE");
-				} else {
-					buf.append(" AND");
-				}
-				buf.append(" ROWNUM ");
-			}
-		}
+//		if (matcher.find()) {
+//			//End with group by 
+//			if (sql.indexOf("HAVING") < 0) {
+//				buf.append(" HAVING ");
+//			} else {
+//				buf.append(" AND ");
+//			}
+//			buf.append(" GROUPBY_NUM() ");
+//		} else if (matcher2.find()) {
+//			//End with order by 
+//			buf.append(" FOR ORDERBY_NUM() ");
+//		} else {
+//			StringBuilder orderby = new StringBuilder();
+//			if (pk != null) {
+//				// if it has a pk, a pk scan is better than full range scan
+//				for (String pkCol : pk.getPkColumns()) {
+//					if (orderby.length() > 0) {
+//						orderby.append(", ");
+//					}
+//					orderby.append("\"").append(pkCol).append("\"");
+//				}
+//			}
+//			if (orderby.length() > 0) {
+//				buf.append(" ORDER BY ");
+//				buf.append(orderby);
+//				buf.append(" FOR ORDERBY_NUM() ");
+//			} else {
+//				if (sql.indexOf("WHERE") < 0) {
+//					buf.append(" WHERE");
+//				} else {
+//					buf.append(" AND");
+//				}
+//				buf.append(" ROWNUM ");
+//			}
+//		}
 
-		buf.append(" BETWEEN ").append(exportedRecords + 1L);
-		buf.append(" AND ").append(exportedRecords + rows);
+//		buf.append(" BETWEEN ").append(exportedRecords + 1L);
+//		buf.append(" AND ").append(exportedRecords + rows);
 
-		if (hasMultiSchema && matcher3.find()) {
-			return buf.toString().replaceAll("for orderby_num\\(\\)", "");
-		}
+//		buf.append(" LIMIT ").append(rows);
+//		buf.append(" OFFSET ").append(exportedRecords);
+		
+//		if (hasMultiSchema && matcher3.find()) {
+//			return buf.toString().replaceAll("for orderby_num\\(\\)", "");
+//		}
 		
 		return buf.toString();
 	}

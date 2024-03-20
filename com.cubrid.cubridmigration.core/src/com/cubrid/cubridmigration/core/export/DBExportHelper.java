@@ -573,8 +573,11 @@ public abstract class DBExportHelper implements
 			}
 		}
 
-		buf.append(" BETWEEN ").append(exportedRecords + 1L);
-		buf.append(" AND ").append(exportedRecords + rows);
+//		buf.append(" BETWEEN ").append(exportedRecords + 1L);
+//		buf.append(" AND ").append(exportedRecords + rows);
+		
+		buf.append(" LIMIT ").append(rows);
+		buf.append(" OFFSET ").append(exportedRecords);
 
 		if (hasMultiSchema && matcher3.find()) {
 			return buf.toString().replaceAll("for orderby_num\\(\\)", "");
@@ -599,6 +602,9 @@ public abstract class DBExportHelper implements
 		String dupStartVertexName = null;
 		String dupEndVertexName = null;
 		
+		String startVertexRownumColumnName = null;
+		String endVertexRownumColumnName = null;
+		
 		if (e.getStartVertexName().equalsIgnoreCase(e.getEndVertexName())) {
 			dupStartVertexName = addDoubleQuote(e.getStartVertexName() + "_1");
 			dupEndVertexName = addDoubleQuote(e.getEndVertexName() + "_2");
@@ -613,6 +619,13 @@ public abstract class DBExportHelper implements
 		if (e.getStartVertex() != null) {
 			PK pk = e.getStartVertex().getPK();
 			if (pk != null) {
+				
+				if (pk.getPkColumns().size() == 1) {
+					startVertexRownumColumnName = pk.getPkColumns().get(1);
+				} else {
+					startVertexRownumColumnName = "ROWNUM";
+				}
+				
 				// if it has a pk, a pk scan is better than full range scan
 				for (String pkCol : pk.getPkColumns()) {
 					if (sVertexOrderby.length() > 0) {
@@ -626,6 +639,13 @@ public abstract class DBExportHelper implements
 		if (e.getEndVertex() != null) {
 			PK pk = e.getEndVertex().getPK();
 			if (pk != null) {
+				
+				if (pk.getPkColumns().size() == 1) {
+					endVertexRownumColumnName = pk.getPkColumns().get(1);
+				} else {
+					endVertexRownumColumnName = "ROWNUM";
+				}
+				
 				// if it has a pk, a pk scan is better than full range scan
 				for (String pkCol : pk.getPkColumns()) {
 					if (eVertexOrderby.length() > 0) {
@@ -685,12 +705,12 @@ public abstract class DBExportHelper implements
 			endVertexIdMatcher.reset();
 			
 			if (startVertexIdMatcher.find() || endVertexIdMatcher.find()) {
-				buffer.append("FROM " + edgeLabel + " as main, " + "(SELECT ROWNUM as " + startIdCol + ", ");
+				buffer.append("FROM " + edgeLabel + " as main, " + "(SELECT " + startVertexRownumColumnName + " as " + startIdCol + ", ");
 				
 				edgeLabel = new String("\"main\"");
 				
 			} else {
-				buffer.append("FROM " + edgeLabel + ", " + "(SELECT ROWNUM as " + startIdCol + ", ");
+				buffer.append("FROM " + edgeLabel + ", " + "(SELECT " + startVertexRownumColumnName + " as " + startIdCol + ", ");
 			}
 			
 			buffer.append(sVertexOrderby);
@@ -707,7 +727,7 @@ public abstract class DBExportHelper implements
 				buffer.append(" and ").append(innerTotalExport + pageCount);
 			}
 			
-			buffer.append(") as " + dupStartVertexName + ", (SELECT ROWNUM as " + endIdCol + ", ");
+			buffer.append(") as " + dupStartVertexName + ", (SELECT " + endVertexRownumColumnName + " as " + endIdCol + ", ");
 			
 			buffer.append(eVertexOrderby);
 			if (eVertexOrderby.indexOf(e.getfkCol2RefMapping().get(refColList.get(1))) == -1 
@@ -775,8 +795,17 @@ public abstract class DBExportHelper implements
 		Pattern selectPattern = Pattern.compile("SELECT\\s", Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
 		Matcher selectMatcher = selectPattern.matcher(sql);
 		
+		String vertexIdColumnValue = "ROWNUM";
+		
+		if (v.getHasPK() && v.getPK().getPkColumns().size() == 1) {
+			Column col = v.getColumnByName(v.getPK().getPkColumns().get(0));
+			if (col.getGraphDataType().equalsIgnoreCase("INTEGER")) {
+				vertexIdColumnValue = v.getPK().getPkColumns().get(0);
+			}
+		}
+		
 		if (selectMatcher.find()) {
-			StringBuffer buffer = new StringBuffer("SELECT ROWNUM as ");
+			StringBuffer buffer = new StringBuffer("SELECT " + vertexIdColumnValue + " as ");
 			
 			sql = selectMatcher.replaceFirst(buffer.toString());
 		}
@@ -841,7 +870,7 @@ public abstract class DBExportHelper implements
 	
 	public String getGraphSelectSQL(Edge e) {
 		StringBuffer buf = new StringBuffer(256);
-		buf.append("SELECT ");
+		buf.append("SELECT /*+ use_merge */");
 		final List<Column> columnList = e.getColumnList();
 		for (int i = 0; i < columnList.size(); i++) {
 			if (i > 0) {
@@ -913,8 +942,11 @@ public abstract class DBExportHelper implements
 	public String getPagedFkRecords(Edge e, String sql, long rows, long exportedRecords, boolean hasMultiSchema) {
 		StringBuilder buf = new StringBuilder(sql.trim());
 		
-		buf.append(" BETWEEN ").append(exportedRecords + 1L);
-		buf.append(" AND ").append(exportedRecords + rows);
+//		buf.append(" BETWEEN ").append(exportedRecords + 1L);
+//		buf.append(" AND ").append(exportedRecords + rows);
+		
+//		buf.append(" LIMIT ").append(rows);
+//		buf.append(" OFFSET ").append(exportedRecords);
 		
 		return buf.toString();
 	}
@@ -951,12 +983,22 @@ public abstract class DBExportHelper implements
 		String fkCol = keySet.get(0);
 		String refCol = fkMapping.get(keySet.get(0));
 		
+		String startVertexRownumColumnName = null;
+		String endVertexRownumColumnName = null;
+		
 		StringBuilder sVertexOrderby = new StringBuilder();
 		StringBuilder eVertexOrderby = new StringBuilder();
 		
 		if (e.getStartVertex() != null) {
 			PK pk = e.getStartVertex().getPK();
 			if (pk != null) {
+				
+				if (pk.getPkColumns().size() == 1) {
+					startVertexRownumColumnName = pk.getPkColumns().get(1);
+				} else {
+					startVertexRownumColumnName = "ROWNUM";
+				}
+				
 				// if it has a pk, a pk scan is better than full range scan
 				for (String pkCol : pk.getPkColumns()) {
 					if (sVertexOrderby.length() > 0) {
@@ -971,6 +1013,13 @@ public abstract class DBExportHelper implements
 		
 		PK pk = e.getEndVertex().getPK();
 		if (pk != null) {
+			
+				if (pk.getPkColumns().size() == 1) {
+					startVertexRownumColumnName = pk.getPkColumns().get(1);
+				} else {
+					startVertexRownumColumnName = "ROWNUM";
+				}
+				
 				// if it has a pk, a pk scan is better than full range scan
 				for (String pkCol : pk.getPkColumns()) {
 					if (eVertexOrderby.length() > 0) {
@@ -989,7 +1038,7 @@ public abstract class DBExportHelper implements
 		
 		buffer.append(" FROM ");
 		
-		buffer.append("(SELECT ROWNUM as \":START_ID(" + e.getStartVertexName() + ")\"");
+		buffer.append("(SELECT "+ startVertexRownumColumnName +" as \":START_ID(" + e.getStartVertexName() + ")\"");
 		
 		if (sVertexOrderby.length() != 0) {
 			buffer.append(" ," + sVertexOrderby);
@@ -1016,7 +1065,7 @@ public abstract class DBExportHelper implements
 		buffer.append(startVertexName);
 		buffer.append(", ");
 		
-		buffer.append("(SELECT ROWNUM as \":END_ID(" + e.getEndVertexName() + ")\"");
+		buffer.append("(SELECT " + endVertexRownumColumnName + " as \":END_ID(" + e.getEndVertexName() + ")\"");
 		
 		if (eVertexOrderby.length() != 0) {
 			buffer.append(" ," + eVertexOrderby);

@@ -709,26 +709,25 @@ public class JDBCExporter extends
 				outerTotalExported += realPageCount;
 				
 				//Stop fetching condition: no result;less then fetching count;great then total count
-				if (!isLatestPage(sTable, totalExported, recordCountOfQuery)) {
-					continue;
-				}
-				
-				innerTotalExported += realPageCount;
-				outerTotalExported = 0;
-				
-				innerQuery = graphExHelper.getJoinTableInnerQuery(e, sql, conn, innerTotalExported, realPageCount);
-				
-				pagesql = graphExHelper.getPagedSelectSQLForEdgeCSV(e, innerQuery, realPageCount, outerTotalExported, pk, hasMultiSchema(conn));
-				
-				recordCountOfQuery = graphEdgeHandleSQL(conn, pagesql, e, sTable,
-						records, newRecordProcessor);
-				totalExported = totalExported + recordCountOfQuery;		
-				
-				if (!isLatestPage(sTable, totalExported, recordCountOfQuery)) {
-					continue;
-				} else {
+				if (isLatestPage(sTable, totalExported, recordCountOfQuery)) {
 					break;
 				}
+//				innerTotalExported += realPageCount;
+//				outerTotalExported = 0;
+//				
+//				innerQuery = graphExHelper.getJoinTableInnerQuery(e, sql, conn, innerTotalExported, realPageCount);
+//				
+//				pagesql = graphExHelper.getPagedSelectSQLForEdgeCSV(e, innerQuery, realPageCount, outerTotalExported, pk, hasMultiSchema(conn));
+//				
+//				recordCountOfQuery = graphEdgeHandleSQL(conn, pagesql, e, sTable,
+//						records, newRecordProcessor);
+//				totalExported = totalExported + recordCountOfQuery;		
+//				
+//				if (!isLatestPage(sTable, totalExported, recordCountOfQuery)) {
+//					continue;
+//				} else {
+//					break;
+//				}
 			}
 			if (!records.isEmpty()) {
 				newRecordProcessor.processRecords(e.getEdgeLabel(), records);
@@ -747,7 +746,7 @@ public class JDBCExporter extends
 		Table sTable = config.getSrcTableSchemaForEdge(e.getOwner(), e.getStartVertexName());
 		Connection conn = connManager.getSourceConnection(); //NOPMD
 		
-		long countOfRecords = graphFkEdgeCountSQL(conn, e);
+//		long countOfRecords = graphFkEdgeCountSQL(conn, e);
 		
 		try {
 			final DBExportHelper expHelper = getSrcDBExportHelper();
@@ -770,10 +769,10 @@ public class JDBCExporter extends
 					return;
 				}
 				long realPageCount = intPageCount;
-				if (!config.isImplicitEstimate()) {
-					realPageCount = Math.min(countOfRecords - totalExported,
-							intPageCount);
-				}
+//				if (!config.isImplicitEstimate()) {
+//					realPageCount = Math.min(countOfRecords - totalExported,
+//							intPageCount);
+//				}
 				
 				innerQuery = graphExHelper.getInnerQuery(e, sql, conn, innerTotalExported, realPageCount);
 				
@@ -787,23 +786,22 @@ public class JDBCExporter extends
 				totalExported = totalExported + recordCountOfQuery;
 				outerTotalExport += recordCountOfQuery;
 				//Stop fetching condition: no result;less then fetching count;great then total count
-				if (!isLatestPage(sTable, totalExported, recordCountOfQuery)) {
-					continue;
-				}
-				
-				innerTotalExported += realPageCount;
-				outerTotalExport = 0;
-				
-				innerQuery = graphExHelper.getInnerQuery(e, sql, conn, innerTotalExported, realPageCount);
-				pageSQL = graphExHelper.getPagedFkRecords(e, innerQuery, realPageCount, outerTotalExport, hasMultiSchema(conn));
-				recordCountOfQuery = graphEdgeHandleSQL(conn, pageSQL, e, sTable,
-						records, newRecordProcessor);
-				//Stop fetching condition: no result;less then fetching count;great then total count
-				if (!isLatestPage(sTable, totalExported, recordCountOfQuery)) {
-					continue;
-				} else {
+				if (isLatestPage(sTable, totalExported, recordCountOfQuery)) {
 					break;
 				}
+//				innerTotalExported += realPageCount;
+//				outerTotalExport = 0;
+//				
+//				innerQuery = graphExHelper.getInnerQuery(e, sql, conn, innerTotalExported, realPageCount);
+//				pageSQL = graphExHelper.getPagedFkRecords(e, innerQuery, realPageCount, outerTotalExport, hasMultiSchema(conn));
+//				recordCountOfQuery = graphEdgeHandleSQL(conn, pageSQL, e, sTable,
+//						records, newRecordProcessor);
+//				//Stop fetching condition: no result;less then fetching count;great then total count
+//				if (!isLatestPage(sTable, totalExported, recordCountOfQuery)) {
+//					continue;
+//				} else {
+//					break;
+//				}
 			}
 			if (!records.isEmpty()) {
 				newRecordProcessor.processRecords(e.getEdgeLabel(), records);
@@ -919,9 +917,9 @@ public class JDBCExporter extends
 		String refCol = fkMapping.get(keySet.get(0));
 		
 		StringBuffer buffer = new StringBuffer();
-		buffer.append("SELECT COUNT(1) FROM ");
+		buffer.append("SELECT COUNT(*) FROM ");
 		
-		buffer.append("(SELECT ");
+		buffer.append("(SELECT /*+ use_merge */ ");
 		buffer.append(fkCol);
 		buffer.append(" FROM ");
 		buffer.append(e.getStartVertexName());

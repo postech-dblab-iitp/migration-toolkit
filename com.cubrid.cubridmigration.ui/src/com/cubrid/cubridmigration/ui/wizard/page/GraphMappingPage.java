@@ -330,6 +330,8 @@ public class GraphMappingPage extends MigrationWizardPage {
 						mConfig, gdbDict, startVertex, endVertex, workBuffer, workCtrl);
 				edgeSettingDialog.open();
 				
+				redoUndoHandler();
+				
 				graphViewer.refresh();
 			}
 			

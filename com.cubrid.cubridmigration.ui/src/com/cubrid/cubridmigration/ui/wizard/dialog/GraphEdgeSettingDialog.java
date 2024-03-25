@@ -183,7 +183,6 @@ public class GraphEdgeSettingDialog extends Dialog {
 		
 		return parent;
 	}
-
 	
 	public void setEdgeTable(Group tableContainer) {
 		edgeTable = new TableViewer(tableContainer, SWT.FULL_SELECTION);

@@ -797,12 +797,12 @@ public abstract class DBExportHelper implements
 		
 		String vertexIdColumnValue = "ROWNUM";
 		
-		if (v.getHasPK() && v.getPK().getPkColumns().size() == 1) {
-			Column col = v.getColumnByName(v.getPK().getPkColumns().get(0));
-			if (col.getGraphDataType().equalsIgnoreCase("INTEGER")) {
-				vertexIdColumnValue = v.getPK().getPkColumns().get(0);
-			}
-		}
+//		if (v.getHasPK() && v.getPK().getPkColumns().size() == 1) {
+//			Column col = v.getColumnByName(v.getPK().getPkColumns().get(0));
+//			if (col.getGraphDataType().equalsIgnoreCase("INTEGER")) {
+//				vertexIdColumnValue = v.getPK().getPkColumns().get(0);
+//			}
+//		}
 		
 		if (selectMatcher.find()) {
 			StringBuffer buffer = new StringBuffer("SELECT " + vertexIdColumnValue + " as ");

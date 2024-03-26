@@ -957,7 +957,7 @@ public abstract class OfflineImporter extends
 				StringBuffer sb = new StringBuffer();
 				
 				if (col.getDataType().equals("ID")) {
-					sb.append(col.getName());
+					sb.append(col.getName().toUpperCase());
 				} else {
 					sb.append(col.getName().toUpperCase());
 					sb.append(":");
@@ -1018,7 +1018,7 @@ public abstract class OfflineImporter extends
 				StringBuffer sb = new StringBuffer();
 				
 				if (col.getDataType().equals("ID")) {
-					sb.append(col.getName());
+					sb.append(col.getName().toUpperCase());
 				} else {
 					sb.append(col.getName());
 //					sb.append(":");

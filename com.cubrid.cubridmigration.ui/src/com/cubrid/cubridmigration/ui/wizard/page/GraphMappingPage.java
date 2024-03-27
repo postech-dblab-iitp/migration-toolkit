@@ -51,6 +51,9 @@ import com.cubrid.cubridmigration.core.engine.config.MigrationConfiguration;
 import com.cubrid.cubridmigration.graph.dbobj.Edge;
 import com.cubrid.cubridmigration.graph.dbobj.GraphDictionary;
 import com.cubrid.cubridmigration.graph.dbobj.Vertex;
+import com.cubrid.cubridmigration.graph.dbobj.Work;
+import com.cubrid.cubridmigration.graph.dbobj.WorkBuffer;
+import com.cubrid.cubridmigration.graph.dbobj.WorkController;
 import com.cubrid.cubridmigration.ui.MigrationUIPlugin;
 import com.cubrid.cubridmigration.ui.message.Messages;
 import com.cubrid.cubridmigration.ui.preference.GraphDataTypeComboBoxCellEditor;
@@ -59,6 +62,13 @@ import com.cubrid.cubridmigration.ui.wizard.dialog.GraphEdgeSettingDialog;
 import com.cubrid.cubridmigration.ui.wizard.dialog.GraphRenamingDialog;
 
 //GDB override ObjectMappingPage. GraphMappingPage seems to have a similar structure to ObjectMappingPage
+
+enum workTypeEnum {
+	WT_DELETE,
+	WT_CREATE,
+	WT_RENAME
+}
+
 public class GraphMappingPage extends MigrationWizardPage {
 	public static final Image CHECK_IMAGE = MigrationUIPlugin.getImage("icon/checked.gif");
 	public static final Image UNCHECK_IMAGE = MigrationUIPlugin.getImage("icon/unchecked.gif");
@@ -89,6 +99,10 @@ public class GraphMappingPage extends MigrationWizardPage {
 	
 	private String[] columnProperties = {"Property Name", "GDB Types"};
 	private String[] targetTypeList = {"integer", "string", "date", "datetime"};
+	
+	// TODO undo, redo
+	private WorkBuffer workBuffer = new WorkBuffer();
+	private WorkController workCtrl = new WorkController();
 	
 	public GraphMappingPage(String pageName) {
 		super(pageName);
@@ -217,6 +231,7 @@ public class GraphMappingPage extends MigrationWizardPage {
 					
 					menuHandler();
 					deleteMenuHandler(true);
+					redoUndoHandler();
 					System.out.println("select object: " + ((Vertex) selectedObject).getVertexLabel());
 				}
 				
@@ -226,6 +241,7 @@ public class GraphMappingPage extends MigrationWizardPage {
 					
 					menuHandler();
 					deleteMenuHandler(false);
+					redoUndoHandler();
 					System.out.println("selected object: " + ((Edge) selectedObject).getEdgeLabel());
 				}
 				
@@ -238,6 +254,7 @@ public class GraphMappingPage extends MigrationWizardPage {
 		graph.addSelectionListener(new SelectionListener() {
 			
 			@Override
+			@SuppressWarnings("unchecked")
 			public void widgetSelected(SelectionEvent e) {
 				ArrayList<GraphItem> selectList = (ArrayList<GraphItem>) graph.getSelection();
 				for (GraphItem selection : selectList) {
@@ -260,6 +277,7 @@ public class GraphMappingPage extends MigrationWizardPage {
 		graphViewer.applyLayout();
 	}
 	
+	@SuppressWarnings("unused")
 	public void setPopupMenu(Composite parent) {
 		popupMenu = new Menu(parent);
 		
@@ -269,6 +287,7 @@ public class GraphMappingPage extends MigrationWizardPage {
 		
 		item1.addSelectionListener(new SelectionListener() {
 			
+			@SuppressWarnings("unchecked")
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				// TODO Auto-generated method stub
@@ -307,8 +326,11 @@ public class GraphMappingPage extends MigrationWizardPage {
 				
 				endVertex = selectedVertex;
 				
-				GraphEdgeSettingDialog edgeSettingDialog = new GraphEdgeSettingDialog(getShell(), mConfig, gdbDict, startVertex, endVertex);
+				GraphEdgeSettingDialog edgeSettingDialog = new GraphEdgeSettingDialog(getShell(), 
+						mConfig, gdbDict, startVertex, endVertex, workBuffer, workCtrl);
 				edgeSettingDialog.open();
+				
+				redoUndoHandler();
 				
 				graphViewer.refresh();
 			}
@@ -371,6 +393,9 @@ public class GraphMappingPage extends MigrationWizardPage {
 				
 				for (Edge edge : migratedEdgeList) {
 					if (edge.getEdgeLabel().equalsIgnoreCase(selectedEdge.getEdgeLabel())) {
+						
+						workBuffer.addWork(workCtrl.createWork(workTypeEnum.WT_DELETE.ordinal(), edge));
+						
 						gdbDict.removeEdge(edge.getEdgeLabel());
 						
 						break;
@@ -381,9 +406,41 @@ public class GraphMappingPage extends MigrationWizardPage {
 			}
 
 			@Override
-			public void widgetDefaultSelected(SelectionEvent e) {
-				// TODO Auto-generated method stub
+			public void widgetDefaultSelected(SelectionEvent e) {}
+		});
+		
+		MenuItem separator2 = new MenuItem(popupMenu, SWT.SEPARATOR);
+		
+		MenuItem undo = new MenuItem(popupMenu, SWT.POP_UP);
+		undo.setText("Undo");
+		
+		undo.addSelectionListener(new SelectionListener() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				executeUndo(workBuffer.undo());
+				redoUndoHandler();
+				
+				graphViewer.refresh();
 			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {}
+		});
+		
+		MenuItem redo = new MenuItem(popupMenu, SWT.POP_UP);
+		redo.setText("Redo");
+		
+		redo.addSelectionListener(new SelectionListener() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				executeRedo(workBuffer.redo());
+				redoUndoHandler();
+				
+				graphViewer.refresh();
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {}
 		});
 		
 		item1.setEnabled(true);
@@ -392,6 +449,8 @@ public class GraphMappingPage extends MigrationWizardPage {
 
 		changeName.setEnabled(true);
 		deleteEdge.setEnabled(true);
+		redo.setEnabled(false);
+		undo.setEnabled(false);
 	}
 	
 	public void setHighlight(GraphNode node) {
@@ -435,6 +494,20 @@ public class GraphMappingPage extends MigrationWizardPage {
 		
 		if (endVertex != null) {
 			//do nothing?
+		}
+	}
+	
+	public void redoUndoHandler() {
+		if (workBuffer.isUndoListEmpty()) {
+			popupMenu.getItem(7).setEnabled(false);
+		} else {
+			popupMenu.getItem(7).setEnabled(true);
+		}
+		
+		if (workBuffer.isRedoListEmpty()) {
+			popupMenu.getItem(8).setEnabled(false);
+		} else {
+			popupMenu.getItem(8).setEnabled(true);
 		}
 	}
 	
@@ -744,5 +817,27 @@ public class GraphMappingPage extends MigrationWizardPage {
 		gdbDict.printVertexAndEdge();
 		
 		showGraphData(gdbDict.getMigratedVertexList());
+	}
+	
+	private void executeUndo(Work work) {
+		workCtrl.setWork(work);
+		
+		if (work.getWorkType() == workTypeEnum.WT_DELETE.ordinal()) {
+			gdbDict.addMigratedEdgeList(work.getEdge());
+		} else if (work.getWorkType() == workTypeEnum.WT_CREATE.ordinal()) {
+			gdbDict.removeEdge(workCtrl.getEdge().getEdgeLabel());
+		}
+		graphViewer.refresh();
+	}
+	
+	private void executeRedo(Work work) {
+		workCtrl.setWork(work);
+		
+		if (work.getWorkType() == workTypeEnum.WT_DELETE.ordinal()) {
+			gdbDict.removeEdge(workCtrl.getEdge().getEdgeLabel());
+		} else if (work.getWorkType() == workTypeEnum.WT_CREATE.ordinal()) {
+			gdbDict.addMigratedEdgeList(work.getEdge());
+		}
+		graphViewer.refresh();
 	}
 }

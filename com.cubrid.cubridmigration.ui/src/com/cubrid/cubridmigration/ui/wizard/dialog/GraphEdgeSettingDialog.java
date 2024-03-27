@@ -35,6 +35,8 @@ import com.cubrid.cubridmigration.core.engine.config.MigrationConfiguration;
 import com.cubrid.cubridmigration.graph.dbobj.Edge;
 import com.cubrid.cubridmigration.graph.dbobj.GraphDictionary;
 import com.cubrid.cubridmigration.graph.dbobj.Vertex;
+import com.cubrid.cubridmigration.graph.dbobj.WorkBuffer;
+import com.cubrid.cubridmigration.graph.dbobj.WorkController;
 
 public class GraphEdgeSettingDialog extends Dialog {
 	
@@ -49,6 +51,9 @@ public class GraphEdgeSettingDialog extends Dialog {
 	private Text txtEdgeName;
 	
 	private ArrayList<ColumnData> columnDataList = new ArrayList<ColumnData>();
+	
+	private WorkController workCtrl;
+	private WorkBuffer workBuffer;
 
 	private class ColumnData {
 		private String startColumnName;
@@ -101,12 +106,20 @@ public class GraphEdgeSettingDialog extends Dialog {
 			"Column Type"
 	};
 
-	public GraphEdgeSettingDialog(Shell parentShell, MigrationConfiguration config, GraphDictionary gdbDict, Vertex startVertex, Vertex endVertex) {
+	public GraphEdgeSettingDialog(Shell parentShell, 
+			MigrationConfiguration config, 
+			GraphDictionary gdbDict, 
+			Vertex startVertex, 
+			Vertex endVertex,
+			WorkBuffer workBuffer,
+			WorkController workController) {
 		super(parentShell);
 		this.mConfig = config;
 		this.gdbDict = gdbDict;
 		this.startVertex = startVertex;
 		this.endVertex = endVertex;
+		this.workBuffer = workBuffer;
+		this.workCtrl = workController;
 	}
 	
 	protected void constrainShellSize() {
@@ -170,7 +183,6 @@ public class GraphEdgeSettingDialog extends Dialog {
 		
 		return parent;
 	}
-
 	
 	public void setEdgeTable(Group tableContainer) {
 		edgeTable = new TableViewer(tableContainer, SWT.FULL_SELECTION);
@@ -458,6 +470,8 @@ public class GraphEdgeSettingDialog extends Dialog {
 			}
 			
 			startVertex.getEndVertexes().add(endVertex);
+			
+			workBuffer.addWork(workCtrl.createWork(1, newEdge));
 			
 			gdbDict.addMigratedEdgeList(newEdge);
 		}

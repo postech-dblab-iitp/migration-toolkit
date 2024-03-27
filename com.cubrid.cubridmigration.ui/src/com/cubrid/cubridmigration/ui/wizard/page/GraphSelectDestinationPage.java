@@ -337,6 +337,11 @@ public class GraphSelectDestinationPage extends
 			final MigrationConfiguration cfg = getMigrationWizard().getMigrationConfig();
 			btnCSVSetting.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent se) {
+					if (btnNeo4jType.getSelection()) {
+						cfg.setGraphSubTyteForCSV(MigrationConfiguration.GRAPH_SUBTYPE_NEO4J);
+					} else {
+						cfg.setGraphSubTyteForCSV(MigrationConfiguration.GRAPH_SUBTYPE_TURBOGRAPH);
+					}
 					CSVSettingsDialog dialog = new CSVSettingsDialog(getShell(), cfg);
 					dialog.open();
 				}
@@ -539,8 +544,10 @@ public class GraphSelectDestinationPage extends
 			config.setTargetCharSet(cboCharset.getText());
 			if (btnNeo4jType.getSelection()) {
 				config.setGraphSubTyteForCSV(MigrationConfiguration.GRAPH_SUBTYPE_NEO4J);
+				config.getCsvSettings().setSeparateChar(',');
 			} else {
 				config.setGraphSubTyteForCSV(MigrationConfiguration.GRAPH_SUBTYPE_TURBOGRAPH);
+				config.getCsvSettings().setSeparateChar('|');
 			}
 			return true;
 		}

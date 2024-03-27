@@ -305,7 +305,7 @@ public class LoadFileImporter extends
 	}
 	
 	@Override
-	protected void handleListFileHeader() {
+	protected void handleListFileHeaderTurboGraph() {
 		synchronized (lockObj) {
 			MigrationDirAndFilesManager mdfm = mrManager.getDirAndFilesMgr();
 			
@@ -356,6 +356,39 @@ public class LoadFileImporter extends
 		}
 	}
 	
+	@Override
+	protected void handleListFileHeaderForNEO4J() {
+		synchronized (lockObj) {
+			MigrationDirAndFilesManager mdfm = mrManager.getDirAndFilesMgr();
+			
+			File file = new File(mdfm.getGraphListFile());
+			FileWriter fileWriter = null;
+			BufferedWriter bufferWriter = null;
+			
+			try {
+				if (file.exists()) {
+					fileWriter = new FileWriter(file, true);
+					bufferWriter = new BufferedWriter(fileWriter);
+					
+					StringBuffer buffer = new StringBuffer();
+					buffer.append("NEO4J_HOME=\n");
+					buffer.append("OUTPUT_DIR=\n");
+					buffer.append("DATABASE_NAME=\n");
+					buffer.append("${NEO4J_HOME}bin" + File.separator + "neo4j-admin import --database ${DATABASE_NAME}" );
+					
+					bufferWriter.write(buffer.toString());
+					
+					bufferWriter.close();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				Closer.close(bufferWriter);
+				Closer.close(fileWriter);
+			}
+		}
+	}
+	
 	protected void handleDataFileHeader(String fileName, final Edge e, final int impCount,
 			final int expCount) {
 		synchronized (lockObj) {
@@ -373,7 +406,11 @@ public class LoadFileImporter extends
 					final String inputFileName = 
 							config.getFullTargetFilePrefix() + removeSpace(e.getEdgeLabel() + "_Edge") + config.getDataFileExt();
 					
-					writeGraphListFile(mdfm.getGraphListFile(), inputFileName, e);
+					if (config.getGraphSubTypeForCSV() == 1) {
+						writeGraphListFileForTurboGraph(mdfm.getGraphListFile(), inputFileName, e);
+					} else {
+						writeGraphListFileForNEO4J(mdfm.getGraphListFile(), inputFileName, e);
+					}
 				}
 			}
 			//If the target file is full. 
@@ -434,7 +471,11 @@ public class LoadFileImporter extends
 					final String inputFileName = 
 							config.getFullTargetFilePrefix() + removeSpace(v.getVertexLabel() + "_Node") + config.getDataFileExt();
 					
-					writeGraphListFile(mdfm.getGraphListFile(), inputFileName, v);
+					if (config.getGraphSubTypeForCSV() == 1) {
+						writeGraphListFileForTurboGraph(mdfm.getGraphListFile(), inputFileName, v);
+					} else {
+						writeGraphListFileForNEO4J(mdfm.getGraphListFile(), inputFileName, v);
+					}
 				}
 			}
 			//If the target file is full. 
@@ -544,7 +585,7 @@ public class LoadFileImporter extends
 		}
 	}
 	
-	protected void writeGraphListFile (String listFile, String inputFile, Object gInstance) {
+	protected void writeGraphListFileForTurboGraph (String listFile, String inputFile, Object gInstance) {
 		File file = new File(listFile);
 		try {
 			if (file.exists()) {
@@ -570,11 +611,33 @@ public class LoadFileImporter extends
 			e.printStackTrace();
 		}
 	}
-//	public int importVertex(Vertex e, List<Record> records) {
-//		return 0;
-//	}
-//    
-//    public int importEdge(Edge e, List<Record> records) {
-//		return 0;
-//	}
+	
+	protected void writeGraphListFileForNEO4J (String listFile, String inputFile, Object gInstance) {
+		File file = new File(listFile);
+		try {
+			if (file.exists()) {
+				 FileWriter fw = new FileWriter(file, true);
+				 BufferedWriter writer = new BufferedWriter(fw);
+				 StringBuffer sb = new StringBuffer();
+				 if (gInstance instanceof Vertex) {
+					 Vertex v = (Vertex) gInstance;
+					 sb.append("\t--nodes=")
+					 .append(v.getVertexLabel().replaceAll(" ", "_"))
+					 .append("=");
+				 } else if (gInstance instanceof Edge) {
+					 Edge e = (Edge) gInstance;
+					 sb.append("\t--relationships=")
+					 .append(e.getEdgeLabel().replaceAll(" ", "_"))
+					 .append("=");
+				 }
+				 sb.append(" ${OUTPUT_DIR}")
+				 .append(inputFile);
+				 writer.write(" \\\n" + sb.toString());
+
+				 writer.close();
+			} 
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 }

@@ -506,7 +506,11 @@ public class JDBCExporter extends
 			LOG.debug("[IN]exportGraphEdgeRecords()");
 		}
 		
-		if (e.getEdgeType() == Edge.JOINTABLE_TYPE) {
+		if (e.getEdgeType() == Edge.JOINTABLE_TYPE && config.targetIsCSV()) {
+			exportGraphJoinTableEdgeRecordForCSV(e, newRecordProcessor);
+			return;
+			
+		} else if (e.getEdgeType() == Edge.JOINTABLE_TYPE) {
 			exportGraphJoinEdgeRecords(e, newRecordProcessor);
 			return;
 		}
@@ -647,22 +651,26 @@ public class JDBCExporter extends
 		return null;
 	}
 	
-	protected void exportGraphEdgeRecordForCSV(Edge e, RecordExportedListener newRecordProcessor) { 
+	protected void exportGraphJoinTableEdgeRecordForCSV(Edge e, RecordExportedListener newRecordProcessor) {
+		//TODO
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("[IN]exportGraphVertexRecords()");
 		}
-		
-		Table sTable = config.getSrcTableSchemaForEdge(e.getOwner(), e.getStartVertexName());
+		Table sTable = config.getSrcTableSchema(e.getOwner(), e.getEdgeLabel());
+		if (sTable == null) {
+			throw new NormalMigrationException("Table " + e.getEdgeLabel() + " was not found.");
+		}
+		final PK srcPK = sTable.getPk();
 		Connection conn = connManager.getSourceConnection(); //NOPMD
-		
-		long countOfRecords = graphFkEdgeCountSQL(conn, e);
-		
 		try {
 			final DBExportHelper expHelper = getSrcDBExportHelper();
-			DBExportHelper graphExHelper = expHelper;
-//			PK pk = graphExHelper.supportFastSearchWithPK(conn) ? srcPK : null;
+			DBExportHelper graphExHelper = getExportHelperType(expHelper);
+			PK pk = graphExHelper.supportFastSearchWithPK(conn) ? srcPK : null;
 			newRecordProcessor.startExportTable(e.getEdgeLabel());
 			List<Record> records = new ArrayList<Record>();
+			
+			long outerTotalExported = 0L;
+			long innerTotalExported = 0L;
 			long totalExported = 0L;
 			long intPageCount = config.getPageFetchCount();
 			String sql = graphExHelper.getGraphSelectSQL(e);
@@ -672,23 +680,128 @@ public class JDBCExporter extends
 				}
 				long realPageCount = intPageCount;
 				if (!config.isImplicitEstimate()) {
-					realPageCount = Math.min(countOfRecords - totalExported,
+					realPageCount = Math.min(sTable.getTableRowCount() - totalExported,
 							intPageCount);
 				}
-				String pageSql;
 				
-				pageSql = graphExHelper.getPagedFkRecords(e, sql, realPageCount, totalExported, hasMultiSchema(conn));
+				String innerQuery = null;
+				String pagesql = null;
+
+				innerQuery = graphExHelper.getJoinTableInnerQuery(e, sql, conn, innerTotalExported, realPageCount);
+				
+				pagesql = graphExHelper.getPagedSelectSQLForEdgeCSV(e, innerQuery, realPageCount, outerTotalExported, pk, hasMultiSchema(conn));
 				
 				if (LOG.isDebugEnabled()) {
-					LOG.debug("[SQL]PAGINATED=" + pageSql);
+					LOG.debug("[SQL]PAGINATED=" + pagesql);
 				}
-				long recordCountOfQuery = graphEdgeHandleSQL(conn, pageSql, e, sTable,
-						records, newRecordProcessor);
-				totalExported = totalExported + recordCountOfQuery;
+				
+				long recordCountOfQuery;
+				
+				if (config.isCdc()) {
+					recordCountOfQuery = cdcHandleRecord(conn, pagesql, e, sTable,
+							records, newRecordProcessor);
+					totalExported = totalExported + recordCountOfQuery;					
+				} else {
+					recordCountOfQuery = graphEdgeHandleSQL(conn, pagesql, e, sTable,
+							records, newRecordProcessor);
+					totalExported = totalExported + recordCountOfQuery;					
+				}
+				outerTotalExported += realPageCount;
+				
 				//Stop fetching condition: no result;less then fetching count;great then total count
 				if (isLatestPage(sTable, totalExported, recordCountOfQuery)) {
 					break;
 				}
+//				innerTotalExported += realPageCount;
+//				outerTotalExported = 0;
+//				
+//				innerQuery = graphExHelper.getJoinTableInnerQuery(e, sql, conn, innerTotalExported, realPageCount);
+//				
+//				pagesql = graphExHelper.getPagedSelectSQLForEdgeCSV(e, innerQuery, realPageCount, outerTotalExported, pk, hasMultiSchema(conn));
+//				
+//				recordCountOfQuery = graphEdgeHandleSQL(conn, pagesql, e, sTable,
+//						records, newRecordProcessor);
+//				totalExported = totalExported + recordCountOfQuery;		
+//				
+//				if (!isLatestPage(sTable, totalExported, recordCountOfQuery)) {
+//					continue;
+//				} else {
+//					break;
+//				}
+			}
+			if (!records.isEmpty()) {
+				newRecordProcessor.processRecords(e.getEdgeLabel(), records);
+			}
+		} finally {
+			newRecordProcessor.endExportTable(e.getEdgeLabel());
+			connManager.closeSrc(conn);
+		}
+	}
+	
+	protected void exportGraphEdgeRecordForCSV(Edge e, RecordExportedListener newRecordProcessor) { 
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("[IN]exportGraphVertexRecords()");
+		}
+		
+		Table sTable = config.getSrcTableSchemaForEdge(e.getOwner(), e.getStartVertexName());
+		Connection conn = connManager.getSourceConnection(); //NOPMD
+		
+//		long countOfRecords = graphFkEdgeCountSQL(conn, e);
+		
+		try {
+			final DBExportHelper expHelper = getSrcDBExportHelper();
+			DBExportHelper graphExHelper = expHelper;
+//			PK pk = graphExHelper.supportFastSearchWithPK(conn) ? srcPK : null;
+			newRecordProcessor.startExportTable(e.getEdgeLabel());
+			List<Record> records = new ArrayList<Record>();
+			long totalExported = 0L;
+			long intPageCount = config.getPageFetchCount();
+			long outerTotalExport = 0L;
+			long innerTotalExported = 0L;
+			
+			// can delete this maybe
+			String sql = graphExHelper.getGraphSelectSQL(e);
+			
+			String innerQuery = null;
+			String pageSQL = null;
+			while (true) {
+				if (interrupted) {
+					return;
+				}
+				long realPageCount = intPageCount;
+//				if (!config.isImplicitEstimate()) {
+//					realPageCount = Math.min(countOfRecords - totalExported,
+//							intPageCount);
+//				}
+				
+				innerQuery = graphExHelper.getInnerQuery(e, sql, conn, innerTotalExported, realPageCount);
+				
+				pageSQL = graphExHelper.getPagedFkRecords(e, innerQuery, realPageCount, outerTotalExport, hasMultiSchema(conn));
+				
+				if (LOG.isDebugEnabled()) {
+					LOG.debug("[SQL]PAGINATED=" + pageSQL);
+				}
+				long recordCountOfQuery = graphEdgeHandleSQL(conn, pageSQL, e, sTable,
+						records, newRecordProcessor);
+				totalExported = totalExported + recordCountOfQuery;
+				outerTotalExport += recordCountOfQuery;
+				//Stop fetching condition: no result;less then fetching count;great then total count
+				if (isLatestPage(sTable, totalExported, recordCountOfQuery)) {
+					break;
+				}
+//				innerTotalExported += realPageCount;
+//				outerTotalExport = 0;
+//				
+//				innerQuery = graphExHelper.getInnerQuery(e, sql, conn, innerTotalExported, realPageCount);
+//				pageSQL = graphExHelper.getPagedFkRecords(e, innerQuery, realPageCount, outerTotalExport, hasMultiSchema(conn));
+//				recordCountOfQuery = graphEdgeHandleSQL(conn, pageSQL, e, sTable,
+//						records, newRecordProcessor);
+//				//Stop fetching condition: no result;less then fetching count;great then total count
+//				if (!isLatestPage(sTable, totalExported, recordCountOfQuery)) {
+//					continue;
+//				} else {
+//					break;
+//				}
 			}
 			if (!records.isEmpty()) {
 				newRecordProcessor.processRecords(e.getEdgeLabel(), records);
@@ -804,9 +917,9 @@ public class JDBCExporter extends
 		String refCol = fkMapping.get(keySet.get(0));
 		
 		StringBuffer buffer = new StringBuffer();
-		buffer.append("SELECT COUNT(1) FROM ");
+		buffer.append("SELECT COUNT(*) FROM ");
 		
-		buffer.append("(SELECT ");
+		buffer.append("(SELECT /*+ use_merge */ ");
 		buffer.append(fkCol);
 		buffer.append(" FROM ");
 		buffer.append(e.getStartVertexName());
@@ -859,11 +972,14 @@ public class JDBCExporter extends
 				}
 				String pagesql;
 				
-				if (config.targetIsCSV()) {
-					pagesql = graphExHelper.getPagedSelectSQLForEdgeCSV(e, sql, realPageCount, totalExported, pk, hasMultiSchema(conn));
-				} else {
-					pagesql = graphExHelper.getPagedSelectSQL(sql, realPageCount, totalExported, pk);
-				}
+//				if (config.targetIsCSV()) {
+//					pagesql = graphExHelper.getPagedSelectSQLForEdgeCSV(e, sql, realPageCount, totalExported, pk, hasMultiSchema(conn));
+//				} else {
+//					pagesql = graphExHelper.getPagedSelectSQL(sql, realPageCount, totalExported, pk);
+//				}
+				
+				pagesql = graphExHelper.getPagedSelectSQL(sql, realPageCount, totalExported, pk);
+				
 				if (LOG.isDebugEnabled()) {
 					LOG.debug("[SQL]PAGINATED=" + pagesql);
 				}

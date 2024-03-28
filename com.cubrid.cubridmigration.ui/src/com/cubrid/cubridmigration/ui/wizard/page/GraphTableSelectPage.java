@@ -397,7 +397,7 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 			vertex.setOid(table.getOid());
 			
 			if (getMigrationWizard().getMigrationConfig().targetIsCSV()) {
-				Column idCol = new Column("id", vertex.getVertexLabel());
+				Column idCol = new Column("id", vertex.getVertexLabel().toUpperCase());
 				idCol.setDataType("ID");
 				
 				vertex.addColumnFirst(idCol);
@@ -455,7 +455,7 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 			startVertex.setOid(table.getOid());
 			
 			if (getMigrationWizard().getMigrationConfig().targetIsCSV()) {
-				Column idCol = new Column("id", startVertex.getVertexLabel());
+				Column idCol = new Column("id", startVertex.getVertexLabel().toUpperCase());
 				idCol.setDataType("ID");
 				
 				startVertex.addColumnFirst(idCol);
@@ -539,7 +539,7 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 			startVertex.setOid(table.getOid());
 			
 			if (getMigrationWizard().getMigrationConfig().targetIsCSV()) {
-				Column idCol = new Column("id", startVertex.getVertexLabel());
+				Column idCol = new Column("id", startVertex.getVertexLabel().toUpperCase());
 				idCol.setDataType("ID");
 				
 				startVertex.addColumnFirst(idCol);
@@ -697,7 +697,7 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 			startVertex.setOid(table.getOid());
 			
 			if (getMigrationWizard().getMigrationConfig().targetIsCSV()) {
-				Column idCol = new Column("id", startVertex.getVertexLabel());
+				Column idCol = new Column("id", startVertex.getVertexLabel().toUpperCase());
 				idCol.setDataType("ID");
 				
 				startVertex.addColumnFirst(idCol);

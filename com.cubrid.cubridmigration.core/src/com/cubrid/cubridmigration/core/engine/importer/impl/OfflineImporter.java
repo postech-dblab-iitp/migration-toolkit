@@ -959,7 +959,7 @@ public abstract class OfflineImporter extends
 				if (col.getDataType().equals("ID")) {
 					sb.append(col.getName().toUpperCase());
 				} else {
-					sb.append(col.getName());
+					sb.append(col.getName().toUpperCase());
 					sb.append(":");
 					sb.append(col.getCSVGraphDataType(config.getGraphSubTypeForCSV()));
 				}
@@ -983,7 +983,7 @@ public abstract class OfflineImporter extends
 				
 				StringBuffer sb = new StringBuffer();
 				
-				sb.append(col.getName());
+				sb.append(col.getName().toUpperCase());
 				sb.append(":");
 				sb.append(col.getCSVGraphDataType(config.getGraphSubTypeForCSV()));
 				

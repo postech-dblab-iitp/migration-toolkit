@@ -595,11 +595,11 @@ public class LoadFileImporter extends
 				 if (gInstance instanceof Vertex) {
 					 Vertex v = (Vertex) gInstance;
 					 sb.append("\t--nodes:")
-					 .append(v.getVertexLabel().replaceAll(" ", "_"));
+					 .append(v.getVertexLabel().replaceAll(" ", "_").toUpperCase());
 				 } else if (gInstance instanceof Edge) {
 					 Edge e = (Edge) gInstance;
 					 sb.append("\t--relationships:")
-					 .append(e.getEdgeLabel().replaceAll(" ", "_"));
+					 .append(e.getEdgeLabel().replaceAll(" ", "_").toUpperCase());
 				 }
 				 sb.append(" ${base_dir}")
 				 .append(inputFile);

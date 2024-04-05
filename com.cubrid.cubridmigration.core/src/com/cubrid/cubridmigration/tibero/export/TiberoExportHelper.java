@@ -195,8 +195,8 @@ public class TiberoExportHelper extends
 		
 		StringBuffer buffer = new StringBuffer(sql);
 		
-		buffer.append(" WHERE rnum BETWEEN " + (exportedRecords + 1L));
-		buffer.append(" AND " + (exportedRecords + rows));
+//		buffer.append(" WHERE rnum BETWEEN " + (exportedRecords + 1L));
+//		buffer.append(" AND " + (exportedRecords + rows));
 		
 		return buffer.toString();
 	}
@@ -206,10 +206,10 @@ public class TiberoExportHelper extends
 		String cleanSql = sql.toUpperCase().trim();
 		StringBuilder buf = new StringBuilder();
 
-		buf.append(" WHERE \"RNUM\"");
-
-		buf.append(" BETWEEN ").append(exportedRecords + 1L);
-		buf.append(" AND ").append(exportedRecords + rows);
+//		buf.append(" WHERE \"RNUM\"");
+//
+//		buf.append(" BETWEEN ").append(exportedRecords + 1L);
+//		buf.append(" AND ").append(exportedRecords + rows);
 
 		return cleanSql + buf.toString();
 	}
@@ -332,12 +332,12 @@ public class TiberoExportHelper extends
 		buffer.append(" = ");
 		buffer.append(endVertexName + "." + refCol);
 		
-		buffer.append(" AND ");
-		buffer.append(innerTableWhere);
-		buffer.append(" BETWEEN ");
-		buffer.append(String.valueOf(exportedCount + 1L));
-		buffer.append(" AND ");
-		buffer.append(String.valueOf(exportedCount + rows));
+//		buffer.append(" AND ");
+//		buffer.append(innerTableWhere);
+//		buffer.append(" BETWEEN ");
+//		buffer.append(String.valueOf(exportedCount + 1L));
+//		buffer.append(" AND ");
+//		buffer.append(String.valueOf(exportedCount + rows));
 		buffer.append(")");
 		
 		return buffer.toString();
@@ -483,13 +483,13 @@ public class TiberoExportHelper extends
 		conditionBuffer.append(" = ");
 		conditionBuffer.append("MAIN." + endFkCol);
 		
-		conditionBuffer.append(" AND ");
-		
-		conditionBuffer.append(innerTableWhere);
-		conditionBuffer.append(" BETWEEN ");
-		conditionBuffer.append("" + (innerTotalExported + 1L));
-		conditionBuffer.append(" AND ");
-		conditionBuffer.append("" + (innerTotalExported + realPageCount));
+//		conditionBuffer.append(" AND ");
+//		
+//		conditionBuffer.append(innerTableWhere);
+//		conditionBuffer.append(" BETWEEN ");
+//		conditionBuffer.append("" + (innerTotalExported + 1L));
+//		conditionBuffer.append(" AND ");
+//		conditionBuffer.append("" + (innerTotalExported + realPageCount));
 		conditionBuffer.append(")");
 		
 		return conditionBuffer.toString();
@@ -518,10 +518,12 @@ public class TiberoExportHelper extends
 		
 		buf.append(editedQuery.trim());
 		
-		buf.append(") WHERE \"id\"");
+		buf.append(")");
 		
-		buf.append(" BETWEEN ").append(exportedRecords + 1L);
-		buf.append(" AND ").append(exportedRecords + rows);
+//		buf.append(" WHERE \"id\"");
+//		
+//		buf.append(" BETWEEN ").append(exportedRecords + 1L);
+//		buf.append(" AND ").append(exportedRecords + rows);
 
 		return buf.toString(); 
 	}

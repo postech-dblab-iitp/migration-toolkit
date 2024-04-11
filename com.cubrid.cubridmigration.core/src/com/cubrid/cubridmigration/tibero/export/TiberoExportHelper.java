@@ -346,7 +346,7 @@ public class TiberoExportHelper extends
 	@Override
 	public String getJoinTableInnerQuery(Edge e, String sql, Connection conn, long innerTotalExported, long realPageCount) {
 		
-		sql = sql.replaceFirst("SELECT", "SELECT /*+ use_merge */ ROWNUM AS rnum, ");
+		sql = sql.replaceFirst("SELECT", "SELECT ROWNUM AS rnum, ");
 		
 		String buffer = new String(sql);
 		

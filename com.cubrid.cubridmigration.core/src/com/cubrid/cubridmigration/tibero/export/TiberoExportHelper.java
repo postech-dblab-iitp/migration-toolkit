@@ -283,8 +283,7 @@ public class TiberoExportHelper extends
 		buffer.append(" FROM ");
 		
 		if (innerTableName.equals(e.getStartVertexName())) {
-			buffer.append("(SELECT ROW_NUMBER() OVER (ORDER BY " + fkCol);
-			buffer.append(") as ");
+			buffer.append("(SELECT ROWNUM as ");
 			buffer.append(startId);
 			
 			innerTableWhere = startId;
@@ -307,8 +306,7 @@ public class TiberoExportHelper extends
 		buffer.append(", ");
 		
 		if (innerTableName.equals(e.getEndVertexName())) {
-			buffer.append("(SELECT ROW_NUMBER() OVER (ORDER BY " + refCol + ")");
-			buffer.append(" as ");
+			buffer.append("(SELECT ROWNUM as ");
 			buffer.append(endId);
 			
 			innerTableWhere = endId;
@@ -332,12 +330,6 @@ public class TiberoExportHelper extends
 		buffer.append(" = ");
 		buffer.append(endVertexName + "." + refCol);
 		
-//		buffer.append(" AND ");
-//		buffer.append(innerTableWhere);
-//		buffer.append(" BETWEEN ");
-//		buffer.append(String.valueOf(exportedCount + 1L));
-//		buffer.append(" AND ");
-//		buffer.append(String.valueOf(exportedCount + rows));
 		buffer.append(")");
 		
 		return buffer.toString();
@@ -436,11 +428,7 @@ public class TiberoExportHelper extends
 		
 		conditionBuffer.append("(SELECT ");
 		
-		if (startVertexName.equals(innerTableName)) {
-			conditionBuffer.append("ROW_NUMBER() OVER (ORDER BY " + startRefCol + ")");
-		} else {
-			conditionBuffer.append("ROWNUM");
-		}
+		conditionBuffer.append("ROWNUM");
 		
 		conditionBuffer.append(" AS ");
 		conditionBuffer.append(startId);
@@ -454,11 +442,8 @@ public class TiberoExportHelper extends
 		conditionBuffer.append(", ");
 		
 		conditionBuffer.append("(SELECT ");
-		if (endVertexName.equals(innerTableName)) {
-			conditionBuffer.append("ROW_NUMBER() OVER (ORDER BY " + endRefCol + ")");
-		} else {
-			conditionBuffer.append("ROWNUM");
-		}
+		
+		conditionBuffer.append("ROWNUM");
 		
 		conditionBuffer.append(" AS ");
 		conditionBuffer.append(endId);
@@ -483,13 +468,6 @@ public class TiberoExportHelper extends
 		conditionBuffer.append(" = ");
 		conditionBuffer.append("MAIN." + endFkCol);
 		
-//		conditionBuffer.append(" AND ");
-//		
-//		conditionBuffer.append(innerTableWhere);
-//		conditionBuffer.append(" BETWEEN ");
-//		conditionBuffer.append("" + (innerTotalExported + 1L));
-//		conditionBuffer.append(" AND ");
-//		conditionBuffer.append("" + (innerTotalExported + realPageCount));
 		conditionBuffer.append(")");
 		
 		return conditionBuffer.toString();
@@ -498,6 +476,8 @@ public class TiberoExportHelper extends
 	@Override
 	public String getPagedSelectSQLForVertexCSV(Vertex v, String sql, long rows, long exportedRecords, PK pk) {
 		StringBuilder orderby = new StringBuilder();
+		boolean isPkSingle = false;
+		
 		if (pk != null) {
 			// if it has a pk, a pk scan is better than full range scan
 			for (String pkCol : pk.getPkColumns()) {
@@ -506,42 +486,47 @@ public class TiberoExportHelper extends
 				}
 				orderby.append("\"").append(pkCol).append("\"");
 			}
+			
+			isPkSingle = pk.getPkColumns().size() < 2;
 		} else {
 			System.out.println("Vertex [" + v.getVertexLabel() + "] : pk is null");
 		}
 	
-		String editedQuery = editQueryForVertexCSV(v, sql, orderby.toString());
+		String editedQuery = editQueryForVertexCSV(v, sql, orderby.toString(), isPkSingle);
 		
 		StringBuilder buf = new StringBuilder();
 		
-		buf.append("SELECT * FROM (");
+		if (isPkSingle) {
+			buf.append("SELECT ");
+			buf.append(editedQuery.trim());
+		} else {
+			buf.append("SELECT * FROM (");
+			buf.append(editedQuery.trim());
+			
+			buf.append(")");
+		}
 		
-		buf.append(editedQuery.trim());
-		
-		buf.append(")");
-		
-//		buf.append(" WHERE \"id\"");
-//		
-//		buf.append(" BETWEEN ").append(exportedRecords + 1L);
-//		buf.append(" AND ").append(exportedRecords + rows);
-
 		return buf.toString(); 
 	}
 	
-	private String editQueryForVertexCSV(Vertex v, String sql, String orderby) {
+	private String editQueryForVertexCSV(Vertex v, String sql, String orderby, boolean isPkSingle) {
 		Pattern selectPattern = Pattern.compile("SELECT\\s", Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
 		Matcher selectMatcher = selectPattern.matcher(sql);
 		
 		if (selectMatcher.find()) {
 			if (orderby != null && !orderby.isEmpty()) {
-				StringBuffer buffer = new StringBuffer("SELECT ROW_NUMBER() OVER (ORDER BY ");
-				buffer.append(orderby);
-				buffer.append(") AS ");
-				sql = selectMatcher.replaceFirst(buffer.toString());
+				if (isPkSingle) {
+					StringBuffer buffer = new StringBuffer("ROWNUM");
+					buffer.append(" AS ");
+					sql = selectMatcher.replaceFirst(buffer.toString());
+				} else {
+					StringBuffer buffer = new StringBuffer("SELECT ROW_NUMBER() OVER (ORDER BY ");
+					buffer.append(orderby);
+					buffer.append(") AS ");
+					sql = selectMatcher.replaceFirst(buffer.toString());
+				}
 			}
 		}
-		
-		sql = sql + " ORDER BY " + orderby;
 		
 		return sql;
 	}

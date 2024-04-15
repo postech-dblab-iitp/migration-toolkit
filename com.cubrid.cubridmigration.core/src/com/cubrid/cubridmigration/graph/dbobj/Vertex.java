@@ -34,7 +34,7 @@ public class Vertex extends DBObject {
 	//need for source export 
 	private String owner;
 	private String condition;
-	private String ddl;
+	private String ddl = "-";
 	
 	private long oid;
 	private PK pk;

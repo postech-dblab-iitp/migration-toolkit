@@ -518,9 +518,9 @@ public abstract class DBExportHelper implements
 				buf.append(" ROWNUM ");
 			}
 		}
-
-		buf.append(" BETWEEN ").append(exportedRecords + 1L);
-		buf.append(" AND ").append(exportedRecords + rows);
+//
+//		buf.append(" BETWEEN ").append(exportedRecords + 1L);
+//		buf.append(" AND ").append(exportedRecords + rows);
 
 		return buf.toString(); 
 	}
@@ -573,8 +573,8 @@ public abstract class DBExportHelper implements
 			}
 		}
 
-//		buf.append(" BETWEEN ").append(exportedRecords + 1L);
-//		buf.append(" AND ").append(exportedRecords + rows);
+		buf.append(" BETWEEN ").append(exportedRecords + 1L);
+		buf.append(" AND ").append(exportedRecords + rows);
 		
 		buf.append(" LIMIT ").append(rows);
 		buf.append(" OFFSET ").append(exportedRecords);

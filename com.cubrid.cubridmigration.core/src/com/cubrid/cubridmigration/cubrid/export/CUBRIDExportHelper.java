@@ -174,6 +174,8 @@ public class CUBRIDExportHelper extends
 		return buf.toString(); 
 	}
 	
+
+	
 	public String getPagedFkRecords(Edge e, String sql, long rows, long exportedRecords) {
 		StringBuilder buf = new StringBuilder(sql.trim());
 
@@ -591,6 +593,82 @@ public class CUBRIDExportHelper extends
 		return editString;
 	}
 	
+	public String getPagedSelectSQLForVertexCSV(Vertex v, String sql, long rows, long exportedRecords, PK pk) {
+		String cleanSql = sql.toUpperCase().trim();
+		
+		String editedQuery = editQueryForVertexCSV(v, sql);
+		
+		StringBuilder buf = new StringBuilder(editedQuery.trim());
+		
+		Pattern pattern = Pattern.compile("GROUP\\s+BY", Pattern.MULTILINE
+				| Pattern.CASE_INSENSITIVE);
+		Pattern pattern2 = Pattern.compile("ORDER\\s+BY", Pattern.MULTILINE
+				| Pattern.CASE_INSENSITIVE);
+		Matcher matcher = pattern.matcher(cleanSql);
+		Matcher matcher2 = pattern2.matcher(cleanSql);
+		if (matcher.find()) {
+			//End with group by 
+			if (cleanSql.indexOf("HAVING") < 0) {
+				buf.append(" HAVING ");
+			} else {
+				buf.append(" AND ");
+			}
+			buf.append(" GROUPBY_NUM() ");
+		} else if (matcher2.find()) {
+			//End with order by 
+			buf.append(" FOR ORDERBY_NUM() ");
+		} else {
+			StringBuilder orderby = new StringBuilder();
+			if (pk != null) {
+				// if it has a pk, a pk scan is better than full range scan
+				for (String pkCol : pk.getPkColumns()) {
+					if (orderby.length() > 0) {
+						orderby.append(", ");
+					}
+					orderby.append("\"").append(pkCol).append("\"");
+				}
+			}
+//			if (orderby.length() > 0) {
+//				buf.append(" ORDER BY ");
+//				buf.append(orderby);
+//				buf.append(" FOR ORDERBY_NUM() ");
+//			} else {
+//				if (cleanSql.indexOf("WHERE") < 0) {
+//					buf.append(" WHERE");
+//				} else {
+//					buf.append(" AND");
+//				}
+//				buf.append(" ROWNUM ");
+//			}
+		}
+//
+//		buf.append(" BETWEEN ").append(exportedRecords + 1L);
+//		buf.append(" AND ").append(exportedRecords + rows);
+
+		return buf.toString(); 
+	}
+	
+	private String editQueryForVertexCSV(Vertex v, String sql) {
+		Pattern selectPattern = Pattern.compile("SELECT\\s", Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
+		Matcher selectMatcher = selectPattern.matcher(sql);
+		
+		String vertexIdColumnValue = "ROWNUM";
+		
+//		if (v.getHasPK() && v.getPK().getPkColumns().size() == 1) {
+//			Column col = v.getColumnByName(v.getPK().getPkColumns().get(0));
+//			if (col.getGraphDataType().equalsIgnoreCase("INTEGER")) {
+//				vertexIdColumnValue = v.getPK().getPkColumns().get(0);
+//			}
+//		}
+		
+		if (selectMatcher.find()) {
+			StringBuffer buffer = new StringBuffer("SELECT " + vertexIdColumnValue + " as ");
+			
+			sql = selectMatcher.replaceFirst(buffer.toString());
+		}
+		
+		return sql;
+	}
 	
 	public String getPagedSelectSQLForEdgeCSV(Edge e, String sql, long rows, long exportedRecords, PK pk, boolean hasMultiSchema) {
 		StringBuilder buf = new StringBuilder(sql.trim());

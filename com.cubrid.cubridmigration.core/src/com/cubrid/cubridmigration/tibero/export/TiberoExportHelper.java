@@ -499,10 +499,11 @@ public class TiberoExportHelper extends
 		if (isPkSingle) {
 			buf.append("SELECT ");
 			buf.append(editedQuery.trim());
+			buf.append(" ORDER BY " + orderby);
 		} else {
 			buf.append("SELECT * FROM (");
 			buf.append(editedQuery.trim());
-			
+
 			buf.append(")");
 		}
 		

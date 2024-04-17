@@ -784,7 +784,10 @@ public class MigrationConfiguration {
 		expTables.clear();
 		expTables.addAll(tempExpEntryTables);
 		targetTables.clear();
-		targetTables.addAll(tempTarTables.values());
+		
+		if (!(targetIsCSV() || targetIsGraph())) {
+			targetTables.addAll(tempTarTables.values());
+		}
 
 		repareN21MigrationSetting();
 	}

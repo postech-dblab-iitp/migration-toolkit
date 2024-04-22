@@ -150,15 +150,17 @@ public class GraphConfirmationPage extends
 			}
 			text.append(migration.getFileRepositroyPath());
 			text.append(lineSeparator).append(tabSeparator);
-
-			text.append(Messages.confrimSchema).append("  ");
-			if (styleRanges != null) {
-				styleRanges.add(new StyleRange(text.length(),
-						migration.getTargetSchemaFileName().length(),
-						SWTResourceConstents.COLOR_BLUE, null));
+			
+			if (!migration.targetIsCSV()) {
+				text.append(Messages.confrimSchema).append("  ");
+				if (styleRanges != null) {
+					styleRanges.add(new StyleRange(text.length(),
+							migration.getTargetSchemaFileName().length(),
+							SWTResourceConstents.COLOR_BLUE, null));
+				}
+				text.append(migration.getTargetSchemaFileName());
+				text.append(lineSeparator).append(tabSeparator);				
 			}
-			text.append(migration.getTargetSchemaFileName());
-			text.append(lineSeparator).append(tabSeparator);
 
 //			text.append(Messages.confrimIndex).append("  ");
 //			if (styleRanges != null) {

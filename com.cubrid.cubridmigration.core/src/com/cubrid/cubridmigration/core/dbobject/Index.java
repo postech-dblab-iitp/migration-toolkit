@@ -290,4 +290,10 @@ public class Index extends
 		}
 		return false;
 	}
+
+	@Override
+	public String getSourceDBObject() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

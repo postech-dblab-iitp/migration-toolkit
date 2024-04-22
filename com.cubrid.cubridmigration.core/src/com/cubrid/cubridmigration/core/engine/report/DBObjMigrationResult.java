@@ -50,6 +50,16 @@ public class DBObjMigrationResult implements
 	private boolean succeed = false;
 	private String ddl;
 	private String error;
+	
+	private String sourceObj;
+	
+	public String getSourceObj() {
+		return sourceObj;
+	}
+
+	public void setSourceObj(String sourceObj) {
+		this.sourceObj = sourceObj;
+	}
 
 	public String getDdl() {
 		return ddl;

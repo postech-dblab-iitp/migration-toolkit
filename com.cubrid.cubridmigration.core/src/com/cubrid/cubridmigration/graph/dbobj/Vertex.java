@@ -35,6 +35,7 @@ public class Vertex extends DBObject {
 	private String owner;
 	private String condition;
 	private String ddl = "-";
+	private String sourceDBObject;
 	
 	private long oid;
 	private PK pk;
@@ -203,5 +204,13 @@ public class Vertex extends DBObject {
 
 	public void setNameChanged(boolean isNameChanged) {
 		this.isNameChanged = isNameChanged;
+	}
+	
+	public void setSourceDBObject() {
+		this.sourceDBObject = "table (" + owner + "." + tableName + ")";
+	}
+	
+	public String getSourceDBObject() {
+		return sourceDBObject;
 	}
 }

@@ -116,4 +116,10 @@ public class View extends
 	public String getObjType() {
 		return OBJ_TYPE_VIEW;
 	}
+
+	@Override
+	public String getSourceDBObject() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

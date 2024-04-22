@@ -31,6 +31,7 @@ public class Edge extends DBObject {
 	
 	private String startVertexName;
 	private String endVertexName;
+	private String sourceDBObject;
 
 	String ddl = "-";
 	
@@ -220,5 +221,13 @@ public class Edge extends DBObject {
 	public String getDDL() {
 		// TODO Auto-generated method stub
 		return ddl;
+	}
+	
+	public void setSourceDBObject() {
+		this.sourceDBObject = getObjType() + " (" + edgeLabel + ", " + startVertexName + " -> " + endVertexName + ")";
+	}
+	
+	public String getSourceDBObject() {
+		return sourceDBObject;
 	}
 }

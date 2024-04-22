@@ -171,11 +171,13 @@ public abstract class DefaultMigrationReporter implements
 				DBObjMigrationResult dbor = report.getDBObjResult(ev.getDbObject());
 				dbor.setSucceed(true);
 				dbor.setDdl(ev.getDbObject().getDDL());
+				dbor.setSourceObj(ev.getDbObject().getSourceDBObject());
 			} else {
 				DBObjMigrationResult dbor = report.getDBObjResult(ev.getDbObject());
 				dbor.setSucceed(false);
 				dbor.setError(ev.getError().getMessage());
 				dbor.setDdl(ev.getDbObject().getDDL());
+				dbor.setSourceObj(ev.getDbObject().getSourceDBObject());
 			}
 		} else if (event instanceof StartExpTableEvent) {
 			StartExpTableEvent ev = (StartExpTableEvent) event;

@@ -194,4 +194,10 @@ public class Sequence extends
 	public void setOwner(String owner) {
 		this.owner = owner;
 	}
+
+	@Override
+	public String getSourceDBObject() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

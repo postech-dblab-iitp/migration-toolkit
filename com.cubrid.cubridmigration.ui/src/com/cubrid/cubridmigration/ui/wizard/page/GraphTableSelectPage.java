@@ -429,12 +429,7 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 					return;
 				}
 
-				PK pk = new PK(table);
-				pk.setName("new_pk_" + tColName);
-				pk.addColumn(tColName);
-				table.setPk(pk);
-				vertex.setHasPK(true);
-				vertex.setPK(pk);
+				vertex.setPK(table.getPk());
 			} else {
 				vertex.setPK(table.getPk());
 			}

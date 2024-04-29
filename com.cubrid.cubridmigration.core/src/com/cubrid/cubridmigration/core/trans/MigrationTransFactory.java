@@ -33,10 +33,10 @@ import com.cubrid.cubridmigration.core.dbtype.DatabaseType;
 import com.cubrid.cubridmigration.cubrid.trans.CUBRID2CUBRIDTranformHelper;
 import com.cubrid.cubridmigration.cubrid.trans.CUBRIDDataTypeMappingHelper;
 import com.cubrid.cubridmigration.cubrid.trans.ToCUBRIDDataConverterFacade;
-import com.cubrid.cubridmigration.graph.trans.CUBRID2GraphTranformHelper;
-import com.cubrid.cubridmigration.graph.trans.Graph2CUBRIDTranformHelper;
-import com.cubrid.cubridmigration.graph.trans.GraphDataTypeMappingHelper;
-import com.cubrid.cubridmigration.graph.trans.ToGraphDataConverterFacade;
+import com.cubrid.cubridmigration.graph.trans.CUBRID2Neo4jTranformHelper;
+import com.cubrid.cubridmigration.graph.trans.Neo4j2CUBRIDTranformHelper;
+import com.cubrid.cubridmigration.graph.trans.Neo4jDataTypeMappingHelper;
+import com.cubrid.cubridmigration.graph.trans.ToNeo4jDataConverterFacade;
 import com.cubrid.cubridmigration.mssql.trans.MSSQL2CUBRIDTranformHelper;
 import com.cubrid.cubridmigration.mssql.trans.MSSQLDataTypeMappingHelper;
 import com.cubrid.cubridmigration.mysql.trans.MySQL2CUBRIDTranformHelper;
@@ -70,11 +70,11 @@ public class MigrationTransFactory {
 	private static final CUBRID2CUBRIDTranformHelper CUBRID2CUBRID_TRANFORM_HELPER = new CUBRID2CUBRIDTranformHelper(
 			new CUBRIDDataTypeMappingHelper());
 	
-	private static final CUBRID2GraphTranformHelper CUBRID2GRAPH_TRANFORM_HELPER = new CUBRID2GraphTranformHelper(
-			new GraphDataTypeMappingHelper(), 
-			ToGraphDataConverterFacade.getInstance());
+	private static final CUBRID2Neo4jTranformHelper CUBRID2GRAPH_TRANFORM_HELPER = new CUBRID2Neo4jTranformHelper(
+			new Neo4jDataTypeMappingHelper(), 
+			ToNeo4jDataConverterFacade.getInstance());
 
-	private static final Graph2CUBRIDTranformHelper GRAPH2CUBRID_TRANFORM_HELPER = new Graph2CUBRIDTranformHelper(
+	private static final Neo4j2CUBRIDTranformHelper GRAPH2CUBRID_TRANFORM_HELPER = new Neo4j2CUBRIDTranformHelper(
 			new CUBRIDDataTypeMappingHelper(),
 			ToCUBRIDDataConverterFacade.getIntance());
 	

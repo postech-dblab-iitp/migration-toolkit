@@ -4,10 +4,10 @@ import com.cubrid.cubridmigration.core.datatype.DataTypeInstance;
 import com.cubrid.cubridmigration.core.engine.config.MigrationConfiguration;
 import com.cubrid.cubridmigration.core.trans.IDataConvertorFacade;
 
-public class ToGraphDataConverterFacade  implements
+public class ToNeo4jDataConverterFacade  implements
 	IDataConvertorFacade{
 	
-	private final static ToGraphDataConverterFacade instance = new ToGraphDataConverterFacade();
+	private final static ToNeo4jDataConverterFacade instance = new ToNeo4jDataConverterFacade();
 
 	public Object convert(Object obj, DataTypeInstance dti,
 			MigrationConfiguration config) {
@@ -15,7 +15,7 @@ public class ToGraphDataConverterFacade  implements
 		return null;
 	}
 	
-	public static ToGraphDataConverterFacade getInstance() {
+	public static ToNeo4jDataConverterFacade getInstance() {
 		return instance;
 	}
 

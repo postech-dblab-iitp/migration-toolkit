@@ -112,6 +112,12 @@
             name="CUBRID&gt;&gt;NEO4J">
       </page>
       <page
+            category="com.cubrid.cubridmigration.ui.preference.MigrationConfigPage"
+            class="com.cubrid.cubridmigration.ui.preference.Tibero2CUBRIDTypeMapPage"
+            id="com.cubrid.cubridmigration.ui.preference.Tibero2CUBRIDTypeMapPage"
+            name="Tibero&gt;&gt;graph">
+      </page>
+      <page
             class="com.cubrid.cubridmigration.ui.preference.JDBCDriverManagePage"
             id="com.cubrid.cubridmigration.ui.preference.JDBCDriverManagePage"
             name="%JDBCDrivers">

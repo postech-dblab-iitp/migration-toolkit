@@ -6,9 +6,9 @@ import com.cubrid.cubridmigration.core.mapping.AbstractDataTypeMappingHelper;
 import com.cubrid.cubridmigration.core.trans.DBTransformHelper;
 import com.cubrid.cubridmigration.cubrid.trans.ToCUBRIDDataConverterFacade;
 
-public class Graph2CUBRIDTranformHelper extends DBTransformHelper {
+public class Neo4j2CUBRIDTranformHelper extends DBTransformHelper {
 
-	public Graph2CUBRIDTranformHelper(
+	public Neo4j2CUBRIDTranformHelper(
 			AbstractDataTypeMappingHelper dataTypeMapping,
 			ToCUBRIDDataConverterFacade cf) {
 		super(dataTypeMapping, cf);

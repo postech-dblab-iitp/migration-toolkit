@@ -76,7 +76,7 @@ import com.cubrid.cubridmigration.core.dbobject.View;
 import com.cubrid.cubridmigration.core.dbtype.DatabaseType;
 import com.cubrid.cubridmigration.core.export.DBExportHelper;
 import com.cubrid.cubridmigration.graph.GraphDataTypeHelper;
-import com.cubrid.cubridmigration.graph.trans.GraphDataTypeMappingHelper;
+import com.cubrid.cubridmigration.graph.trans.Neo4jDataTypeMappingHelper;
 import com.cubrid.cubridmigration.tibero.TiberoDataTypeHelper;
 
 public final class TiberoSchemaFetcher extends

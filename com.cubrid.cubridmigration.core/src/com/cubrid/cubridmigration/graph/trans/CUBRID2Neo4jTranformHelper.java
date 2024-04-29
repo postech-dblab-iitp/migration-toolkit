@@ -6,15 +6,15 @@ import com.cubrid.cubridmigration.core.mapping.AbstractDataTypeMappingHelper;
 import com.cubrid.cubridmigration.core.mapping.model.MapObject;
 import com.cubrid.cubridmigration.core.trans.DBTransformHelper;
 
-public class CUBRID2GraphTranformHelper extends DBTransformHelper {
-	public CUBRID2GraphTranformHelper(
+public class CUBRID2Neo4jTranformHelper extends DBTransformHelper {
+	public CUBRID2Neo4jTranformHelper(
 			AbstractDataTypeMappingHelper dataTypeMapping,
-			ToGraphDataConverterFacade toNeo4jDataConverterFacade) {
+			ToNeo4jDataConverterFacade toNeo4jDataConverterFacade) {
 		super(dataTypeMapping, toNeo4jDataConverterFacade);
 		// TODO Auto-generated constructor stub
 	}
 
-	public ToGraphDataConverterFacade converter;
+	public ToNeo4jDataConverterFacade converter;
 	
 //	public CUBRID2Neo4jTranformHelper (AbstractDataTypeMappingHelper dataTypeMapping) {
 //		this.converter = new ToNeo4jDataConverterFacade();

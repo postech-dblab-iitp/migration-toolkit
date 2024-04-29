@@ -38,7 +38,7 @@ import com.cubrid.cubridmigration.cubrid.CUBRIDDataTypeHelper;
  * @author Kevin.Wang
  * @version 1.0 - 2011-11-23 created by Kevin.Wang
  */
-public class GraphDataTypeMappingHelper extends
+public class Neo4jDataTypeMappingHelper extends
 		AbstractDataTypeMappingHelper {
 
 	/**
@@ -46,7 +46,7 @@ public class GraphDataTypeMappingHelper extends
 	 * @param key
 	 * @param dataTypeMappingFileName
 	 */
-	public GraphDataTypeMappingHelper() {
+	public Neo4jDataTypeMappingHelper() {
 		super("CUBRID2Neo4j",
 				"/com/cubrid/cubridmigration/graph/trans/CUBRID2Neo4j.xml");
 	}

@@ -71,11 +71,13 @@ public abstract class DatabaseType {
 	public static final DatabaseType ORACLE = new OracleDatabase();
 	
 	//GDB add graph Database into DB types
-	public static final DatabaseType GRAPH = new GraphDatabase();
+	public static final DatabaseType NEO4J = new GraphDatabase();
+	
+	public static final DatabaseType TURBO = new GraphDatabase();
 	
 	public static final DatabaseType TIBERO = new TiberoDatabase();
 
-	private static final DatabaseType[] DTS = new DatabaseType[] {MYSQL, CUBRID, ORACLE, MSSQL, GRAPH, TIBERO};
+	private static final DatabaseType[] DTS = new DatabaseType[] {MYSQL, CUBRID, ORACLE, MSSQL, NEO4J, TIBERO};
 
 	/**
 	 * Retrieves all Database types

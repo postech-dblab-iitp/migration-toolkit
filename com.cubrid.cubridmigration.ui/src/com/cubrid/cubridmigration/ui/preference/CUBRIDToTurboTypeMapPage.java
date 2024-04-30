@@ -19,15 +19,15 @@ import com.cubrid.cubridmigration.core.dbtype.DatabaseType;
 import com.cubrid.cubridmigration.core.trans.MigrationTransFactory;
 import com.cubrid.cubridmigration.ui.message.Messages;
 
-public class CUBRIDToNeo4jTypeMapPage extends
+public class CUBRIDToTurboTypeMapPage extends
 		PreferencePage implements
 		IWorkbenchPreferencePage  {
 
 	private DataTypeMappingComposite container;
 
-	public CUBRIDToNeo4jTypeMapPage() {
+	public CUBRIDToTurboTypeMapPage() {
 		// TODO Auto-generated constructor stub
-		super("CUBRID to Neo4j", null);
+		super("CUBRID to Turbo", null);
 	}
 
 	/**

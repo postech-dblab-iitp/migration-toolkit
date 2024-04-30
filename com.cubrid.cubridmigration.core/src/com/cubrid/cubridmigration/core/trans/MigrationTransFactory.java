@@ -91,9 +91,9 @@ public class MigrationTransFactory {
 	 */
 	public static DBTransformHelper getTransformHelper(DatabaseType srcDT,
 			DatabaseType tarDT) {
-		if (tarDT.getID() == DatabaseType.GRAPH.getID()){
+		if (tarDT.getID() == DatabaseType.NEO4J.getID()){
 			return CUBRID2GRAPH_TRANFORM_HELPER;
-		} else if (srcDT.getID() == DatabaseType.GRAPH.getID() &&
+		} else if (srcDT.getID() == DatabaseType.NEO4J.getID() &&
 				tarDT.getID() == DatabaseType.CUBRID.getID()) {
 			return GRAPH2CUBRID_TRANFORM_HELPER;
 		} else if (srcDT.getID() == DatabaseType.CUBRID.getID()) {

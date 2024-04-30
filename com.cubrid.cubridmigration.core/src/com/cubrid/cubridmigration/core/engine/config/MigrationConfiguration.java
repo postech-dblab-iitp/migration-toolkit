@@ -109,7 +109,7 @@ public class MigrationConfiguration {
 	public static final int SOURCE_TYPE_MYSQL = DatabaseType.MYSQL.getID();
 	public static final int SOURCE_TYPE_ORACLE = DatabaseType.ORACLE.getID();
 	public static final int SOURCE_TYPE_MSSQL = DatabaseType.MSSQL.getID();
-	public static final int SOURCE_TYPE_GRAPH = DatabaseType.GRAPH.getID();
+	public static final int SOURCE_TYPE_GRAPH = DatabaseType.NEO4J.getID();
 	public static final int SOURCE_TYPE_TIBERO= DatabaseType.TIBERO.getID();
 
 	public static final int SOURCE_TYPE_XML_1 = 101;
@@ -2542,7 +2542,7 @@ public class MigrationConfiguration {
 		if (destType == DEST_ONLINE) {
 			return DatabaseType.CUBRID;
 		} else {
-			return DatabaseType.GRAPH;
+			return DatabaseType.NEO4J;
 		}
 	}
 

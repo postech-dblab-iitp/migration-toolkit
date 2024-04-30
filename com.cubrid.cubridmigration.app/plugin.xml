@@ -71,39 +71,9 @@
       </page>
       <page
             category="com.cubrid.cubridmigration.ui.preference.MigrationConfigPage"
-            class="com.cubrid.cubridmigration.ui.preference.MySQLToCUBRIDTypeMapPage"
-            id="com.cubrid.cubridmigration.ui.preference.MySQLToCUBRIDTypeMapPage"
-            name="MySQL&gt;&gt;CUBRID">
-      </page>
-      <page
-            category="com.cubrid.cubridmigration.ui.preference.MySQLToCUBRIDTypeMapPage"
-            class="com.cubrid.cubridmigration.ui.preference.MySQLToCUBRIDParameterPage"
-            id="com.cubrid.cubridmigration.ui.preference.MySQLToCUBRIDParameterPage"
-            name="%OtherSettings">
-      </page>
-      <page
-            category="com.cubrid.cubridmigration.ui.preference.MigrationConfigPage"
-            class="com.cubrid.cubridmigration.ui.preference.CUBRID2CUBRIDTypeMapPage"
-            id="com.cubrid.cubridmigration.ui.preference.CUBRID2CUBRIDTypeMapPage"
-            name="CUBRID&gt;&gt;CUBRID">
-      </page>
-      <page
-            category="com.cubrid.cubridmigration.ui.preference.MigrationConfigPage"
-            class="com.cubrid.cubridmigration.ui.preference.Oracle2CUBRIDTypeMapPage"
-            id="com.cubrid.cubridmigration.ui.preference.Oracle2CUBRIDTypeMapPage"
-            name="Oracle&gt;&gt;CUBRID">
-      </page>
-      <page
-            category="com.cubrid.cubridmigration.ui.preference.MigrationConfigPage"
-            class="com.cubrid.cubridmigration.ui.preference.Tibero2CUBRIDTypeMapPage"
-            id="com.cubrid.cubridmigration.ui.preference.Tibero2CUBRIDTypeMapPage"
-            name="Oracle&gt;&gt;CUBRID">
-      </page>
-      <page
-            category="com.cubrid.cubridmigration.ui.preference.MigrationConfigPage"
-            class="com.cubrid.cubridmigration.ui.preference.SQLServer2CUBRIDTypeMapPage"
-            id="com.cubrid.cubridmigration.ui.preference.SQLServer2CUBRIDTypeMapPage"
-            name="MSSQL&gt;&gt;CUBRID">
+            class="com.cubrid.cubridmigration.ui.preference.CUBRIDToTurboTypeMapPage"
+            id="com.cubrid.cubridmigration.ui.preference.CUBRIDToTurboTypeMapPage"
+            name="CUBRID&gt;&gt;Turbo">
       </page>
       <page
             category="com.cubrid.cubridmigration.ui.preference.MigrationConfigPage"
@@ -113,9 +83,15 @@
       </page>
       <page
             category="com.cubrid.cubridmigration.ui.preference.MigrationConfigPage"
-            class="com.cubrid.cubridmigration.ui.preference.Tibero2CUBRIDTypeMapPage"
-            id="com.cubrid.cubridmigration.ui.preference.Tibero2CUBRIDTypeMapPage"
-            name="Tibero&gt;&gt;graph">
+            class="com.cubrid.cubridmigration.ui.preference.TiberoToNeo4jTypeMapPage"
+            id="com.cubrid.cubridmigration.ui.preference.TiberoToNeo4jTypeMapPage"
+            name="Tibero&gt;&gt;Neo4j">
+      </page>
+      <page
+            category="com.cubrid.cubridmigration.ui.preference.MigrationConfigPage"
+            class="com.cubrid.cubridmigration.ui.preference.TiberoToTurboTypeMapPage"
+            id="com.cubrid.cubridmigration.ui.preference.TiberoToTurboTypeMapPage"
+            name="Tibero&gt;&gt;Turbo">
       </page>
       <page
             class="com.cubrid.cubridmigration.ui.preference.JDBCDriverManagePage"

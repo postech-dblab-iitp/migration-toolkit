@@ -38,7 +38,7 @@ import com.cubrid.cubridmigration.cubrid.CUBRIDDataTypeHelper;
  * @author Kevin.Wang
  * @version 1.0 - 2011-11-23 created by Kevin.Wang
  */
-public class TurboDataTypeMappingHelper extends
+public class TiberoToTurboDataTypeMappingHelper extends
 		AbstractDataTypeMappingHelper {
 
 	/**
@@ -46,9 +46,9 @@ public class TurboDataTypeMappingHelper extends
 	 * @param key
 	 * @param dataTypeMappingFileName
 	 */
-	public TurboDataTypeMappingHelper() {
-		super("CUBRID2Turbo",
-				"/com/cubrid/cubridmigration/graph/trans/CUBRID2Turbo.xml");
+	public TiberoToTurboDataTypeMappingHelper() {
+		super("Tibero2Turbo",
+				"/com/cubrid/cubridmigration/graph/trans/Tibero2Turbo.xml");
 	}
 
 	/**

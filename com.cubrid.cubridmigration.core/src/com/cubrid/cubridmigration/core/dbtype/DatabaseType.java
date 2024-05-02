@@ -46,6 +46,7 @@ import com.cubrid.cubridmigration.core.export.DBExportHelper;
 import com.cubrid.cubridmigration.core.sql.SQLHelper;
 import com.cubrid.cubridmigration.cubrid.CUBRIDDatabase;
 import com.cubrid.cubridmigration.graph.GraphDatabase;
+import com.cubrid.cubridmigration.graph.TurboDatabase;
 import com.cubrid.cubridmigration.mssql.MSSQLDatabase;
 import com.cubrid.cubridmigration.mysql.MySQLDatabase;
 import com.cubrid.cubridmigration.oracle.OracleDatabase;
@@ -73,7 +74,7 @@ public abstract class DatabaseType {
 	//GDB add graph Database into DB types
 	public static final DatabaseType NEO4J = new GraphDatabase();
 	
-	public static final DatabaseType TURBO = new GraphDatabase();
+	public static final DatabaseType TURBO = new TurboDatabase();
 	
 	public static final DatabaseType TIBERO = new TiberoDatabase();
 

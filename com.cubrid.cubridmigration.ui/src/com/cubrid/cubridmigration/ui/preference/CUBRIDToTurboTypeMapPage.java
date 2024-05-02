@@ -41,7 +41,7 @@ public class CUBRIDToTurboTypeMapPage extends
 		com.setLayout(new GridLayout());
 		com.setLayoutData(new GridData(SWT.FILL));
 		container = new DataTypeMappingComposite(com, MigrationTransFactory.getTransformHelper(
-				DatabaseType.CUBRID, DatabaseType.NEO4J).getDataTypeMappingHelper());
+				DatabaseType.CUBRID, DatabaseType.TURBO).getDataTypeMappingHelper());
 		return com;
 	}
 

@@ -9,8 +9,8 @@ import com.cubrid.cubridmigration.core.trans.DBTransformHelper;
 public class Tibero2TurboTranformHelper extends DBTransformHelper {
 	public Tibero2TurboTranformHelper(
 			AbstractDataTypeMappingHelper dataTypeMapping,
-			ToNeo4jDataConverterFacade toNeo4jDataConverterFacade) {
-		super(dataTypeMapping, toNeo4jDataConverterFacade);
+			ToTurboDataConverterFacade toTurboDataConverterFacade) {
+		super(dataTypeMapping, toTurboDataConverterFacade);
 		// TODO Auto-generated constructor stub
 	}
 

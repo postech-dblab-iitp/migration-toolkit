@@ -1,302 +1,148 @@
-<CUBRID2Neo4j>
+<Oracle2CUBRID>
 	<DataTypeMapping>
 		<SourceDataType>
-			<type>short</type>
-      		<precision></precision>
-	  		<scale></scale>
+			<type>RAW</type>
+			<precision>n</precision>
+			<scale></scale>
 		</SourceDataType>
 		<TargetDataType>
-			<type>float</type>
-			<precision>64</precision>
+			<type>string</type>
+			<precision>n</precision>
 			<scale></scale>
 		</TargetDataType>
-		<TargetDataType>
-			<type>integer</type>
-			<precision>64</precision>
+	</DataTypeMapping>
+
+	<DataTypeMapping>
+		<SourceDataType>
+			<type>CHAR</type>
+			<precision>n</precision>
 			<scale></scale>
-		</TargetDataType>
+		</SourceDataType>
 		<TargetDataType>
 			<type>string</type>
-			<precision>64</precision>
+			<precision>n</precision>
 			<scale></scale>
 		</TargetDataType>
 	</DataTypeMapping>
 	
 	<DataTypeMapping>
 		<SourceDataType>
-			<type>clob</type>
-      		<precision></precision>
-	  		<scale></scale>
+			<type>VARCHAR</type>
+			<precision>n</precision>
+			<scale></scale>
 		</SourceDataType>
 		<TargetDataType>
 			<type>string</type>
-			<precision>64</precision>
+			<precision>n</precision>
 			<scale></scale>
 		</TargetDataType>
 	</DataTypeMapping>
 	
 	<DataTypeMapping>
 		<SourceDataType>
-			<type>blob</type>
-      		<precision></precision>
-	  		<scale></scale>
+			<type>INTEGER</type>
+			<precision></precision>
+			<scale></scale>
 		</SourceDataType>
 		<TargetDataType>
+			<type>integer</type>
+			<precision></precision>
+			<scale></scale>
+		</TargetDataType>
+		<TargetDataType>
+			<type>decimal</type>
+			<precision></precision>
+			<scale></scale>
+		</TargetDataType>
+		<TargetDataType>
 			<type>string</type>
-			<precision>64</precision>
+			<precision></precision>
 			<scale></scale>
 		</TargetDataType>
 	</DataTypeMapping>
 	
 	<DataTypeMapping>
 		<SourceDataType>
-			<type>char</type>
-      		<precision></precision>
-	  		<scale></scale>
-		</SourceDataType>
-		<SourceDataType>
-			<type>varchar</type>
-      		<precision></precision>
-	  		<scale></scale>
-		</SourceDataType>
-		<TargetDataType>
-			<type>string</type>
-			<precision>64</precision>
+			<type>FLOAT</type>
+			<precision></precision>
 			<scale></scale>
-		</TargetDataType>
-	</DataTypeMapping>
-
-	<DataTypeMapping>
-		<SourceDataType>
-			<type>varchar</type>
-      		<precision></precision>
-	  		<scale></scale>
-		</SourceDataType>
-		<TargetDataType>
-			<type>string</type>
-			<precision>64</precision>
-			<scale></scale>
-		</TargetDataType>
-	</DataTypeMapping>
-
-	<DataTypeMapping>
-		<SourceDataType>
-			<type>integer</type>
-      		<precision></precision>
-	  		<scale></scale>
-		</SourceDataType>
-		<TargetDataType>
-			<type>integer</type>
-			<precision>64</precision>
-			<scale></scale>
-		</TargetDataType>
-		<TargetDataType>
-			<type>string</type>
-			<precision>64</precision>
-			<scale></scale>
-		</TargetDataType>
-	</DataTypeMapping>
-
-	<DataTypeMapping>
-		<SourceDataType>
-			<type>bigint</type>
-      		<precision></precision>
-	  		<scale></scale>
-		</SourceDataType>
-		<TargetDataType>
-			<type>integer</type>
-			<precision>64</precision>
-			<scale></scale>
-		</TargetDataType>
-		<TargetDataType>
-			<type>string</type>
-			<precision>64</precision>
-			<scale></scale>
-		</TargetDataType>
-	</DataTypeMapping>
-
-	<DataTypeMapping>
-		<SourceDataType>
-			<type>float</type>
-      		<precision></precision>
-	  		<scale></scale>
 		</SourceDataType>
 		<TargetDataType>
 			<type>float</type>
-			<precision>64</precision>
+			<precision></precision>
+			<scale></scale>
+		</TargetDataType>
+		<TargetDataType>
+			<type>decimal</type>
+			<precision></precision>
 			<scale></scale>
 		</TargetDataType>
 		<TargetDataType>
 			<type>string</type>
-			<precision>64</precision>
+			<precision></precision>
 			<scale></scale>
 		</TargetDataType>
 	</DataTypeMapping>
 
 	<DataTypeMapping>
 		<SourceDataType>
-			<type>double</type>
-      		<precision></precision>
-	  		<scale></scale>
+			<type>NUMBER</type>
+			<precision></precision>
+			<scale></scale>
 		</SourceDataType>
 		<TargetDataType>
-			<type>float</type>
-			<precision>64</precision>
+			<type>decimal</type>
+			<precision></precision>
 			<scale></scale>
 		</TargetDataType>
 		<TargetDataType>
 			<type>string</type>
-			<precision>64</precision>
+			<precision></precision>
 			<scale></scale>
 		</TargetDataType>
 	</DataTypeMapping>
-
+	
 	<DataTypeMapping>
 		<SourceDataType>
-			<type>numeric</type>
-      		<precision></precision>
-	  		<scale></scale>
-		</SourceDataType>
-		<TargetDataType>
-			<type>string</type>
-			<precision>64</precision>
+			<type>DATE</type>
+			<precision></precision>
 			<scale></scale>
-		</TargetDataType>
-	</DataTypeMapping>
-
-	<DataTypeMapping>
-		<SourceDataType>
-			<type>date</type>
-      		<precision></precision>
-	  		<scale></scale>
 		</SourceDataType>
-		<TargetDataType>
-			<type>string</type>
-			<precision>64</precision>
-			<scale></scale>
-		</TargetDataType>
 		<TargetDataType>
 			<type>date</type>
 			<precision></precision>
 			<scale></scale>
 		</TargetDataType>
+		<TargetDataType>
+			<type>string</type>
+			<precision></precision>
+			<scale></scale>
+		</TargetDataType>
 	</DataTypeMapping>
-
+	
 	<DataTypeMapping>
 		<SourceDataType>
-			<type>time</type>
-      		<precision></precision>
-	  		<scale></scale>
+			<type>TIME</type>
+			<precision></precision>
+			<scale></scale>
 		</SourceDataType>
 		<TargetDataType>
 			<type>string</type>
-			<precision>64</precision>
-			<scale></scale>
-		</TargetDataType>
-		<TargetDataType>
-			<type>time</type>
-			<precision></precision>
-			<scale></scale>
-		</TargetDataType>
-		<TargetDataType>
-			<type>localtime</type>
 			<precision></precision>
 			<scale></scale>
 		</TargetDataType>
 	</DataTypeMapping>
-
+	
 	<DataTypeMapping>
 		<SourceDataType>
-			<type>datetime</type>
-      		<precision></precision>
-	  		<scale></scale>
+			<type>TIMESTAMP</type>
+			<precision></precision>
+			<scale></scale>
 		</SourceDataType>
 		<TargetDataType>
 			<type>string</type>
-			<precision>64</precision>
-			<scale></scale>
-		</TargetDataType>
-		<TargetDataType>
-			<type>datetime</type>
-			<precision></precision>
-			<scale></scale>
-		</TargetDataType>
-		<TargetDataType>
-			<type>localdatetime</type>
 			<precision></precision>
 			<scale></scale>
 		</TargetDataType>
 	</DataTypeMapping>
-
-	<DataTypeMapping>
-		<SourceDataType>
-			<type>timestamp</type>
-      		<precision></precision>
-	  		<scale></scale>
-		</SourceDataType>
-		<TargetDataType>
-			<type>string</type>
-			<precision>64</precision>
-			<scale></scale>
-		</TargetDataType>
-		<TargetDataType>
-			<type>time</type>
-			<precision></precision>
-			<scale></scale>
-		</TargetDataType>
-		<TargetDataType>
-			<type>localtime</type>
-			<precision></precision>
-			<scale></scale>
-		</TargetDataType>
-	</DataTypeMapping>
-
-	<DataTypeMapping>
-		<SourceDataType>
-			<type>timestamp</type>
-      		<precision></precision>
-	  		<scale></scale>
-		</SourceDataType>
-		<TargetDataType>
-			<type>string</type>
-			<precision>64</precision>
-			<scale></scale>
-		</TargetDataType>
-		<TargetDataType>
-			<type>datetime</type>
-			<precision></precision>
-			<scale></scale>
-		</TargetDataType>
-		<TargetDataType>
-			<type>localdatetime</type>
-			<precision></precision>
-			<scale></scale>
-		</TargetDataType>
-	</DataTypeMapping>
-
-	<DataTypeMapping>
-		<SourceDataType>
-			<type>bit</type>
-      		<precision></precision>
-	  		<scale></scale>
-		</SourceDataType>
-		<TargetDataType>
-			<type>string</type>
-			<precision>64</precision>
-			<scale></scale>
-		</TargetDataType>
-	</DataTypeMapping>
-
-	<DataTypeMapping>
-		<SourceDataType>
-			<type>bit varying</type>
-      		<precision></precision>
-	  		<scale></scale>
-		</SourceDataType>
-		<TargetDataType>
-			<type>string</type>
-			<precision>64</precision>
-			<scale></scale>
-		</TargetDataType>
-	</DataTypeMapping>
-</CUBRID2Neo4j>
+</Oracle2CUBRID>

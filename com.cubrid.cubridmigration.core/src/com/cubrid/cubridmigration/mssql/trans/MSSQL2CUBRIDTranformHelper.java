@@ -276,6 +276,12 @@ public class MSSQL2CUBRIDTranformHelper extends
 		}
 	}
 
+	@Override
+	public String getGraphDataType(Column col, MigrationConfiguration cfg) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	//	/**
 	//	 * transform to cubrid partition ddl
 	//	 * 

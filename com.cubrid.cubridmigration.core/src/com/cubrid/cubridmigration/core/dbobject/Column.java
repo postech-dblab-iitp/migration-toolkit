@@ -439,7 +439,7 @@ public class Column extends
 		int tPrecition = 0;
 		int tScale = 0;
 		if (graphDataType.equals("number") || 
-				graphDataType.equals("numberic") || 
+				graphDataType.equals("numeric") || 
 				graphDataType.equals("decimal")) {
 			tPrecition = this.precision;
 			tScale = this.scale;

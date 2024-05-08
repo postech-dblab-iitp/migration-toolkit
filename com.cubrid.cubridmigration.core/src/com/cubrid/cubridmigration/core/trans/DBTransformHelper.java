@@ -957,4 +957,6 @@ public abstract class DBTransformHelper {
 		return dataTypeMappingHelper;
 	}
 
+	public abstract String getGraphDataType(Column col, MigrationConfiguration cfg);
+	
 }

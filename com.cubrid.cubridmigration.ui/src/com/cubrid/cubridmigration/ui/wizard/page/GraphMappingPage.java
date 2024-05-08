@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.jface.dialogs.PageChangedEvent;
+import org.eclipse.jface.dialogs.PageChangingEvent;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.ICellModifier;
@@ -817,6 +818,20 @@ public class GraphMappingPage extends MigrationWizardPage {
 		gdbDict.printVertexAndEdge();
 		
 		showGraphData(gdbDict.getMigratedVertexList());
+	}
+	
+	protected void handlePageLeaving(PageChangingEvent event) {
+		if (!isPageComplete()) {
+			return;
+		} if (isGotoNextPage(event)) {
+			event.doit = save();
+		}
+	}
+	
+	private boolean save() {
+		gdbDict.setVertexAndEdge();
+		
+		return true;
 	}
 	
 	private void executeUndo(Work work) {

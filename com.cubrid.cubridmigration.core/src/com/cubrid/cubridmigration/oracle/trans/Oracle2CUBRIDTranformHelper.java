@@ -472,4 +472,10 @@ public class Oracle2CUBRIDTranformHelper extends
 		}
 		return ddl.toString();
 	}
+
+	@Override
+	public String getGraphDataType(Column col, MigrationConfiguration cfg) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

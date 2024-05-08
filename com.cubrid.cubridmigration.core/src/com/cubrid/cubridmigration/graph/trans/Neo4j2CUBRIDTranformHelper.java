@@ -21,4 +21,10 @@ public class Neo4j2CUBRIDTranformHelper extends DBTransformHelper {
 		// TODO Auto-generated method stub
 
 	}
+
+	@Override
+	public String getGraphDataType(Column col, MigrationConfiguration cfg) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

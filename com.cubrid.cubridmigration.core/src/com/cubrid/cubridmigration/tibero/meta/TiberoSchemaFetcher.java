@@ -457,8 +457,7 @@ public final class TiberoSchemaFetcher extends
 					String shownDataType = dtHelper.getShownDataType(column);
 					column.setShownDataType(shownDataType);
 
-					column.setGraphDataType(graphDTHelper.getGraphDataType(
-							column.getDataType(), column.getPrecision(), column.getScale()));
+//					column.setGraphDataType(graphDTHelper.getGraphDataType(column.getDataType(), column.getPrecision(), column.getScale()));
 					
 					table.addColumn(column);
 					

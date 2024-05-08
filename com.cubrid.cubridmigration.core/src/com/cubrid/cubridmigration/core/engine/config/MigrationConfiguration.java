@@ -79,7 +79,9 @@ import com.cubrid.cubridmigration.core.trans.DBTransformHelper;
 import com.cubrid.cubridmigration.core.trans.MigrationTransFactory;
 import com.cubrid.cubridmigration.cubrid.CUBRIDDataTypeHelper;
 import com.cubrid.cubridmigration.cubrid.CUBRIDSQLHelper;
+import com.cubrid.cubridmigration.graph.dbobj.Edge;
 import com.cubrid.cubridmigration.graph.dbobj.GraphDictionary;
+import com.cubrid.cubridmigration.graph.dbobj.Vertex;
 import com.cubrid.cubridmigration.mysql.MysqlXmlDumpSource;
 
 /**
@@ -826,6 +828,8 @@ public class MigrationConfiguration {
 			sccs.add(scc);
 			targetNames.add(scc.getTarget());
 
+			scol.setGraphDataType(getDBTransformHelper().getGraphDataType(scol, this));
+			
 			Column tcol = tarTable.getColumnByName(scc.getTarget());
 			if (tcol == null) {
 				tcol = getDBTransformHelper().getCUBRIDColumn(scol, this);
@@ -2541,6 +2545,9 @@ public class MigrationConfiguration {
 	public DatabaseType getTargetDBType() {
 		if (destType == DEST_ONLINE) {
 			return DatabaseType.CUBRID;
+			
+		} else if (graphSubTypeForCSV == 1) {
+			return DatabaseType.TURBO;
 		} else {
 			return DatabaseType.NEO4J;
 		}
@@ -3431,7 +3438,6 @@ public class MigrationConfiguration {
 			clearAll();
 		}
 		this.buildConfigAndTargetSchema(reset);
-
 	}
 
 	/**

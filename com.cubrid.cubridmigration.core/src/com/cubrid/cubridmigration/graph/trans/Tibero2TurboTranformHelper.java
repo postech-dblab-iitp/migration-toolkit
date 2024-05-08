@@ -27,7 +27,7 @@ public class Tibero2TurboTranformHelper extends DBTransformHelper {
 		
 	}
 	
-	public String getGraphColumn(Column srcColumn, MigrationConfiguration config) {
+	public String getGraphDataType(Column srcColumn, MigrationConfiguration config) {
 		String srcDataType = srcColumn.getDataType();
 		Integer srcPrecision = srcColumn.getPrecision();
 		Integer srcScale = srcColumn.getScale();

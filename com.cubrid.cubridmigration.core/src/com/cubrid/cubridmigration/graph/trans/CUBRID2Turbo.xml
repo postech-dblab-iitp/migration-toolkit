@@ -6,11 +6,6 @@
 	  		<scale></scale>
 		</SourceDataType>
 		<TargetDataType>
-			<type>float</type>
-			<precision>64</precision>
-			<scale></scale>
-		</TargetDataType>
-		<TargetDataType>
 			<type>integer</type>
 			<precision>64</precision>
 			<scale></scale>
@@ -86,7 +81,7 @@
 	  		<scale></scale>
 		</SourceDataType>
 		<TargetDataType>
-			<type>integer</type>
+			<type>decimal</type>
 			<precision>64</precision>
 			<scale></scale>
 		</TargetDataType>

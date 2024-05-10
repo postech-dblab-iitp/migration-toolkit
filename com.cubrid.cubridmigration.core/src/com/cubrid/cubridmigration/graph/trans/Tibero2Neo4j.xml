@@ -6,44 +6,8 @@
 			<scale></scale>
 		</SourceDataType>
 		<TargetDataType>
-			<type>bit varying</type>
+			<type>string</type>
 			<precision>n</precision>
-			<scale></scale>
-		</TargetDataType>
-	</DataTypeMapping>
-
-	<DataTypeMapping>
-		<SourceDataType>
-			<type>LONG RAW</type>
-			<precision></precision>
-			<scale></scale>
-		</SourceDataType>
-		<TargetDataType>
-			<type>blob</type>
-			<precision></precision>
-			<scale></scale>
-		</TargetDataType>
-		<TargetDataType>
-			<type>bit varying</type>
-			<precision>1073741823</precision>
-			<scale></scale>
-		</TargetDataType>
-	</DataTypeMapping>
-
-	<DataTypeMapping>
-		<SourceDataType>
-			<type>LONG</type>
-			<precision></precision>
-			<scale></scale>
-		</SourceDataType>
-		<TargetDataType>
-			<type>varchar</type>
-			<precision>1073741823</precision>
-			<scale></scale>
-		</TargetDataType>
-		<TargetDataType>
-			<type>clob</type>
-			<precision></precision>
 			<scale></scale>
 		</TargetDataType>
 	</DataTypeMapping>
@@ -55,12 +19,7 @@
 			<scale></scale>
 		</SourceDataType>
 		<TargetDataType>
-			<type>char</type>
-			<precision>n</precision>
-			<scale></scale>
-		</TargetDataType>
-		<TargetDataType>
-			<type>varchar</type>
+			<type>string</type>
 			<precision>n</precision>
 			<scale></scale>
 		</TargetDataType>
@@ -68,31 +27,13 @@
 	
 	<DataTypeMapping>
 		<SourceDataType>
-			<type>VARCHAR2</type>
+			<type>VARCHAR</type>
 			<precision>n</precision>
 			<scale></scale>
 		</SourceDataType>
 		<TargetDataType>
-			<type>varchar</type>
+			<type>string</type>
 			<precision>n</precision>
-			<scale></scale>
-		</TargetDataType>
-	</DataTypeMapping>
-	
-	<DataTypeMapping>
-		<SourceDataType>
-			<type>DECIMAL</type>
-			<precision>p</precision>
-			<scale>s</scale>
-		</SourceDataType>
-		<TargetDataType>
-			<type>numeric</type>
-			<precision>p</precision>
-			<scale>s</scale>
-		</TargetDataType>
-		<TargetDataType>
-			<type>varchar</type>
-			<precision>78</precision>
 			<scale></scale>
 		</TargetDataType>
 	</DataTypeMapping>
@@ -104,23 +45,18 @@
 			<scale></scale>
 		</SourceDataType>
 		<TargetDataType>
-			<type>int</type>
+			<type>integer</type>
 			<precision></precision>
 			<scale></scale>
 		</TargetDataType>
 		<TargetDataType>
-			<type>bigint</type>
+			<type>decimal</type>
 			<precision></precision>
 			<scale></scale>
 		</TargetDataType>
 		<TargetDataType>
-			<type>numeric</type>
-			<precision>38</precision>
-			<scale>0</scale>
-		</TargetDataType>
-		<TargetDataType>
-			<type>varchar</type>
-			<precision>40</precision>
+			<type>string</type>
+			<precision></precision>
 			<scale></scale>
 		</TargetDataType>
 	</DataTypeMapping>
@@ -132,22 +68,17 @@
 			<scale></scale>
 		</SourceDataType>
 		<TargetDataType>
-			<type>double</type>
-			<precision></precision>
-			<scale></scale>
-		</TargetDataType>
-		<TargetDataType>
 			<type>float</type>
 			<precision></precision>
 			<scale></scale>
 		</TargetDataType>
 		<TargetDataType>
-			<type>int</type>
+			<type>integer</type>
 			<precision></precision>
 			<scale></scale>
 		</TargetDataType>
 		<TargetDataType>
-			<type>bigint</type>
+			<type>string</type>
 			<precision></precision>
 			<scale></scale>
 		</TargetDataType>
@@ -160,23 +91,13 @@
 			<scale></scale>
 		</SourceDataType>
 		<TargetDataType>
-			<type>numeric</type>
-			<precision>38</precision>
-			<scale>15</scale>
-		</TargetDataType>
-		<TargetDataType>
-			<type>int</type>
+			<type>integer</type>
 			<precision></precision>
 			<scale></scale>
 		</TargetDataType>
 		<TargetDataType>
-			<type>bigint</type>
+			<type>string</type>
 			<precision></precision>
-			<scale></scale>
-		</TargetDataType>
-		<TargetDataType>
-			<type>varchar</type>
-			<precision>78</precision>
 			<scale></scale>
 		</TargetDataType>
 	</DataTypeMapping>
@@ -188,17 +109,25 @@
 			<scale></scale>
 		</SourceDataType>
 		<TargetDataType>
-			<type>datetime</type>
-			<precision></precision>
-			<scale></scale>
-		</TargetDataType>
-		<TargetDataType>
 			<type>date</type>
 			<precision></precision>
 			<scale></scale>
 		</TargetDataType>
 		<TargetDataType>
-			<type>timestamp</type>
+			<type>string</type>
+			<precision></precision>
+			<scale></scale>
+		</TargetDataType>
+	</DataTypeMapping>
+	
+	<DataTypeMapping>
+		<SourceDataType>
+			<type>TIME</type>
+			<precision></precision>
+			<scale></scale>
+		</SourceDataType>
+		<TargetDataType>
+			<type>string</type>
 			<precision></precision>
 			<scale></scale>
 		</TargetDataType>
@@ -211,65 +140,8 @@
 			<scale></scale>
 		</SourceDataType>
 		<TargetDataType>
-			<type>timestamp</type>
+			<type>string</type>
 			<precision></precision>
-			<scale></scale>
-		</TargetDataType>
-		<TargetDataType>
-			<type>datetime</type>
-			<precision></precision>
-			<scale></scale>
-		</TargetDataType>
-	</DataTypeMapping>
-	
-	<DataTypeMapping>
-		<SourceDataType>
-			<type>TIMESTAMP WITH TIME ZONE</type>
-			<precision></precision>
-			<scale></scale>
-		</SourceDataType>
-		<TargetDataType>
-			<type>varchar</type>
-			<precision>100</precision>
-			<scale></scale>
-		</TargetDataType>
-	</DataTypeMapping>
-	
-	<DataTypeMapping>
-		<SourceDataType>
-			<type>TIMESTAMP WITH LOCAL TIME ZONE</type>
-			<precision></precision>
-			<scale></scale>
-		</SourceDataType>
-		<TargetDataType>
-			<type>datetime</type>
-			<precision></precision>
-			<scale></scale>
-		</TargetDataType>
-	</DataTypeMapping>
-	
-	<DataTypeMapping>
-		<SourceDataType>
-			<type>ROWID</type>
-			<precision></precision>
-			<scale></scale>
-		</SourceDataType>
-		<TargetDataType>
-			<type>varchar</type>
-			<precision>64</precision>
-			<scale></scale>
-		</TargetDataType>
-	</DataTypeMapping>
-	
-	<DataTypeMapping>
-		<SourceDataType>
-			<type>UROWID</type>
-			<precision></precision>
-			<scale></scale>
-		</SourceDataType>
-		<TargetDataType>
-			<type>varchar</type>
-			<precision>4000</precision>
 			<scale></scale>
 		</TargetDataType>
 	</DataTypeMapping>

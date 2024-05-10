@@ -29,13 +29,18 @@ public class Tibero2TurboTranformHelper extends DBTransformHelper {
 	
 	public String getGraphDataType(Column srcColumn, MigrationConfiguration config) {
 		String srcDataType = srcColumn.getDataType();
+		String graphType = new String();
 		Integer srcPrecision = srcColumn.getPrecision();
 		Integer srcScale = srcColumn.getScale();
 		
-		MapObject mapping = getDataTypeMapping(srcColumn, srcDataType, srcPrecision, srcScale,
-				config.getSrcCatalog().getSupportedDataType());
-		
-		String graphType = mapping.getDatatype();
+		try {
+			MapObject mapping = getDataTypeMapping(srcColumn, srcDataType, srcPrecision, srcScale,
+					config.getSrcCatalog().getSupportedDataType());
+			
+			graphType = mapping.getDatatype();
+		} catch (IllegalArgumentException e) {
+			return "not support";
+		}
 		
 		return graphType;
 	}

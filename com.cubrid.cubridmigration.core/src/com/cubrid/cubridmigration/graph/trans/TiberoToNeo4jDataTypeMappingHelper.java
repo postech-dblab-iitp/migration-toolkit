@@ -67,15 +67,16 @@ public class TiberoToNeo4jDataTypeMappingHelper extends
 	 */
 	public String getMapKey(String datatype, String precision, String scale) {
 		String dataTypeUpper = datatype;
-		if ("NUMBER".equals(dataTypeUpper)) {
-			return getNumberMapKey(dataTypeUpper, precision);
-		} else if (dataTypeUpper.matches("INTERVAL DAY\\(\\d*\\) TO SECOND\\(\\d*\\)")) {
-			return "INTERVAL DAY TO SECOND";
-		} else if (dataTypeUpper.matches("INTERVAL YEAR\\(\\d*\\) TO MONTH")) {
-			return "INTERVAL YEAR TO MONTH";
-		} else {
-			return OracleDataTypeHelper.getOracleDataTypeKey(dataTypeUpper);
-		}
+//		if ("NUMBER".equals(dataTypeUpper)) {
+//			return getNumberMapKey(dataTypeUpper, precision);
+//		} else if (dataTypeUpper.matches("INTERVAL DAY\\(\\d*\\) TO SECOND\\(\\d*\\)")) {
+//			return "INTERVAL DAY TO SECOND";
+//		} else if (dataTypeUpper.matches("INTERVAL YEAR\\(\\d*\\) TO MONTH")) {
+//			return "INTERVAL YEAR TO MONTH";
+//		} else {
+//			return OracleDataTypeHelper.getOracleDataTypeKey(dataTypeUpper);
+//		}
+		return OracleDataTypeHelper.getOracleDataTypeKey(dataTypeUpper);
 	}
 	
 	/**

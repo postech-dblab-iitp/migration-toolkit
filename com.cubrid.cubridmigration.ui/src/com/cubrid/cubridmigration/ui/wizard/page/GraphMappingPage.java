@@ -96,8 +96,6 @@ public class GraphMappingPage extends MigrationWizardPage {
 	
 	private Menu popupMenu;
 	
-	private GraphDataTypeComboBoxCellEditor comboEditor;
-	
 	private String[] columnProperties = {"Property Name", "GDB Types"};
 	private String[] targetTypeList = {"integer", "string", "date", "datetime"};
 	
@@ -650,67 +648,65 @@ public class GraphMappingPage extends MigrationWizardPage {
 		
 		gdbTable = new TableViewer(rightSash, SWT.FULL_SELECTION);
 		
-		comboEditor = new GraphDataTypeComboBoxCellEditor(gdbTable.getTable(), targetTypeList);
-		
 		CellEditor[] editors = new CellEditor[] {
 				null,
-				comboEditor
+				null,
 		};
 		
 		gdbTable.setCellEditors(editors);
-		gdbTable.setCellModifier(new ICellModifier() {
-			
-			@Override
-			public void modify(Object element, String property, Object value) {
-				// TODO Auto-generated method stub
-				TableItem tabItem = (TableItem) element;
-				Column col = (Column) tabItem.getData();
-			
-				if (value instanceof Integer) {
-					int intVal = (Integer) value;
-					
-					if (intVal == 1) {
-						col.setGraphDataType(targetTypeList[1]);
-					}
-					
-					gdbTable.refresh();
-				}
-			}
-			
-			@Override
-			public Object getValue(Object element, String property) {
-				// TODO Auto-generated method stub
-				if (property.equals(columnProperties[1])){
-					return returnIndex(element);
-				} else {
-					return null;
-				}
-			}
-			
-			@Override
-			public boolean canModify(Object element, String property) {
-				// TODO Auto-generated method stub
-				if (property.equals("GDB Types")){
-					return true;
-				} else {
-					return false;
-				}
-			}
-			
-			public int returnIndex(Object element) {
-				if (element instanceof Column) {
-					Column column = (Column) element;
-					
-					for (int i = 0; i < targetTypeList.length; i++) {
-						if (column.getGraphDataType().equals(targetTypeList[i])) {
-							return i;
-						}
-					}
-				}
-				
-				return 0;
-			}
-		});
+//		gdbTable.setCellModifier(new ICellModifier() {
+//			
+//			@Override
+//			public void modify(Object element, String property, Object value) {
+//				// TODO Auto-generated method stub
+//				TableItem tabItem = (TableItem) element;
+//				Column col = (Column) tabItem.getData();
+//			
+//				if (value instanceof Integer) {
+//					int intVal = (Integer) value;
+//					
+//					if (intVal == 1) {
+//						col.setGraphDataType(targetTypeList[1]);
+//					}
+//					
+//					gdbTable.refresh();
+//				}
+//			}
+//			
+//			@Override
+//			public Object getValue(Object element, String property) {
+//				// TODO Auto-generated method stub
+//				if (property.equals(columnProperties[1])){
+//					return returnIndex(element);
+//				} else {
+//					return null;
+//				}
+//			}
+//			
+//			@Override
+//			public boolean canModify(Object element, String property) {
+//				// TODO Auto-generated method stub
+//				if (property.equals("GDB Types")){
+//					return true;
+//				} else {
+//					return false;
+//				}
+//			}
+//			
+//			public int returnIndex(Object element) {
+//				if (element instanceof Column) {
+//					Column column = (Column) element;
+//					
+//					for (int i = 0; i < targetTypeList.length; i++) {
+//						if (column.getGraphDataType().equals(targetTypeList[i])) {
+//							return i;
+//						}
+//					}
+//				}
+//				
+//				return 0;
+//			}
+//		});
 		
 		gdbTable.setContentProvider(new IStructuredContentProvider() {
 			

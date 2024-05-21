@@ -1099,7 +1099,7 @@ public abstract class OfflineImporter extends
 				continue;
 			}
 			
-			recordList.add(colVal.getValue().toString());
+			recordList.add(colVal.getValue().toString().trim());
 		}
 		
 		return recordList;

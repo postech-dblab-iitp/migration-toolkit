@@ -298,7 +298,7 @@ public class TiberoExportHelper extends
 		
 		String innerTableWhere = null;
 		
-		buffer.append("SELECT * /*+ use_merge */FROM (SELECT rownum as rnum, ");
+		buffer.append("SELECT /*+ use_merge */ ");
 		buffer.append(startIdWithVertexName);		
 		buffer.append(", ");
 		buffer.append(endIdWithVertexName);
@@ -349,8 +349,6 @@ public class TiberoExportHelper extends
 		buffer.append(startVertexName + "." + fkCol);
 		buffer.append(" = ");
 		buffer.append(endVertexName + "." + refCol);
-		
-		buffer.append(")");
 		
 		return buffer.toString();
 	}

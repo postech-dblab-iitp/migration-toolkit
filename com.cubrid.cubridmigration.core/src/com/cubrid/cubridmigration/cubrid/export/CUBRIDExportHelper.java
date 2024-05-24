@@ -334,7 +334,7 @@ public class CUBRIDExportHelper extends
 		subQuery1.append("(SELECT "+ startVertexRownumColumnName +" as \":START_ID(" + e.getStartVertexName() + ")\"");
 		
 		if (sVertexOrderby.length() != 0) {
-			subQuery1.append(" ," + sVertexOrderby);
+			subQuery1.append(", " + sVertexOrderby);
 		}
 		
 		if (sVertexOrderby.indexOf(fkCol) == -1) {
@@ -342,25 +342,19 @@ public class CUBRIDExportHelper extends
 		}
 		subQuery1.append(" FROM ");
 		subQuery1.append(e.getStartVertexName());
-//		buffer.append(" order by ");
-//		buffer.append(sVertexOrderby);
+		subQuery1.append(" order by ");
+		subQuery1.append(sVertexOrderby);
 		
-//		if (startVertexName.equals(innerTableName)) {
-//			subQuery1.append(" for orderby_num()");
-//			subQuery1.append(" BETWEEN ").append(exportedCount + 1L);
-//			subQuery1.append(" AND ").append(exportedCount + rows);
-//		}
+		System.out.println("");
 		
 		subQuery1.append(") as ");
 		
 		subQuery1.append(startVertexName);
 		
-//		buffer.append(", ");
-		
 		subQuery2.append("(SELECT " + endVertexRownumColumnName + " as \":END_ID(" + e.getEndVertexName() + ")\"");
 		
 		if (eVertexOrderby.length() != 0) {
-			subQuery2.append(" ," + eVertexOrderby);
+			subQuery2.append(", " + eVertexOrderby);
 		}
 		
 		if (eVertexOrderby.indexOf(refCol) == -1) {
@@ -368,8 +362,8 @@ public class CUBRIDExportHelper extends
 		}
 		subQuery2.append(" FROM ");
 		subQuery2.append(e.getEndVertexName());
-//		buffer.append(" order by ");
-//		buffer.append(eVertexOrderby);
+		subQuery2.append(" order by ");
+		subQuery2.append(eVertexOrderby);
 		
 //		if (endVertexName.equals(innerTableName)) {
 //			subQuery2.append(" for orderby_num()");

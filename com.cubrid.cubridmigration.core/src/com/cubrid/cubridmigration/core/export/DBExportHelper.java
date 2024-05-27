@@ -518,9 +518,6 @@ public abstract class DBExportHelper implements
 				buf.append(" ROWNUM ");
 			}
 		}
-//
-//		buf.append(" BETWEEN ").append(exportedRecords + 1L);
-//		buf.append(" AND ").append(exportedRecords + rows);
 
 		return buf.toString(); 
 	}

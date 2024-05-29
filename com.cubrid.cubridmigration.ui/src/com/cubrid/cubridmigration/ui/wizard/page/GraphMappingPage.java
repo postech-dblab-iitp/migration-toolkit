@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.jface.dialogs.PageChangedEvent;
+import org.eclipse.jface.dialogs.PageChangingEvent;
+import org.eclipse.jface.layout.RowLayoutFactory;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.ICellModifier;
@@ -26,6 +28,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
@@ -94,6 +97,7 @@ public class GraphMappingPage extends MigrationWizardPage {
 	private TableViewer rdbTable;
 	
 	private Menu popupMenu;
+	Button twoWayBtn;
 	
 	private GraphDataTypeComboBoxCellEditor comboEditor;
 	
@@ -116,7 +120,7 @@ public class GraphMappingPage extends MigrationWizardPage {
 		Composite container = new Composite(parent, SWT.NONE);
 		container.setLayout(new FillLayout());
 		container.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		
+
 		SashForm sash = new SashForm(container, SWT.HORIZONTAL);
 		sash.setLayout(new FillLayout());
 		sash.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
@@ -539,9 +543,24 @@ public class GraphMappingPage extends MigrationWizardPage {
 	}
 	
 	public void createTableView(Composite parent) {
-		SashForm sashContainer = new SashForm(parent, SWT.HORIZONTAL);
+		
+		SashForm verticalSash = new SashForm(parent, SWT.VERTICAL);
+		verticalSash.setLayout(new GridLayout(4, false));
+		verticalSash.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
+		
+		SashForm sashContainer = new SashForm(verticalSash, SWT.HORIZONTAL);
 		sashContainer.setLayout(new FillLayout());
 		sashContainer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		
+		SashForm btnContiainer = new SashForm(verticalSash, SWT.VERTICAL);
+		sashContainer.setLayout(new FillLayout());
+		sashContainer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
+		
+		twoWayBtn = new Button(btnContiainer, SWT.CHECK);
+		twoWayBtn.setText("set two-way edge");
+		
+		verticalSash.setWeights(new int[] {15, 1});
+		verticalSash.setSashWidth(1);
 		
 		Group leftSash = new Group(sashContainer, SWT.NONE);
 		leftSash.setLayout(new FillLayout());
@@ -817,6 +836,21 @@ public class GraphMappingPage extends MigrationWizardPage {
 		gdbDict.printVertexAndEdge();
 		
 		showGraphData(gdbDict.getMigratedVertexList());
+	}
+	
+	@Override
+	protected void handlePageLeaving(PageChangingEvent event) {
+		if (isPageComplete()) {
+			return;
+		}
+		
+		if (twoWayBtn.getSelection()) {
+			
+		}
+	}
+	
+	private void setTwoWayEdge() {
+		
 	}
 	
 	private void executeUndo(Work work) {

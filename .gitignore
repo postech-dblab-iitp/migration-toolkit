@@ -3,3 +3,4 @@ testd
 bin
 .classpath
 com.cubrid.common.update/.settings/
+.project

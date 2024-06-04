@@ -26,11 +26,17 @@ public class GraphDictionary {
 	public void addMigratedVertexList(Vertex migratedVertex) {
 		this.migratedVertexList.add(migratedVertex);
 	}
+	
 	public List<Edge> getMigratedEdgeList() {
 		return migratedEdgeList;
 	}
+	
 	public void addMigratedEdgeList(Edge migratedEdge) {
 		this.migratedEdgeList.add(migratedEdge);
+	}
+	
+	public void addMigratedEdgeList(List<Edge> edgeList) {
+		this.migratedEdgeList.addAll(edgeList);
 	}
 	
 	public void removeEdge(String edgeName) {

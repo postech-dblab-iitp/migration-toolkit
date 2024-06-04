@@ -302,14 +302,25 @@ public class CUBRIDExportHelper extends
 		}
 		
 		StringBuffer buffer = new StringBuffer();
-		buffer.append("SELECT /*+ use_merge */ ");
-		buffer.append(startVertexName + ".\":START_ID(" + e.getStartVertexName() + ")\"");
-		buffer.append(", ");
-		buffer.append(endVertexName + ".\":END_ID(" + e.getEndVertexName() + ")\"");
+		
+		if (e.getEdgeType() == Edge.TWO_WAY_TYPE) {
+			buffer.append("SELECT /*+ use_merge */ ");
+			buffer.append(startVertexName + ".\":END_ID(" + e.getStartVertexName() + ")\"");
+			buffer.append(", ");
+			buffer.append(endVertexName + ".\":START_ID(" + e.getEndVertexName() + ")\"");
+		} else {
+			buffer.append("SELECT /*+ use_merge */ ");
+			buffer.append(startVertexName + ".\":START_ID(" + e.getStartVertexName() + ")\"");
+			buffer.append(", ");
+			buffer.append(endVertexName + ".\":END_ID(" + e.getEndVertexName() + ")\"");
+		}
 		
 		buffer.append(" FROM ");
 		
-		subQuery1.append("(SELECT "+ startVertexRownumColumnName +" as \":START_ID(" + e.getStartVertexName() + ")\"");
+		if (e.getEdgeType() == Edge.TWO_WAY_TYPE) 
+			subQuery1.append("(SELECT "+ startVertexRownumColumnName +" as \":END_ID(" + e.getStartVertexName() + ")\"");
+		else 
+			subQuery1.append("(SELECT "+ startVertexRownumColumnName +" as \":START_ID(" + e.getStartVertexName() + ")\"");
 		
 		if (sVertexOrderby.length() != 0) {
 			subQuery1.append(" ," + sVertexOrderby);
@@ -335,7 +346,10 @@ public class CUBRIDExportHelper extends
 		
 //		buffer.append(", ");
 		
-		subQuery2.append("(SELECT " + endVertexRownumColumnName + " as \":END_ID(" + e.getEndVertexName() + ")\"");
+		if (e.getEdgeType() == Edge.TWO_WAY_TYPE) 
+			subQuery2.append("(SELECT " + endVertexRownumColumnName + " as \":START_ID(" + e.getEndVertexName() + ")\"");
+		else
+			subQuery2.append("(SELECT " + endVertexRownumColumnName + " as \":END_ID(" + e.getEndVertexName() + ")\"");
 		
 		if (eVertexOrderby.length() != 0) {
 			subQuery2.append(" ," + eVertexOrderby);

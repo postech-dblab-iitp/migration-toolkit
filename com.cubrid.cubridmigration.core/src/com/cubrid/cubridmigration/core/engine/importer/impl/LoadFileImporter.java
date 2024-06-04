@@ -393,18 +393,28 @@ public class LoadFileImporter extends
 			final int expCount) {
 		synchronized (lockObj) {
 			MigrationDirAndFilesManager mdfm = mrManager.getDirAndFilesMgr();
-			CurrentDataFileInfo es = tableFiles.get(removeSpace(e.getEdgeLabel()));
+			
+			String edgeLabelCheck;
+			
+			if (e.getEdgeType() == Edge.TWO_WAY_TYPE) {
+				edgeLabelCheck = e.getEdgeLabel() + "_rev";
+			} else {
+				edgeLabelCheck = e.getEdgeLabel();
+			}
+			
+			CurrentDataFileInfo es = tableFiles.get(removeSpace(edgeLabelCheck));
 			if (es == null) {
 				final StringBuffer sb = new StringBuffer(
 						mrManager.getDirAndFilesMgr().getMergeFilesDir()).append(
-						config.getFullTargetFilePrefix()).append(removeSpace(e.getEdgeLabel() + "_Edge"));
+						config.getFullTargetFilePrefix());
+						sb.append(removeSpace(edgeLabelCheck + "_Edge"));
+						
 				es = new CurrentDataFileInfo(sb.toString(), config.getDataFileExt());
 				PathUtils.deleteFile(new File(es.fileFullName));
-				tableFiles.put(removeSpace(e.getEdgeLabel()), es);
+				tableFiles.put(removeSpace(edgeLabelCheck), es);
 				
 				if (config.targetIsCSV()) {
-					final String inputFileName = 
-							config.getFullTargetFilePrefix() + removeSpace(e.getEdgeLabel() + "_Edge") + config.getDataFileExt();
+					String inputFileName = config.getFullTargetFilePrefix() + removeSpace(edgeLabelCheck + "_Edge") + config.getDataFileExt();						
 					
 					if (config.getGraphSubTypeForCSV() == 1) {
 						writeGraphListFileForTurboGraph(mdfm.getGraphListFile(), inputFileName, e);
@@ -423,6 +433,15 @@ public class LoadFileImporter extends
 			executeTask(fileName, fileFullName, new RunnableResultHandler() {
 
 				public void success() {
+					
+					String edgeLabel;
+					
+					if (e.getEdgeType() == Edge.TWO_WAY_TYPE) {
+						edgeLabel = e.getEdgeLabel() + "_rev";
+					} else {
+						edgeLabel = e.getEdgeLabel();
+					}
+					
 					final MigrationStatusManager sm = mrManager.getStatusMgr();
 					sm.addImpCount(e.getOwner(), e.getEdgeLabel(), expCount);
 					//CSV, XLS file will not be merged into one data file.
@@ -432,13 +451,13 @@ public class LoadFileImporter extends
 					if (config.isOneTableOneFile()) {
 						return;
 					}
-					final Table st = config.getSrcTableSchema(e.getOwner(), e.getEdgeLabel());
+					final Table st = config.getSrcTableSchema(e.getOwner(), edgeLabel);
 					if (null == st) {
 						return;
 					}
-					final long totalEc = sm.getExpCount(e.getOwner(), e.getEdgeLabel());
-					final long totalIc = sm.getImpCount(e.getOwner(), e.getEdgeLabel());
-					final boolean expEnd = sm.getExpFlag(e.getOwner(), e.getEdgeLabel());
+					final long totalEc = sm.getExpCount(e.getOwner(), edgeLabel);
+					final long totalIc = sm.getImpCount(e.getOwner(), edgeLabel);
+					final boolean expEnd = sm.getExpFlag(e.getOwner(), edgeLabel);
 					//If it is the last merging,Merge data files to one data file
 					if (expEnd && totalEc == totalIc) {
 						executeTask(fileFullName, config.getTargetDataFileName(), null, true, false);
@@ -446,7 +465,16 @@ public class LoadFileImporter extends
 				}
 
 				public void failed(String error) {
-					mrManager.getStatusMgr().addImpCount(e.getOwner(), e.getEdgeLabel(), expCount);
+					
+					String edgeLabel;
+					
+					if (e.getEdgeType() == Edge.TWO_WAY_TYPE) {
+						edgeLabel = e.getEdgeLabel() + "_rev";
+					} else {
+						edgeLabel = e.getEdgeLabel();
+					}
+					
+					mrManager.getStatusMgr().addImpCount(e.getOwner(), edgeLabel, expCount);
 					eventHandler.handleEvent(new ImportGraphRecordsEvent(e, impCount,
 							new NormalMigrationException(error), null));
 				}

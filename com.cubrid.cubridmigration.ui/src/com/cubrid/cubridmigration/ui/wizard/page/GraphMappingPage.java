@@ -104,7 +104,6 @@ public class GraphMappingPage extends MigrationWizardPage {
 	private String[] columnProperties = {"Property Name", "GDB Types"};
 	private String[] targetTypeList = {"integer", "string", "date", "datetime"};
 	
-	// TODO undo, redo
 	private WorkBuffer workBuffer = new WorkBuffer();
 	private WorkController workCtrl = new WorkController();
 	
@@ -840,17 +839,39 @@ public class GraphMappingPage extends MigrationWizardPage {
 	
 	@Override
 	protected void handlePageLeaving(PageChangingEvent event) {
-		if (isPageComplete()) {
+		if (!isPageComplete()) {
 			return;
 		}
 		
 		if (twoWayBtn.getSelection()) {
-			
+			event.doit = setTwoWayEdge();
 		}
 	}
 	
-	private void setTwoWayEdge() {
+	private boolean setTwoWayEdge() {
+		List<Edge> edgeList = gdbDict.getMigratedEdgeList();
+		List<Edge> twoWayEdgeList = new ArrayList<Edge>();
 		
+		for (Edge edge : edgeList) {
+			Edge copiedEdge = new Edge(edge);
+			copiedEdge.setEdgeType(Edge.TWO_WAY_TYPE);
+			copiedEdge.removeIDCol();
+			
+			Column twoWayStartCol = new Column(":END_ID(" + copiedEdge.getStartVertexName() + ")");
+			twoWayStartCol.setDataType("ID");
+			
+			Column twoWayEndCol = new Column(":START_ID(" + copiedEdge.getEndVertexName() + ")");
+			twoWayEndCol.setDataType("ID");
+			
+			copiedEdge.addColumnAtFirst(twoWayEndCol);
+			copiedEdge.addColumnAtFirst(twoWayStartCol);
+			
+			twoWayEdgeList.add(copiedEdge);
+		}
+		
+		gdbDict.addMigratedEdgeList(twoWayEdgeList);
+		
+		return true;
 	}
 	
 	private void executeUndo(Work work) {

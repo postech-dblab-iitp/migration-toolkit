@@ -2,6 +2,7 @@ package com.cubrid.cubridmigration.graph.dbobj;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -16,6 +17,7 @@ public class Edge {
     public static final int JOINTABLE_TYPE = 3;
     public static final int RECURSIVE_TYPE = 4;
     public static final int CUSTOM_TYPE = 5;
+    public static final int TWO_WAY_TYPE = 6;
     
     private long oid;
     
@@ -33,7 +35,7 @@ public class Edge {
 	
 	private List<Column> columnList = new ArrayList<Column>();
 	
-	private final Map<String, String> fkCol2RefMapping = new TreeMap<String, String>();
+	private Map<String, String> fkCol2RefMapping = new TreeMap<String, String>();
 	
 	private Map<String, String> edgeProperties = new HashMap<String, String>();
     
@@ -45,6 +47,22 @@ public class Edge {
 	boolean isHavePKStartVertex = false;
 	
 	public Edge() {
+	}
+	
+	public Edge(Edge edge) {
+		this.oid = edge.getOid();
+		this.id = edge.getId();
+		this.edgeLabel = edge.getEdgeLabel();
+		this.startVertex = edge.getStartVertex();
+		this.endVertex = edge.getEndVertex();
+		this.startVertexName = edge.getStartVertexName();
+		this.endVertexName = edge.getEndVertexName();
+		this.columnList = new ArrayList<Column>(edge.getColumnList());
+		this.fkCol2RefMapping = new TreeMap<String, String>(edge.getfkCol2RefMapping());
+		this.edgeProperties = new HashMap<String, String>(edge.getEdgeProperties());
+		this.fkString = edge.getFKString();
+		this.owner = edge.getOwner();
+		this.setHavePKStartVertex(edge.isHavePKStartVertex);
 	}
 	
 	public List<Column> getColumnList() {
@@ -199,5 +217,16 @@ public class Edge {
 
 	public void setOid(long oid) {
 		this.oid = oid;
+	}
+	
+	public void removeIDCol() {
+		Iterator<Column> iter = columnList.iterator();
+		
+		while (iter.hasNext()) {
+			Column col = iter.next();
+			if (col.getDataType().equals("ID")) {
+				iter.remove();
+			}
+		}
 	}
 }

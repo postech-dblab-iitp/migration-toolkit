@@ -160,6 +160,8 @@ public class MigrationTasksScheduler {
 		await();
 		createGraphStep10();
 		await();
+		createGraphStep11();
+		await();
 	}
 	
 	/**
@@ -646,6 +648,19 @@ public class MigrationTasksScheduler {
 		
 		for (Edge e : migratedEdgeList) {
 			if (e.getEdgeType() == Edge.CUSTOM_TYPE) {
+				executeTask2(taskFactory.GraphEdgeExportTask(e));
+			}
+		}
+	}
+	
+	protected void createGraphStep11() {
+		//create two-way edge
+		MigrationConfiguration cfg = context.getConfig();
+		GraphDictionary gdbDict = cfg.getGraphDictionary();
+		List<Edge> migratedEdgeList = gdbDict.getMigratedEdgeList();
+		
+		for (Edge e : migratedEdgeList) {
+			if (e.getEdgeType() == Edge.TWO_WAY_TYPE) {
 				executeTask2(taskFactory.GraphEdgeExportTask(e));
 			}
 		}

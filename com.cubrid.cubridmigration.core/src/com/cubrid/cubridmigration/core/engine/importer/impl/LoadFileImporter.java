@@ -197,15 +197,24 @@ public class LoadFileImporter extends
 	protected void handleDataFile(String fileName, final Edge e, final int impCount,
 			final int expCount) {
 		synchronized (lockObj) {
+			
+			String edgeLabel;
+			
+			if (e.getEdgeType() == Edge.TWO_WAY_TYPE) {
+				edgeLabel = e.getEdgeLabel() + "_rev";
+			} else {
+				edgeLabel = e.getEdgeLabel();
+			}
+			
 			MigrationDirAndFilesManager mdfm = mrManager.getDirAndFilesMgr();
-			CurrentDataFileInfo es = tableFiles.get(removeSpace(e.getEdgeLabel()));
+			CurrentDataFileInfo es = tableFiles.get(removeSpace(edgeLabel));
 			if (es == null) {
 				final StringBuffer sb = new StringBuffer(
 						mrManager.getDirAndFilesMgr().getMergeFilesDir()).append(
-						config.getFullTargetFilePrefix()).append(removeSpace(e.getEdgeLabel() + "_Edge"));
+						config.getFullTargetFilePrefix()).append(removeSpace(edgeLabel + "_Edge"));
 				es = new CurrentDataFileInfo(sb.toString(), config.getDataFileExt());
 				PathUtils.deleteFile(new File(es.fileFullName));
-				tableFiles.put(removeSpace(e.getEdgeLabel()), es);
+				tableFiles.put(removeSpace(edgeLabel), es);
 			}
 			//If the target file is full. 
 			if (mdfm.isDataFileFull(es.fileFullName)) {
@@ -215,8 +224,17 @@ public class LoadFileImporter extends
 			final String fileFullName = es.fileFullName;
 			mdfm.addDataFile(fileFullName, impCount);
 			executeTask(fileName, fileFullName, new RunnableResultHandler() {
-
+				
 				public void success() {
+					
+					String edgeLabel;
+					
+					if (e.getEdgeType() == Edge.TWO_WAY_TYPE) {
+						edgeLabel = e.getEdgeLabel() + "_rev";
+					} else {
+						edgeLabel = e.getEdgeLabel();
+					}
+					
 					eventHandler.handleEvent(new ImportGraphRecordsEvent(e, impCount));
 					final MigrationStatusManager sm = mrManager.getStatusMgr();
 					sm.addImpCount(e.getOwner(), e.getEdgeLabel(), expCount);
@@ -231,9 +249,9 @@ public class LoadFileImporter extends
 					if (null == st) {
 						return;
 					}
-					final long totalEc = sm.getExpCount(e.getOwner(), e.getEdgeLabel());
-					final long totalIc = sm.getImpCount(e.getOwner(), e.getEdgeLabel());
-					final boolean expEnd = sm.getExpFlag(e.getOwner(), e.getEdgeLabel());
+					final long totalEc = sm.getExpCount(e.getOwner(), edgeLabel);
+					final long totalIc = sm.getImpCount(e.getOwner(), edgeLabel);
+					final boolean expEnd = sm.getExpFlag(e.getOwner(), edgeLabel);
 					//If it is the last merging,Merge data files to one data file
 					if (expEnd && totalEc == totalIc) {
 						executeTask(fileFullName, config.getTargetDataFileName(), null, true, false);
@@ -241,7 +259,16 @@ public class LoadFileImporter extends
 				}
 
 				public void failed(String error) {
-					mrManager.getStatusMgr().addImpCount(e.getOwner(), e.getEdgeLabel(), expCount);
+					
+					String edgeLabel;
+					
+					if (e.getEdgeType() == Edge.TWO_WAY_TYPE) {
+						edgeLabel = e.getEdgeLabel() + "_rev";
+					} else {
+						edgeLabel = e.getEdgeLabel();
+					}
+					
+					mrManager.getStatusMgr().addImpCount(e.getOwner(), edgeLabel, expCount);
 					eventHandler.handleEvent(new ImportGraphRecordsEvent(e, impCount,
 							new NormalMigrationException(error), null));
 				}

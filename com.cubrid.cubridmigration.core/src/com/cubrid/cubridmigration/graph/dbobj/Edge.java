@@ -18,6 +18,7 @@ public class Edge {
     public static final int RECURSIVE_TYPE = 4;
     public static final int CUSTOM_TYPE = 5;
     public static final int TWO_WAY_TYPE = 6;
+    public static final int JOIN_TWO_WAY_TYPE = 7;
     
     private long oid;
     

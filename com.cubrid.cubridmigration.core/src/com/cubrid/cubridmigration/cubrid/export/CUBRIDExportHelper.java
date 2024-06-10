@@ -412,8 +412,16 @@ public class CUBRIDExportHelper extends
 		String startVertexName = addDoubleQuote(e.getStartVertexName().toUpperCase());
 		String endVertexName = addDoubleQuote(e.getEndVertexName().toUpperCase());
 		
-		String startIdCol = "\":START_ID(" + e.getStartVertexName().toUpperCase() + ")\"";
-		String endIdCol = "\":END_ID(" + e.getEndVertexName().toUpperCase() + ")\"";
+		String startIdCol;
+		String endIdCol;
+		
+		if (e.getEdgeType() == Edge.JOIN_TWO_WAY_TYPE) {
+			startIdCol = "\":END_ID(" + e.getStartVertexName().toUpperCase() + ")\"";
+			endIdCol = "\":START_ID(" + e.getEndVertexName().toUpperCase() + ")\"";
+		} else {
+			startIdCol = "\":START_ID(" + e.getStartVertexName().toUpperCase() + ")\"";
+			endIdCol = "\":END_ID(" + e.getEndVertexName().toUpperCase() + ")\"";
+		}
 		
 		String dupStartVertexName = null;
 		String dupEndVertexName = null;
@@ -485,23 +493,44 @@ public class CUBRIDExportHelper extends
 			editString = startVertexIdMatcher.replaceFirst(column);
 		}
 		
-		Pattern startIdPattern = Pattern.compile("\":START_ID", Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
-		Matcher startIdMatcher = startIdPattern.matcher(editString);
-		
-		if (startIdMatcher.find()) {
-			String startId = dupStartVertexName + ".\":START_ID";
+		if (e.getEdgeType() == Edge.JOIN_TWO_WAY_TYPE) {
+			Pattern startIdPattern = Pattern.compile("\":START_ID", Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
+			Matcher startIdMatcher = startIdPattern.matcher(editString);
 			
-			editString = startIdMatcher.replaceFirst(startId);
+			if (startIdMatcher.find()) {
+				String startId = dupEndVertexName + ".\":START_ID";
+				
+				editString = startIdMatcher.replaceFirst(startId);
+			}
+			
+			Pattern endIdPattern = Pattern.compile("\":END_ID", Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);;
+			Matcher endIdMatcher = endIdPattern.matcher(editString);
+			
+			if (endIdMatcher.find()) {
+				String endId = dupStartVertexName + ".\":END_ID";
+				
+				editString = endIdMatcher.replaceFirst(endId);
+			}
+		} else {
+			Pattern startIdPattern = Pattern.compile("\":START_ID", Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
+			Matcher startIdMatcher = startIdPattern.matcher(editString);
+			
+			if (startIdMatcher.find()) {
+				String startId = dupStartVertexName + ".\":START_ID";
+				
+				editString = startIdMatcher.replaceFirst(startId);
+			}
+			
+			Pattern endIdPattern = Pattern.compile("\":END_ID", Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);;
+			Matcher endIdMatcher = endIdPattern.matcher(editString);
+			
+			if (endIdMatcher.find()) {
+				String endId = dupEndVertexName + ".\":END_ID";
+				
+				editString = endIdMatcher.replaceFirst(endId);
+			}
 		}
 		
-		Pattern endIdPattern = Pattern.compile("\":END_ID", Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);;
-		Matcher endIdMatcher = endIdPattern.matcher(editString);
-		
-		if (endIdMatcher.find()) {
-			String endId = dupEndVertexName + ".\":END_ID";
-			
-			editString = endIdMatcher.replaceFirst(endId);
-		}
 		
 		Pattern endVertexIdPattern = Pattern.compile(addDoubleQuote(refColList.get(1)), Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
 		Matcher endVertexIdMatcher = endVertexIdPattern.matcher(editString);

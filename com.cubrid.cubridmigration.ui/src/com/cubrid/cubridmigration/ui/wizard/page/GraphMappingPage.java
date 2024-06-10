@@ -853,8 +853,16 @@ public class GraphMappingPage extends MigrationWizardPage {
 		List<Edge> twoWayEdgeList = new ArrayList<Edge>();
 		
 		for (Edge edge : edgeList) {
+			int edgeType = Edge.TWO_WAY_TYPE;
+			
+			if (edge.getEdgeType() == Edge.RECURSIVE_TYPE)
+				continue;
+			
+			if (edge.getEdgeType() == Edge.JOINTABLE_TYPE)
+				edgeType = Edge.JOIN_TWO_WAY_TYPE;
+			
 			Edge copiedEdge = new Edge(edge);
-			copiedEdge.setEdgeType(Edge.TWO_WAY_TYPE);
+			copiedEdge.setEdgeType(edgeType);
 			copiedEdge.removeIDCol();
 			
 			Column twoWayStartCol = new Column(":END_ID(" + copiedEdge.getStartVertexName() + ")");

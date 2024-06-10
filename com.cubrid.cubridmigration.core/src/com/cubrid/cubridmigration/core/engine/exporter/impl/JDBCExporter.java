@@ -506,11 +506,11 @@ public class JDBCExporter extends
 			LOG.debug("[IN]exportGraphEdgeRecords()");
 		}
 		
-		if (e.getEdgeType() == Edge.JOINTABLE_TYPE && config.targetIsCSV()) {
+		if ((e.getEdgeType() == Edge.JOINTABLE_TYPE || e.getEdgeType() == Edge.JOIN_TWO_WAY_TYPE) && config.targetIsCSV()) {
 			exportGraphJoinTableEdgeRecordForCSV(e, newRecordProcessor);
 			return;
 			
-		} else if (e.getEdgeType() == Edge.JOINTABLE_TYPE) {
+		} else if ((e.getEdgeType() == Edge.JOINTABLE_TYPE || e.getEdgeType() == Edge.JOIN_TWO_WAY_TYPE)) {
 			exportGraphJoinEdgeRecords(e, newRecordProcessor);
 			return;
 		}

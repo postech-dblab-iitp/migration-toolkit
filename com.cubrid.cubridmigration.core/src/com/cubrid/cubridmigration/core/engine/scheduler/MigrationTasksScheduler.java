@@ -660,7 +660,7 @@ public class MigrationTasksScheduler {
 		List<Edge> migratedEdgeList = gdbDict.getMigratedEdgeList();
 		
 		for (Edge e : migratedEdgeList) {
-			if (e.getEdgeType() == Edge.TWO_WAY_TYPE) {
+			if (e.getEdgeType() == Edge.TWO_WAY_TYPE || e.getEdgeType() == Edge.JOIN_TWO_WAY_TYPE) {
 				executeTask2(taskFactory.GraphEdgeExportTask(e));
 			}
 		}

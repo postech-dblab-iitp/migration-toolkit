@@ -200,7 +200,7 @@ public class LoadFileImporter extends
 			
 			String edgeLabel;
 			
-			if (e.getEdgeType() == Edge.TWO_WAY_TYPE) {
+			if (e.getEdgeType() == Edge.TWO_WAY_TYPE || e.getEdgeType() == Edge.JOIN_TWO_WAY_TYPE) {
 				edgeLabel = e.getEdgeLabel() + "_rev";
 			} else {
 				edgeLabel = e.getEdgeLabel();
@@ -229,7 +229,7 @@ public class LoadFileImporter extends
 					
 					String edgeLabel;
 					
-					if (e.getEdgeType() == Edge.TWO_WAY_TYPE) {
+					if (e.getEdgeType() == Edge.TWO_WAY_TYPE || e.getEdgeType() == Edge.JOIN_TWO_WAY_TYPE) {
 						edgeLabel = e.getEdgeLabel() + "_rev";
 					} else {
 						edgeLabel = e.getEdgeLabel();
@@ -262,7 +262,7 @@ public class LoadFileImporter extends
 					
 					String edgeLabel;
 					
-					if (e.getEdgeType() == Edge.TWO_WAY_TYPE) {
+					if (e.getEdgeType() == Edge.TWO_WAY_TYPE || e.getEdgeType() == Edge.JOIN_TWO_WAY_TYPE) {
 						edgeLabel = e.getEdgeLabel() + "_rev";
 					} else {
 						edgeLabel = e.getEdgeLabel();
@@ -423,7 +423,7 @@ public class LoadFileImporter extends
 			
 			String edgeLabelCheck;
 			
-			if (e.getEdgeType() == Edge.TWO_WAY_TYPE) {
+			if (e.getEdgeType() == Edge.TWO_WAY_TYPE || e.getEdgeType() == Edge.JOIN_TWO_WAY_TYPE) {
 				edgeLabelCheck = e.getEdgeLabel() + "_rev";
 			} else {
 				edgeLabelCheck = e.getEdgeLabel();
@@ -463,7 +463,7 @@ public class LoadFileImporter extends
 					
 					String edgeLabel;
 					
-					if (e.getEdgeType() == Edge.TWO_WAY_TYPE) {
+					if (e.getEdgeType() == Edge.TWO_WAY_TYPE || e.getEdgeType() == Edge.JOIN_TWO_WAY_TYPE) {
 						edgeLabel = e.getEdgeLabel() + "_rev";
 					} else {
 						edgeLabel = e.getEdgeLabel();
@@ -495,7 +495,7 @@ public class LoadFileImporter extends
 					
 					String edgeLabel;
 					
-					if (e.getEdgeType() == Edge.TWO_WAY_TYPE) {
+					if (e.getEdgeType() == Edge.TWO_WAY_TYPE || e.getEdgeType() == Edge.JOIN_TWO_WAY_TYPE) {
 						edgeLabel = e.getEdgeLabel() + "_rev";
 					} else {
 						edgeLabel = e.getEdgeLabel();

@@ -195,8 +195,8 @@ public class TiberoExportHelper extends
 		
 		StringBuffer buffer = new StringBuffer(sql);
 		
-		buffer.append(" WHERE rnum BETWEEN " + (exportedRecords + 1L));
-		buffer.append(" AND " + (exportedRecords + rows));
+//		buffer.append(" WHERE rnum BETWEEN " + (exportedRecords + 1L));
+//		buffer.append(" AND " + (exportedRecords + rows));
 		
 		return buffer.toString();
 	}
@@ -206,10 +206,10 @@ public class TiberoExportHelper extends
 		String cleanSql = sql.toUpperCase().trim();
 		StringBuilder buf = new StringBuilder();
 
-		buf.append(" WHERE \"RNUM\"");
-
-		buf.append(" BETWEEN ").append(exportedRecords + 1L);
-		buf.append(" AND ").append(exportedRecords + rows);
+//		buf.append(" WHERE \"RNUM\"");
+//
+//		buf.append(" BETWEEN ").append(exportedRecords + 1L);
+//		buf.append(" AND ").append(exportedRecords + rows);
 
 		return cleanSql + buf.toString();
 	}
@@ -256,13 +256,24 @@ public class TiberoExportHelper extends
 					}
 					sVertexOrderby.append(pkCol);
 				}
+			} else {
+				Vertex startVertex = e.getStartVertex();
+				
+				for (Column col : startVertex.getColumnList()) {
+					if (col.getDataType().equalsIgnoreCase("ID"))
+						continue;
+					
+					if (sVertexOrderby.length() > 0) {
+						sVertexOrderby.append(", ");
+					}
+					sVertexOrderby.append(col.getName());
+				}
 			}
 		}
 		
 		if (e.getEndVertex() != null) {
-		
-		PK pk = e.getEndVertex().getPK();
-		if (pk != null) {
+			PK pk = e.getEndVertex().getPK();
+			if (pk != null) {
 				// if it has a pk, a pk scan is better than full range scan
 				for (String pkCol : pk.getPkColumns()) {
 					if (eVertexOrderby.length() > 0) {
@@ -270,12 +281,24 @@ public class TiberoExportHelper extends
 					}
 					eVertexOrderby.append(pkCol);
 				}
+			} else {
+				Vertex endVertex = e.getEndVertex();
+				
+				for (Column col : endVertex.getColumnList()) {
+					if (col.getDataType().equalsIgnoreCase("ID")) 
+						continue;
+					
+					if (eVertexOrderby.length() > 0) {
+						eVertexOrderby.append(", ");
+					}
+					eVertexOrderby.append(col.getName());
+				}
 			}
 		}
 		
 		String innerTableWhere = null;
 		
-		buffer.append("SELECT * FROM (SELECT rownum as rnum, ");
+		buffer.append("SELECT /*+ use_merge */ ");
 		buffer.append(startIdWithVertexName);		
 		buffer.append(", ");
 		buffer.append(endIdWithVertexName);
@@ -283,8 +306,7 @@ public class TiberoExportHelper extends
 		buffer.append(" FROM ");
 		
 		if (innerTableName.equals(e.getStartVertexName())) {
-			buffer.append("(SELECT ROW_NUMBER() OVER (ORDER BY " + fkCol);
-			buffer.append(") as ");
+			buffer.append("(SELECT ROWNUM as ");
 			buffer.append(startId);
 			
 			innerTableWhere = startId;
@@ -300,15 +322,11 @@ public class TiberoExportHelper extends
 			buffer.append(", " + sVertexOrderby + ", " + fkCol);						
 		}
 		
-		buffer.append(" FROM ");
-		buffer.append(startVertexName);
-		buffer.append(") as ");
-		buffer.append(startVertexName);
-		buffer.append(", ");
+		buffer.append(" FROM " + startVertexName + " ORDER BY " + sVertexOrderby + ")");
+		buffer.append(" as " + startVertexName + ", ");
 		
 		if (innerTableName.equals(e.getEndVertexName())) {
-			buffer.append("(SELECT ROW_NUMBER() OVER (ORDER BY " + refCol + ")");
-			buffer.append(" as ");
+			buffer.append("(SELECT ROWNUM as ");
 			buffer.append(endId);
 			
 			innerTableWhere = endId;
@@ -323,7 +341,7 @@ public class TiberoExportHelper extends
 			buffer.append(", " + eVertexOrderby + ", " + refCol);
 		}
 		
-		buffer.append(" FROM " + endVertexName + ")");
+		buffer.append(" FROM " + endVertexName + " ORDER BY " + eVertexOrderby + ")");
 		buffer.append(" as " + endVertexName);
 		
 		buffer.append(" WHERE ");
@@ -331,14 +349,6 @@ public class TiberoExportHelper extends
 		buffer.append(startVertexName + "." + fkCol);
 		buffer.append(" = ");
 		buffer.append(endVertexName + "." + refCol);
-		
-		buffer.append(" AND ");
-		buffer.append(innerTableWhere);
-		buffer.append(" BETWEEN ");
-		buffer.append(String.valueOf(exportedCount + 1L));
-		buffer.append(" AND ");
-		buffer.append(String.valueOf(exportedCount + rows));
-		buffer.append(")");
 		
 		return buffer.toString();
 	}
@@ -436,11 +446,7 @@ public class TiberoExportHelper extends
 		
 		conditionBuffer.append("(SELECT ");
 		
-		if (startVertexName.equals(innerTableName)) {
-			conditionBuffer.append("ROW_NUMBER() OVER (ORDER BY " + startRefCol + ")");
-		} else {
-			conditionBuffer.append("ROWNUM");
-		}
+		conditionBuffer.append("ROWNUM");
 		
 		conditionBuffer.append(" AS ");
 		conditionBuffer.append(startId);
@@ -454,11 +460,8 @@ public class TiberoExportHelper extends
 		conditionBuffer.append(", ");
 		
 		conditionBuffer.append("(SELECT ");
-		if (endVertexName.equals(innerTableName)) {
-			conditionBuffer.append("ROW_NUMBER() OVER (ORDER BY " + endRefCol + ")");
-		} else {
-			conditionBuffer.append("ROWNUM");
-		}
+		
+		conditionBuffer.append("ROWNUM");
 		
 		conditionBuffer.append(" AS ");
 		conditionBuffer.append(endId);
@@ -483,13 +486,6 @@ public class TiberoExportHelper extends
 		conditionBuffer.append(" = ");
 		conditionBuffer.append("MAIN." + endFkCol);
 		
-		conditionBuffer.append(" AND ");
-		
-		conditionBuffer.append(innerTableWhere);
-		conditionBuffer.append(" BETWEEN ");
-		conditionBuffer.append("" + (innerTotalExported + 1L));
-		conditionBuffer.append(" AND ");
-		conditionBuffer.append("" + (innerTotalExported + realPageCount));
 		conditionBuffer.append(")");
 		
 		return conditionBuffer.toString();
@@ -498,7 +494,15 @@ public class TiberoExportHelper extends
 	@Override
 	public String getPagedSelectSQLForVertexCSV(Vertex v, String sql, long rows, long exportedRecords, PK pk) {
 		StringBuilder orderby = new StringBuilder();
+		int pkCount = 0;
+		
 		if (pk != null) {
+			pkCount = pk.getPkColumns().size();			
+		} else {
+			pkCount = 0;
+		}
+		
+		if (pkCount != 0) {
 			// if it has a pk, a pk scan is better than full range scan
 			for (String pkCol : pk.getPkColumns()) {
 				if (orderby.length() > 0) {
@@ -506,40 +510,64 @@ public class TiberoExportHelper extends
 				}
 				orderby.append("\"").append(pkCol).append("\"");
 			}
+			
 		} else {
 			System.out.println("Vertex [" + v.getVertexLabel() + "] : pk is null");
 		}
 	
-		String editedQuery = editQueryForVertexCSV(v, sql, orderby.toString());
+		String editedQuery = editQueryForVertexCSV(v, sql, orderby.toString(), pkCount);
 		
 		StringBuilder buf = new StringBuilder();
 		
-		buf.append("SELECT * FROM (");
+		if (pkCount >= 2) {
+			buf.append("SELECT * FROM (");
+			buf.append(editedQuery.trim());
+			buf.append(")");
+		} else if (pkCount == 1) {
+			buf.append("SELECT ");
+			buf.append(editedQuery.trim());
+			buf.append(" ORDER BY " + orderby);
+		} else {
+			buf.append(editedQuery.trim());
+			
+			StringBuffer allColumn = new StringBuffer();
+			
+			List<Column> columnList = v.getColumnList();
+			
+			for (int i = 1; i < columnList.size(); i++) {
+				if (i > 1) {
+					allColumn.append(',');
+				}
+				allColumn.append(getQuotedObjName(columnList.get(i).getName()));
+			}
+			
+			buf.append(" ORDER BY " + allColumn);
+		}
 		
-		buf.append(editedQuery.trim());
-		
-		buf.append(") WHERE \"id\"");
-		
-		buf.append(" BETWEEN ").append(exportedRecords + 1L);
-		buf.append(" AND ").append(exportedRecords + rows);
-
 		return buf.toString(); 
 	}
 	
-	private String editQueryForVertexCSV(Vertex v, String sql, String orderby) {
+	private String editQueryForVertexCSV(Vertex v, String sql, String orderby, int pkCount) {
 		Pattern selectPattern = Pattern.compile("SELECT\\s", Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
 		Matcher selectMatcher = selectPattern.matcher(sql);
 		
 		if (selectMatcher.find()) {
 			if (orderby != null && !orderby.isEmpty()) {
-				StringBuffer buffer = new StringBuffer("SELECT ROW_NUMBER() OVER (ORDER BY ");
-				buffer.append(orderby);
-				buffer.append(") AS ");
+				if (pkCount < 2) {
+					StringBuffer buffer = new StringBuffer("ROWNUM");
+					buffer.append(" AS ");
+					sql = selectMatcher.replaceFirst(buffer.toString());
+				} else {
+					StringBuffer buffer = new StringBuffer("SELECT ROW_NUMBER() OVER (ORDER BY ");
+					buffer.append(orderby);
+					buffer.append(") AS ");
+					sql = selectMatcher.replaceFirst(buffer.toString());
+				}
+			} else {
+				StringBuffer buffer = new StringBuffer("SELECT ROWNUM as ");
 				sql = selectMatcher.replaceFirst(buffer.toString());
 			}
 		}
-		
-		sql = sql + " ORDER BY " + orderby;
 		
 		return sql;
 	}

@@ -116,7 +116,7 @@ public class MigrationWizard extends
 		supportedDBs.add(DatabaseType.ORACLE.getID());
 		supportedDBs.add(DatabaseType.CUBRID.getID());
 		supportedDBs.add(DatabaseType.MSSQL.getID());
-		supportedDBs.add(DatabaseType.GRAPH.getID());
+		supportedDBs.add(DatabaseType.NEO4J.getID());
 		supportedDBs.add(DatabaseType.TIBERO.getID());
 		return supportedDBs;
 	}
@@ -129,7 +129,7 @@ public class MigrationWizard extends
 	public static Set<Integer> getSupportedTarDBTypes() {
 		Set<Integer> supportedDBs = new HashSet<Integer>(4);
 		supportedDBs.add(DatabaseType.CUBRID.getID());
-		supportedDBs.add(DatabaseType.GRAPH.getID());
+		supportedDBs.add(DatabaseType.NEO4J.getID());
 		return supportedDBs;
 	}
 

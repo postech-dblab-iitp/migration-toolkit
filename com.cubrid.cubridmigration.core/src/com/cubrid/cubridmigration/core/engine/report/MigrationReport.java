@@ -404,7 +404,7 @@ public class MigrationReport implements
 			vRecMor.setObjType(DBObject.OBJ_GRAPH_TYPE_VERTEX);
 		}
 		for (RecordMigrationResult rs : recMigResults) {
-			if (rs.getSource() == DBObject.OBJ_GRAPH_TYPE_VERTEX) {
+			if (rs.getSource().equals(DBObject.OBJ_GRAPH_TYPE_VERTEX)) {
 				vRecMor.incExpCount(rs.getExpCount());
 				vRecMor.incImpCount(rs.getImpCount());
 				vRecMor.incTotalCount(rs.getTotalCount());
@@ -418,7 +418,7 @@ public class MigrationReport implements
 			eRecMor.setObjType(DBObject.OBJ_GRAPH_TYPE_EDGE);
 		}
 		for (RecordMigrationResult rs : recMigResults) {
-			if (rs.getSource() == DBObject.OBJ_GRAPH_TYPE_EDGE) {
+			if (rs.getSource().equals(DBObject.OBJ_GRAPH_TYPE_EDGE)) {
 				eRecMor.incExpCount(rs.getExpCount());
 				eRecMor.incImpCount(rs.getImpCount());
 				eRecMor.incTotalCount(rs.getTotalCount());

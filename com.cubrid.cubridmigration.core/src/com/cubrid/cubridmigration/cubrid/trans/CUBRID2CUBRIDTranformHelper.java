@@ -184,4 +184,10 @@ public class CUBRID2CUBRIDTranformHelper extends
 		return info;
 	}
 
+	@Override
+	public String getGraphDataType(Column col, MigrationConfiguration cfg) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

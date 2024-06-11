@@ -81,7 +81,7 @@ public class MigrationReportUIController {
 			Messages.colExpCount, Messages.colImpCount, Messages.colFailed, Messages.colProgress};
 
 	public static final String[] TABLE_HEADER_OBJ = new String[] {Messages.colStatus,
-			Messages.colType, Messages.colName, Messages.colDDL, Messages.colError};
+			Messages.colType, Messages.colName, Messages.colSourceDBObject, Messages.colError};
 
 	public static final String[] TABLE_HEADER_DATA = new String[] {Messages.colTableName,
 			Messages.colTotal, Messages.colExpCount, Messages.colExpTime, Messages.colImpCount,

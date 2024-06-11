@@ -40,12 +40,12 @@ public class GraphSchemaFetcher extends AbstractJDBCSchemaFetcher {
 	}
 	
 	public DatabaseType getDBType() {
-		return DatabaseType.GRAPH;
+		return DatabaseType.NEO4J;
 	}
 
 	@Override
 	protected DBExportHelper getExportHelper() {
-		return DatabaseType.GRAPH.getExportHelper();
+		return DatabaseType.NEO4J.getExportHelper();
 	}
 	
 	

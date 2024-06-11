@@ -93,4 +93,10 @@ public class PartitionTable extends
 	public String getDDL() {
 		return "";
 	}
+
+	@Override
+	public String getSourceDBObject() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

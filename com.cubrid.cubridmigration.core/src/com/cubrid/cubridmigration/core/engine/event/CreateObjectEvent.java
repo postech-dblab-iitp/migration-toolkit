@@ -55,7 +55,7 @@ public class CreateObjectEvent extends
 	protected final DBObject dbObject;
 
 	private final boolean isSuccess;
-
+	
 	public DBObject getDbObject() {
 		return dbObject;
 	}

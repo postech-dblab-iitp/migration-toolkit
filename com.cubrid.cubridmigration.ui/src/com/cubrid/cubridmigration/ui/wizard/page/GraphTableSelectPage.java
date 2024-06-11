@@ -435,6 +435,7 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 			} else {
 				vertex.setPK(table.getPk());
 			}
+			vertex.setSourceDBObject();
 			
 			gdbDict.addMigratedVertexList(vertex);
 		}
@@ -462,6 +463,9 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 			startVertex.setHasPK(table.hasPK());
 			startVertex.setPK(table.getPk());
 			Edge edge;
+			
+			startVertex.setSourceDBObject();
+			
 			gdbDict.addMigratedVertexList(startVertex);
 			
 			for (FK fk : table.getFks()) {
@@ -490,6 +494,7 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 							migratedVertex.setOid(selectedTable.getOid());
 							
 							if (gdbDict.getMigratedVertexByName(migratedVertex.getVertexLabel()) != null) {
+								endVertex.setSourceDBObject();
 								gdbDict.addMigratedVertexList(migratedVertex);
 							}
 						}
@@ -518,6 +523,8 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 						edge.addColumn(startCol);
 						edge.addColumn(endCol);
 					}
+					edge.setSourceDBObject();
+					
 					gdbDict.addMigratedEdgeList(edge);
 				}
 			}
@@ -545,7 +552,8 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 			startVertex.setVertexType(Vertex.INTERMEDIATE_TYPE);
 			startVertex.setHasPK(table.hasPK());
 			startVertex.setPK(table.getPk());
-
+			
+			startVertex.setSourceDBObject();
 			gdbDict.addMigratedVertexList(startVertex);
 			
 			Edge edge;
@@ -577,6 +585,9 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 							migratedVertex.setOid(table.getOid());
 							
 							if (gdbDict.getMigratedVertexByName(migratedVertex.getVertexLabel()) != null) {
+								
+								startVertex.setSourceDBObject();
+								
 								gdbDict.addMigratedVertexList(migratedVertex);
 							}
 						}
@@ -606,6 +617,8 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 						edge.addColumn(startCol);
 						edge.addColumn(endCol);
 					}
+					edge.setSourceDBObject();
+					
 					gdbDict.addMigratedEdgeList(edge);
 				}
 			}
@@ -676,7 +689,8 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 				edge.addColumnAtFirst(endCol);
 				edge.addColumnAtFirst(startCol);
 			}
-            
+			edge.setSourceDBObject();
+			
 			gdbDict.addMigratedEdgeList(edge);
 		}
 	}
@@ -737,6 +751,7 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 					edge.addColumn(startCol);
 					edge.addColumn(endCol);
 				}
+				edge.setSourceDBObject();
 				
 				gdbDict.addMigratedEdgeList(edge);
 			}
@@ -744,6 +759,9 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 			Vertex vertex = gdbDict.getMigratedVertexByName(table.getName());
 
 			if (vertex == null) {
+				
+				startVertex.setSourceDBObject();
+				
 				gdbDict.addMigratedVertexList(startVertex);
 			}
 			

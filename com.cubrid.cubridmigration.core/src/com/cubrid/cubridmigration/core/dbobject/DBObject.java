@@ -79,4 +79,6 @@ public abstract class DBObject implements
 	 * @return String DDL
 	 */
 	public abstract String getDDL();
+	
+	public abstract String getSourceDBObject();
 }

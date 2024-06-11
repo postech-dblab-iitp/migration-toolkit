@@ -309,4 +309,10 @@ public class FK extends
 		txtBuffer.append("]").append(")");
 		return txtBuffer.toString();
 	}
+
+	@Override
+	public String getSourceDBObject() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

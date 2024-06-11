@@ -7,8 +7,9 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import com.cubrid.cubridmigration.core.dbobject.Column;
+import com.cubrid.cubridmigration.core.dbobject.DBObject;
 
-public class Edge {
+public class Edge extends DBObject {
     
     public static final int NONE = 0;
     public static final int SECOND_FK_TYPE = 1;
@@ -30,6 +31,9 @@ public class Edge {
 	
 	private String startVertexName;
 	private String endVertexName;
+	private String sourceDBObject;
+
+	String ddl = "-";
 	
 	private List<Column> columnList = new ArrayList<Column>();
 	
@@ -199,5 +203,31 @@ public class Edge {
 
 	public void setOid(long oid) {
 		this.oid = oid;
+	}
+
+	@Override
+	public String getName() {
+		// TODO Auto-generated method stub
+		return edgeLabel;
+	}
+
+	@Override
+	public String getObjType() {
+		// TODO Auto-generated method stub
+		return getEdgeType() == 3 ? "Join Table Edge" : "Edge";
+	}
+
+	@Override
+	public String getDDL() {
+		// TODO Auto-generated method stub
+		return ddl;
+	}
+	
+	public void setSourceDBObject() {
+		this.sourceDBObject = getObjType() + " (" + edgeLabel + ", " + startVertexName + " -> " + endVertexName + ")";
+	}
+	
+	public String getSourceDBObject() {
+		return sourceDBObject;
 	}
 }

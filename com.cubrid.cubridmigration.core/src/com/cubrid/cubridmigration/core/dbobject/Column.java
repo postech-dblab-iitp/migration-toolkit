@@ -485,5 +485,11 @@ public class Column extends
 	public String toString() {
 		return "Column name: " + this.getName() + " | Column type: " + this.getDataType() + "\n";
 	}
+
+	@Override
+	public String getSourceDBObject() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }

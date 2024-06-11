@@ -65,4 +65,10 @@ public class Function extends
 	public String getObjType() {
 		return OBJ_TYPE_FUNCTION;
 	}
+
+	@Override
+	public String getSourceDBObject() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

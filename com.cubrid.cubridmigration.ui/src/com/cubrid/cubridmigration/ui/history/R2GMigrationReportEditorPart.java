@@ -321,7 +321,7 @@ public class R2GMigrationReportEditorPart extends
 		tfReport.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
 		createOverviewPage(tfReport);
-		//createDetailPage(tfReport);
+		createDetailPage(tfReport);
 		//createNonsupportPage(tfReport);
 		createLogPage(tfReport);
 		createConfigSummaryPage();
@@ -470,10 +470,10 @@ public class R2GMigrationReportEditorPart extends
 		MigrationReporter reporter = getReporter();
 		MigrationReport report = reporter.getReport();
 		tvOverview.setInput(report.getGraphOverviewResults());
-		//tvObjDetails.setInput(report.getDbObjectsResult());
-		//tvTableRecords.setInput(report.getRecMigResults());
+		tvObjDetails.setInput(report.getDbObjectsResult());
+		tvTableRecords.setInput(report.getRecMigResults());
 		txtConfigSummary.setText(report.getConfigSummary());
-		//controller.loadNonSupportedObjectText(reporter, noSupportedAppender);
+		controller.loadNonSupportedObjectText(reporter, noSupportedAppender);
 		controller.loadLogText(reporter, logAppender);
 	}
 

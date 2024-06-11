@@ -65,4 +65,10 @@ public class Trigger extends
 	public String getObjType() {
 		return OBJ_TYPE_TRIGGER;
 	}
+
+	@Override
+	public String getSourceDBObject() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

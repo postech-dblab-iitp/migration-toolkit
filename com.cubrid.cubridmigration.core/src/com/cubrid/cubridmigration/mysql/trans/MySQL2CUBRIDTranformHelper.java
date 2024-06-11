@@ -300,4 +300,10 @@ public class MySQL2CUBRIDTranformHelper extends
 		String result = ddl == null ? "" : ddl.replace("`", "\"").replace("`", "\"");
 		return result.replaceAll("\\s*ENGINE\\s*=\\s*\\w+", "");
 	}
+
+	@Override
+	public String getGraphDataType(Column col, MigrationConfiguration cfg) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

@@ -302,7 +302,7 @@ public final class MigrationTemplateHandler extends
 		DatabaseType dbType = DatabaseType.CUBRID;
 		
 		if (isGraphTarget) {
-			dbType = DatabaseType.GRAPH;
+			dbType = DatabaseType.NEO4J;
 		}
 		
 		ConnParameters cp = ConnParameters.getConParam(null,

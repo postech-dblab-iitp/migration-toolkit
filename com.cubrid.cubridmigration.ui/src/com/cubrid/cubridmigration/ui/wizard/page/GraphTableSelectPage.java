@@ -353,9 +353,6 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 		migrateIntermediateVertexes(intermediateVertexesList, gdbDict);
 		migrateJoinTablesEdges(joinTablesEdgesList, gdbDict);
 		
-		gdbDict.setVertexAndEdge();
-		
-//		gdbDict.printVertexAndEdge();
 	}
 	
 	private boolean isRecursive(Table table){

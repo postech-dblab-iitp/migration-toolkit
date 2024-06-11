@@ -372,4 +372,10 @@ public class Table extends
 	public void setOid(long oid) {
 		this.oid = oid;
 	}
+
+	@Override
+	public String getSourceDBObject() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

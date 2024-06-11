@@ -5,10 +5,9 @@ import java.util.List;
 
 import org.eclipse.jface.dialogs.PageChangedEvent;
 import org.eclipse.jface.dialogs.PageChangingEvent;
-import org.eclipse.jface.layout.RowLayoutFactory;
+
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ColumnWeightData;
-import org.eclipse.jface.viewers.ICellModifier;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
@@ -37,7 +36,6 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.zest.core.viewers.EntityConnectionData;
 import org.eclipse.zest.core.viewers.GraphViewer;
 import org.eclipse.zest.core.viewers.IGraphEntityRelationshipContentProvider;
@@ -59,7 +57,6 @@ import com.cubrid.cubridmigration.graph.dbobj.WorkBuffer;
 import com.cubrid.cubridmigration.graph.dbobj.WorkController;
 import com.cubrid.cubridmigration.ui.MigrationUIPlugin;
 import com.cubrid.cubridmigration.ui.message.Messages;
-import com.cubrid.cubridmigration.ui.preference.GraphDataTypeComboBoxCellEditor;
 import com.cubrid.cubridmigration.ui.wizard.MigrationWizard;
 import com.cubrid.cubridmigration.ui.wizard.dialog.GraphEdgeSettingDialog;
 import com.cubrid.cubridmigration.ui.wizard.dialog.GraphRenamingDialog;
@@ -99,10 +96,7 @@ public class GraphMappingPage extends MigrationWizardPage {
 	private Menu popupMenu;
 	Button twoWayBtn;
 	
-	private GraphDataTypeComboBoxCellEditor comboEditor;
-	
 	private String[] columnProperties = {"Property Name", "GDB Types"};
-	private String[] targetTypeList = {"integer", "string", "date", "datetime"};
 	
 	private WorkBuffer workBuffer = new WorkBuffer();
 	private WorkController workCtrl = new WorkController();
@@ -667,67 +661,12 @@ public class GraphMappingPage extends MigrationWizardPage {
 		
 		gdbTable = new TableViewer(rightSash, SWT.FULL_SELECTION);
 		
-		comboEditor = new GraphDataTypeComboBoxCellEditor(gdbTable.getTable(), targetTypeList);
-		
 		CellEditor[] editors = new CellEditor[] {
 				null,
-				comboEditor
+				null,
 		};
 		
 		gdbTable.setCellEditors(editors);
-		gdbTable.setCellModifier(new ICellModifier() {
-			
-			@Override
-			public void modify(Object element, String property, Object value) {
-				// TODO Auto-generated method stub
-				TableItem tabItem = (TableItem) element;
-				Column col = (Column) tabItem.getData();
-			
-				if (value instanceof Integer) {
-					int intVal = (Integer) value;
-					
-					if (intVal == 1) {
-						col.setGraphDataType(targetTypeList[1]);
-					}
-					
-					gdbTable.refresh();
-				}
-			}
-			
-			@Override
-			public Object getValue(Object element, String property) {
-				// TODO Auto-generated method stub
-				if (property.equals(columnProperties[1])){
-					return returnIndex(element);
-				} else {
-					return null;
-				}
-			}
-			
-			@Override
-			public boolean canModify(Object element, String property) {
-				// TODO Auto-generated method stub
-				if (property.equals("GDB Types")){
-					return true;
-				} else {
-					return false;
-				}
-			}
-			
-			public int returnIndex(Object element) {
-				if (element instanceof Column) {
-					Column column = (Column) element;
-					
-					for (int i = 0; i < targetTypeList.length; i++) {
-						if (column.getGraphDataType().equals(targetTypeList[i])) {
-							return i;
-						}
-					}
-				}
-				
-				return 0;
-			}
-		});
 		
 		gdbTable.setContentProvider(new IStructuredContentProvider() {
 			
@@ -878,10 +817,10 @@ public class GraphMappingPage extends MigrationWizardPage {
 		}
 		
 		gdbDict.addMigratedEdgeList(twoWayEdgeList);
-		
+
 		return true;
 	}
-	
+
 	private void executeUndo(Work work) {
 		workCtrl.setWork(work);
 		

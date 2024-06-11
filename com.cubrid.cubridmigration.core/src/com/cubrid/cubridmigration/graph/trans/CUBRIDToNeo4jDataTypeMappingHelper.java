@@ -27,48 +27,52 @@
  * OF SUCH DAMAGE. 
  *
  */
-package com.cubrid.cubridmigration.core.dbobject;
+package com.cubrid.cubridmigration.graph.trans;
+
+import com.cubrid.cubridmigration.core.mapping.AbstractDataTypeMappingHelper;
+import com.cubrid.cubridmigration.cubrid.CUBRIDDataTypeHelper;
 
 /**
+ * CubridDatatypeMapping
  * 
- * Function
- * 
- * @author JessieHuang
- * @version 1.0 - 2009-11-11
+ * @author Kevin.Wang
+ * @version 1.0 - 2011-11-23 created by Kevin.Wang
  */
-public class Function extends
-		DBObject {
+public class CUBRIDToNeo4jDataTypeMappingHelper extends
+		AbstractDataTypeMappingHelper {
 
-	private static final long serialVersionUID = -731781755064899326L;
-	private String name;
-	private String funcDDL;
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getDDL() {
-		return funcDDL;
-	}
-
-	public void setFuncDDL(String funcDDL) {
-		this.funcDDL = funcDDL;
+	/**
+	 * @param databaseTypeID
+	 * @param key
+	 * @param dataTypeMappingFileName
+	 */
+	public CUBRIDToNeo4jDataTypeMappingHelper() {
+		super("CUBRID2Neo4j",
+				"/com/cubrid/cubridmigration/graph/trans/CUBRID2Neo4j.xml");
 	}
 
 	/**
-	 * @return column
+	 * get the mapkey
+	 * 
+	 * @param datatype String
+	 * @param precision String
+	 * @param scale String
+	 * @return key String
 	 */
-	public String getObjType() {
-		return OBJ_TYPE_FUNCTION;
-	}
+	public String getMapKey(String datatype, String precision, String scale) {
+		CUBRIDDataTypeHelper dataTypeHelper = CUBRIDDataTypeHelper.getInstance(null);
+		String outterDataType = dataTypeHelper.getMainDataType(datatype);
+		if (dataTypeHelper.isCollection(outterDataType)) {
+			String innerDataType = dataTypeHelper.getRemain(datatype);
 
-	@Override
-	public String getSourceDBObject() {
-		// TODO Auto-generated method stub
-		return null;
+			if (innerDataType == null) {
+				return dataTypeHelper.getStdMainDataType(outterDataType);
+			} else {
+				return dataTypeHelper.getStdMainDataType(outterDataType) + "("
+						+ dataTypeHelper.getStdMainDataType(innerDataType) + ")";
+			}
+		} else {
+			return dataTypeHelper.getStdMainDataType(outterDataType);
+		}
 	}
 }

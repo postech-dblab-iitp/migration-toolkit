@@ -213,6 +213,7 @@ public class Messages extends
 	public static String colReportFile;
 	public static String colScale;
 	public static String colSourceDataType;
+	public static String colSourceDBObject;
 	public static String colSQLFile;
 	public static String colStartTime;
 	public static String colStatus;

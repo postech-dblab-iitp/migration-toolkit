@@ -63,7 +63,7 @@ public class ObjectMigrationResultTableLabelProvider extends
 		case 2:
 			return rs.getObjName();
 		case 3:
-			return rs.getDdl();
+			return rs.getSourceObj();
 		case 4:
 			return rs.isSucceed() ? MigrationReportEditorPart.EMPTY_CELL_VALUE
 					: (rs.getError() == null ? "Canceled" : rs.getError());

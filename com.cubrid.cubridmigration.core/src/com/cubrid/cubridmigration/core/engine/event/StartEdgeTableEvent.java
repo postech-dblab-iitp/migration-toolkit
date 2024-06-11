@@ -32,11 +32,12 @@ package com.cubrid.cubridmigration.core.engine.event;
 import com.cubrid.cubridmigration.graph.dbobj.Edge;
 
 public class StartEdgeTableEvent extends
-		MigrationEvent {
+		CreateObjectEvent {
 
 	private final Edge edge;
 
 	public StartEdgeTableEvent(Edge e) {
+		super(e);
 		edge = e;
 	}
 

@@ -79,7 +79,9 @@ import com.cubrid.cubridmigration.core.trans.DBTransformHelper;
 import com.cubrid.cubridmigration.core.trans.MigrationTransFactory;
 import com.cubrid.cubridmigration.cubrid.CUBRIDDataTypeHelper;
 import com.cubrid.cubridmigration.cubrid.CUBRIDSQLHelper;
+import com.cubrid.cubridmigration.graph.dbobj.Edge;
 import com.cubrid.cubridmigration.graph.dbobj.GraphDictionary;
+import com.cubrid.cubridmigration.graph.dbobj.Vertex;
 import com.cubrid.cubridmigration.mysql.MysqlXmlDumpSource;
 
 /**
@@ -109,7 +111,7 @@ public class MigrationConfiguration {
 	public static final int SOURCE_TYPE_MYSQL = DatabaseType.MYSQL.getID();
 	public static final int SOURCE_TYPE_ORACLE = DatabaseType.ORACLE.getID();
 	public static final int SOURCE_TYPE_MSSQL = DatabaseType.MSSQL.getID();
-	public static final int SOURCE_TYPE_GRAPH = DatabaseType.GRAPH.getID();
+	public static final int SOURCE_TYPE_GRAPH = DatabaseType.NEO4J.getID();
 	public static final int SOURCE_TYPE_TIBERO= DatabaseType.TIBERO.getID();
 
 	public static final int SOURCE_TYPE_XML_1 = 101;
@@ -784,7 +786,10 @@ public class MigrationConfiguration {
 		expTables.clear();
 		expTables.addAll(tempExpEntryTables);
 		targetTables.clear();
-		targetTables.addAll(tempTarTables.values());
+		
+		if (!(targetIsCSV() || targetIsGraph())) {
+			targetTables.addAll(tempTarTables.values());
+		}
 
 		repareN21MigrationSetting();
 	}
@@ -826,6 +831,8 @@ public class MigrationConfiguration {
 			sccs.add(scc);
 			targetNames.add(scc.getTarget());
 
+			scol.setGraphDataType(getDBTransformHelper().getGraphDataType(scol, this));
+			
 			Column tcol = tarTable.getColumnByName(scc.getTarget());
 			if (tcol == null) {
 				tcol = getDBTransformHelper().getCUBRIDColumn(scol, this);
@@ -2541,8 +2548,11 @@ public class MigrationConfiguration {
 	public DatabaseType getTargetDBType() {
 		if (destType == DEST_ONLINE) {
 			return DatabaseType.CUBRID;
+			
+		} else if (graphSubTypeForCSV == 1) {
+			return DatabaseType.TURBO;
 		} else {
-			return DatabaseType.GRAPH;
+			return DatabaseType.NEO4J;
 		}
 	}
 
@@ -3431,7 +3441,6 @@ public class MigrationConfiguration {
 			clearAll();
 		}
 		this.buildConfigAndTargetSchema(reset);
-
 	}
 
 	/**

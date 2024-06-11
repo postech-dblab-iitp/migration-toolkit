@@ -6,15 +6,15 @@ import com.cubrid.cubridmigration.core.mapping.AbstractDataTypeMappingHelper;
 import com.cubrid.cubridmigration.core.mapping.model.MapObject;
 import com.cubrid.cubridmigration.core.trans.DBTransformHelper;
 
-public class CUBRID2GraphTranformHelper extends DBTransformHelper {
-	public CUBRID2GraphTranformHelper(
+public class CUBRID2TurboTranformHelper extends DBTransformHelper {
+	public CUBRID2TurboTranformHelper(
 			AbstractDataTypeMappingHelper dataTypeMapping,
-			ToGraphDataConverterFacade toNeo4jDataConverterFacade) {
-		super(dataTypeMapping, toNeo4jDataConverterFacade);
+			ToTurboDataConverterFacade toTurboDataConverterFacade) {
+		super(dataTypeMapping, toTurboDataConverterFacade);
 		// TODO Auto-generated constructor stub
 	}
 
-	public ToGraphDataConverterFacade converter;
+	public ToNeo4jDataConverterFacade converter;
 	
 //	public CUBRID2Neo4jTranformHelper (AbstractDataTypeMappingHelper dataTypeMapping) {
 //		this.converter = new ToNeo4jDataConverterFacade();
@@ -27,7 +27,7 @@ public class CUBRID2GraphTranformHelper extends DBTransformHelper {
 		
 	}
 	
-	public String getGraphColumn(Column srcColumn, MigrationConfiguration config) {
+	public String getGraphDataType(Column srcColumn, MigrationConfiguration config) {
 		String srcDataType = srcColumn.getDataType();
 		Integer srcPrecision = srcColumn.getPrecision();
 		Integer srcScale = srcColumn.getScale();

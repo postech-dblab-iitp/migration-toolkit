@@ -19,13 +19,13 @@ import com.cubrid.cubridmigration.core.dbtype.DatabaseType;
 import com.cubrid.cubridmigration.core.trans.MigrationTransFactory;
 import com.cubrid.cubridmigration.ui.message.Messages;
 
-public class CUBRIDToNeo4jTypeMapPage extends
+public class TiberoToNeo4jTypeMapPage extends
 		PreferencePage implements
 		IWorkbenchPreferencePage  {
 
 	private DataTypeMappingComposite container;
 
-	public CUBRIDToNeo4jTypeMapPage() {
+	public TiberoToNeo4jTypeMapPage() {
 		// TODO Auto-generated constructor stub
 		super("CUBRID to Neo4j", null);
 	}
@@ -41,7 +41,7 @@ public class CUBRIDToNeo4jTypeMapPage extends
 		com.setLayout(new GridLayout());
 		com.setLayoutData(new GridData(SWT.FILL));
 		container = new DataTypeMappingComposite(com, MigrationTransFactory.getTransformHelper(
-				DatabaseType.CUBRID, DatabaseType.NEO4J).getDataTypeMappingHelper());
+				DatabaseType.TIBERO, DatabaseType.NEO4J).getDataTypeMappingHelper());
 		return com;
 	}
 
@@ -109,7 +109,7 @@ public class CUBRIDToNeo4jTypeMapPage extends
 			public void widgetSelected(SelectionEvent ev) {
 				FileDialog dialog = new FileDialog(getShell(), SWT.SAVE);
 				dialog.setOverwrite(true);
-				dialog.setFileName("CUBRID2Neo4j.xml");
+				dialog.setFileName("Tibero2Neo4j.xml");
 				dialog.setFilterExtensions(new String[] {"*.xml"});
 				String fn = dialog.open();
 				if (StringUtils.isBlank(fn)) {

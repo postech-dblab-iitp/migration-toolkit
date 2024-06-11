@@ -155,4 +155,10 @@ public class PK extends
 	public void setDDL(String ddl) {
 		this.ddl = ddl;
 	}
+
+	@Override
+	public String getSourceDBObject() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

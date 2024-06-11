@@ -32,11 +32,12 @@ package com.cubrid.cubridmigration.core.engine.event;
 import com.cubrid.cubridmigration.graph.dbobj.Vertex;
 
 public class StartVertexTableEvent extends
-		MigrationEvent {
+		CreateObjectEvent {
 
 	private final Vertex vertex;
 
 	public StartVertexTableEvent(Vertex v) {
+		super(v);
 		vertex = v;
 	}
 

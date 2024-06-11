@@ -81,7 +81,7 @@ public class JDBCConManager implements
 			ConnParameters cp = config.getTargetConParams().clone();
 			IConnHelper chelper;
 			if (config.targetIsGraph()) {
-				chelper = DatabaseType.GRAPH.getConHelper();
+				chelper = DatabaseType.NEO4J.getConHelper();
 			} else {
 				chelper = DatabaseType.CUBRID.getConHelper();
 			}

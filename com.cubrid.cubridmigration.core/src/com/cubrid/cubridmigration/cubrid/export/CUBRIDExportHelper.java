@@ -174,53 +174,10 @@ public class CUBRIDExportHelper extends
 		return buf.toString(); 
 	}
 	
+
+	
 	public String getPagedFkRecords(Edge e, String sql, long rows, long exportedRecords) {
 		StringBuilder buf = new StringBuilder(sql.trim());
-
-		Pattern pattern = Pattern.compile("GROUP\\s+BY", Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
-		Matcher matcher = pattern.matcher(sql); 
-		
-		Pattern pattern2 = Pattern.compile("ORDER\\s+BY", Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
-		Matcher matcher2 = pattern2.matcher(sql);
-		
-//		if (matcher.find()) {
-//			//End with group by 
-//			if (cleanSql.indexOf("HAVING") < 0) {
-//				buf.append(" HAVING ");
-//			} else {
-//				buf.append(" AND ");
-//			}
-//			buf.append(" GROUPBY_NUM() ");
-//		} else if (matcher2.find()) {
-//			//End with order by 
-//			buf.append(" FOR ORDERBY_NUM() ");
-//		} else {
-//			StringBuilder orderby = new StringBuilder();
-//			if (pk != null) {
-//				// if it has a pk, a pk scan is better than full range scan
-//				for (String pkCol : pk.getPkColumns()) {
-//					if (orderby.length() > 0) {
-//						orderby.append(", ");
-//					}
-//					orderby.append("\"").append(pkCol).append("\"");
-//				}
-//			}
-//			if (orderby.length() > 0) {
-//				buf.append(" ORDER BY ");
-//				buf.append(orderby);
-//				buf.append(" FOR ORDERBY_NUM() ");
-//			} else {
-//				if (cleanSql.indexOf("WHERE") < 0) {
-//					buf.append(" WHERE");
-//				} else {
-//					buf.append(" AND");
-//				}
-//				buf.append(" ROWNUM ");
-//			}
-//		}
-
-//		buf.append(" BETWEEN ").append(exportedRecords + 1L);
-//		buf.append(" AND ").append(exportedRecords + rows);
 
 		return buf.toString();
 	}
@@ -277,6 +234,16 @@ public class CUBRIDExportHelper extends
 					}
 					sVertexOrderby.append(pkCol);
 				}
+			} else {
+				for (Column col : e.getStartVertex().getColumnList()) {
+					if (col.getName().equalsIgnoreCase("ID"))
+						continue;
+					
+					if (sVertexOrderby.length() > 0) {
+						sVertexOrderby.append(", ");
+					}
+					sVertexOrderby.append(col.getName());
+				}
 			}
 		}
 		
@@ -297,6 +264,16 @@ public class CUBRIDExportHelper extends
 						eVertexOrderby.append(", ");
 					}
 					eVertexOrderby.append(pkCol);
+				}
+			} else {
+				for (Column col : e.getEndVertex().getColumnList()) {
+					if (col.getName().equalsIgnoreCase("ID"))
+						continue;
+					
+					if (eVertexOrderby.length() > 0) {
+						eVertexOrderby.append(", ");
+					}
+					eVertexOrderby.append(col.getName());
 				}
 			}
 		}
@@ -323,7 +300,7 @@ public class CUBRIDExportHelper extends
 			subQuery1.append("(SELECT "+ startVertexRownumColumnName +" as \":START_ID(" + e.getStartVertexName() + ")\"");
 		
 		if (sVertexOrderby.length() != 0) {
-			subQuery1.append(" ," + sVertexOrderby);
+			subQuery1.append(", " + sVertexOrderby);
 		}
 		
 		if (sVertexOrderby.indexOf(fkCol) == -1) {
@@ -331,14 +308,8 @@ public class CUBRIDExportHelper extends
 		}
 		subQuery1.append(" FROM ");
 		subQuery1.append(e.getStartVertexName());
-//		buffer.append(" order by ");
-//		buffer.append(sVertexOrderby);
-		
-//		if (startVertexName.equals(innerTableName)) {
-//			subQuery1.append(" for orderby_num()");
-//			subQuery1.append(" BETWEEN ").append(exportedCount + 1L);
-//			subQuery1.append(" AND ").append(exportedCount + rows);
-//		}
+		subQuery1.append(" order by ");
+		subQuery1.append(sVertexOrderby);
 		
 		subQuery1.append(") as ");
 		
@@ -352,7 +323,7 @@ public class CUBRIDExportHelper extends
 			subQuery2.append("(SELECT " + endVertexRownumColumnName + " as \":END_ID(" + e.getEndVertexName() + ")\"");
 		
 		if (eVertexOrderby.length() != 0) {
-			subQuery2.append(" ," + eVertexOrderby);
+			subQuery2.append(", " + eVertexOrderby);
 		}
 		
 		if (eVertexOrderby.indexOf(refCol) == -1) {
@@ -360,14 +331,8 @@ public class CUBRIDExportHelper extends
 		}
 		subQuery2.append(" FROM ");
 		subQuery2.append(e.getEndVertexName());
-//		buffer.append(" order by ");
-//		buffer.append(eVertexOrderby);
-		
-//		if (endVertexName.equals(innerTableName)) {
-//			subQuery2.append(" for orderby_num()");
-//			subQuery2.append(" BETWEEN ").append(exportedCount + 1L);
-//			subQuery2.append(" AND ").append(exportedCount + rows);
-//		}
+		subQuery2.append(" order by ");
+		subQuery2.append(eVertexOrderby);
 		
 		subQuery2.append(") as ");
 		
@@ -444,19 +409,22 @@ public class CUBRIDExportHelper extends
 			PK pk = e.getStartVertex().getPK();
 			if (pk != null) {
 				
-//				if (pk.getPkColumns().size() == 1) {
-//					String columnDataType = e.getStartVertex().getColumnByName(pk.getPkColumns().get(0)).getGraphDataType();
-//					if (columnDataType.equalsIgnoreCase("INTEGER")) {
-//						startVertexRownumColumnName = pk.getPkColumns().get(0);
-//					}
-//				}
-				
 				// if it has a pk, a pk scan is better than full range scan
 				for (String pkCol : pk.getPkColumns()) {
 					if (sVertexOrderby.length() > 0) {
 						sVertexOrderby.append(", ");
 					}
 					sVertexOrderby.append(addDoubleQuote(pkCol));
+				}
+			} else {
+				for (Column col : e.getStartVertex().getColumnList()) {
+					if (col.getName().equalsIgnoreCase("ID"))
+						continue;
+					
+					if (sVertexOrderby.length() > 0) {
+						sVertexOrderby.append(", ");
+					}
+					sVertexOrderby.append(col.getName());
 				}
 			}
 		}
@@ -465,19 +433,22 @@ public class CUBRIDExportHelper extends
 			PK pk = e.getEndVertex().getPK();
 			if (pk != null) {
 				
-//				if (pk.getPkColumns().size() == 1) {
-//					String columnDataType = e.getEndVertex().getColumnByName(pk.getPkColumns().get(0)).getGraphDataType();
-//					if (columnDataType.equalsIgnoreCase("INTEGER")) {
-//						endVertexRownumColumnName = pk.getPkColumns().get(0);
-//					}
-//				}
-				
 				// if it has a pk, a pk scan is better than full range scan
 				for (String pkCol : pk.getPkColumns()) {
 					if (eVertexOrderby.length() > 0) {
 						eVertexOrderby.append(", ");
 					}
 					eVertexOrderby.append(addDoubleQuote(pkCol));
+				}
+			} else {
+				for (Column col : e.getEndVertex().getColumnList()) {
+					if (col.getName().equalsIgnoreCase("ID"))
+						continue;
+					
+					if (eVertexOrderby.length() > 0) {
+						eVertexOrderby.append(", ");
+					}
+					eVertexOrderby.append(col.getName());
 				}
 			}
 		}
@@ -569,9 +540,6 @@ public class CUBRIDExportHelper extends
 			
 			if (innerTableName.equalsIgnoreCase(startVertexName)) {
 				buffer.append(" order by " + sVertexOrderby);
-//				buffer.append(" for orderby_num()");
-//				buffer.append(" between ").append(innerTotalExport + 1L);
-//				buffer.append(" and ").append(innerTotalExport + pageCount);
 			}
 			
 			buffer.append(") as " + dupStartVertexName + ", (SELECT " + endVertexRownumColumnName + " as " + endIdCol + ", ");
@@ -586,9 +554,6 @@ public class CUBRIDExportHelper extends
 			
 			if (innerTableName.equalsIgnoreCase(endVertexName)) {
 				buffer.append(" order by " + eVertexOrderby);
-//				buffer.append(" for orderby_num()");
-//				buffer.append(" between ").append(innerTotalExport + 1L);
-//				buffer.append(" and ").append(innerTotalExport + pageCount);
 			}
 			
 			buffer.append(") as " + dupEndVertexName);
@@ -634,64 +599,67 @@ public class CUBRIDExportHelper extends
 		return editString;
 	}
 	
+	public String getPagedSelectSQLForVertexCSV(Vertex v, String sql, long rows, long exportedRecords, PK pk) {
+		String cleanSql = sql.toUpperCase().trim();
+		int pkCount = 0;
+		
+		if (pk != null) {
+			pkCount = pk.getPkColumns().size();
+		} else {
+			pkCount = 0;
+		}
+		
+		String editedQuery = editQueryForVertexCSV(v, sql, pkCount);
+		
+		StringBuilder buf = new StringBuilder(editedQuery);
+		
+		StringBuilder orderBy = new StringBuilder();
+		if (pk != null) {
+			// if it has a pk, a pk scan is better than full range scan
+			for (String pkCol : pk.getPkColumns()) {
+				if (orderBy.length() > 0) {
+					orderBy.append(", ");
+				}
+				orderBy.append("\"").append(pkCol).append("\"");
+			}
+			
+			buf.append(orderBy);
+		} else {
+			for (Column col : v.getColumnList()) {
+				if (col.getName().equals("ID")) 
+					continue;
+				
+				if (orderBy.length() > 0)
+					orderBy.append(", ");
+				
+				orderBy.append("\"").append(col.getName()).append("\"");
+			}
+			
+			buf.append(orderBy);
+		}
+
+		return buf.toString().trim(); 
+	}
+	
+	private String editQueryForVertexCSV(Vertex v, String sql, int pkCount) {
+		Pattern selectPattern = Pattern.compile("SELECT\\s", Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
+		Matcher selectMatcher = selectPattern.matcher(sql);
+		
+		String vertexIdColumnValue = "ROWNUM";
+		
+		if (selectMatcher.find()) {
+			StringBuffer buffer = new StringBuffer("SELECT " + vertexIdColumnValue + " as ");
+			
+			sql = selectMatcher.replaceFirst(buffer.toString());
+		}
+		
+		StringBuffer orderByBuffer = new StringBuffer();
+		
+		return sql + " ORDER BY ";
+	}
 	
 	public String getPagedSelectSQLForEdgeCSV(Edge e, String sql, long rows, long exportedRecords, PK pk, boolean hasMultiSchema) {
 		StringBuilder buf = new StringBuilder(sql.trim());
-
-		Pattern pattern = Pattern.compile("GROUP\\s+BY", Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
-		Matcher matcher = pattern.matcher(sql); 
-		
-		Pattern pattern2 = Pattern.compile("ORDER\\s+BY", Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
-		Matcher matcher2 = pattern2.matcher(sql);
-		
-		Pattern pattern3 = Pattern.compile("FOR ORDERBY_NUM\\(\\)", Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
-		Matcher matcher3 = pattern3.matcher(sql);
-		
-//		if (matcher.find()) {
-//			//End with group by 
-//			if (sql.indexOf("HAVING") < 0) {
-//				buf.append(" HAVING ");
-//			} else {
-//				buf.append(" AND ");
-//			}
-//			buf.append(" GROUPBY_NUM() ");
-//		} else if (matcher2.find()) {
-//			//End with order by 
-//			buf.append(" FOR ORDERBY_NUM() ");
-//		} else {
-//			StringBuilder orderby = new StringBuilder();
-//			if (pk != null) {
-//				// if it has a pk, a pk scan is better than full range scan
-//				for (String pkCol : pk.getPkColumns()) {
-//					if (orderby.length() > 0) {
-//						orderby.append(", ");
-//					}
-//					orderby.append("\"").append(pkCol).append("\"");
-//				}
-//			}
-//			if (orderby.length() > 0) {
-//				buf.append(" ORDER BY ");
-//				buf.append(orderby);
-//				buf.append(" FOR ORDERBY_NUM() ");
-//			} else {
-//				if (sql.indexOf("WHERE") < 0) {
-//					buf.append(" WHERE");
-//				} else {
-//					buf.append(" AND");
-//				}
-//				buf.append(" ROWNUM ");
-//			}
-//		}
-
-//		buf.append(" BETWEEN ").append(exportedRecords + 1L);
-//		buf.append(" AND ").append(exportedRecords + rows);
-
-//		buf.append(" LIMIT ").append(rows);
-//		buf.append(" OFFSET ").append(exportedRecords);
-		
-//		if (hasMultiSchema && matcher3.find()) {
-//			return buf.toString().replaceAll("for orderby_num\\(\\)", "");
-//		}
 		
 		return buf.toString();
 	}

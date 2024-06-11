@@ -89,28 +89,35 @@ public final class ToCUBRIDDataConverterFacade implements
 				new BigIntConverter());
 		converterMap.put(DataTypeConstant.CUBRID_DT_NUMERIC,
 				new NumericConverter());
-		converterMap.put(DataTypeConstant.CUBRID_DT_FLOAT, new FloatConverter());
+		converterMap.put(DataTypeConstant.CUBRID_DT_FLOAT, 
+				new FloatConverter());
 		converterMap.put(DataTypeConstant.CUBRID_DT_DOUBLE,
 				new DoubleConverter());
 		converterMap.put(DataTypeConstant.CUBRID_DT_MONETARY,
 				new DoubleConverter());
 
-		converterMap.put(DataTypeConstant.CUBRID_DT_CHAR, new CharConverter());
+		converterMap.put(DataTypeConstant.CUBRID_DT_CHAR, 
+				new CharConverter());
 		converterMap.put(DataTypeConstant.CUBRID_DT_VARCHAR,
 				new CharConverter());
-		converterMap.put(DataTypeConstant.CUBRID_DT_NCHAR, new CharConverter());
+		converterMap.put(DataTypeConstant.CUBRID_DT_NCHAR, 
+				new CharConverter());
 		converterMap.put(DataTypeConstant.CUBRID_DT_NVARCHAR,
 				new CharConverter());
 
-		converterMap.put(DataTypeConstant.CUBRID_DT_TIME, new TimeConverter());
-		converterMap.put(DataTypeConstant.CUBRID_DT_DATE, new DateConverter());
+		converterMap.put(DataTypeConstant.CUBRID_DT_TIME, 
+				new TimeConverter());
+		converterMap.put(DataTypeConstant.CUBRID_DT_DATE, 
+				new DateConverter());
 		converterMap.put(DataTypeConstant.CUBRID_DT_TIMESTAMP,
 				new TimeStampConverter());
 		converterMap.put(DataTypeConstant.CUBRID_DT_DATETIME,
 				new DateTimeConverter());
 
-		converterMap.put(DataTypeConstant.CUBRID_DT_BIT, new BitConverter());
-		converterMap.put(DataTypeConstant.CUBRID_DT_VARBIT, new BitConverter());
+		converterMap.put(DataTypeConstant.CUBRID_DT_BIT, 
+				new BitConverter());
+		converterMap.put(DataTypeConstant.CUBRID_DT_VARBIT, 
+				new BitConverter());
 
 		//converterMap.put(DataTypeConstant.CUBRID_DT_GLO, new GLOConverter());
 		converterMap.put(DataTypeConstant.CUBRID_DT_CLOB, new ClobConverter());

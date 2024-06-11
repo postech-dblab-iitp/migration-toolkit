@@ -29,8 +29,13 @@
  */
 package com.cubrid.cubridmigration.graph.trans;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+
+import com.cubrid.cubridmigration.core.common.log.LogUtil;
 import com.cubrid.cubridmigration.core.mapping.AbstractDataTypeMappingHelper;
 import com.cubrid.cubridmigration.cubrid.CUBRIDDataTypeHelper;
+import com.cubrid.cubridmigration.oracle.OracleDataTypeHelper;
 
 /**
  * CubridDatatypeMapping
@@ -38,17 +43,18 @@ import com.cubrid.cubridmigration.cubrid.CUBRIDDataTypeHelper;
  * @author Kevin.Wang
  * @version 1.0 - 2011-11-23 created by Kevin.Wang
  */
-public class GraphDataTypeMappingHelper extends
+public class TiberoToNeo4jDataTypeMappingHelper extends
 		AbstractDataTypeMappingHelper {
-
+	private static final Logger LOG = LogUtil.getLogger(AbstractDataTypeMappingHelper.class);
+	
 	/**
 	 * @param databaseTypeID
 	 * @param key
 	 * @param dataTypeMappingFileName
 	 */
-	public GraphDataTypeMappingHelper() {
-		super("CUBRID2Neo4j",
-				"/com/cubrid/cubridmigration/graph/trans/CUBRID2Neo4j.xml");
+	public TiberoToNeo4jDataTypeMappingHelper() {
+		super("Tibero2Neo4j",
+				"/com/cubrid/cubridmigration/graph/trans/Tibero2Neo4j.xml");
 	}
 
 	/**
@@ -60,19 +66,75 @@ public class GraphDataTypeMappingHelper extends
 	 * @return key String
 	 */
 	public String getMapKey(String datatype, String precision, String scale) {
-		CUBRIDDataTypeHelper dataTypeHelper = CUBRIDDataTypeHelper.getInstance(null);
-		String outterDataType = dataTypeHelper.getMainDataType(datatype);
-		if (dataTypeHelper.isCollection(outterDataType)) {
-			String innerDataType = dataTypeHelper.getRemain(datatype);
+		String dataTypeUpper = datatype;
+//		if ("NUMBER".equals(dataTypeUpper)) {
+//			return getNumberMapKey(dataTypeUpper, precision);
+//		} else if (dataTypeUpper.matches("INTERVAL DAY\\(\\d*\\) TO SECOND\\(\\d*\\)")) {
+//			return "INTERVAL DAY TO SECOND";
+//		} else if (dataTypeUpper.matches("INTERVAL YEAR\\(\\d*\\) TO MONTH")) {
+//			return "INTERVAL YEAR TO MONTH";
+//		} else {
+//			return OracleDataTypeHelper.getOracleDataTypeKey(dataTypeUpper);
+//		}
+		return OracleDataTypeHelper.getOracleDataTypeKey(dataTypeUpper);
+	}
+	
+	/**
+	 * get the number type map key
+	 * 
+	 * @param dataTypeUpper String
+	 * @param precision String
+	 * @return key String
+	 */
+	private String getNumberMapKey(String dataTypeUpper, String precision) {
+		String tempPre = null;
+		String tempScale = null;
 
-			if (innerDataType == null) {
-				return dataTypeHelper.getStdMainDataType(outterDataType);
-			} else {
-				return dataTypeHelper.getStdMainDataType(outterDataType) + "("
-						+ dataTypeHelper.getStdMainDataType(innerDataType) + ")";
-			}
+		if ("p".equalsIgnoreCase(precision)) {
+			tempPre = "p";
+			tempScale = "s";
 		} else {
-			return dataTypeHelper.getStdMainDataType(outterDataType);
+			Integer intPrecision = str2Integer(precision);
+			if (intPrecision != null && intPrecision > 0) {
+				tempPre = "p";
+				tempScale = "s";
+			}
+
 		}
+
+		StringBuffer sb = new StringBuffer();
+		sb.append(dataTypeUpper);
+		sb.append(MAP_KEY_SEPARATOR);
+
+		if (tempPre != null) {
+			sb.append(tempPre);
+		}
+		sb.append(MAP_KEY_SEPARATOR);
+
+		if (tempScale != null) {
+			sb.append(tempScale);
+		}
+
+		return sb.toString();
+	}
+
+	/**
+	 * 
+	 * convert the string to integer
+	 * 
+	 * @param str String
+	 * @return value Integer
+	 */
+	private Integer str2Integer(String str) {
+		if (StringUtils.isBlank(str)) {
+			return null;
+		}
+		Integer value = null;
+		try {
+			value = Integer.parseInt(str);
+		} catch (Exception ex) {
+			LOG.info(("Can convert String to Integer:" + str + ex.getMessage()));
+		}
+		return value;
 	}
 }

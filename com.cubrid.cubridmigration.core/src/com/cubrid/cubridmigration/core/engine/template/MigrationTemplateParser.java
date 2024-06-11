@@ -402,10 +402,16 @@ public final class MigrationTemplateParser {
 			
 			PK pk = vertex.getPK();
 			
-			for (String pkCol : pk.getPkColumns()) {
+			if (pk != null) {
+				for (String pkCol : pk.getPkColumns()) {
+					Element pkProperty = createElement(doc, pkElement, "pk");
+					
+					pkProperty.setAttribute("col_name", pkCol);
+				}
+			} else {
 				Element pkProperty = createElement(doc, pkElement, "pk");
 				
-				pkProperty.setAttribute("col_name", pkCol);
+				pkProperty.setAttribute("col_name", "");
 			}
 		}
 	}

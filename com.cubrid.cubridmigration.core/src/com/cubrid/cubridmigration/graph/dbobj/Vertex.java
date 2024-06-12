@@ -207,7 +207,10 @@ public class Vertex extends DBObject {
 	}
 	
 	public void setSourceDBObject() {
-		this.sourceDBObject = "table (" + owner + "." + tableName + ")";
+		if (owner == null || owner.isEmpty()) 
+			this.sourceDBObject = "table (" + tableName + ")";
+		else
+			this.sourceDBObject = "table (" + owner + "." + tableName + ")";
 	}
 	
 	public String getSourceDBObject() {

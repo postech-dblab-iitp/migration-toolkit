@@ -280,13 +280,13 @@ public class CUBRIDExportHelper extends
 		
 		StringBuffer buffer = new StringBuffer();
 		
+		buffer.append("SELECT /*+ use_merge */ ");
+		
 		if (e.getEdgeType() == Edge.TWO_WAY_TYPE) {
-			buffer.append("SELECT /*+ use_merge */ ");
-			buffer.append(startVertexName + ".\":END_ID(" + e.getStartVertexName() + ")\"");
+			buffer.append(endVertexName + ".\":END_ID(" + e.getEndVertexName() + ")\"");
 			buffer.append(", ");
-			buffer.append(endVertexName + ".\":START_ID(" + e.getEndVertexName() + ")\"");
+			buffer.append(startVertexName + ".\":START_ID(" + e.getStartVertexName() + ")\"");
 		} else {
-			buffer.append("SELECT /*+ use_merge */ ");
 			buffer.append(startVertexName + ".\":START_ID(" + e.getStartVertexName() + ")\"");
 			buffer.append(", ");
 			buffer.append(endVertexName + ".\":END_ID(" + e.getEndVertexName() + ")\"");
@@ -295,7 +295,7 @@ public class CUBRIDExportHelper extends
 		buffer.append(" FROM ");
 		
 		if (e.getEdgeType() == Edge.TWO_WAY_TYPE) 
-			subQuery1.append("(SELECT "+ startVertexRownumColumnName +" as \":END_ID(" + e.getStartVertexName() + ")\"");
+			subQuery1.append("(SELECT "+ startVertexRownumColumnName +" as \":START_ID(" + e.getStartVertexName() + ")\"");
 		else 
 			subQuery1.append("(SELECT "+ startVertexRownumColumnName +" as \":START_ID(" + e.getStartVertexName() + ")\"");
 		
@@ -318,7 +318,7 @@ public class CUBRIDExportHelper extends
 //		buffer.append(", ");
 		
 		if (e.getEdgeType() == Edge.TWO_WAY_TYPE) 
-			subQuery2.append("(SELECT " + endVertexRownumColumnName + " as \":START_ID(" + e.getEndVertexName() + ")\"");
+			subQuery2.append("(SELECT " + endVertexRownumColumnName + " as \":END_ID(" + e.getEndVertexName() + ")\"");
 		else
 			subQuery2.append("(SELECT " + endVertexRownumColumnName + " as \":END_ID(" + e.getEndVertexName() + ")\"");
 		
@@ -381,8 +381,8 @@ public class CUBRIDExportHelper extends
 		String endIdCol;
 		
 		if (e.getEdgeType() == Edge.JOIN_TWO_WAY_TYPE) {
-			startIdCol = "\":END_ID(" + e.getStartVertexName().toUpperCase() + ")\"";
-			endIdCol = "\":START_ID(" + e.getEndVertexName().toUpperCase() + ")\"";
+			endIdCol = "\":END_ID(" + e.getEndVertexName().toUpperCase() + ")\"";
+			startIdCol = "\":START_ID(" + e.getStartVertexName().toUpperCase() + ")\"";
 		} else {
 			startIdCol = "\":START_ID(" + e.getStartVertexName().toUpperCase() + ")\"";
 			endIdCol = "\":END_ID(" + e.getEndVertexName().toUpperCase() + ")\"";
@@ -464,25 +464,25 @@ public class CUBRIDExportHelper extends
 			editString = startVertexIdMatcher.replaceFirst(column);
 		}
 		
-		if (e.getEdgeType() == Edge.JOIN_TWO_WAY_TYPE) {
-			Pattern startIdPattern = Pattern.compile("\":START_ID", Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
-			Matcher startIdMatcher = startIdPattern.matcher(editString);
-			
-			if (startIdMatcher.find()) {
-				String startId = dupEndVertexName + ".\":START_ID";
-				
-				editString = startIdMatcher.replaceFirst(startId);
-			}
-			
-			Pattern endIdPattern = Pattern.compile("\":END_ID", Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);;
-			Matcher endIdMatcher = endIdPattern.matcher(editString);
-			
-			if (endIdMatcher.find()) {
-				String endId = dupStartVertexName + ".\":END_ID";
-				
-				editString = endIdMatcher.replaceFirst(endId);
-			}
-		} else {
+//		if (e.getEdgeType() == Edge.JOIN_TWO_WAY_TYPE) {
+//			Pattern startIdPattern = Pattern.compile("\":START_ID", Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
+//			Matcher startIdMatcher = startIdPattern.matcher(editString);
+//			
+//			if (startIdMatcher.find()) {
+//				String startId = dupEndVertexName + ".\":START_ID";
+//				
+//				editString = startIdMatcher.replaceFirst(startId);
+//			}
+//			
+//			Pattern endIdPattern = Pattern.compile("\":END_ID", Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);;
+//			Matcher endIdMatcher = endIdPattern.matcher(editString);
+//			
+//			if (endIdMatcher.find()) {
+//				String endId = dupStartVertexName + ".\":END_ID";
+//				
+//				editString = endIdMatcher.replaceFirst(endId);
+//			}
+//		} else {
 			Pattern startIdPattern = Pattern.compile("\":START_ID", Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
 			Matcher startIdMatcher = startIdPattern.matcher(editString);
 			
@@ -500,8 +500,6 @@ public class CUBRIDExportHelper extends
 				
 				editString = endIdMatcher.replaceFirst(endId);
 			}
-		}
-		
 		
 		Pattern endVertexIdPattern = Pattern.compile(addDoubleQuote(refColList.get(1)), Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
 		Matcher endVertexIdMatcher = endVertexIdPattern.matcher(editString);

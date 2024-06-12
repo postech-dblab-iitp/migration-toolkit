@@ -776,7 +776,6 @@ public class GraphMappingPage extends MigrationWizardPage {
 		showGraphData(gdbDict.getMigratedVertexList());
 	}
 	
-	@Override
 	protected void handlePageLeaving(PageChangingEvent event) {
 		if (!isPageComplete()) {
 			return;
@@ -785,6 +784,8 @@ public class GraphMappingPage extends MigrationWizardPage {
 		if (twoWayBtn.getSelection()) {
 			event.doit = setTwoWayEdge();
 		}
+		
+		gdbDict.setVertexAndEdge();
 	}
 	
 	private boolean setTwoWayEdge() {
@@ -804,10 +805,10 @@ public class GraphMappingPage extends MigrationWizardPage {
 			copiedEdge.setEdgeType(edgeType);
 			copiedEdge.removeIDCol();
 			
-			Column twoWayStartCol = new Column(":END_ID(" + copiedEdge.getStartVertexName() + ")");
+			Column twoWayStartCol = new Column(":END_ID(" + copiedEdge.getEndVertexName() + ")");
 			twoWayStartCol.setDataType("ID");
 			
-			Column twoWayEndCol = new Column(":START_ID(" + copiedEdge.getEndVertexName() + ")");
+			Column twoWayEndCol = new Column(":START_ID(" + copiedEdge.getStartVertexName() + ")");
 			twoWayEndCol.setDataType("ID");
 			
 			copiedEdge.addColumnAtFirst(twoWayEndCol);

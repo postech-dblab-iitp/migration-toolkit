@@ -339,11 +339,19 @@ public class Column extends
 	}
 
 	public void setPrecision(Integer precision) {
-		this.precision = precision;
+		if (precision == null) {
+			this.precision = 38;
+		} else {
+			this.precision = precision;
+		}
 	}
 
 	public void setScale(Integer scale) {
-		this.scale = scale;
+		if (scale == null) {
+			this.scale = 0;
+		} else {			
+			this.scale = scale;
+		}
 	}
 
 	public void setShared(boolean shared) {

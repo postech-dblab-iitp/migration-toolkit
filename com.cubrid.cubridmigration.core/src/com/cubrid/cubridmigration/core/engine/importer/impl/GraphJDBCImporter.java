@@ -369,7 +369,13 @@ public class GraphJDBCImporter extends
 		buf.append(" where ");
 		buf.append("n.").append(e.getFKColumnNames().get(idx)).append(" = ");
 		buf.append("m.").append(e.getREFColumnNames(e.getFKColumnNames().get(idx))).append(" ");
-		buf.append("create (n)-[r:").append(e.getEdgeLabel()).append("]->(m) return count(r)");
+		
+		if (e.getEdgeType() == Edge.TWO_WAY_TYPE) {
+			buf.append("create (m)-[r:").append(e.getEdgeLabel()).append("]->(n) return count(r)");
+		} else {
+			buf.append("create (n)-[r:").append(e.getEdgeLabel()).append("]->(m) return count(r)");
+		}
+		
 		
 		return buf.toString();
 	}

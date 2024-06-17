@@ -805,14 +805,16 @@ public class GraphMappingPage extends MigrationWizardPage {
 			copiedEdge.setEdgeType(edgeType);
 			copiedEdge.removeIDCol();
 			
-			Column twoWayStartCol = new Column(":END_ID(" + copiedEdge.getEndVertexName() + ")");
-			twoWayStartCol.setDataType("ID");
-			
-			Column twoWayEndCol = new Column(":START_ID(" + copiedEdge.getStartVertexName() + ")");
-			twoWayEndCol.setDataType("ID");
-			
-			copiedEdge.addColumnAtFirst(twoWayEndCol);
-			copiedEdge.addColumnAtFirst(twoWayStartCol);
+			if (mConfig.targetIsCSV()) {
+				Column twoWayStartCol = new Column(":END_ID(" + copiedEdge.getEndVertexName() + ")");
+				twoWayStartCol.setDataType("ID");
+				
+				Column twoWayEndCol = new Column(":START_ID(" + copiedEdge.getStartVertexName() + ")");
+				twoWayEndCol.setDataType("ID");
+				
+				copiedEdge.addColumnAtFirst(twoWayEndCol);
+				copiedEdge.addColumnAtFirst(twoWayStartCol);
+			}
 			
 			twoWayEdgeList.add(copiedEdge);
 		}

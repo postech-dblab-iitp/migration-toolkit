@@ -55,6 +55,10 @@ public class GraphDataTypeComboBoxCellEditor extends ComboBoxCellEditor {
 			
 			return types;
 			
+		} else if (type.equals("string")) {
+			types.add("string");
+			return types;
+			
 		} else {
 			types.add(type);
 			types.add("string");

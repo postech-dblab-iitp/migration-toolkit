@@ -795,9 +795,6 @@ public class GraphMappingPage extends MigrationWizardPage {
 		for (Edge edge : edgeList) {
 			int edgeType = Edge.TWO_WAY_TYPE;
 			
-			if (edge.getEdgeType() == Edge.RECURSIVE_TYPE)
-				continue;
-			
 			if (edge.getEdgeType() == Edge.JOINTABLE_TYPE)
 				edgeType = Edge.JOIN_TWO_WAY_TYPE;
 			

@@ -438,15 +438,20 @@ public class Column extends
 	public String getCSVGraphDataType(int graphType) {
 		int tPrecition = 0;
 		int tScale = 0;
-		if (graphDataType.equals("number") || 
-				graphDataType.equals("numeric") || 
-				graphDataType.equals("decimal")) {
+		if (graphDataType.equalsIgnoreCase("number") || 
+				graphDataType.equalsIgnoreCase("numeric") || 
+				graphDataType.equalsIgnoreCase("decimal")) {
 			tPrecition = this.precision;
 			tScale = this.scale;
-		} else if (graphDataType.equals("float")){
+			
+			if (tPrecition == 38 && tScale == 0) {
+				return "INT";
+			}
+			
+		} else if (graphDataType.equalsIgnoreCase("float")){
 			tPrecition = 15;
 			tScale = 7;
-		} else if (graphDataType.equals("double")){
+		} else if (graphDataType.equalsIgnoreCase("double")){
 			tPrecition = 15;
 			tScale = 15;
 		}

@@ -228,6 +228,10 @@ public class Edge extends DBObject {
 	}
 	
 	public String getSourceDBObject() {
+		if (sourceDBObject == null || sourceDBObject.isEmpty()) {
+			setSourceDBObject();
+		}
+		
 		return sourceDBObject;
 	}
 }

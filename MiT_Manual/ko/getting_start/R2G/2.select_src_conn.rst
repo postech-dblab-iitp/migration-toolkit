@@ -8,7 +8,7 @@
 
 원본DB의 connection을 관리한다.
 
-.. image:: image/select_src_conn_page.png
+.. image:: ./image/select_src_conn_page.png
 
 미리 생성된 연결을 선택하거나 유효한 연결을 새로 생성하여 선택한 뒤 대상DB 선택 페이지로 진행할 수 있다.
 
@@ -18,7 +18,7 @@
 
 connection을 생성한다
 
-.. image:: image/select_src_conn_page_create_conn.png
+.. image:: ./image/select_src_conn_page_create_conn.png
 
 ------------------
 데이터베이스 종류
@@ -88,7 +88,7 @@ JDBC 고급 설정
 
 JDBC URL을 커스텀 할 수 있다. 만약 DB연결시 parameter가 필요할 경우 해당 옵션에서 사용할 수 있다.
 
-.. image:: image/select_src_custom_url.png
+.. image:: ./image/select_src_custom_url.png
 
 ========================
 테스트
@@ -96,4 +96,4 @@ JDBC URL을 커스텀 할 수 있다. 만약 DB연결시 parameter가 필요할 
 
 입력된 정보를 통해 연결을 테스트한다. 
 
-.. image:: image/select_conn_test.png
+.. image:: ./image/select_conn_test.png

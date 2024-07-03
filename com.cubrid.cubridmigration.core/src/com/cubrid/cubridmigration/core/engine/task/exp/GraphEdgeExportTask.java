@@ -58,7 +58,7 @@ public class GraphEdgeExportTask extends
 		exporter.exportGraphEdgeRecords(edge, new RecordExportedListener() {
 			public void processRecords(String sourceTableName, List<Record> records) {
 				int reccordCount = 0;
-				if (edge.getEdgeType() == Edge.JOINTABLE_TYPE) {
+				if (edge.getEdgeType() == Edge.JOINTABLE_TYPE && edge.getEdgeType() == Edge.JOIN_TWO_WAY_TYPE) {
 					reccordCount = records.size();
 					eventHandler.handleEvent(new ExportGraphRecordEvent(edge, reccordCount));
 				} 

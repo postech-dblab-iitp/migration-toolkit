@@ -1109,8 +1109,8 @@ public abstract class DBExportHelper implements
 	 */
 	
 	protected String getInnerTable(Connection conn, Edge e) {
-		String startTableName = e.getStartVertex().getVertexLabel();
-		String endTableName = e.getEndVertex().getVertexLabel();
+		String startTableName = e.getStartVertexName();
+		String endTableName = e.getEndVertexName();
 		String returnString = null;
 		
 		PreparedStatement stmt1 = null;

@@ -27,6 +27,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
@@ -95,13 +96,13 @@ public class GraphMappingPage extends MigrationWizardPage {
 	private TableViewer rdbTable;
 	
 	private Menu popupMenu;
+	Button twoWayBtn;
 	
 	private GraphDataTypeComboBoxCellEditor comboEditor;
 	
 	private String[] columnProperties = {"Property Name", "GDB Types"};
 	private String[] targetTypeList = {"integer", "string", "date", "datetime"};
 	
-	// TODO undo, redo
 	private WorkBuffer workBuffer = new WorkBuffer();
 	private WorkController workCtrl = new WorkController();
 	
@@ -117,7 +118,7 @@ public class GraphMappingPage extends MigrationWizardPage {
 		Composite container = new Composite(parent, SWT.NONE);
 		container.setLayout(new FillLayout());
 		container.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		
+
 		SashForm sash = new SashForm(container, SWT.HORIZONTAL);
 		sash.setLayout(new FillLayout());
 		sash.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
@@ -540,9 +541,24 @@ public class GraphMappingPage extends MigrationWizardPage {
 	}
 	
 	public void createTableView(Composite parent) {
-		SashForm sashContainer = new SashForm(parent, SWT.HORIZONTAL);
+		
+		SashForm verticalSash = new SashForm(parent, SWT.VERTICAL);
+		verticalSash.setLayout(new GridLayout(4, false));
+		verticalSash.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
+		
+		SashForm sashContainer = new SashForm(verticalSash, SWT.HORIZONTAL);
 		sashContainer.setLayout(new FillLayout());
 		sashContainer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		
+		SashForm btnContiainer = new SashForm(verticalSash, SWT.VERTICAL);
+		sashContainer.setLayout(new FillLayout());
+		sashContainer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
+		
+		twoWayBtn = new Button(btnContiainer, SWT.CHECK);
+		twoWayBtn.setText("set two-way edge");
+		
+		verticalSash.setWeights(new int[] {15, 1});
+		verticalSash.setSashWidth(1);
 		
 		Group leftSash = new Group(sashContainer, SWT.NONE);
 		leftSash.setLayout(new FillLayout());
@@ -824,17 +840,48 @@ public class GraphMappingPage extends MigrationWizardPage {
 	protected void handlePageLeaving(PageChangingEvent event) {
 		if (!isPageComplete()) {
 			return;
-		} if (isGotoNextPage(event)) {
-			event.doit = save();
 		}
+		
+		if (twoWayBtn.getSelection()) {
+			event.doit = setTwoWayEdge();
+		}
+		
+		gdbDict.setVertexAndEdge();
 	}
 	
-	private boolean save() {
-		gdbDict.setVertexAndEdge();
+	private boolean setTwoWayEdge() {
+		List<Edge> edgeList = gdbDict.getMigratedEdgeList();
+		List<Edge> twoWayEdgeList = new ArrayList<Edge>();
 		
+		for (Edge edge : edgeList) {
+			int edgeType = Edge.TWO_WAY_TYPE;
+			
+			if (edge.getEdgeType() == Edge.JOINTABLE_TYPE)
+				edgeType = Edge.JOIN_TWO_WAY_TYPE;
+			
+			Edge copiedEdge = new Edge(edge);
+			copiedEdge.setEdgeType(edgeType);
+			copiedEdge.removeIDCol();
+			
+			if (mConfig.targetIsCSV()) {
+				Column twoWayStartCol = new Column(":END_ID(" + copiedEdge.getEndVertexName() + ")");
+				twoWayStartCol.setDataType("ID");
+				
+				Column twoWayEndCol = new Column(":START_ID(" + copiedEdge.getStartVertexName() + ")");
+				twoWayEndCol.setDataType("ID");
+				
+				copiedEdge.addColumnAtFirst(twoWayEndCol);
+				copiedEdge.addColumnAtFirst(twoWayStartCol);
+			}
+			
+			twoWayEdgeList.add(copiedEdge);
+		}
+		
+		gdbDict.addMigratedEdgeList(twoWayEdgeList);
+
 		return true;
 	}
-	
+
 	private void executeUndo(Work work) {
 		workCtrl.setWork(work);
 		

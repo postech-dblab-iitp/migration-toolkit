@@ -94,6 +94,12 @@
             name="Tibero&gt;&gt;Turbo">
       </page>
       <page
+            category="com.cubrid.cubridmigration.ui.preference.MigrationConfigPage"
+            class="com.cubrid.cubridmigration.ui.preference.Neo4jToCUBRIDTypeMapPage"
+            id="com.cubrid.cubridmigration.ui.preference.Neo4jToCUBRIDTypeMapPage"
+            name="Neo4j&gt;&gt;CUBRID">
+      </page>
+      <page
             class="com.cubrid.cubridmigration.ui.preference.JDBCDriverManagePage"
             id="com.cubrid.cubridmigration.ui.preference.JDBCDriverManagePage"
             name="%JDBCDrivers">

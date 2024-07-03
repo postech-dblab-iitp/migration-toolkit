@@ -38,6 +38,7 @@ import com.cubrid.cubridmigration.graph.trans.CUBRID2TurboTranformHelper;
 import com.cubrid.cubridmigration.graph.trans.CUBRIDToTurboDataTypeMappingHelper;
 import com.cubrid.cubridmigration.graph.trans.Neo4j2CUBRIDTranformHelper;
 import com.cubrid.cubridmigration.graph.trans.Neo4jDataTypeMappingHelper;
+import com.cubrid.cubridmigration.graph.trans.Neo4jToCUBRIDDataTypeMappingHelper;
 import com.cubrid.cubridmigration.graph.trans.Tibero2Neo4jTranformHelper;
 import com.cubrid.cubridmigration.graph.trans.Tibero2TurboTranformHelper;
 import com.cubrid.cubridmigration.graph.trans.TiberoToNeo4jDataTypeMappingHelper;
@@ -98,7 +99,7 @@ public class MigrationTransFactory {
 			ToTurboDataConverterFacade.getInstance());
 	
 	private static final Neo4j2CUBRIDTranformHelper NEO4J2CUBRID_TRANSFORM_HELPER = new Neo4j2CUBRIDTranformHelper(
-			new CUBRIDDataTypeMappingHelper(),
+			new Neo4jToCUBRIDDataTypeMappingHelper(),
 			ToCUBRIDDataConverterFacade.getIntance());
 	
 	/**

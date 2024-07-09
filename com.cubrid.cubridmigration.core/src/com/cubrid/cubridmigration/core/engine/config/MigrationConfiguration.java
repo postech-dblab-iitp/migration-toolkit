@@ -100,19 +100,24 @@ public class MigrationConfiguration {
 
 	//GDB need remapping code
 	public static final int DEST_DB_UNLOAD = 0;
-	public static final int DEST_CSV = 1;
-	public static final int DEST_SQL = 2;
-	public static final int DEST_XLS = 3;
+	public static final int DEST_CSV = 101;
+	public static final int DEST_SQL = 102;
+	public static final int DEST_XLS = 103;
 	//GDB dest_online is cubrid.
-	public static final int DEST_ONLINE = 5;
-	public static final int DEST_GRAPH = 4;
 
 	public static final int SOURCE_TYPE_CUBRID = DatabaseType.CUBRID.getID();
 	public static final int SOURCE_TYPE_MYSQL = DatabaseType.MYSQL.getID();
 	public static final int SOURCE_TYPE_ORACLE = DatabaseType.ORACLE.getID();
 	public static final int SOURCE_TYPE_MSSQL = DatabaseType.MSSQL.getID();
 	public static final int SOURCE_TYPE_GRAPH = DatabaseType.NEO4J.getID();
-	public static final int SOURCE_TYPE_TIBERO= DatabaseType.TIBERO.getID();
+	public static final int SOURCE_TYPE_TIBERO = DatabaseType.TIBERO.getID();
+	
+	public static final int DEST_TYPE_TIBERO = DatabaseType.TIBERO.getID();
+	public static final int DEST_TYPE_CUBRID = DatabaseType.CUBRID.getID();
+	public static final int DEST_TYPE_NEO4J = DatabaseType.NEO4J.getID();
+	
+	public static final int DEST_ONLINE = 5;
+	public static final int DEST_GRAPH = 4;
 
 	public static final int SOURCE_TYPE_XML_1 = 101;
 	public static final int SOURCE_TYPE_SQL = 102;
@@ -3588,7 +3593,7 @@ public class MigrationConfiguration {
 	 * @return the targetDBIsOnline
 	 */
 	public boolean targetIsOnline() {
-		return (destType == DEST_ONLINE) || (destType == DEST_GRAPH);
+		return (destType == DEST_TYPE_CUBRID) || (destType == DEST_TYPE_NEO4J) || (destType == DEST_TYPE_TIBERO);
 	}
 
 	/**

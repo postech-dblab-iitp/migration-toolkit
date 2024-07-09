@@ -94,6 +94,8 @@ public class MigrationWizard extends
 
 	private static final int[] IDX_ONLINE = new int[] {0, 1, 2, 3, 4};
 	
+	private static final int[] IDX_GRAPH_ONLINE = new int[] {0, 1, 14, 3, 4};
+	
 	private static final int[] IDX_GRAPH_OFFLINE = new int[] {0, 1, 14, 12, 13, 15};
 	
 	//GDB index of GraphDB
@@ -130,6 +132,7 @@ public class MigrationWizard extends
 		Set<Integer> supportedDBs = new HashSet<Integer>(4);
 		supportedDBs.add(DatabaseType.CUBRID.getID());
 		supportedDBs.add(DatabaseType.NEO4J.getID());
+		supportedDBs.add(DatabaseType.TIBERO.getID());
 		return supportedDBs;
 	}
 
@@ -294,14 +297,14 @@ public class MigrationWizard extends
 			return IDX_GRAPH;
 		}
 		if (migrationConfig.sourceIsOnline() && migrationConfig.targetIsOnline())  {
-			return IDX_ONLINE;
+			return IDX_GRAPH_ONLINE;
 		}
 		
 		if (migrationConfig.sourceIsOnline() || migrationConfig.sourceIsXMLDump()) {
 			//			if (migrationConfig.targetIsOffline()) {
 			//				return IDX_OFFLINE;
 			//			}
-			return IDX_ONLINE;
+			return IDX_GRAPH;
 		}
 		if (migrationConfig.sourceIsCSV()) {
 			return IDX_CSV;

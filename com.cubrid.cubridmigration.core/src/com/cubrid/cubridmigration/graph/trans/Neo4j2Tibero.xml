@@ -1,0 +1,27 @@
+<CUBRID2Neo4j>
+	<DataTypeMapping>
+		<SourceDataType>
+			<type>NODE</type>
+      		<precision></precision>
+	  		<scale></scale>
+		</SourceDataType>
+		<TargetDataType>
+			<type>varchar</type>
+			<precision></precision>
+			<scale></scale>
+		</TargetDataType>
+	</DataTypeMapping>
+	
+	<DataTypeMapping>
+		<SourceDataType>
+			<type>EDGE</type>
+      		<precision></precision>
+	  		<scale></scale>
+		</SourceDataType>
+		<TargetDataType>
+			<type>varchar</type>
+			<precision></precision>
+			<scale></scale>
+		</TargetDataType>
+	</DataTypeMapping>
+</CUBRID2Neo4j>

@@ -65,6 +65,7 @@ import com.cubrid.cubridmigration.core.mapping.model.VerifyInfo;
 import com.cubrid.cubridmigration.cubrid.CUBRIDDataTypeHelper;
 import com.cubrid.cubridmigration.cubrid.trans.ToCUBRIDDataConverterFacade;
 import com.cubrid.cubridmigration.graph.trans.ToNeo4jDataConverterFacade;
+import com.cubrid.cubridmigration.graph.trans.ToTiberoDataConverterFacade;
 import com.cubrid.cubridmigration.graph.trans.ToTurboDataConverterFacade;
 
 /**
@@ -97,6 +98,12 @@ public abstract class DBTransformHelper {
 			ToTurboDataConverterFacade toTurboDataConverterFacade) {
 		this.dataTypeMappingHelper = dataTypeMapping;
 		this.convertFactory = toTurboDataConverterFacade;
+	}
+	
+	protected DBTransformHelper(AbstractDataTypeMappingHelper dataTypeMapping,
+			ToTiberoDataConverterFacade toTiberoDataConverterFacade) {
+		this.dataTypeMappingHelper = dataTypeMapping;
+		this.convertFactory = toTiberoDataConverterFacade;
 	}
 
 	/**

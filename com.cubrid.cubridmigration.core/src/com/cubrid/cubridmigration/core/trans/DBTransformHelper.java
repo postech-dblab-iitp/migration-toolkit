@@ -87,19 +87,19 @@ public abstract class DBTransformHelper {
 		this.dataTypeMappingHelper = dataTypeMapping;
 		this.convertFactory = cf;
 	}
-	
+
 	protected DBTransformHelper(AbstractDataTypeMappingHelper dataTypeMapping,
 			ToNeo4jDataConverterFacade toNeo4jDataConverterFacade) {
 		this.dataTypeMappingHelper = dataTypeMapping;
 		this.convertFactory = toNeo4jDataConverterFacade;
 	}
-	
+
 	protected DBTransformHelper(AbstractDataTypeMappingHelper dataTypeMapping,
 			ToTurboDataConverterFacade toTurboDataConverterFacade) {
 		this.dataTypeMappingHelper = dataTypeMapping;
 		this.convertFactory = toTurboDataConverterFacade;
 	}
-	
+
 	protected DBTransformHelper(AbstractDataTypeMappingHelper dataTypeMapping,
 			ToTiberoDataConverterFacade toTiberoDataConverterFacade) {
 		this.dataTypeMappingHelper = dataTypeMapping;
@@ -109,9 +109,9 @@ public abstract class DBTransformHelper {
 	/**
 	 * adjust precision of a column
 	 * 
-	 * @param srcColumn Column
+	 * @param srcColumn    Column
 	 * @param cubridColumn Column
-	 * @param config MigrationConfiguration
+	 * @param config       MigrationConfiguration
 	 */
 	protected abstract void adjustPrecision(Column srcColumn, Column cubridColumn,
 			MigrationConfiguration config);
@@ -119,8 +119,8 @@ public abstract class DBTransformHelper {
 	/**
 	 * initial precision of a column
 	 * 
-	 * @param mappingItem DataTypeMappingItem
-	 * @param srcColumn Column
+	 * @param mappingItem  DataTypeMappingItem
+	 * @param srcColumn    Column
 	 * @param cubridColumn Column
 	 */
 	protected void initPecisionScale(MapObject mappingItem, Column srcColumn, Column cubridColumn) {
@@ -201,7 +201,8 @@ public abstract class DBTransformHelper {
 
 		String srcDataType = srcCol.getDataType();
 
-		//CUBRID old special data type, it was deprecated in the new CUBRID database version.
+		// CUBRID old special data type, it was deprecated in the new CUBRID database
+		// version.
 		if (DataTypeConstant.CUBRID_FBO.equalsIgnoreCase(srcDataType)) {
 			final String glo = DataTypeConstant.CUBRID_GLO;
 			DataTypeInstance dti = new DataTypeInstance();
@@ -214,7 +215,7 @@ public abstract class DBTransformHelper {
 		Integer srcPrecision = srcCol.getPrecision();
 		Integer srcScale = srcCol.getScale();
 
-		//Get supported data type 
+		// Get supported data type
 		Catalog catalog = config.getSrcCatalog();
 		Map<String, List<DataType>> supportedDataType = null;
 		if (catalog != null) {
@@ -225,7 +226,7 @@ public abstract class DBTransformHelper {
 		}
 		MapObject mapping = getDataTypeMapping(srcCol, srcDataType, srcPrecision, srcScale,
 				supportedDataType);
-		//if cubDataType==ENUM
+		// if cubDataType==ENUM
 		String cubDataType = mapping.getDatatype();
 		if (cubDTHelper.isEnum(cubDataType)) {
 			Integer dataTypeID = cubDTHelper.getCUBRIDDataTypeID(cubDataType);
@@ -265,12 +266,13 @@ public abstract class DBTransformHelper {
 			Integer dataTypeID = cubDTHelper.getCUBRIDDataTypeID(cubMainType);
 			cubCol.setJdbcIDOfDataType(dataTypeID);
 		}
-		//if char is char , add '' to default value 
-		//		if (cubDTHelper.isString(cubCol.getDataType()) && StringUtils.isNotEmpty(defaultValue)
-		//				&& !defaultValue.startsWith("'")) {
-		//			cubCol.setDefaultValue("'" + defaultValue + "'");
-		//		}
-		//Initialize the precision and scale
+		// if char is char , add '' to default value
+		// if (cubDTHelper.isString(cubCol.getDataType()) &&
+		// StringUtils.isNotEmpty(defaultValue)
+		// && !defaultValue.startsWith("'")) {
+		// cubCol.setDefaultValue("'" + defaultValue + "'");
+		// }
+		// Initialize the precision and scale
 		initPecisionScale(mapping, srcCol, cubCol);
 
 		String nOrPValue = mapping.getPrecision();
@@ -286,7 +288,7 @@ public abstract class DBTransformHelper {
 		if (!cubDTHelper.isSupportAutoIncr(dataType, defaultValue, scale)) {
 			cubCol.setAutoIncrement(false);
 		}
-		//Update the shown data type finally.
+		// Update the shown data type finally.
 		cubCol.setShownDataType(cubDTHelper.getShownDataType(cubCol));
 		return cubCol;
 	}
@@ -294,20 +296,20 @@ public abstract class DBTransformHelper {
 	/**
 	 * adjust Default Value
 	 * 
-	 * @param srcColumn Column
+	 * @param srcColumn    Column
 	 * @param cubridColumn Column
 	 */
 	protected void adjustDefaultValue(Column srcColumn, Column cubridColumn) {
-		//Do nothing
+		// Do nothing
 	}
 
 	/**
 	 * return DataTypeMappingItem
 	 * 
-	 * @param srcColumn Column
-	 * @param srcDataType String
-	 * @param srcPrecision Integer
-	 * @param srcScale Integer
+	 * @param srcColumn      Column
+	 * @param srcDataType    String
+	 * @param srcPrecision   Integer
+	 * @param srcScale       Integer
 	 * @param supportedTypes supported data Types
 	 * @return DataTypeMappingItem
 	 */
@@ -346,7 +348,7 @@ public abstract class DBTransformHelper {
 	 * return real data type for a user defined data type
 	 * 
 	 * @param supportedDataType Map<String, List<DataType>>
-	 * @param srcDataType String
+	 * @param srcDataType       String
 	 * @return String
 	 */
 	protected String getRealDataType(Map<String, List<DataType>> supportedDataType,
@@ -358,7 +360,7 @@ public abstract class DBTransformHelper {
 	 * return a cloned target view
 	 * 
 	 * @param sourceView View source view
-	 * @param config MigrationConfiguration
+	 * @param config     MigrationConfiguration
 	 * @return View
 	 */
 	public View getCloneView(View sourceView, MigrationConfiguration config) {
@@ -388,22 +390,22 @@ public abstract class DBTransformHelper {
 	/**
 	 * newTargetTable
 	 * 
-	 * @param stc SourceTableConfig
+	 * @param stc         SourceTableConfig
 	 * @param sourceTable Table
-	 * @param config MigrationConfiguration
+	 * @param config      MigrationConfiguration
 	 * @return TargetTable
 	 */
-	public Table createCUBRIDTable(SourceTableConfig stc, Table sourceTable,
+	public Table createRDBTable(SourceTableConfig stc, Table sourceTable,
 			MigrationConfiguration config) {
 		Table tarTable = new Table();
 		tarTable.setName(stc.getTarget());
 		tarTable.setReuseOID(sourceTable.isReuseOID());
 		tarTable.setOwner(stc.getOwner());
-		
+
 		List<Column> srcColumns = sourceTable.getColumns();
 		List<Column> newColumns = new ArrayList<Column>();
 
-		//Columns
+		// Columns
 		for (Column srcColumn : srcColumns) {
 			SourceColumnConfig scc = stc.getColumnConfig(srcColumn.getName());
 			Column cubridColumn = getCUBRIDColumn(srcColumn, config);
@@ -417,7 +419,7 @@ public abstract class DBTransformHelper {
 		}
 		tarTable.setColumns(newColumns);
 
-		//PK
+		// PK
 		PK sPK = sourceTable.getPk();
 		if (sPK != null) {
 			PK tPK = new PK(tarTable);
@@ -436,7 +438,7 @@ public abstract class DBTransformHelper {
 			return tarTable;
 		}
 		SourceEntryTableConfig setc = (SourceEntryTableConfig) stc;
-		//FK
+		// FK
 		List<FK> sfks = sourceTable.getFks();
 		if (CollectionUtils.isNotEmpty(sfks)) {
 			for (FK sfk : sfks) {
@@ -457,20 +459,20 @@ public abstract class DBTransformHelper {
 				} else {
 					tfk.setReferencedTableName(referencedTableName);
 				}
-				
+
 				if (sc == null) {
 					tfk.setName(StringUtils.lowerCase(sfk.getName()));
 				} else {
 					tfk.setName(sc.getTarget());
 				}
-				//tfk.setDeferability(sfk.getDeferability());
+				// tfk.setDeferability(sfk.getDeferability());
 				tfk.setDeleteRule(sfk.getDeleteRule());
 				tfk.setUpdateRule(sfk.getUpdateRule());
-				//tfk.setOnCacheObject(sfk.getOnCacheObject());
+				// tfk.setOnCacheObject(sfk.getOnCacheObject());
 				tarTable.addFK(tfk);
 			}
 		}
-		//indexes
+		// indexes
 		List<Index> sidxs = sourceTable.getIndexes();
 		for (Index sidx : sidxs) {
 			SourceConfig sc = setc.getIndexConfig(sidx.getName());
@@ -490,7 +492,7 @@ public abstract class DBTransformHelper {
 			tidx.setUnique(sidx.isUnique());
 			tarTable.addIndex(tidx);
 		}
-		//Partitions
+		// Partitions
 		if (sourceTable.getPartitionInfo() != null) {
 			PartitionInfo targetPartitionInfo = new PartitionInfo();
 			tarTable.setPartitionInfo(targetPartitionInfo);
@@ -531,9 +533,9 @@ public abstract class DBTransformHelper {
 	/**
 	 * newTargetTable
 	 * 
-	 * @param srcColumn Column
+	 * @param srcColumn   Column
 	 * @param targetTable Table
-	 * @param config MigrationConfiguration
+	 * @param config      MigrationConfiguration
 	 * @return TargetTable
 	 */
 	public Column newTargetColumn(Column srcColumn, Table targetTable, MigrationConfiguration config) {
@@ -551,12 +553,12 @@ public abstract class DBTransformHelper {
 	/**
 	 * Convert Jdbc Object To Cubrid Object
 	 * 
-	 * @param config MigrationConfiguration
+	 * @param config    MigrationConfiguration
 	 * @param recordMap used by data handler
-	 * @param scc SourceColumnConfig
+	 * @param scc       SourceColumnConfig
 	 * @param srcColumn Column
-	 * @param toColumn Column
-	 * @param srcValue Object
+	 * @param toColumn  Column
+	 * @param srcValue  Object
 	 * @return Object obj
 	 */
 	public Object convertValueToTargetDBValue(MigrationConfiguration config,
@@ -567,7 +569,7 @@ public abstract class DBTransformHelper {
 		}
 		final UserDefinedDataHandlerManager uddhm = UserDefinedDataHandlerManager.getInstance();
 		Object handler = uddhm.getColumnDataHandler(scc.getUserDataHandler());
-		//If user defined handler is not null, CMT will use the handler's return value.
+		// If user defined handler is not null, CMT will use the handler's return value.
 		if (handler != null) {
 			return uddhm.handleColumnData(handler, recordMap, scc.getName());
 		}
@@ -586,7 +588,7 @@ public abstract class DBTransformHelper {
 	 * 
 	 * @param sourceColumn Column
 	 * @param targetColumn Column
-	 * @param config MigrationConfiguration
+	 * @param config       MigrationConfiguration
 	 * @return VerifyInfo
 	 */
 	public VerifyInfo verifyColumnDataType(Column sourceColumn, Column targetColumn,
@@ -610,7 +612,7 @@ public abstract class DBTransformHelper {
 		if (!dataTypeMappingHelper.getXmlConfigMap().containsKey(key)) {
 			key = sourceType;
 		}
-		//check weather the target type is in dataTypeMapping according to source type
+		// check weather the target type is in dataTypeMapping according to source type
 		boolean result = false;
 		MapItem mapItem;
 		if (dataTypeMappingHelper.getXmlConfigMap().containsKey(key)) {
@@ -622,23 +624,24 @@ public abstract class DBTransformHelper {
 				}
 			}
 		} else {
-			//if can't find the source type
+			// if can't find the source type
 			info.setResult(VerifyInfo.TYPE_NO_MATCH);
 			info.setMessage("ERROR: Can't find the sourceType:" + sourceType);
 			return info;
 		}
-		//if not in mappng list , return TYPE_NO_MATCH
+		// if not in mappng list , return TYPE_NO_MATCH
 		if (!result) {
 			info.setResult(VerifyInfo.TYPE_NO_MATCH);
 			info.setMessage("Can't convert source type:" + sourceType + " to target type: "
 					+ targetType);
 			return info;
 		}
-		// if the sourceType is related to the database charset,the char only can convert to char
+		// if the sourceType is related to the database charset,the char only can
+		// convert to char
 		if (isRelatedToCharset(sourceType)) {
 			return validateChar(sourceColumn, targetColumn, config);
 		}
-		//if numeric to varchar
+		// if numeric to varchar
 		if (isNumericType(sourceType) && isRelatedToCharset(targetType)) {
 			return validateNumericToVarchar(sourceColumn, targetColumn, config);
 		}
@@ -651,7 +654,7 @@ public abstract class DBTransformHelper {
 					return info;
 				}
 
-				//check the scale
+				// check the scale
 				info = checkScale(targetMappingItem, sourceColumn, targetColumn);
 				if (info != null) {
 					return info;
@@ -670,8 +673,8 @@ public abstract class DBTransformHelper {
 	 * check the precision
 	 * 
 	 * @param targetMappingItem MapObject
-	 * @param sourceColumn Column
-	 * @param targetColumn Column
+	 * @param sourceColumn      Column
+	 * @param targetColumn      Column
 	 * @return VerifyInfo
 	 */
 	protected VerifyInfo checkPrecision(MapObject targetMappingItem, Column sourceColumn,
@@ -720,8 +723,8 @@ public abstract class DBTransformHelper {
 	 * check the scale
 	 * 
 	 * @param targetMappingItem MapObject
-	 * @param sourceColumn Column
-	 * @param targetColumn Column
+	 * @param sourceColumn      Column
+	 * @param targetColumn      Column
 	 * @return VerifyInfo
 	 */
 	protected VerifyInfo checkScale(MapObject targetMappingItem, Column sourceColumn,
@@ -778,7 +781,7 @@ public abstract class DBTransformHelper {
 	 * 
 	 * @param sourceColumn Column
 	 * @param targetColumn Column
-	 * @param config MigrationConfiguration
+	 * @param config       MigrationConfiguration
 	 * @return VerifyInfo
 	 */
 	protected VerifyInfo validateNumericToVarchar(Column sourceColumn, Column targetColumn,
@@ -804,7 +807,7 @@ public abstract class DBTransformHelper {
 	 * 
 	 * @param sourceColumn Column
 	 * @param targetColumn Column
-	 * @param config MigrationConfiguration
+	 * @param config       MigrationConfiguration
 	 * @return VerifyInfo
 	 */
 	protected VerifyInfo validateChar(Column sourceColumn, Column targetColumn,
@@ -837,7 +840,7 @@ public abstract class DBTransformHelper {
 	 * 
 	 * @param sourceColumn Column
 	 * @param targetColumn Column
-	 * @param config MigrationConfiguration
+	 * @param config       MigrationConfiguration
 	 * @return VerifyInfo verifyInfo
 	 */
 	protected VerifyInfo validateCollection(Column sourceColumn, Column targetColumn,
@@ -871,19 +874,19 @@ public abstract class DBTransformHelper {
 		String dataType = column.getDataType();
 
 		if (!isUnsignedNumeric(dataType)) {
-			//add the sign symbol
+			// add the sign symbol
 			length = 1;
 		}
 		length += column.getPrecision();
 		if (column.getScale() > 0) {
-			//add the point symbol
+			// add the point symbol
 			length++;
 		}
 
 		int valp = column.getPrecision() == null ? 0 : column.getPrecision().intValue();
 		int vals = column.getScale() == null ? 0 : column.getScale().intValue();
 		if (valp == vals) {
-			//add the zero symbol
+			// add the zero symbol
 			length++;
 		}
 		return length;
@@ -965,5 +968,5 @@ public abstract class DBTransformHelper {
 	}
 
 	public abstract String getGraphDataType(Column col, MigrationConfiguration cfg);
-	
+
 }

@@ -34,6 +34,7 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.cubrid.cubridmigration.core.dbobject.Table;
 import com.cubrid.cubridmigration.mssql.MSSQLSQLHelper;
 
 /**
@@ -166,5 +167,13 @@ public abstract class SQLHelper {
 			}
 		}
 		return sb.toString();
+	}
+	
+	public static SQLHelper getInstance(String ver) {
+		return null;
+	}
+
+	public String getTableDDL(Table table) {
+		return null;
 	}
 }

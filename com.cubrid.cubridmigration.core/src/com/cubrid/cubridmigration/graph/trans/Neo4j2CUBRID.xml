@@ -14,7 +14,7 @@
 	
 	<DataTypeMapping>
 		<SourceDataType>
-			<type>EDGE</type>
+			<type>RELATIONSHIP</type>
       		<precision></precision>
 	  		<scale></scale>
 		</SourceDataType>

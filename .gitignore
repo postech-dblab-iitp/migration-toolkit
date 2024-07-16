@@ -3,3 +3,4 @@ testd
 bin
 .classpath
 com.cubrid.common.update/.settings/
+MiT_Manual/ko/_build/*

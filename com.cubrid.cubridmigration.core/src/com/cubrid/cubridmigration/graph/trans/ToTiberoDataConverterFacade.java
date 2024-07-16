@@ -12,7 +12,7 @@ public class ToTiberoDataConverterFacade  implements
 	public Object convert(Object obj, DataTypeInstance dti,
 			MigrationConfiguration config) {
 		// TODO Auto-generated method stub
-		return null;
+		return obj;
 	}
 	
 	public static ToTiberoDataConverterFacade getInstance() {

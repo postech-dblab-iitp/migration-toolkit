@@ -353,6 +353,7 @@ Export-Package:
    com.cubrid.cubridmigration.core.trans,
    com.cubrid.cubridmigration.core.mapping.model,
    com.cubrid.cubridmigration.cubrid.trans",
+ com.cubrid.cubridmigration.tibero,
  com.cubrid.jdbc.proxy.driver,
  com.cubrid.jdbc.proxy.manage;uses:="org.eclipse.core.runtime,org.osgi.framework",
  com.jcraft.jsch,

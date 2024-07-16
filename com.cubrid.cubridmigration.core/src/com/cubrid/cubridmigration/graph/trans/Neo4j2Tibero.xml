@@ -7,20 +7,20 @@
 		</SourceDataType>
 		<TargetDataType>
 			<type>varchar</type>
-			<precision></precision>
+			<precision>4000</precision>
 			<scale></scale>
 		</TargetDataType>
 	</DataTypeMapping>
 	
 	<DataTypeMapping>
 		<SourceDataType>
-			<type>EDGE</type>
+			<type>RELATIONSHIP</type>
       		<precision></precision>
 	  		<scale></scale>
 		</SourceDataType>
 		<TargetDataType>
 			<type>varchar</type>
-			<precision></precision>
+			<precision>4000</precision>
 			<scale></scale>
 		</TargetDataType>
 	</DataTypeMapping>

@@ -43,6 +43,7 @@ import com.cubrid.cubridmigration.core.common.log.LogUtil;
 import com.cubrid.cubridmigration.core.connection.ConnParameters;
 import com.cubrid.cubridmigration.core.dbobject.Column;
 import com.cubrid.cubridmigration.core.dbobject.Table;
+import com.cubrid.cubridmigration.core.dbtype.DatabaseType;
 import com.cubrid.cubridmigration.core.engine.config.MigrationConfiguration;
 import com.cubrid.cubridmigration.core.engine.task.ImportTask;
 
@@ -70,6 +71,11 @@ public class UpdateAutoIncColCurrentValueTask extends
 		if (!config.targetIsOnline()) {
 			return;
 		}
+		
+		if (config.getDestType() == DatabaseType.TIBERO.getID()) {
+			return;
+		}
+		
 		ConnParameters tcp = config.getTargetConParams();
 		Connection con = null;
 		Statement stmt = null;

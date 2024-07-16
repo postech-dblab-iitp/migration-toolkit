@@ -74,6 +74,7 @@ import com.cubrid.cubridmigration.core.mapping.model.VerifyInfo;
 import com.cubrid.cubridmigration.core.sql.SQLHelper;
 import com.cubrid.cubridmigration.core.trans.DBTransformHelper;
 import com.cubrid.cubridmigration.cubrid.CUBRIDDataTypeHelper;
+import com.cubrid.cubridmigration.tibero.TiberoDataTypeHelper;
 import com.cubrid.cubridmigration.ui.message.Messages;
 import com.cubrid.cubridmigration.ui.wizard.IMigrationWizardStatus;
 
@@ -192,6 +193,7 @@ public class MigrationCfgUtils {
 	}
 
 	private final CUBRIDDataTypeHelper cubridDataTypeHelper = CUBRIDDataTypeHelper.getInstance(null);
+	private DBDataTypeHelper dataTypeHelper;
 	private MigrationConfiguration config;
 
 	private final List<String> existsViewNameList = new ArrayList<String>();
@@ -199,6 +201,19 @@ public class MigrationCfgUtils {
 	private final List<String> existsSerialNameList = new ArrayList<String>();
 
 	private IMigrationWizardStatus wizardStatus;
+	
+	public void setDataTypeHelper() {
+		int destType = config.getDestType();
+		
+		if (destType == DatabaseType.TIBERO.getID()) {
+			dataTypeHelper = TiberoDataTypeHelper.getInstance(null);
+		} else if (destType == DatabaseType.CUBRID.getID()) {
+			dataTypeHelper = CUBRIDDataTypeHelper.getInstance(null);
+		} else {
+			throw new MigrationConfigurationCheckingErrorException(
+					"Can't find data type helper");
+		}
+	}
 
 	/**
 	 * Check the validation of migration configuration
@@ -582,7 +597,7 @@ public class MigrationCfgUtils {
 						Messages.objectMapPageNoMappingColumn, scc.getName(), sstc.getName()));
 			}
 
-			if (!cubridDataTypeHelper.isValidDatatype(tcol.getShownDataType())) {
+			if (!dataTypeHelper.isValidDatatype(tcol.getShownDataType())) {
 				throw new MigrationConfigurationCheckingErrorException("Invalid column data type ["
 						+ tcol.getShownDataType());
 			}

@@ -105,6 +105,7 @@ public class TiberoSQLHelper extends
 		StringBuffer bf = new StringBuffer();
 		bf.append(getQuotedObjName(column.getName()));
 		bf.append(" ").append(column.getShownDataType());
+		bf.append("(" + column.getPrecision() + ")");
 
 		return bf.toString();
 	}

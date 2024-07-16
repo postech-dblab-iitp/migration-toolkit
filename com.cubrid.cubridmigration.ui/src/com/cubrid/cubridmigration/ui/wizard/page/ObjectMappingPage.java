@@ -181,7 +181,8 @@ public class ObjectMappingPage extends
 				amv.setWizardStatus(mw);
 			}
 			util.setMigrationConfiguration(cfg);
-
+			util.setDataTypeHelper();
+			
 			refreshTreeView();
 			this.getShell().setMaximized(true);
 			isFirstVisible = false;

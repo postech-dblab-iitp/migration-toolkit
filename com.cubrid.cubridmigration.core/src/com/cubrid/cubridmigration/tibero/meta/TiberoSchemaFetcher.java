@@ -181,9 +181,9 @@ public final class TiberoSchemaFetcher extends
 				LOG.debug("[VAR]tableList.count=" + tableList.size());
 			}
 			for (Table table : tableList) {
-				String ddl = getObjectDDL(conn, schema.getName(), table.getName(),
-						OBJECT_TYPE_TABLE);
-				table.setDDL(ddl);
+//				String ddl = getObjectDDL(conn, schema.getName(), table.getName(),
+//						OBJECT_TYPE_TABLE);
+//				table.setDDL(ddl);
 				
 				setImportedKeysCount(conn, catalog, schema, table);
 				setExportedKeysCount(conn, catalog, schema, table);
@@ -201,7 +201,7 @@ public final class TiberoSchemaFetcher extends
 				view.setDDL(ddl);
 				view.setQuerySpec(getQueryText(conn, schema.getName(), view.getName()));
 			}
-			buildPartitions(conn, catalog, schema);
+//			buildPartitions(conn, catalog, schema);
 		}
 		return catalog;
 	}
@@ -958,7 +958,7 @@ public final class TiberoSchemaFetcher extends
 						+ objectType + ", " + "3=" + schemaName + ", " + "4=" + schemaName + ", "
 						+ "5=" + objectType + ", " + "6=" + objectName);
 			}
-			rs = preStmt.executeQuery();
+//			rs = preStmt.executeQuery();
 
 			String ddl = "";
 			while (rs.next()) {

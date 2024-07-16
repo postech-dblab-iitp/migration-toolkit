@@ -388,9 +388,9 @@ public class SelectDestinationPage extends
 							}
 							return false; */
 							
-							if (cfg.getDestType() == 5){
-								return 1 != cp.getDatabaseType().getID();
-							}
+//							if (cfg.getDestType() == 5){
+//								return 1 != cp.getDatabaseType().getID();
+//							}
 							
 							return cfg.getDestType() != cp.getDatabaseType().getID();
 						}

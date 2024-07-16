@@ -47,6 +47,7 @@ import com.cubrid.cubridmigration.core.dbobject.Record;
 import com.cubrid.cubridmigration.core.dbobject.Sequence;
 import com.cubrid.cubridmigration.core.dbobject.Table;
 import com.cubrid.cubridmigration.core.dbobject.View;
+import com.cubrid.cubridmigration.core.dbtype.DatabaseType;
 import com.cubrid.cubridmigration.core.engine.JDBCConManager;
 import com.cubrid.cubridmigration.core.engine.MigrationContext;
 import com.cubrid.cubridmigration.core.engine.ThreadUtils;
@@ -60,11 +61,13 @@ import com.cubrid.cubridmigration.core.engine.exception.NormalMigrationException
 import com.cubrid.cubridmigration.core.engine.exception.UserDefinedHandlerException;
 import com.cubrid.cubridmigration.core.engine.importer.ErrorRecords2SQLFileWriter;
 import com.cubrid.cubridmigration.core.engine.importer.Importer;
+import com.cubrid.cubridmigration.core.sql.SQLHelper;
 import com.cubrid.cubridmigration.core.trans.DBTransformHelper;
 import com.cubrid.cubridmigration.cubrid.CUBRIDSQLHelper;
 import com.cubrid.cubridmigration.cubrid.stmt.CUBRIDParameterSetter;
 import com.cubrid.cubridmigration.graph.dbobj.Edge;
 import com.cubrid.cubridmigration.graph.dbobj.Vertex;
+import com.cubrid.cubridmigration.tibero.TiberoSQLHelper;
 
 /**
  * OnlineImporter responses to import database objects to target through JDBC
@@ -80,6 +83,8 @@ public class JDBCImporter extends
 	private final MigrationConfiguration config;
 	private final CUBRIDParameterSetter parameterSetter;
 	private final ErrorRecords2SQLFileWriter errorRecordsWriter;
+	
+	private SQLHelper sqlHelper;
 
 	public JDBCImporter(MigrationContext mrManager) {
 		super(mrManager);
@@ -87,6 +92,22 @@ public class JDBCImporter extends
 		this.config = mrManager.getConfig();
 		this.connectionManager = mrManager.getConnManager();
 		this.errorRecordsWriter = new ErrorRecords2SQLFileWriter(mrManager);
+		
+		sqlHelper = setSqlHelper();
+	}
+	
+	private SQLHelper setSqlHelper() {
+//		if (config.getDestType() == DatabaseType.CUBRID.getID()) {
+//			return CUBRIDSQLHelper.getInstance(null);
+//		} else if (config.getDestType() == DatabaseType.TIBERO.getID()) {
+//			return TiberoSQLHelper.getInstance(null);
+//		}
+		
+		if (config.getDestType() == DatabaseType.CUBRID.getID()) {
+			return CUBRIDSQLHelper.getInstance(null);
+		} else {
+			return TiberoSQLHelper.getInstance(null);
+		}
 	}
 
 	/**
@@ -116,7 +137,7 @@ public class JDBCImporter extends
 	 * @param table Table
 	 */
 	public void createTable(Table table) {
-		String sql = CUBRIDSQLHelper.getInstance(null).getTableDDL(table);
+		String sql = sqlHelper.getTableDDL(table);
 		table.setDDL(sql);
 		try {
 			executeDDL(sql);

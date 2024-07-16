@@ -100,6 +100,13 @@
             name="Neo4j&gt;&gt;CUBRID">
       </page>
       <page
+            category="com.cubrid.cubridmigration.ui.preference.MigrationConfigPage"
+            class="com.cubrid.cubridmigration.ui.preference.Neo4jToTiberoTypeMapPage"
+            id="com.cubrid.cubridmigration.ui.preference.Neo4jToTiberoTypeMapPage"
+            name="Neo4j&gt;&gt;Tibero">
+      </page>
+
+      <page
             class="com.cubrid.cubridmigration.ui.preference.JDBCDriverManagePage"
             id="com.cubrid.cubridmigration.ui.preference.JDBCDriverManagePage"
             name="%JDBCDrivers">

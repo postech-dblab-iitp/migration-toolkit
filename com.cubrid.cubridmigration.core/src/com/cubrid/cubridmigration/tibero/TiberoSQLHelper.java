@@ -29,11 +29,25 @@
  */
 package com.cubrid.cubridmigration.tibero;
 
+import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
+
+import com.cubrid.cubridmigration.core.common.DBUtils;
+import com.cubrid.cubridmigration.core.dbobject.Column;
+import com.cubrid.cubridmigration.core.dbobject.PK;
+import com.cubrid.cubridmigration.core.dbobject.Table;
 import com.cubrid.cubridmigration.core.sql.SQLHelper;
+
+
 
 public class TiberoSQLHelper extends
 		SQLHelper {
-
+	
+	private static final String NEWLINE = "\n";
+	private static final String HINT = "/*+ NO_STATS */";
+	private static final String END_LINE_CHAR = ";";
+	
 	private static final TiberoSQLHelper INS = new TiberoSQLHelper();
 
 	/**
@@ -48,6 +62,52 @@ public class TiberoSQLHelper extends
 
 	private TiberoSQLHelper() {
 		//Hide the constructor for singleton
+	}
+	
+	public String getTableDDL(Table table) {
+			StringBuffer bf = new StringBuffer();
+			bf.append("CREATE TABLE ");
+			String tableName = table.getName();
+			
+			if (StringUtils.isEmpty(tableName)) {
+				bf.append("<class_name>");
+			} else {
+				bf.append(getQuotedObjName(tableName));
+			}
+			
+			// instance attribute
+			List<Column> nlist = table.getColumns();
+			bf.append("(").append(NEWLINE);
+			for (int i = 0; i < nlist.size(); i++) {
+				Column instanceAttr = nlist.get(i);
+			
+				if (i > 0) {
+					bf.append(",").append(NEWLINE);
+				}
+			
+				bf.append(getColumnDDL(instanceAttr, table.getPk()));
+			
+			}
+			bf.append(NEWLINE).append(")");
+			if (table.isReuseOID()) {
+				bf.append(" REUSE_OID");
+			}
+			if (DBUtils.supportedCubridPartition(table.getPartitionInfo())) {
+				bf.append(NEWLINE).append(table.getPartitionInfo().getDDL());
+			}
+			
+			bf.append(NEWLINE).append(END_LINE_CHAR);
+			
+			return bf.toString();
+		}
+	
+	private Object getColumnDDL(Column column, PK pk) {
+		StringBuffer bf = new StringBuffer();
+		bf.append(getQuotedObjName(column.getName()));
+		bf.append(" ").append(column.getShownDataType());
+		bf.append("(" + column.getPrecision() + ")");
+
+		return bf.toString();
 	}
 
 	/**

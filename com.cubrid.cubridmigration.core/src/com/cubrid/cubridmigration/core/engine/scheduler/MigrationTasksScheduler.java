@@ -38,6 +38,7 @@ import org.apache.commons.lang.StringUtils;
 
 import com.cubrid.cubridmigration.core.common.PathUtils;
 import com.cubrid.cubridmigration.core.dbobject.Column;
+import com.cubrid.cubridmigration.core.dbtype.DatabaseType;
 import com.cubrid.cubridmigration.core.engine.MigrationContext;
 import com.cubrid.cubridmigration.core.engine.ThreadUtils;
 import com.cubrid.cubridmigration.core.engine.UserDefinedDataHandlerManager;
@@ -68,7 +69,7 @@ public class MigrationTasksScheduler {
 	protected MigrationContext context;
 
 	protected boolean targetIsCSV;
-	
+
 	public MigrationTasksScheduler() {
 
 	}
@@ -78,17 +79,17 @@ public class MigrationTasksScheduler {
 	 * 
 	 */
 	public void schedule() {
-		//Execute SQL tasks
+		// Execute SQL tasks
 		MigrationConfiguration config = context.getConfig();
-		
+
 		if (config.targetIsGraph() || config.targetIsDBDump() || config.targetIsCSV()) {
 			targetIsCSV = config.targetIsCSV();
-			
+
 			clearTargetDB();
 			greaphSchedule();
 			return;
 		}
-		
+
 		if (config.sourceIsSQL()) {
 			List<String> files = config.getSqlFiles();
 			for (String file : files) {
@@ -97,7 +98,7 @@ public class MigrationTasksScheduler {
 			await();
 			return;
 		}
-		//Clean all no used objects
+		// Clean all no used objects
 		config.cleanNoUsedConfigForStart();
 		initUserDefinedHandlers();
 
@@ -108,7 +109,7 @@ public class MigrationTasksScheduler {
 
 		executeUserSQLs();
 		boolean constrainsCreated = false;
-		//If HA mode, the constraints should be created firstly.
+		// If HA mode, the constraints should be created firstly.
 		if (config.targetIsOnline() && config.isCreateConstrainsBeforeData()) {
 			constrainsCreated = true;
 			createPKs();
@@ -122,20 +123,23 @@ public class MigrationTasksScheduler {
 		createFKs();
 		executeUserSQLs2();
 		updateAutoIncColumnsCurrentValue();
-		//Export functions/procedures/triggers to a txt file
+		// Export functions/procedures/triggers to a txt file
 		if (config.isExportNoSupportObjects()) {
 			createFunctions();
 			createProcedures();
 			createTriggers();
 		}
-		updateIndexStatistics();
+		
+		if (config.getDestType() == DatabaseType.CUBRID.getID()) {
+			updateIndexStatistics();
+		}
 	}
 
 	private void greaphSchedule() {
 		if (targetIsCSV) {
 			createHeaderTask();
 		}
-		
+
 		// step 1~4: create vertexes
 		// step1 : first, second, intermediate vertex
 		createGraphStep1();
@@ -146,8 +150,8 @@ public class MigrationTasksScheduler {
 		await();
 		createGraphStep4();
 		await();
-		
-		//step 5~8 create edges
+
+		// step 5~8 create edges
 		createGraphStep5();
 		await();
 		createGraphStep6();
@@ -163,7 +167,7 @@ public class MigrationTasksScheduler {
 		createGraphStep11();
 		await();
 	}
-	
+
 	/**
 	 * Update auto_increment columns current values
 	 * 
@@ -312,7 +316,7 @@ public class MigrationTasksScheduler {
 			tableCreated.add(st.getTarget());
 			executeTask(taskFactory.createExportTableSchemaTask(st));
 		}
-		//Create CSV file table
+		// Create CSV file table
 		for (SourceCSVConfig scc : sourceCSVFiles) {
 			if (!scc.isCreate()) {
 				continue;
@@ -356,12 +360,12 @@ public class MigrationTasksScheduler {
 		}
 		List<SourceCSVConfig> csvs = config.getCSVConfigs();
 		isMigData = isMigData || !csvs.isEmpty();
-		//If no data to be migrated, return
+		// If no data to be migrated, return
 		if (!isMigData) {
 			return;
 		}
 		if (config.sourceIsOnline()) {
-			//schedule exporting tasks
+			// schedule exporting tasks
 			for (SourceTableConfig table : entryTables) {
 				if (!table.isMigrateData()) {
 					continue;
@@ -504,31 +508,31 @@ public class MigrationTasksScheduler {
 		}
 		await();
 	}
-	
+
 	protected void createHeaderTask() {
 		MigrationConfiguration config = context.getConfig();
 		GraphDictionary gdbDict = config.getGraphDictionary();
-		
+
 		List<Vertex> vertexList = gdbDict.getMigratedVertexList();
 		List<Edge> edgeList = gdbDict.getMigratedEdgeList();
-		
+
 		executeTask2(taskFactory.createQuickScriptTask());
-		
+
 		for (Vertex v : vertexList) {
 			executeTask2(taskFactory.createVertexCSVHeaderTask(v));
 		}
-		
+
 		for (Edge e : edgeList) {
 			executeTask2(taskFactory.createEdgeCSVHeaderTask(e));
 		}
 	}
-	
+
 	protected void createGraphStep1() {
 		MigrationConfiguration config = context.getConfig();
 		GraphDictionary gdict = config.getGraphDictionary();
 		List<Vertex> migratedVertexList = gdict.getMigratedVertexList();
-		
-		for (Vertex v: migratedVertexList) {
+
+		for (Vertex v : migratedVertexList) {
 			if (v.getVertexType() <= Vertex.INTERMEDIATE_TYPE) {
 				if (v.getHasPK()) {
 					executeTask2(taskFactory.createVertexExportTask(v));
@@ -536,13 +540,13 @@ public class MigrationTasksScheduler {
 			}
 		}
 	}
-	
+
 	protected void createGraphStep2() {
 		MigrationConfiguration config = context.getConfig();
 		GraphDictionary gdict = config.getGraphDictionary();
 		List<Vertex> migratedVertexList = gdict.getMigratedVertexList();
-		
-		for ( Vertex v: migratedVertexList) {
+
+		for (Vertex v : migratedVertexList) {
 			if (v.getVertexType() == Vertex.FIRST_TYPE) {
 				if (!v.getHasPK()) {
 					executeTask2(taskFactory.createVertexExportTask(v));
@@ -550,13 +554,13 @@ public class MigrationTasksScheduler {
 			}
 		}
 	}
-	
+
 	protected void createGraphStep3() {
 		MigrationConfiguration config = context.getConfig();
 		GraphDictionary gdict = config.getGraphDictionary();
 		List<Vertex> migratedVertexList = gdict.getMigratedVertexList();
 
-		for (Vertex v: migratedVertexList) {
+		for (Vertex v : migratedVertexList) {
 			if (v.getVertexType() == Vertex.SECOND_TYPE) {
 				if (!v.getHasPK()) {
 					executeTask2(taskFactory.createVertexExportTask(v));
@@ -564,13 +568,13 @@ public class MigrationTasksScheduler {
 			}
 		}
 	}
-	
+
 	protected void createGraphStep4() {
 		MigrationConfiguration config = context.getConfig();
 		GraphDictionary gdict = config.getGraphDictionary();
 		List<Vertex> migratedVertexList = gdict.getMigratedVertexList();
-		
-		for (Vertex v: migratedVertexList) {
+
+		for (Vertex v : migratedVertexList) {
 			if (v.getVertexType() == Vertex.INTERMEDIATE_TYPE) {
 				if (!v.getHasPK()) {
 					executeTask2(taskFactory.createVertexExportTask(v));
@@ -578,94 +582,94 @@ public class MigrationTasksScheduler {
 			}
 		}
 	}
-	
+
 	protected void createGraphStep5() {
 		MigrationConfiguration config = context.getConfig();
 		GraphDictionary gdict = config.getGraphDictionary();
 		List<Vertex> migratedVertexList = gdict.getMigratedVertexList();
-		
-		for (Vertex v: migratedVertexList) {
+
+		for (Vertex v : migratedVertexList) {
 			if (v.getVertexType() == Vertex.RECURSIVE_TYPE) {
 				executeTask2(taskFactory.createVertexExportTask(v));
 			}
 		}
 	}
-	
+
 	protected void createGraphStep6() {
 		MigrationConfiguration config = context.getConfig();
 		GraphDictionary gdict = config.getGraphDictionary();
 		List<Edge> migratedEdgeList = gdict.getMigratedEdgeList();
-		
+
 		for (Edge e : migratedEdgeList) {
 			if (e.getEdgeType() == Edge.SECOND_FK_TYPE) {
 				executeTask2(taskFactory.GraphEdgeExportTask(e));
 			}
 		}
 	}
-	
+
 	protected void createGraphStep7() {
 		MigrationConfiguration config = context.getConfig();
 		GraphDictionary gdict = config.getGraphDictionary();
 		List<Edge> migratedEdgeList = gdict.getMigratedEdgeList();
-		
+
 		for (Edge e : migratedEdgeList) {
 			if (e.getEdgeType() == Edge.INTERMEDIATE_FK_TYPE) {
 				executeTask2(taskFactory.GraphEdgeExportTask(e));
 			}
 		}
 	}
-	
+
 	protected void createGraphStep8() {
 		MigrationConfiguration config = context.getConfig();
 		GraphDictionary gdict = config.getGraphDictionary();
 		List<Edge> migratedEdgeList = gdict.getMigratedEdgeList();
-		
+
 		for (Edge e : migratedEdgeList) {
 			if (e.getEdgeType() == Edge.RECURSIVE_TYPE) {
 				executeTask2(taskFactory.GraphEdgeExportTask(e));
 			}
 		}
 	}
-	
+
 	protected void createGraphStep9() {
-		//create custom edge
+		// create custom edge
 		MigrationConfiguration cfg = context.getConfig();
 		GraphDictionary gdbDict = cfg.getGraphDictionary();
 		List<Edge> migratedEdgeList = gdbDict.getMigratedEdgeList();
-		
+
 		for (Edge e : migratedEdgeList) {
 			if (e.getEdgeType() == Edge.JOINTABLE_TYPE) {
 				executeTask2(taskFactory.GraphEdgeExportTask(e));
 			}
 		}
 	}
-	
+
 	protected void createGraphStep10() {
-		//create custom edge
+		// create custom edge
 		MigrationConfiguration cfg = context.getConfig();
 		GraphDictionary gdbDict = cfg.getGraphDictionary();
 		List<Edge> migratedEdgeList = gdbDict.getMigratedEdgeList();
-		
+
 		for (Edge e : migratedEdgeList) {
 			if (e.getEdgeType() == Edge.CUSTOM_TYPE) {
 				executeTask2(taskFactory.GraphEdgeExportTask(e));
 			}
 		}
 	}
-	
+
 	protected void createGraphStep11() {
-		//create two-way edge
+		// create two-way edge
 		MigrationConfiguration cfg = context.getConfig();
 		GraphDictionary gdbDict = cfg.getGraphDictionary();
 		List<Edge> migratedEdgeList = gdbDict.getMigratedEdgeList();
-		
+
 		for (Edge e : migratedEdgeList) {
 			if (e.getEdgeType() == Edge.TWO_WAY_TYPE || e.getEdgeType() == Edge.JOIN_TWO_WAY_TYPE) {
 				executeTask2(taskFactory.GraphEdgeExportTask(e));
 			}
 		}
 	}
-	
+
 	/**
 	 * Append update sql for updating statistics of all indexes
 	 */

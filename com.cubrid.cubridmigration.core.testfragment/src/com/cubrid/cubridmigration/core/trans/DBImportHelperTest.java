@@ -135,7 +135,7 @@ public class DBImportHelperTest {
 		pi.setDDL("partition by hash f1 by 4");
 		st.setPartitionInfo(pi);
 		Table tt = MigrationTransFactory.getTransformHelper(DatabaseType.MYSQL,
-				DatabaseType.CUBRID).createCUBRIDTable(
+				DatabaseType.CUBRID).createRDBTable(
 				new SourceEntryTableConfig(), st, config);
 		Assert.assertNotNull(tt.getPartitionInfo());
 	}

@@ -100,19 +100,24 @@ public class MigrationConfiguration {
 
 	//GDB need remapping code
 	public static final int DEST_DB_UNLOAD = 0;
-	public static final int DEST_CSV = 1;
-	public static final int DEST_SQL = 2;
-	public static final int DEST_XLS = 3;
+	public static final int DEST_CSV = 101;
+	public static final int DEST_SQL = 102;
+	public static final int DEST_XLS = 103;
 	//GDB dest_online is cubrid.
-	public static final int DEST_ONLINE = 5;
-	public static final int DEST_GRAPH = 4;
 
 	public static final int SOURCE_TYPE_CUBRID = DatabaseType.CUBRID.getID();
 	public static final int SOURCE_TYPE_MYSQL = DatabaseType.MYSQL.getID();
 	public static final int SOURCE_TYPE_ORACLE = DatabaseType.ORACLE.getID();
 	public static final int SOURCE_TYPE_MSSQL = DatabaseType.MSSQL.getID();
 	public static final int SOURCE_TYPE_GRAPH = DatabaseType.NEO4J.getID();
-	public static final int SOURCE_TYPE_TIBERO= DatabaseType.TIBERO.getID();
+	public static final int SOURCE_TYPE_TIBERO = DatabaseType.TIBERO.getID();
+	
+	public static final int DEST_TYPE_TIBERO = DatabaseType.TIBERO.getID();
+	public static final int DEST_TYPE_CUBRID = DatabaseType.CUBRID.getID();
+	public static final int DEST_TYPE_NEO4J = DatabaseType.NEO4J.getID();
+	
+	public static final int DEST_ONLINE = 5;
+	public static final int DEST_GRAPH = 4;
 
 	public static final int SOURCE_TYPE_XML_1 = 101;
 	public static final int SOURCE_TYPE_SQL = 102;
@@ -345,7 +350,7 @@ public class MigrationConfiguration {
 			sstc.addColumnConfig(col.getName(), StringUtils.lowerCase(col.getName()), true);
 		}
 		//Build target schema
-		Table tt = getDBTransformHelper().createCUBRIDTable(sstc, sqlSchema, this);
+		Table tt = getDBTransformHelper().createRDBTable(sstc, sqlSchema, this);
 		srcSQLSchemas.add(sqlSchema);
 		targetTables.add(tt);
 		expSQLTables.add(sstc);
@@ -725,7 +730,7 @@ public class MigrationConfiguration {
 				if (tt == null) {
 					//If there is invalid information in source database, the target table will be NULL
 					try {
-						tt = getDBTransformHelper().createCUBRIDTable(setc, srcTable, this);
+						tt = getDBTransformHelper().createRDBTable(setc, srcTable, this);
 					} catch (Exception ex) {
 						LOG.error("Building migration configuration error", ex);
 						tt = null;
@@ -771,7 +776,7 @@ public class MigrationConfiguration {
 						}
 						Table tt = getTargetTableSchema(sstc.getTarget());
 						if (tt == null) {
-							tt = getDBTransformHelper().createCUBRIDTable(sstc, st, this);
+							tt = getDBTransformHelper().createRDBTable(sstc, st, this);
 							tt.setName(sstc.getTarget());
 						}
 						tempTarTables.put(prefix + tt.getName(), tt);
@@ -1200,7 +1205,7 @@ public class MigrationConfiguration {
 		if (oldRef == 1 && newRef == 0) {
 			tt.setName(newTarget);
 		} else if (oldRef > 1 && newRef == 0) {
-			Table tt2 = getDBTransformHelper().createCUBRIDTable(stc, st, this);
+			Table tt2 = getDBTransformHelper().createRDBTable(stc, st, this);
 			tt2.setName(newTarget);
 			targetTables.add(tt2);
 		} else if (newRef > 0) {
@@ -2546,8 +2551,12 @@ public class MigrationConfiguration {
 	}
 	
 	public DatabaseType getTargetDBType() {
-		if (destType == DEST_ONLINE) {
+		if (destType == DEST_TYPE_CUBRID) {
 			return DatabaseType.CUBRID;
+		} else if (destType == DEST_TYPE_TIBERO) {
+			return DatabaseType.TIBERO;
+		} else if (destType == DEST_TYPE_NEO4J) {
+			return DatabaseType.NEO4J;
 			
 		} else if (graphSubTypeForCSV == 1) {
 			return DatabaseType.TURBO;
@@ -3067,7 +3076,7 @@ public class MigrationConfiguration {
 			}
 			//If the target table referenced by other source table, don't change it
 			if (getTargetRefedCount(sstc.getTarget()) == 1) {
-				Table tt = getDBTransformHelper().createCUBRIDTable(sstc, newSQLSchema, this);
+				Table tt = getDBTransformHelper().createRDBTable(sstc, newSQLSchema, this);
 				targetTables.remove(getTargetTableSchema(sstc.getTarget()));
 				targetTables.add(tt);
 			} else {
@@ -3588,7 +3597,7 @@ public class MigrationConfiguration {
 	 * @return the targetDBIsOnline
 	 */
 	public boolean targetIsOnline() {
-		return (destType == DEST_ONLINE) || (destType == DEST_GRAPH);
+		return (destType == DEST_TYPE_CUBRID) || (destType == DEST_TYPE_NEO4J) || (destType == DEST_TYPE_TIBERO);
 	}
 
 	/**

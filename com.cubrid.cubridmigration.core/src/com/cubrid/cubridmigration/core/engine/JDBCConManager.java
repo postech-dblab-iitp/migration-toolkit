@@ -31,6 +31,8 @@ package com.cubrid.cubridmigration.core.engine;
 
 import java.sql.Connection;
 
+import org.apache.hadoop.hdfs.server.namenode.GetDelegationTokenServlet;
+
 import com.cubrid.cubridmigration.core.common.Closer;
 import com.cubrid.cubridmigration.core.connection.ConnParameters;
 import com.cubrid.cubridmigration.core.connection.IConnHelper;
@@ -79,12 +81,19 @@ public class JDBCConManager implements
 		}
 		try {
 			ConnParameters cp = config.getTargetConParams().clone();
-			IConnHelper chelper;
-			if (config.targetIsGraph()) {
+			IConnHelper chelper = null;
+			int destType = config.getDestType();
+			
+			if (destType == DatabaseType.NEO4J.getID()) {
 				chelper = DatabaseType.NEO4J.getConHelper();
-			} else {
+			} else if (destType == DatabaseType.TURBO.getID()) {
+				chelper = DatabaseType.TURBO.getConHelper();
+			} else if (destType == DatabaseType.CUBRID.getID()) {
 				chelper = DatabaseType.CUBRID.getConHelper();
+			} else if (destType == DatabaseType.TIBERO.getID()) {
+				chelper = DatabaseType.TIBERO.getConHelper();
 			}
+
 			Connection tc = chelper.createConnection(cp); //NOPMD
 			return tc;
 		} catch (Exception e) {

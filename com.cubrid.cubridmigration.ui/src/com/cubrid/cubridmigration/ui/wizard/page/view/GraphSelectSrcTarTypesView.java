@@ -67,7 +67,7 @@ public class GraphSelectSrcTarTypesView {
 	private static final String SOURCE_TYPE_KEY = "source_type";
 
 	private Button btnOnlineTar;
-	private Button btnOnlineGraph;
+	private Button btnOnlineNeo4j;
 	//private Button btnOfflineTar;
 	private Button btnDumpTar;
 	//private Button btnSQLTar;
@@ -79,6 +79,7 @@ public class GraphSelectSrcTarTypesView {
 	private Button btnOnlineTiberoSrc;
 	private Button btnOnlineGraphSrc;
 	private Button btnOnlineOracleSrc;
+	private Button btnOnlineTiberoTar;
 	//private Button btnOnlineMYSQLSrc;
 	//private Button btnOnlineMSSQLSrc;
 
@@ -202,13 +203,18 @@ public class GraphSelectSrcTarTypesView {
 
 		btnOnlineTar = createSrcTarTypeBtn(grpTar, Messages.btnDestOnlineCUBRIDDB,
 				Messages.btnDestOnlineCUBRIDDBDes);
-		btnOnlineTar.setData(MigrationConfiguration.DEST_ONLINE);
+		btnOnlineTar.setData(MigrationConfiguration.DEST_TYPE_CUBRID);
 		tarButtons.add(btnOnlineTar);
 		
+		btnOnlineTiberoTar = createSrcTarTypeBtn(grpTar, Messages.btnSrcOnlineTiberoDB, 
+				"Connect to Tibero via JDBC");
+		btnOnlineTiberoTar.setData(MigrationConfiguration.DEST_TYPE_TIBERO);
+		tarButtons.add(btnOnlineTiberoTar);
+		
 		//GDB online neo4j target connect button
-		btnOnlineGraph = createSrcTarTypeBtn(grpTar, Messages.btnDestOnlineGraph, Messages.btnDestOnlineGraphes);
-		btnOnlineGraph.setData(MigrationConfiguration.DEST_GRAPH);
-		tarButtons.add(btnOnlineGraph);
+		btnOnlineNeo4j = createSrcTarTypeBtn(grpTar, Messages.btnDestOnlineGraph, Messages.btnDestOnlineGraphes);
+		btnOnlineNeo4j.setData(MigrationConfiguration.DEST_GRAPH);
+		tarButtons.add(btnOnlineNeo4j);
 		
 		
 
@@ -356,7 +362,7 @@ public class GraphSelectSrcTarTypesView {
 	}
 	
 	private void selectCUBRIDSrc() {
-		btnOnlineGraph.setEnabled(true);
+		btnOnlineNeo4j.setEnabled(true);
 		btnDumpTar.setEnabled(true);
 		btnCSVTar.setEnabled(true);
 	}
@@ -365,14 +371,17 @@ public class GraphSelectSrcTarTypesView {
 		btnOnlineTar.setEnabled(true);
 		btnOnlineTar.setSelection(true);
 		
-		btnOnlineGraph.setEnabled(false);
-		btnOnlineGraph.setSelection(false);
+		btnOnlineNeo4j.setEnabled(false);
+		btnOnlineNeo4j.setSelection(false);
 		
 		btnDumpTar.setEnabled(false);
 		btnDumpTar.setSelection(false);
 		
 		btnCSVTar.setEnabled(false);
 		btnCSVTar.setSelection(false);
+		
+		btnOnlineTiberoTar.setEnabled(true);
+		btnOnlineTiberoTar.setSelection(false);
 		
 	}
 
@@ -410,7 +419,7 @@ public class GraphSelectSrcTarTypesView {
 
 		if (!flag) {
 			btnOnlineTar.setSelection(true);
-			btnOnlineGraph.setSelection(true);
+			btnOnlineNeo4j.setSelection(true);
 		}
 	}
 }

@@ -37,13 +37,16 @@ import com.cubrid.cubridmigration.graph.trans.CUBRID2Neo4jTranformHelper;
 import com.cubrid.cubridmigration.graph.trans.CUBRID2TurboTranformHelper;
 import com.cubrid.cubridmigration.graph.trans.CUBRIDToTurboDataTypeMappingHelper;
 import com.cubrid.cubridmigration.graph.trans.Neo4j2CUBRIDTranformHelper;
+import com.cubrid.cubridmigration.graph.trans.Neo4j2TiberoTranformHelper;
 import com.cubrid.cubridmigration.graph.trans.Neo4jDataTypeMappingHelper;
 import com.cubrid.cubridmigration.graph.trans.Neo4jToCUBRIDDataTypeMappingHelper;
+import com.cubrid.cubridmigration.graph.trans.Neo4jToTiberoDataTypeMappingHelper;
 import com.cubrid.cubridmigration.graph.trans.Tibero2Neo4jTranformHelper;
 import com.cubrid.cubridmigration.graph.trans.Tibero2TurboTranformHelper;
 import com.cubrid.cubridmigration.graph.trans.TiberoToNeo4jDataTypeMappingHelper;
 import com.cubrid.cubridmigration.graph.trans.TiberoToTurboDataTypeMappingHelper;
 import com.cubrid.cubridmigration.graph.trans.ToNeo4jDataConverterFacade;
+import com.cubrid.cubridmigration.graph.trans.ToTiberoDataConverterFacade;
 import com.cubrid.cubridmigration.graph.trans.ToTurboDataConverterFacade;
 import com.cubrid.cubridmigration.mssql.trans.MSSQL2CUBRIDTranformHelper;
 import com.cubrid.cubridmigration.mssql.trans.MSSQLDataTypeMappingHelper;
@@ -102,6 +105,10 @@ public class MigrationTransFactory {
 			new Neo4jToCUBRIDDataTypeMappingHelper(),
 			ToCUBRIDDataConverterFacade.getIntance());
 	
+	private static final Neo4j2TiberoTranformHelper NEO4J2TIBERO_TRANSFORM_HELPER = new Neo4j2TiberoTranformHelper(
+			new Neo4jToTiberoDataTypeMappingHelper(),
+			ToTiberoDataConverterFacade.getInstance());
+	
 	/**
 	 * getTransformHelper of source to target migration
 	 * 
@@ -111,7 +118,6 @@ public class MigrationTransFactory {
 	 */
 	public static DBTransformHelper getTransformHelper(DatabaseType srcDT,
 			DatabaseType tarDT) {
-		
 		if (srcDT.getID() == DatabaseType.CUBRID.getID()) {
 			if (tarDT.getID() == DatabaseType.NEO4J.getID()) {
 				return CUBRID2NEO4J_TRANSFORM_HELPER;
@@ -125,7 +131,12 @@ public class MigrationTransFactory {
 				return TIBERO2TURBO_TRANFORM_HELPER;
 			}
 		} else if (srcDT.getID() == DatabaseType.NEO4J.getID()) {
-			return NEO4J2CUBRID_TRANSFORM_HELPER;
+			
+			if (tarDT.getID() == DatabaseType.TIBERO.getID()) {
+				return NEO4J2TIBERO_TRANSFORM_HELPER;
+			} else {
+				return NEO4J2CUBRID_TRANSFORM_HELPER;
+			}
 		}
 		throw new IllegalArgumentException("Can't support migration type.");
 	}

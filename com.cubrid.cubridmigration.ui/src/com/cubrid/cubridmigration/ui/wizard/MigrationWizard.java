@@ -120,6 +120,7 @@ public class MigrationWizard extends
 		supportedDBs.add(DatabaseType.MSSQL.getID());
 		supportedDBs.add(DatabaseType.NEO4J.getID());
 		supportedDBs.add(DatabaseType.TIBERO.getID());
+		supportedDBs.add(DatabaseType.TURBO.getID());
 		return supportedDBs;
 	}
 

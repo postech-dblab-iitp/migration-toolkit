@@ -594,7 +594,7 @@ public class JDBCConnectionMgrView {
 			return;
 		}
 		//GDB if database type is graph, maybe catalog is not need?
-		if (cp.getDbType() == DatabaseType.NEO4J.getID()) {
+		if (cp.getDbType() == DatabaseType.NEO4J.getID() || cp.getDbType() == DatabaseType.TURBO.getID()) {
 			return;
 		}
 		

@@ -14,8 +14,7 @@ import com.cubrid.cubridmigration.core.datatype.DBDataTypeHelper;
 import com.cubrid.cubridmigration.core.dbtype.DBConstant;
 import com.cubrid.cubridmigration.core.dbtype.DatabaseType;
 import com.cubrid.cubridmigration.core.sql.SQLHelper;
-import com.cubrid.cubridmigration.graph.export.GraphExportHelper;
-import com.cubrid.cubridmigration.graph.meta.GraphSchemaFetcher;
+import com.cubrid.cubridmigration.graph.export.TurboExportHelper;
 import com.cubrid.cubridmigration.graph.meta.TurboSchemaFetcher;
 
 public class TurboDatabase extends DatabaseType {
@@ -23,7 +22,7 @@ public class TurboDatabase extends DatabaseType {
 	public TurboDatabase() {
 		super(DBConstant.DBTYPE_TURBO,
 				DBConstant.DB_NAMES[6],	new String[] { DBConstant.JDBC_CLASS_TURBO }, DBConstant.DEF_PORT_TURBO, 
-				new TurboSchemaFetcher(), new GraphExportHelper(), new TurboConnHelper(), false);
+				new TurboSchemaFetcher(), new TurboExportHelper(), new TurboConnHelper(), false);
 		//GDB GraphDatabase constructor
 	}
 

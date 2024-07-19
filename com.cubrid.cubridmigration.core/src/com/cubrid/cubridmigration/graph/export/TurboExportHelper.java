@@ -23,15 +23,17 @@ public class TurboExportHelper extends DBExportHelper {
 	public String getPagedSelectSQL(String sql, long pageSize,
 			long exportedRecords, PK pk) {
 		
-		StringBuffer buffer = new StringBuffer(sql);
+//		StringBuffer buffer = new StringBuffer(sql);
+//		
+//		if (!(exportedRecords <= 0)) {
+//			buffer.append(" skip " + exportedRecords);
+//		}
+//		
+//		buffer.append(" limit " + pageSize);
+//		
+//		return buffer.toString();
 		
-		if (!(exportedRecords <= 0)) {
-			buffer.append(" skip " + exportedRecords);
-		}
-		
-		buffer.append(" limit " + pageSize);
-		
-		return buffer.toString();
+		return sql;
 	}
 
 	@Override

@@ -48,6 +48,8 @@ import com.cubrid.cubridmigration.graph.trans.TiberoToTurboDataTypeMappingHelper
 import com.cubrid.cubridmigration.graph.trans.ToNeo4jDataConverterFacade;
 import com.cubrid.cubridmigration.graph.trans.ToTiberoDataConverterFacade;
 import com.cubrid.cubridmigration.graph.trans.ToTurboDataConverterFacade;
+import com.cubrid.cubridmigration.graph.trans.Turbo2CUBRIDTransformHelper;
+import com.cubrid.cubridmigration.graph.trans.TurboToCUBRIDDataTypeMappingHelper;
 import com.cubrid.cubridmigration.mssql.trans.MSSQL2CUBRIDTranformHelper;
 import com.cubrid.cubridmigration.mssql.trans.MSSQLDataTypeMappingHelper;
 import com.cubrid.cubridmigration.mysql.trans.MySQL2CUBRIDTranformHelper;
@@ -69,46 +71,50 @@ public class MigrationTransFactory {
 	private static final MSSQL2CUBRIDTranformHelper MSSQL2CUBRID_TRANFORM_HELPER = new MSSQL2CUBRIDTranformHelper(
 			new MSSQLDataTypeMappingHelper(),
 			ToCUBRIDDataConverterFacade.getIntance());
-	
+
 	private static final MySQL2CUBRIDTranformHelper MY_SQL2CUBRID_TRANFORM_HELPER = new MySQL2CUBRIDTranformHelper(
 			new MySQLDataTypeMappingHelper(),
 			ToCUBRIDDataConverterFacade.getIntance());
-		
+
 	private static final Oracle2CUBRIDTranformHelper ORACLE2CUBRID_TRANFORM_HELPER = new Oracle2CUBRIDTranformHelper(
 			new OracleDataTypeMappingHelper(),
 			ToCUBRIDDataConverterFacade.getIntance());
 
 	private static final CUBRID2CUBRIDTranformHelper CUBRID2CUBRID_TRANFORM_HELPER = new CUBRID2CUBRIDTranformHelper(
 			new CUBRIDDataTypeMappingHelper());
-	
+
 	private static final Tibero2CUBRIDTranformHelper TIBERO2CUBRID_TRANFORM_HELPER = new Tibero2CUBRIDTranformHelper(
 			new TiberoDataTypeMappingHelper(),
 			ToCUBRIDDataConverterFacade.getIntance());
-	
+
 	private static final CUBRID2Neo4jTranformHelper CUBRID2NEO4J_TRANSFORM_HELPER = new CUBRID2Neo4jTranformHelper(
-			new Neo4jDataTypeMappingHelper(), 
+			new Neo4jDataTypeMappingHelper(),
 			ToNeo4jDataConverterFacade.getInstance());
-	
+
 	private static final CUBRID2TurboTranformHelper CUBRID2TURBO_TRANSFORM_HELPER = new CUBRID2TurboTranformHelper(
 			new CUBRIDToTurboDataTypeMappingHelper(),
 			ToTurboDataConverterFacade.getInstance());
-	
+
 	private static final Tibero2Neo4jTranformHelper TIBERO2NEO4J_TRANSFORM_HELPER = new Tibero2Neo4jTranformHelper(
 			new TiberoToNeo4jDataTypeMappingHelper(),
 			ToNeo4jDataConverterFacade.getInstance());
-	
+
 	private static final Tibero2TurboTranformHelper TIBERO2TURBO_TRANFORM_HELPER = new Tibero2TurboTranformHelper(
-			new TiberoToTurboDataTypeMappingHelper(), 
+			new TiberoToTurboDataTypeMappingHelper(),
 			ToTurboDataConverterFacade.getInstance());
-	
+
 	private static final Neo4j2CUBRIDTranformHelper NEO4J2CUBRID_TRANSFORM_HELPER = new Neo4j2CUBRIDTranformHelper(
 			new Neo4jToCUBRIDDataTypeMappingHelper(),
 			ToCUBRIDDataConverterFacade.getIntance());
-	
+
 	private static final Neo4j2TiberoTranformHelper NEO4J2TIBERO_TRANSFORM_HELPER = new Neo4j2TiberoTranformHelper(
 			new Neo4jToTiberoDataTypeMappingHelper(),
 			ToTiberoDataConverterFacade.getInstance());
-	
+
+	private static final Turbo2CUBRIDTransformHelper TURBO2CUBRID_TRANSFORM_HELPER = new Turbo2CUBRIDTransformHelper(
+			new TurboToCUBRIDDataTypeMappingHelper(),
+			ToCUBRIDDataConverterFacade.getIntance());
+
 	/**
 	 * getTransformHelper of source to target migration
 	 * 
@@ -131,11 +137,14 @@ public class MigrationTransFactory {
 				return TIBERO2TURBO_TRANFORM_HELPER;
 			}
 		} else if (srcDT.getID() == DatabaseType.NEO4J.getID()) {
-			
 			if (tarDT.getID() == DatabaseType.TIBERO.getID()) {
 				return NEO4J2TIBERO_TRANSFORM_HELPER;
 			} else {
 				return NEO4J2CUBRID_TRANSFORM_HELPER;
+			}
+		} else if (srcDT.getID() == DatabaseType.TURBO.getID()) {
+			if (tarDT.getID() == DatabaseType.CUBRID.getID()) {
+				return TURBO2CUBRID_TRANSFORM_HELPER;
 			}
 		}
 		throw new IllegalArgumentException("Can't support migration type.");

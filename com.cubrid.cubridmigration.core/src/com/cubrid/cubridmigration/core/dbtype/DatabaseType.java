@@ -78,7 +78,7 @@ public abstract class DatabaseType {
 	
 	public static final DatabaseType TIBERO = new TiberoDatabase();
 
-	private static final DatabaseType[] DTS = new DatabaseType[] {MYSQL, CUBRID, ORACLE, MSSQL, NEO4J, TIBERO};
+	private static final DatabaseType[] DTS = new DatabaseType[] {MYSQL, CUBRID, ORACLE, MSSQL, NEO4J, TIBERO, TURBO};
 
 	/**
 	 * Retrieves all Database types

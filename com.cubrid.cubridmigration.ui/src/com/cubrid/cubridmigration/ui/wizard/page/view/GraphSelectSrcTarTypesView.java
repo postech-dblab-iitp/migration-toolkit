@@ -80,6 +80,8 @@ public class GraphSelectSrcTarTypesView {
 	private Button btnOnlineGraphSrc;
 	private Button btnOnlineOracleSrc;
 	private Button btnOnlineTiberoTar;
+	private Button btnOnlineTurboSrc;
+	private Button btnOnlineTurboTar;
 	//private Button btnOnlineMYSQLSrc;
 	//private Button btnOnlineMSSQLSrc;
 
@@ -161,6 +163,22 @@ public class GraphSelectSrcTarTypesView {
 			public void widgetDefaultSelected(SelectionEvent e) {}
 		});
 		srcButtons.add(btnOnlineGraphSrc);
+		
+		btnOnlineTurboSrc = createSrcTarTypeBtn(grpSrc, "Online TurboGraph Source", "Connecting to TurboGraph via JDBC");
+		btnOnlineTurboSrc.setData(MigrationConfiguration.SOURCE_TYPE_TURBO);
+		btnOnlineTurboSrc.addSelectionListener(new SelectionListener() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				// TODO Auto-generated method stub
+				Button sourceBtn = (Button) e.getSource();
+				if (sourceBtn.getSelection()) {
+					selectGraphSrc();
+				}
+			}
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {}
+		});
+		srcButtons.add(btnOnlineTurboSrc);
 
 //		btnOnlineMYSQLSrc = createSrcTarTypeBtn(grpSrc, Messages.btnSrcOnlineMySQLDB,
 //				Messages.btnSrcOnlineMySQLDBDes);

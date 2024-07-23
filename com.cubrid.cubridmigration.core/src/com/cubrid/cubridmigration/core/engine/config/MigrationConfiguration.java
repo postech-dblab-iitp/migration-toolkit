@@ -111,10 +111,12 @@ public class MigrationConfiguration {
 	public static final int SOURCE_TYPE_MSSQL = DatabaseType.MSSQL.getID();
 	public static final int SOURCE_TYPE_GRAPH = DatabaseType.NEO4J.getID();
 	public static final int SOURCE_TYPE_TIBERO = DatabaseType.TIBERO.getID();
+	public static final int SOURCE_TYPE_TURBO = DatabaseType.TURBO.getID();
 	
 	public static final int DEST_TYPE_TIBERO = DatabaseType.TIBERO.getID();
 	public static final int DEST_TYPE_CUBRID = DatabaseType.CUBRID.getID();
 	public static final int DEST_TYPE_NEO4J = DatabaseType.NEO4J.getID();
+	public static final int DEST_TYPE_TURBO = DatabaseType.TURBO.getID();
 	
 	public static final int DEST_ONLINE = 5;
 	public static final int DEST_GRAPH = 4;
@@ -3543,7 +3545,8 @@ public class MigrationConfiguration {
 	public boolean sourceIsOnline() {
 		return (sourceType == SOURCE_TYPE_CUBRID) || (sourceType == SOURCE_TYPE_MYSQL)
 				|| (sourceType == SOURCE_TYPE_ORACLE) || (sourceType == SOURCE_TYPE_MSSQL)
-				|| (sourceType == SOURCE_TYPE_GRAPH || sourceType == SOURCE_TYPE_TIBERO);
+				|| (sourceType == SOURCE_TYPE_GRAPH || sourceType == SOURCE_TYPE_TIBERO)
+				|| (sourceType == SOURCE_TYPE_TURBO);
 	}
 
 	/**
@@ -3619,7 +3622,7 @@ public class MigrationConfiguration {
 	}
 	
 	public boolean targetIsGraph() {
-		return destType == DEST_GRAPH;
+		return destType == DEST_GRAPH || destType == DEST_TYPE_TURBO;
 	}
 
 	/**

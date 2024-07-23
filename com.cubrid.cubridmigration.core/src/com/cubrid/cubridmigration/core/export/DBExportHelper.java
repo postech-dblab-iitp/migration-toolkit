@@ -52,6 +52,7 @@ import com.cubrid.cubridmigration.core.connection.ConnParameters;
 import com.cubrid.cubridmigration.core.dbobject.Column;
 import com.cubrid.cubridmigration.core.dbobject.PK;
 import com.cubrid.cubridmigration.core.dbobject.Table;
+import com.cubrid.cubridmigration.core.dbtype.DatabaseType;
 import com.cubrid.cubridmigration.core.dbtype.IDependOnDatabaseType;
 import com.cubrid.cubridmigration.core.engine.config.MigrationConfiguration;
 import com.cubrid.cubridmigration.core.engine.config.SourceColumnConfig;
@@ -424,6 +425,12 @@ public abstract class DBExportHelper implements
 		}
 
 		try {
+			if (config.getSourceType() == DatabaseType.TURBO.getID()) {
+				tbl.setTableRowCount(0);
+				
+				return true;
+			} 
+			
 			ResultSet rs = stat.executeQuery(sql); //NOPMD
 			try {
 				if (rs.next()) {

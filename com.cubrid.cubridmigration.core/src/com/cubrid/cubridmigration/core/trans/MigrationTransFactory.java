@@ -151,7 +151,7 @@ public class MigrationTransFactory {
 		} else if (srcDT.getID() == DatabaseType.TURBO.getID()) {
 			if (tarDT.getID() == DatabaseType.CUBRID.getID()) {
 				return TURBO2CUBRID_TRANSFORM_HELPER;
-			} else if (tarDT.getID() == DatabaseType.TIBERO.getID()) {
+			} else {
 				return TURBO2TIBERO_TRANSFORM_HELPER;
 			}
 		}

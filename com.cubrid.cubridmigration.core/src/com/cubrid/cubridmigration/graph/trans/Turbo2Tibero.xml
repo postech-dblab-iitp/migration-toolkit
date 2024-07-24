@@ -24,7 +24,7 @@
 			<scale></scale>
 		</TargetDataType>
 		<TargetDataType>
-			<type>int</type>
+			<type>number</type>
 			<precision></precision>
 			<scale></scale>
 		</TargetDataType>
@@ -42,7 +42,7 @@
 			<scale></scale>
 		</TargetDataType>
 		<TargetDataType>
-			<type>int</type>
+			<type>number</type>
 			<precision></precision>
 			<scale></scale>
 		</TargetDataType>
@@ -55,7 +55,7 @@
 	  		<scale></scale>
 		</SourceDataType>
 		<TargetDataType>
-			<type>bigint</type>
+			<type>number</type>
 			<precision></precision>
 			<scale></scale>
 		</TargetDataType>
@@ -68,12 +68,7 @@
 	  		<scale></scale>
 		</SourceDataType>
 		<TargetDataType>
-			<type>double</type>
-			<precision></precision>
-			<scale></scale>
-		</TargetDataType>
-		<TargetDataType>
-			<type>double precision</type>
+			<type>number</type>
 			<precision></precision>
 			<scale></scale>
 		</TargetDataType>
@@ -86,12 +81,12 @@
 	  		<scale></scale>
 		</SourceDataType>
 		<TargetDataType>
-			<type>numeric</type>
+			<type>float</type>
 			<precision></precision>
 			<scale></scale>
 		</TargetDataType>
 		<TargetDataType>
-			<type>decimal</type>
+			<type>number</type>
 			<precision></precision>
 			<scale></scale>
 		</TargetDataType>

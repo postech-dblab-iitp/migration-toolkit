@@ -105,7 +105,18 @@
             id="com.cubrid.cubridmigration.ui.preference.Neo4jToTiberoTypeMapPage"
             name="Neo4j&gt;&gt;Tibero">
       </page>
-
+	  <page
+            category="com.cubrid.cubridmigration.ui.preference.MigrationConfigPage"
+            class="com.cubrid.cubridmigration.ui.preference.TurboToTiberoTypeMapPage"
+            id="com.cubrid.cubridmigration.ui.preference.TurboToTiberoTypeMapPage"
+            name="Turbo&gt;&gt;Tibero">
+      </page>
+      <page
+            category="com.cubrid.cubridmigration.ui.preference.MigrationConfigPage"
+            class="com.cubrid.cubridmigration.ui.preference.TurboToCUBRIDTypeMapPage"
+            id="com.cubrid.cubridmigration.ui.preference.TurboToCUBRIDTypeMapPage"
+            name="Turbo&gt;&gt;CUBRID">
+      </page>
       <page
             class="com.cubrid.cubridmigration.ui.preference.JDBCDriverManagePage"
             id="com.cubrid.cubridmigration.ui.preference.JDBCDriverManagePage"

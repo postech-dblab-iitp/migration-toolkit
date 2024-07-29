@@ -130,6 +130,7 @@ public final class CUBRIDDataTypeHelper extends
 		DataTypeSymbol numericSymbol = new DataTypeSymbol(
 				DataTypeConstant.CUBRID_DT_NUMERIC, "numeric", "numeric");
 		numericSymbol.getNickNames().add("numeric");
+		numericSymbol.getNickNames().add("number");
 		numericSymbol.getNickNames().add("decimal");
 		numericSymbol.getNickNames().add("dec");
 		CUBRIDDATA_TYPES.add(numericSymbol);

@@ -1597,7 +1597,7 @@ public class MigrationConfiguration {
 	 * @return 0:.txt 1:.csv 2:.sql
 	 */
 	public String getDataFileExt() {
-		return DATA_FORMAT_EXT[destType];
+		return DATA_FORMAT_EXT[destType - 100];
 	}
 
 	/**
@@ -2537,7 +2537,7 @@ public class MigrationConfiguration {
 	 * @return Target label of target data file's format
 	 */
 	public String getTargetDataFileFormatLabel() {
-		return DATA_FORMAT_LABEL[destType];
+		return DATA_FORMAT_LABEL[destType - 100];
 	}
 
 	public String getTargetDataFileName() {

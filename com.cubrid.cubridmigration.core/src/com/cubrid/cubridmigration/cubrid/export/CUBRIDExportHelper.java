@@ -570,15 +570,13 @@ public class CUBRIDExportHelper extends
 		
 		whereBuffer.append(addDoubleQuote(refColList.get(0)));
 		
-		if (e.getEndVertex().getColumnByName(refColList.get(1)) != null) {
-			whereBuffer.append(" and " + dupEndVertexName + ".");
-			
-			whereBuffer.append(addDoubleQuote(e.getfkCol2RefMapping().get(refColList.get(1))));
-			
-			whereBuffer.append(" = " + edgeLabel + ".");
-			
-			whereBuffer.append(addDoubleQuote(refColList.get(1)));			
-		}
+		whereBuffer.append(" and " + dupEndVertexName + ".");
+		
+		whereBuffer.append(addDoubleQuote(e.getfkCol2RefMapping().get(refColList.get(1))));
+		
+		whereBuffer.append(" = " + edgeLabel + ".");
+		
+		whereBuffer.append(addDoubleQuote(refColList.get(1)));			
 		
 		whereBuffer.append(" order by " + edgeLabel + ".");
 		

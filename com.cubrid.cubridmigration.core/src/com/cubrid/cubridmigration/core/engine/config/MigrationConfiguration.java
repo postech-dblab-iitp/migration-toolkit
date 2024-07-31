@@ -138,7 +138,24 @@ public class MigrationConfiguration {
 	public static final int RPT_LEVEL_DEBUG = 3;
 
 	private static final String[] DATA_FORMAT_EXT = new String[] { ".txt", ".csv", ".sql", ".xls", "", "" };
+	private static final Map<Integer, String> DATA_FORMAT_EXT_MAP = new HashMap<Integer, String> () {
+		{
+			put(100, ".txt");
+			put(101, ".csv");	
+			put(102, ".sql");
+			put(103, ".xls");
+		}
+	};
+	
 	private static final String[] DATA_FORMAT_LABEL = new String[] { "LoadDB", "CSV", "SQL", "XLS" };
+	private static final Map<Integer, String> DATA_FORMAT_LABEL_MAP = new HashMap<Integer, String> () {
+		{
+			put(100, "LoadDB");
+			put(101, "CSV");	
+			put(102, "SQL");
+			put(103, "XLS");
+		}
+	};
 
 	public static final int GRAPH_SUBTYPE_TURBOGRAPH = 1;
 	public static final int GRAPH_SUBTYPE_NEO4J = 2;
@@ -1597,7 +1614,7 @@ public class MigrationConfiguration {
 	 * @return 0:.txt 1:.csv 2:.sql
 	 */
 	public String getDataFileExt() {
-		return DATA_FORMAT_EXT[destType - 100];
+		return DATA_FORMAT_EXT_MAP.get(destType);
 	}
 
 	/**
@@ -2537,7 +2554,7 @@ public class MigrationConfiguration {
 	 * @return Target label of target data file's format
 	 */
 	public String getTargetDataFileFormatLabel() {
-		return DATA_FORMAT_LABEL[destType - 100];
+		return DATA_FORMAT_LABEL_MAP.get(destType);
 	}
 
 	public String getTargetDataFileName() {

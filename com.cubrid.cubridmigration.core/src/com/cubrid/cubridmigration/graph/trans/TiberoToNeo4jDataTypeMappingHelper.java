@@ -67,8 +67,8 @@ public class TiberoToNeo4jDataTypeMappingHelper extends
 	 */
 	public String getMapKey(String datatype, String precision, String scale) {
 		String dataTypeUpper = datatype;
-//		if ("NUMBER".equals(dataTypeUpper)) {
-//			return getNumberMapKey(dataTypeUpper, precision);
+		if ("NUMBER".equals(dataTypeUpper))
+			return getNumberMapKey(dataTypeUpper, precision, scale);
 //		} else if (dataTypeUpper.matches("INTERVAL DAY\\(\\d*\\) TO SECOND\\(\\d*\\)")) {
 //			return "INTERVAL DAY TO SECOND";
 //		} else if (dataTypeUpper.matches("INTERVAL YEAR\\(\\d*\\) TO MONTH")) {
@@ -86,7 +86,7 @@ public class TiberoToNeo4jDataTypeMappingHelper extends
 	 * @param precision String
 	 * @return key String
 	 */
-	private String getNumberMapKey(String dataTypeUpper, String precision) {
+	private String getNumberMapKey(String dataTypeUpper, String precision, String scale) {
 		String tempPre = null;
 		String tempScale = null;
 
@@ -94,8 +94,13 @@ public class TiberoToNeo4jDataTypeMappingHelper extends
 			tempPre = "p";
 			tempScale = "s";
 		} else {
+			Integer intScale = str2Integer(scale);
 			Integer intPrecision = str2Integer(precision);
-			if (intPrecision != null && intPrecision > 0) {
+			
+			if (intScale != null && intScale == 0) {
+				tempPre="";
+				tempScale="";
+			} else if (intPrecision != null && intPrecision > 0) {
 				tempPre = "p";
 				tempScale = "s";
 			}

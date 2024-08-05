@@ -1,4 +1,4 @@
-<Oracle2CUBRID>
+<Tibero2Neo4j>
 	<DataTypeMapping>
 		<SourceDataType>
 			<type>RAW</type>
@@ -104,6 +104,24 @@
 	
 	<DataTypeMapping>
 		<SourceDataType>
+			<type>NUMBER</type>
+			<precision>p</precision>
+			<scale>s</scale>
+		</SourceDataType>
+		<TargetDataType>
+			<type>float</type>
+			<precision>p</precision>
+			<scale>s</scale>
+		</TargetDataType>
+		<TargetDataType>
+			<type>string</type>
+			<precision></precision>
+			<scale></scale>
+		</TargetDataType>
+	</DataTypeMapping>
+	
+	<DataTypeMapping>
+		<SourceDataType>
 			<type>DATE</type>
 			<precision></precision>
 			<scale></scale>
@@ -145,4 +163,4 @@
 			<scale></scale>
 		</TargetDataType>
 	</DataTypeMapping>
-</Oracle2CUBRID>
+</Tibero2Neo4j>

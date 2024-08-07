@@ -142,7 +142,7 @@ public abstract class AbstractDataTypeMappingHelper {
 	public MapObject getTargetFromPreference(String datatype,
 			Integer precision, Integer scale) {
 		String key = getMapKey(datatype, precision.toString(), scale.toString());
-		MapItem entry = preferenceConfigMap.get(datatype);
+		MapItem entry = preferenceConfigMap.get(key);
 		if (entry == null) {
 			return null;
 		}

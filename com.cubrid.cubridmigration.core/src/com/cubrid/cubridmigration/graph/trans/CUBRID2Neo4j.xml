@@ -154,12 +154,35 @@
 	<DataTypeMapping>
 		<SourceDataType>
 			<type>numeric</type>
+      		<precision>p</precision>
+	  		<scale>s</scale>
+		</SourceDataType>
+		<TargetDataType>
+			<type>float</type>
+			<precision></precision>
+			<scale></scale>
+		</TargetDataType>
+		<TargetDataType>
+			<type>string</type>
+			<precision></precision>
+			<scale></scale>
+		</TargetDataType>
+	</DataTypeMapping>
+	
+		<DataTypeMapping>
+		<SourceDataType>
+			<type>numeric</type>
       		<precision></precision>
 	  		<scale></scale>
 		</SourceDataType>
 		<TargetDataType>
+			<type>integer</type>
+			<precision></precision>
+			<scale></scale>
+		</TargetDataType>
+		<TargetDataType>
 			<type>string</type>
-			<precision>64</precision>
+			<precision></precision>
 			<scale></scale>
 		</TargetDataType>
 	</DataTypeMapping>

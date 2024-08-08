@@ -54,16 +54,21 @@ public class Neo4jDataTypeMappingHelper extends
 	/**
 	 * get the mapkey
 	 * 
-	 * @param datatype String
+	 * @param dataType String
 	 * @param precision String
 	 * @param scale String
 	 * @return key String
 	 */
-	public String getMapKey(String datatype, String precision, String scale) {
+	public String getMapKey(String dataType, String precision, String scale) {
 		CUBRIDDataTypeHelper dataTypeHelper = CUBRIDDataTypeHelper.getInstance(null);
-		String outterDataType = dataTypeHelper.getMainDataType(datatype);
+		String outterDataType = dataTypeHelper.getMainDataType(dataType);
+		
+		if (outterDataType.equalsIgnoreCase("numeric")) {
+			return getNumericMapKey(dataType, precision, scale);
+		}
+		
 		if (dataTypeHelper.isCollection(outterDataType)) {
-			String innerDataType = dataTypeHelper.getRemain(datatype);
+			String innerDataType = dataTypeHelper.getRemain(dataType);
 
 			if (innerDataType == null) {
 				return dataTypeHelper.getStdMainDataType(outterDataType);
@@ -74,5 +79,34 @@ public class Neo4jDataTypeMappingHelper extends
 		} else {
 			return dataTypeHelper.getStdMainDataType(outterDataType);
 		}
+	}
+	
+	private String getNumericMapKey(String dataType, String precision, String scale) {
+		String tempPre = null;
+		String tempScale = null;
+
+		if ("p".equalsIgnoreCase(precision)) {
+			tempPre = "p";
+			tempScale = "s";
+		} else {
+			if (scale != null && Integer.parseInt(scale) == 0) {
+				tempPre="";
+				tempScale="";
+			} else if (precision != null && Integer.parseInt(precision) > 0) {
+				tempPre = "p";
+				tempScale = "s";
+			}
+		}
+		StringBuffer sb = new StringBuffer();
+		sb.append(dataType);
+		sb.append(MAP_KEY_SEPARATOR);
+		if (tempPre != null) {
+			sb.append(tempPre);
+		}
+		sb.append(MAP_KEY_SEPARATOR);
+		if (tempScale != null) {
+			sb.append(tempScale);
+		}
+		return sb.toString();
 	}
 }

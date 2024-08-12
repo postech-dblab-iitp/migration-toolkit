@@ -30,8 +30,6 @@
 package com.cubrid.cubridmigration.core.trans;
 
 import com.cubrid.cubridmigration.core.dbtype.DatabaseType;
-import com.cubrid.cubridmigration.cubrid.trans.CUBRID2CUBRIDTranformHelper;
-import com.cubrid.cubridmigration.cubrid.trans.CUBRIDDataTypeMappingHelper;
 import com.cubrid.cubridmigration.cubrid.trans.ToCUBRIDDataConverterFacade;
 import com.cubrid.cubridmigration.graph.trans.CUBRID2Neo4jTranformHelper;
 import com.cubrid.cubridmigration.graph.trans.CUBRID2TurboTranformHelper;
@@ -52,14 +50,6 @@ import com.cubrid.cubridmigration.graph.trans.Turbo2CUBRIDTransformHelper;
 import com.cubrid.cubridmigration.graph.trans.Turbo2TiberoTransformHelper;
 import com.cubrid.cubridmigration.graph.trans.TurboToCUBRIDDataTypeMappingHelper;
 import com.cubrid.cubridmigration.graph.trans.TurboToTiberoDataTypeMappingHelper;
-import com.cubrid.cubridmigration.mssql.trans.MSSQL2CUBRIDTranformHelper;
-import com.cubrid.cubridmigration.mssql.trans.MSSQLDataTypeMappingHelper;
-import com.cubrid.cubridmigration.mysql.trans.MySQL2CUBRIDTranformHelper;
-import com.cubrid.cubridmigration.mysql.trans.MySQLDataTypeMappingHelper;
-import com.cubrid.cubridmigration.oracle.trans.Oracle2CUBRIDTranformHelper;
-import com.cubrid.cubridmigration.oracle.trans.OracleDataTypeMappingHelper;
-import com.cubrid.cubridmigration.tibero.trans.Tibero2CUBRIDTranformHelper;
-import com.cubrid.cubridmigration.tibero.trans.TiberoDataTypeMappingHelper;
 
 /**
  * MigrationTransFactory will return the DBTransform instance by input source
@@ -69,26 +59,6 @@ import com.cubrid.cubridmigration.tibero.trans.TiberoDataTypeMappingHelper;
  * @version 1.0 - 2013-11-14 created by Kevin Cao
  */
 public class MigrationTransFactory {
-
-	private static final MSSQL2CUBRIDTranformHelper MSSQL2CUBRID_TRANFORM_HELPER = new MSSQL2CUBRIDTranformHelper(
-			new MSSQLDataTypeMappingHelper(),
-			ToCUBRIDDataConverterFacade.getIntance());
-
-	private static final MySQL2CUBRIDTranformHelper MY_SQL2CUBRID_TRANFORM_HELPER = new MySQL2CUBRIDTranformHelper(
-			new MySQLDataTypeMappingHelper(),
-			ToCUBRIDDataConverterFacade.getIntance());
-
-	private static final Oracle2CUBRIDTranformHelper ORACLE2CUBRID_TRANFORM_HELPER = new Oracle2CUBRIDTranformHelper(
-			new OracleDataTypeMappingHelper(),
-			ToCUBRIDDataConverterFacade.getIntance());
-
-	private static final CUBRID2CUBRIDTranformHelper CUBRID2CUBRID_TRANFORM_HELPER = new CUBRID2CUBRIDTranformHelper(
-			new CUBRIDDataTypeMappingHelper());
-
-	private static final Tibero2CUBRIDTranformHelper TIBERO2CUBRID_TRANFORM_HELPER = new Tibero2CUBRIDTranformHelper(
-			new TiberoDataTypeMappingHelper(),
-			ToCUBRIDDataConverterFacade.getIntance());
-
 	private static final CUBRID2Neo4jTranformHelper CUBRID2NEO4J_TRANSFORM_HELPER = new CUBRID2Neo4jTranformHelper(
 			new Neo4jDataTypeMappingHelper(),
 			ToNeo4jDataConverterFacade.getInstance());

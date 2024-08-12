@@ -46,7 +46,6 @@ import com.cubrid.cubridmigration.cubrid.stmt.handler.DateTimeHandler;
 import com.cubrid.cubridmigration.cubrid.stmt.handler.DefaultHandler;
 import com.cubrid.cubridmigration.cubrid.stmt.handler.DoubleHandler;
 import com.cubrid.cubridmigration.cubrid.stmt.handler.FloatHandler;
-import com.cubrid.cubridmigration.cubrid.stmt.handler.IntHandler;
 import com.cubrid.cubridmigration.cubrid.stmt.handler.NVarcharHandler;
 import com.cubrid.cubridmigration.cubrid.stmt.handler.NumericHandler;
 import com.cubrid.cubridmigration.cubrid.stmt.handler.SetHandler;

@@ -50,7 +50,6 @@ import com.cubrid.cubridmigration.core.dbtype.DatabaseType;
 import com.cubrid.cubridmigration.core.engine.config.MigrationConfiguration;
 import com.cubrid.cubridmigration.core.engine.template.MigrationTemplateParser;
 import com.cubrid.cubridmigration.cubrid.CUBRIDTimeUtil;
-import com.cubrid.cubridmigration.graph.dbobj.GraphDictionary;
 import com.cubrid.cubridmigration.ui.common.UICommonTool;
 import com.cubrid.cubridmigration.ui.common.navigator.event.CubridNodeManager;
 import com.cubrid.cubridmigration.ui.common.navigator.node.DatabaseNode;
@@ -92,8 +91,6 @@ public class MigrationWizard extends
 
 	private static final int[] IDX_SQL = new int[] {0, 5, 6, 7};
 
-	private static final int[] IDX_ONLINE = new int[] {0, 1, 2, 3, 4};
-	
 	private static final int[] IDX_GRAPH_ONLINE = new int[] {0, 1, 14, 3, 4};
 	
 	private static final int[] IDX_GRAPH_OFFLINE = new int[] {0, 1, 14, 12, 13, 15};

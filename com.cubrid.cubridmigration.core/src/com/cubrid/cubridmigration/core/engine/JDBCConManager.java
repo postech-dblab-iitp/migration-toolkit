@@ -31,8 +31,6 @@ package com.cubrid.cubridmigration.core.engine;
 
 import java.sql.Connection;
 
-import org.apache.hadoop.hdfs.server.namenode.GetDelegationTokenServlet;
-
 import com.cubrid.cubridmigration.core.common.Closer;
 import com.cubrid.cubridmigration.core.connection.ConnParameters;
 import com.cubrid.cubridmigration.core.connection.IConnHelper;

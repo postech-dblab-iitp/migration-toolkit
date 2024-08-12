@@ -1,7 +1,6 @@
 package com.cubrid.cubridmigration.graph;
 
 import java.sql.Connection;
-import java.sql.DatabaseMetaData;
 import java.sql.Driver;
 import java.sql.SQLException;
 import java.util.Properties;

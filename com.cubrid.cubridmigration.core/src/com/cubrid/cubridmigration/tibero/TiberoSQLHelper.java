@@ -45,7 +45,6 @@ public class TiberoSQLHelper extends
 		SQLHelper {
 	
 	private static final String NEWLINE = "\n";
-	private static final String HINT = "/*+ NO_STATS */";
 	private static final String END_LINE_CHAR = ";";
 	
 	private static final TiberoSQLHelper INS = new TiberoSQLHelper();

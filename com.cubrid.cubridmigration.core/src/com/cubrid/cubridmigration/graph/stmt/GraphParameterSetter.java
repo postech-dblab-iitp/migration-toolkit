@@ -33,7 +33,6 @@ import java.sql.PreparedStatement;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.cubrid.cubridmigration.core.dbobject.Column;
 import com.cubrid.cubridmigration.core.dbobject.Record;
 import com.cubrid.cubridmigration.core.dbobject.Record.ColumnValue;
 import com.cubrid.cubridmigration.core.engine.config.MigrationConfiguration;
@@ -60,8 +59,6 @@ public class GraphParameterSetter {
 	private final DefaultHandler defaultHandler = new DefaultHandler();
 
 	public GraphParameterSetter(MigrationConfiguration config) {
-		String sourceCharset = config.getSourceCharset();
-		String targetCharset = config.getTargetCharSet();
 		
 		GraphDateHandler dateHandler = new GraphDateHandler();
 		handlerMap.put("date", dateHandler);

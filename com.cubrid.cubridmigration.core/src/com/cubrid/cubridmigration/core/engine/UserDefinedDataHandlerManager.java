@@ -39,6 +39,7 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
+import com.cubrid.cubridmigration.core.common.Closer;
 import com.cubrid.cubridmigration.core.common.PathUtils;
 import com.cubrid.cubridmigration.core.common.log.LogUtil;
 import com.cubrid.cubridmigration.core.engine.exception.UserDefinedHandlerException;
@@ -80,6 +81,9 @@ public final class UserDefinedDataHandlerManager {
 	 * @return true if put successfully
 	 */
 	public boolean putColumnDataHandler(String dataHandler, boolean replace) {
+
+		URLClassLoader loader = null;
+
 		if (StringUtils.isBlank(dataHandler)) {
 			return false;
 		}
@@ -99,7 +103,7 @@ public final class UserDefinedDataHandlerManager {
 			handlerFullPath = PathUtils.getHandlersDir() + handlerJar;
 
 			final File fileFull = new File(handlerFullPath);
-			URLClassLoader loader = new URLClassLoader(
+			loader = new URLClassLoader(
 					new URL[]{fileFull.toURI().toURL() });
 			Object model = loader.loadClass(handlerClass).newInstance();
 			if (getHandlerMethod(model) != null) {
@@ -108,6 +112,8 @@ public final class UserDefinedDataHandlerManager {
 			return true;
 		} catch (Exception e) {
 			LOG.error("", e);
+		} finally {
+			Closer.close(loader);
 		}
 		return false;
 	}

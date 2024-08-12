@@ -37,8 +37,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.JPopupMenu.Separator;
-
 import org.apache.log4j.Logger;
 
 import com.cubrid.cubridmigration.core.common.CUBRIDIOUtils;
@@ -620,7 +618,6 @@ public class LoadFileImporter extends
 	}
 
 	public int importCDCObject(Vertex vertex, Edge e, List<Record> records) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 

@@ -3,8 +3,6 @@ package com.cubrid.cubridmigration.graph.dbobj;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
-import org.apache.poi.util.SystemOutLogger;
-
 public class WorkBuffer {
 	private Deque<Work> undoList = new ArrayDeque<Work>();
 	private Deque<Work> redoList = new ArrayDeque<Work>();

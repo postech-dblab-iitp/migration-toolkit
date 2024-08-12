@@ -168,20 +168,6 @@ public class R2GMigrationReportEditorPart extends
 	}
 
 	/**
-	 * Create non-supported objects page
-	 * 
-	 * @param tfReport parent
-	 */
-	private void createNonsupportPage(TabFolder tfReport) {
-		TabItem tiNonsupport = new TabItem(tfReport, SWT.NONE);
-		tiNonsupport.setText(Messages.lblNonsupport);
-		txtNonsupport = new Text(tfReport, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
-		txtNonsupport.setEditable(false);
-		txtNonsupport.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		tiNonsupport.setControl(txtNonsupport);
-	}
-
-	/**
 	 * @param tiViews TabItem
 	 */
 	private void createObjectDetailTableViewer(TabItem tiViews) {

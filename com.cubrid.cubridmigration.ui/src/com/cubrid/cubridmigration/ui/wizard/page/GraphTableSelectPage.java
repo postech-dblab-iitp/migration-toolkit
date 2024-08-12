@@ -32,7 +32,6 @@ import com.cubrid.cubridmigration.core.dbobject.Catalog;
 import com.cubrid.cubridmigration.core.dbobject.Column;
 import com.cubrid.cubridmigration.core.dbobject.FK;
 import com.cubrid.cubridmigration.core.dbobject.Index;
-import com.cubrid.cubridmigration.core.dbobject.PK;
 import com.cubrid.cubridmigration.core.dbobject.Schema;
 import com.cubrid.cubridmigration.core.dbobject.Table;
 import com.cubrid.cubridmigration.core.engine.config.MigrationConfiguration;
@@ -48,14 +47,12 @@ import com.cubrid.cubridmigration.ui.wizard.MigrationWizard;
 //GDB select table page.
 public class GraphTableSelectPage extends MigrationWizardPage {
 
-	private String[] columnNames = new String[] {"check box", "table name"};
 	private TableViewer tableViewer;
 	private TableViewer columnViewer;
 	private Map<String, List<Column>> columnData = new HashMap<String, List<Column>>();
 	private List<Table> tableList = new ArrayList<Table>();
 	private List<Table> selectedTableList = new ArrayList<Table>();
 	
-	private int csvId = 0;
 	
 	public GraphTableSelectPage(String pageName) {
 		super(pageName);
@@ -186,7 +183,6 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 	}
 	
 	public void showTableViewerData(List<Schema> schemaList) {
-		List<SourceEntryTableConfig> setcList = getMigrationWizard().getMigrationConfig().getExpEntryTableCfg();
 		
 		for (Schema schema : schemaList) {
 			List<Table> schemaTableList = schema.getTables();

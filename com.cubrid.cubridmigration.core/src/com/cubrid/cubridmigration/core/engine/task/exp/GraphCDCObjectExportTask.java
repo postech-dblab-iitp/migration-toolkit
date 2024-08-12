@@ -5,7 +5,6 @@ import java.util.List;
 import com.cubrid.cubridmigration.core.dbobject.Record;
 import com.cubrid.cubridmigration.core.engine.MigrationContext;
 import com.cubrid.cubridmigration.core.engine.RecordExportedListener;
-import com.cubrid.cubridmigration.core.engine.event.ExportGraphRecordEvent;
 import com.cubrid.cubridmigration.core.engine.event.StartVertexTableEvent;
 import com.cubrid.cubridmigration.core.engine.task.ExportTask;
 import com.cubrid.cubridmigration.core.engine.task.ImportTask;

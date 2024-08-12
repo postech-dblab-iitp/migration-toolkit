@@ -17,7 +17,6 @@ import com.cubrid.cubridmigration.core.engine.config.SourceTableConfig;
 import com.cubrid.cubridmigration.core.mapping.AbstractDataTypeMappingHelper;
 import com.cubrid.cubridmigration.core.mapping.model.MapObject;
 import com.cubrid.cubridmigration.core.trans.DBTransformHelper;
-import com.cubrid.cubridmigration.tibero.TiberoDataTypeHelper;
 
 public class Neo4j2TiberoTranformHelper extends DBTransformHelper {
 
@@ -66,7 +65,6 @@ public class Neo4j2TiberoTranformHelper extends DBTransformHelper {
 	}
 
 	public Column getRDBColumn(Column srcCol, MigrationConfiguration config) {
-		TiberoDataTypeHelper dataTypeHelper = TiberoDataTypeHelper.getInstance(null);
 		Column tarCol = srcCol.cloneCol();
 		tarCol.setName(StringUtils.lowerCase(tarCol.getName()));
 		

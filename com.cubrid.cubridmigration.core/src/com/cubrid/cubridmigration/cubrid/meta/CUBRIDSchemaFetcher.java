@@ -79,7 +79,6 @@ import com.cubrid.cubridmigration.cubrid.dbobj.CUBRIDTrigger;
 import com.cubrid.cubridmigration.graph.GraphDataTypeHelper;
 import com.cubrid.jdbc.proxy.driver.CUBRIDPreparedStatementProxy;
 import com.cubrid.jdbc.proxy.driver.CUBRIDResultSetProxy;
-import com.jcraft.jsch.ConfigRepository.Config;
 
 /**
  * 

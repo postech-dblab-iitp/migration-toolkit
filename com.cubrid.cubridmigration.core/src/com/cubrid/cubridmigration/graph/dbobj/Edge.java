@@ -11,8 +11,10 @@ import com.cubrid.cubridmigration.core.dbobject.Column;
 import com.cubrid.cubridmigration.core.dbobject.DBObject;
 
 public class Edge extends DBObject {
-    
-    public static final int NONE = 0;
+   
+	private static final long serialVersionUID = -547679137789424327L;
+	
+	public static final int NONE = 0;
     public static final int SECOND_FK_TYPE = 1;
     public static final int INTERMEDIATE_FK_TYPE = 2;
     public static final int JOINTABLE_TYPE = 3;

@@ -34,7 +34,6 @@ import org.apache.log4j.Logger;
 
 import com.cubrid.cubridmigration.core.common.log.LogUtil;
 import com.cubrid.cubridmigration.core.mapping.AbstractDataTypeMappingHelper;
-import com.cubrid.cubridmigration.cubrid.CUBRIDDataTypeHelper;
 import com.cubrid.cubridmigration.oracle.OracleDataTypeHelper;
 
 /**

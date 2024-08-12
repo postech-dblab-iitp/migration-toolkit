@@ -29,7 +29,6 @@
  */
 package com.cubrid.cubridmigration.ui.wizard.page;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -65,18 +64,12 @@ import com.cubrid.common.ui.navigator.ICUBRIDNode;
 import com.cubrid.cubridmigration.core.common.log.LogUtil;
 import com.cubrid.cubridmigration.core.dbobject.Catalog;
 import com.cubrid.cubridmigration.core.dbobject.DBObject;
-import com.cubrid.cubridmigration.core.dbobject.FK;
-import com.cubrid.cubridmigration.core.dbobject.Schema;
 import com.cubrid.cubridmigration.core.dbobject.Table;
 import com.cubrid.cubridmigration.core.dbtype.DatabaseType;
 import com.cubrid.cubridmigration.core.engine.config.MigrationConfiguration;
-import com.cubrid.cubridmigration.graph.dbobj.Edge;
-import com.cubrid.cubridmigration.graph.dbobj.GraphDictionary;
-import com.cubrid.cubridmigration.graph.dbobj.Vertex;
 import com.cubrid.cubridmigration.ui.common.UICommonTool;
 import com.cubrid.cubridmigration.ui.common.dialog.DetailMessageDialog;
 import com.cubrid.cubridmigration.ui.common.navigator.node.ColumnNode;
-import com.cubrid.cubridmigration.ui.common.navigator.node.ColumnsNode;
 import com.cubrid.cubridmigration.ui.common.navigator.node.DatabaseNode;
 import com.cubrid.cubridmigration.ui.common.navigator.node.FKNode;
 import com.cubrid.cubridmigration.ui.common.navigator.node.FKsNode;

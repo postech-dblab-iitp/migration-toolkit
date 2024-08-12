@@ -36,7 +36,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.TreeMap;
@@ -378,7 +377,6 @@ public final class MigrationTemplateParser {
 			vertexElement.setAttribute("table_owner", vertex.getOwner());
 			vertexElement.setAttribute("table_oid", String.valueOf(vertex.getOid()));
 			
-			HashMap<String, String> properties = (HashMap) vertex.getVertexProperties();
 			List<Column> columnList = vertex.getColumnList();
 			
 			Element columnsElement = createElement(doc, vertexElement, "properties"); 
@@ -431,7 +429,6 @@ public final class MigrationTemplateParser {
 			edgeElement.setAttribute("table_oid", String.valueOf(edge.getOid()));
 			
 			ArrayList<Column> columnList = (ArrayList<Column>) edge.getColumnList();
-			HashMap<String, String> properties = (HashMap) edge.getEdgeProperties();
 			TreeMap<String, String> fkRefers = (TreeMap<String, String>) edge.getfkCol2RefMapping();
 			
 			Element columnsElement = createElement(doc, edgeElement, "properties");

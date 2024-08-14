@@ -111,7 +111,7 @@ public class GraphSelectSrcTarTypesView {
 			public void widgetSelected(SelectionEvent e){
 				Button sourceBtn = (Button) e.getSource();
 				if (sourceBtn.getSelection()) {
-					selectCUBRIDSrc();
+					selectRDBSrc();
 				}
 			}
 		});
@@ -141,7 +141,7 @@ public class GraphSelectSrcTarTypesView {
 			public void widgetSelected(SelectionEvent e){
 				Button sourceBtn = (Button) e.getSource();
 				if (sourceBtn.getSelection()) {
-					selectCUBRIDSrc();
+					selectRDBSrc();
 				}
 			}
 		});
@@ -379,7 +379,7 @@ public class GraphSelectSrcTarTypesView {
 		}
 	}
 	
-	private void selectCUBRIDSrc() {
+	private void selectRDBSrc() {
 		btnOnlineNeo4j.setEnabled(true);
 		btnDumpTar.setEnabled(true);
 		btnCSVTar.setEnabled(true);
@@ -417,9 +417,11 @@ public class GraphSelectSrcTarTypesView {
 				btn.setSelection(true);
 				flag = true;
 				
-//				if (srcType == MigrationConfiguration.SOURCE_TYPE_GRAPH) {
-//					selectGraphSrc();
-//				}
+				if (srcType == MigrationConfiguration.SOURCE_TYPE_TIBERO || srcType == MigrationConfiguration.SOURCE_TYPE_CUBRID) {
+					selectRDBSrc();
+				} else if (srcType == MigrationConfiguration.SOURCE_TYPE_GRAPH || srcType == MigrationConfiguration.SOURCE_TYPE_TURBO) {
+					selectGraphSrc();
+				}
 			}
 		}
 		if (!flag) {
@@ -432,6 +434,7 @@ public class GraphSelectSrcTarTypesView {
 			if (((Integer) btn.getData()).intValue() == tarType) {
 				btn.setSelection(true);
 				flag = true;
+				
 			}
 		}
 

@@ -68,6 +68,7 @@ import com.cubrid.cubridmigration.core.engine.config.MigrationConfiguration;
 import com.cubrid.cubridmigration.ui.common.Status;
 import com.cubrid.cubridmigration.ui.common.UICommonTool;
 import com.cubrid.cubridmigration.ui.common.dialog.DetailMessageDialog;
+import com.cubrid.cubridmigration.ui.database.ConnectionTestWithProgress;
 import com.cubrid.cubridmigration.ui.database.IJDBCConnectionFilter;
 import com.cubrid.cubridmigration.ui.database.JDBCConnectionMgrView;
 import com.cubrid.cubridmigration.ui.message.Messages;
@@ -159,17 +160,16 @@ public class GraphSelectDestinationPage extends
 			ConnParameters connParameters = conMgrView.getSelectedDCI().getConnParameters();
 			config.setTargetConParams(connParameters);
 
-			//check connection 
-			try {
-                Connection conn = config.getTargetConParams().createConnection();
-                conn.close();
-            } catch (SQLException e) {
-                DetailMessageDialog.openInfo(getShell(), Messages.msgError, Messages.commonToolMysqlMsg5, e.toString());
-                return false;
-            }
- 
-			return true;
-
+			//check connection
+			
+			ConnectionTestWithProgress connTest = new ConnectionTestWithProgress(config);
+			
+			if (connTest.launch()) {
+				return true;
+			} else {
+				DetailMessageDialog.openInfo(getShell(), Messages.msgError, Messages.commonToolMysqlMsg5, "Cannot connect to database");
+				return false;
+			}
 		}
 
 		/**

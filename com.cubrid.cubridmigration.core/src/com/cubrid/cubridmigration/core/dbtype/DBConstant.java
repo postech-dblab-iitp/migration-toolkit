@@ -49,8 +49,7 @@ public class DBConstant { // NOPMD
 	public static final int DBTYPE_TIBERO = 5;
 
 	// GDB in db names
-	public static final String[] DB_NAMES = new String[] { "MYSQL", "CUBRID", "MSSQL", "ORACLE", "GRAPH", "TIBERO",
-			"TURBO" };
+	public static final String[] DB_NAMES = new String[] { "MYSQL", "CUBRID", "MSSQL", "ORACLE", "GRAPH", "TIBERO",	"TURBO" };
 
 	public static final String JDBC_CLASS_ORACLE = "oracle.jdbc.OracleDriver";
 	public static final String JDBC_CLASS_MSSQL = "com.microsoft.sqlserver.jdbc.SQLServerDriver";

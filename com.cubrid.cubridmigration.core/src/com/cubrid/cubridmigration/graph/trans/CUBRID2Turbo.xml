@@ -81,6 +81,11 @@
 	  		<scale></scale>
 		</SourceDataType>
 		<TargetDataType>
+			<type>integer</type>
+			<precision></precision>
+			<scale></scale>
+		</TargetDataType>
+		<TargetDataType>
 			<type>decimal</type>
 			<precision>64</precision>
 			<scale></scale>
@@ -152,6 +157,11 @@
       		<precision></precision>
 	  		<scale></scale>
 		</SourceDataType>
+		<TargetDataType>
+			<type>decimal</type>
+			<precision>64</precision>
+			<scale></scale>
+		</TargetDataType>		
 		<TargetDataType>
 			<type>string</type>
 			<precision>64</precision>

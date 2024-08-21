@@ -28,16 +28,6 @@ public class TurboSchemaFetcher extends AbstractJDBCSchemaFetcher {
 	public TurboSchemaFetcher() {
 		factory = new DBObjectFactory();
 	}
-
-	//GDB schemafetcher buildVertexes
-	private GraphDictionary buildVertexes() {
-		return null;
-	}
-	
-	//GDB schemafetcher
-	private GraphDictionary buildEdges(){
-		return null;
-	}
 	
 	public DatabaseType getDBType() {
 		return DatabaseType.TURBO;

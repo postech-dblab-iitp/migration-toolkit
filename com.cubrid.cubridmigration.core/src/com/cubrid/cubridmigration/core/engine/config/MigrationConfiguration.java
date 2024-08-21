@@ -79,9 +79,7 @@ import com.cubrid.cubridmigration.core.trans.DBTransformHelper;
 import com.cubrid.cubridmigration.core.trans.MigrationTransFactory;
 import com.cubrid.cubridmigration.cubrid.CUBRIDDataTypeHelper;
 import com.cubrid.cubridmigration.cubrid.CUBRIDSQLHelper;
-import com.cubrid.cubridmigration.graph.dbobj.Edge;
 import com.cubrid.cubridmigration.graph.dbobj.GraphDictionary;
-import com.cubrid.cubridmigration.graph.dbobj.Vertex;
 import com.cubrid.cubridmigration.mysql.MysqlXmlDumpSource;
 
 /**
@@ -147,7 +145,6 @@ public class MigrationConfiguration {
 		}
 	};
 	
-	private static final String[] DATA_FORMAT_LABEL = new String[] { "LoadDB", "CSV", "SQL", "XLS" };
 	private static final Map<Integer, String> DATA_FORMAT_LABEL_MAP = new HashMap<Integer, String> () {
 		{
 			put(100, "LoadDB");

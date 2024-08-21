@@ -45,17 +45,7 @@ import org.eclipse.swt.widgets.ToolItem;
 
 import com.cubrid.cubridmigration.core.common.log.LogUtil;
 import com.cubrid.cubridmigration.core.connection.ConnParameters;
-import com.cubrid.cubridmigration.core.dbtype.DatabaseType;
 import com.cubrid.cubridmigration.core.engine.config.MigrationConfiguration;
-import com.cubrid.cubridmigration.core.engine.config.SourceConfig;
-import com.cubrid.cubridmigration.core.engine.config.SourceEntryTableConfig;
-import com.cubrid.cubridmigration.core.engine.config.SourceFKConfig;
-import com.cubrid.cubridmigration.core.engine.config.SourceIndexConfig;
-import com.cubrid.cubridmigration.core.engine.config.SourceSQLTableConfig;
-import com.cubrid.cubridmigration.core.engine.config.SourceSequenceConfig;
-import com.cubrid.cubridmigration.core.engine.config.SourceTableConfig;
-import com.cubrid.cubridmigration.core.engine.config.SourceViewConfig;
-import com.cubrid.cubridmigration.mysql.trans.MySQL2CUBRIDMigParas;
 import com.cubrid.cubridmigration.ui.SWTResourceConstents;
 import com.cubrid.cubridmigration.ui.common.UIConstant;
 import com.cubrid.cubridmigration.ui.message.Messages;

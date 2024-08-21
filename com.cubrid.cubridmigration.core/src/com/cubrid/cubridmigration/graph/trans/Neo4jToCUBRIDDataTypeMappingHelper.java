@@ -34,7 +34,6 @@ import org.apache.log4j.Logger;
 
 import com.cubrid.cubridmigration.core.common.log.LogUtil;
 import com.cubrid.cubridmigration.core.mapping.AbstractDataTypeMappingHelper;
-import com.cubrid.cubridmigration.cubrid.CUBRIDDataTypeHelper;
 import com.cubrid.cubridmigration.oracle.OracleDataTypeHelper;
 
 /**
@@ -80,61 +79,10 @@ public class Neo4jToCUBRIDDataTypeMappingHelper extends
 	}
 	
 	/**
-	 * get the number type map key
-	 * 
-	 * @param dataTypeUpper String
-	 * @param precision String
-	 * @return key String
-	 */
-	private String getNumberMapKey(String dataTypeUpper, String precision) {
-		String tempPre = null;
-		String tempScale = null;
-
-		if ("p".equalsIgnoreCase(precision)) {
-			tempPre = "p";
-			tempScale = "s";
-		} else {
-			Integer intPrecision = str2Integer(precision);
-			if (intPrecision != null && intPrecision > 0) {
-				tempPre = "p";
-				tempScale = "s";
-			}
-
-		}
-
-		StringBuffer sb = new StringBuffer();
-		sb.append(dataTypeUpper);
-		sb.append(MAP_KEY_SEPARATOR);
-
-		if (tempPre != null) {
-			sb.append(tempPre);
-		}
-		sb.append(MAP_KEY_SEPARATOR);
-
-		if (tempScale != null) {
-			sb.append(tempScale);
-		}
-
-		return sb.toString();
-	}
-
-	/**
 	 * 
 	 * convert the string to integer
 	 * 
 	 * @param str String
 	 * @return value Integer
 	 */
-	private Integer str2Integer(String str) {
-		if (StringUtils.isBlank(str)) {
-			return null;
-		}
-		Integer value = null;
-		try {
-			value = Integer.parseInt(str);
-		} catch (Exception ex) {
-			LOG.info(("Can convert String to Integer:" + str + ex.getMessage()));
-		}
-		return value;
-	}
 }

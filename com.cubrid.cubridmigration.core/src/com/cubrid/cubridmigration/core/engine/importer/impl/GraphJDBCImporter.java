@@ -56,9 +56,7 @@ import com.cubrid.cubridmigration.core.engine.event.ImportGraphRecordsEvent;
 import com.cubrid.cubridmigration.core.engine.event.SingleRecordErrorEvent;
 import com.cubrid.cubridmigration.core.engine.exception.JDBCConnectErrorException;
 import com.cubrid.cubridmigration.core.engine.exception.NormalMigrationException;
-import com.cubrid.cubridmigration.core.engine.importer.ErrorRecords2SQLFileWriter;
 import com.cubrid.cubridmigration.core.engine.importer.Importer;
-import com.cubrid.cubridmigration.cubrid.stmt.CUBRIDParameterSetter;
 import com.cubrid.cubridmigration.graph.dbobj.Edge;
 import com.cubrid.cubridmigration.graph.dbobj.Vertex;
 import com.cubrid.cubridmigration.graph.stmt.GraphParameterSetter;
@@ -69,14 +67,12 @@ public class GraphJDBCImporter extends
 	private final JDBCConManager connectionManager;
 	private final MigrationConfiguration config;
 	private final GraphParameterSetter parameterSetter;
-	private final ErrorRecords2SQLFileWriter errorRecordsWriter;
 
 	public GraphJDBCImporter(MigrationContext mrManager) {
 		super(mrManager);
 		this.parameterSetter = mrManager.getGraphParamSetter();
 		this.config = mrManager.getConfig();
 		this.connectionManager = mrManager.getConnManager();
-		this.errorRecordsWriter = new ErrorRecords2SQLFileWriter(mrManager);
 	}
 
 	public int importEdge(Edge e, List<Record> records) {
@@ -214,7 +210,6 @@ public class GraphJDBCImporter extends
 		}
 		PreparedStatement stmt = null;
 		ResultSet rs1 = null;
-		ResultSet rs2 = null;
 		String sql = getTargetInsertJoinEdge(e);
 			try {
 				if (sql == null) {
@@ -428,44 +423,6 @@ public class GraphJDBCImporter extends
 		buffer.append("->(m) ");
 		buffer.append("return count(r)");
 		return buffer.toString();
-	}
-	
-	private List<ColumnValue> getRecord2FKValue(Edge e, Record record) {
-		int len = record.getColumnValueList().size();
-		List<ColumnValue> colVal = new ArrayList<ColumnValue>();
-		try {
-			for (String fkColName : e.getFKColumnNames()) {
-				for (int i = 0; i < len; i ++) {
-					ColumnValue columnValue = record.getColumnValueList().get(i);
-					Object value = columnValue.getValue();
-					if (value == null) {
-						return null;
-					}
-					String temp = columnValue.getColumn().getName();
-					if (temp.equals(fkColName)){
-						colVal.add(columnValue);
-					}
-				}
-			}
-			
-//			for (int i = 0; i < len; i++) {
-//				ColumnValue columnValue = record.getColumnValueList().get(i);
-//				Object value = columnValue.getValue();
-//				if (value == null) {
-//					return null;
-//				} else {
-//					String temp = columnValue.getColumn().getName();
-//					for (String fkName : e.getFKColumnNames()) {
-//						if (temp.equals(fkName)) {
-//							colVal.add(columnValue);
-//						}
-//					}
-//				}
-//			}
-		} catch (Exception ex) {
-			throw new NormalMigrationException(ex);
-		} 
-		return colVal;
 	}
 
 	////////////////////////////////////////////////////////
@@ -708,27 +665,6 @@ public class GraphJDBCImporter extends
 	 * @param rrec source record
 	 * @return Target record
 	 */
-	private Record createTargetRecord(Edge e, Record rrec) {
-//		Record trec = new Record();
-//		Map<String, Object> recordMap = rrec.getColumnValueMap();
-//		for (Record.ColumnValue cv : rrec.getColumnValueList()) {
-//			Column targetColumn = v.getColumnByName(cv.getColumn().getName());
-//			if (targetColumn == null) {
-//				continue;
-//			}
-//			Object targetValue;
-//			try {
-//				targetValue = convertValueToTargetDBValue(recordMap, v,
-//						cv.getColumn(), targetColumn, cv.getValue());
-//			} catch (UserDefinedHandlerException ex) {
-//				targetValue = cv.getValue();
-//				eventHandler.handleEvent(new SingleRecordErrorEvent(rrec, ex));
-//			}
-//			trec.addColumnValue(targetColumn, targetValue);
-//		}
-		return rrec;
-	}
-	
 
 	public void executeDDL(String sql) {
 	}

@@ -11,7 +11,9 @@ import com.cubrid.cubridmigration.core.dbobject.PK;
 
 public class Vertex extends DBObject {
     
-    public static final int NONE = 0;
+	private static final long serialVersionUID = 8827080629927290202L;
+	
+	public static final int NONE = 0;
     public static final int FIRST_TYPE = 1;
     public static final int SECOND_TYPE = 2;
     public static final int INTERMEDIATE_TYPE = 3;

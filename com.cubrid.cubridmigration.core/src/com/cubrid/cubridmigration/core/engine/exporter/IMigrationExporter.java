@@ -30,7 +30,6 @@
 package com.cubrid.cubridmigration.core.engine.exporter;
 
 import com.cubrid.cubridmigration.core.dbobject.DBObject;
-import com.cubrid.cubridmigration.core.engine.MigrationContext;
 import com.cubrid.cubridmigration.core.engine.RecordExportedListener;
 import com.cubrid.cubridmigration.core.engine.config.SourceTableConfig;
 import com.cubrid.cubridmigration.graph.dbobj.Edge;

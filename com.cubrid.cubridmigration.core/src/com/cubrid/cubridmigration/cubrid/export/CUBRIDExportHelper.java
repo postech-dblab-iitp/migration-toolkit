@@ -596,7 +596,6 @@ public class CUBRIDExportHelper extends
 	}
 	
 	public String getPagedSelectSQLForVertexCSV(Vertex v, String sql, long rows, long exportedRecords, PK pk) {
-		String cleanSql = sql.toUpperCase().trim();
 		int pkCount = 0;
 		
 		if (pk != null) {
@@ -648,8 +647,6 @@ public class CUBRIDExportHelper extends
 			
 			sql = selectMatcher.replaceFirst(buffer.toString());
 		}
-		
-		StringBuffer orderByBuffer = new StringBuffer();
 		
 		return sql + " ORDER BY ";
 	}

@@ -31,7 +31,7 @@ Column List
 Graph
 ==========
 
-전 페이지에서 선택된 object들이 csv을 통해 이관될 경우 graphDB에서 어떻게 보이게 될지 예시를 보여준다.
+전 페이지에서 선택된 object들이 csv을 통해 이관될 경우 GraphDB에서 어떻게 보이게 될지 예시를 보여준다.
 
 ============================
 RDB Column, GDB Column

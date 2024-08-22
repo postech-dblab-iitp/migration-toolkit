@@ -18,9 +18,11 @@ MiT의 기능 대부분에 공통으로 적용되는 기능이다.
 이관 타입 선택
 ----------------------------
 
-.. image:: image/GDB_to_RDB.png
+.. image:: image/GDB_to_RDB2.png
 
 이관을 실행하기 위해 '새 마이그레이션' 버튼을 선택하면 표시되는 화면.
+
+RDB to RDB 또는 GDB to GDB 이관은 불가능하다.
 
 source type
 ================
@@ -29,9 +31,9 @@ source type
 
 target으로 이관할 데이터를 가져올 source를 선택하는 부분이다.
 
-현재 선택 가능한 DBMS는 CUBRID, Tibero, GraphDB(NEO4J, turbograph++)가 있다.
+현재 선택 가능한 DBMS는 CUBRID, Tibero, NEO4J, turbograph++가 있다.
 
-현재 GraphDB는 CUBRID로의 출력만 지원한다 (G2R)
+현재 GraphDB는 CUBRID와 Tibero에 대한 출력만 지원한다 (G2R)
 
 destination type
 ================
@@ -45,10 +47,10 @@ Online CUBRID database
 
 target을 CUBRID로 설정한다. 해당 옵션은 source가 GraphDB일 때만 지원한다.
 
-Online Graph database
+Online Neo4j database
 ------------------------
 
-target을 GraphDB로 설정한다. 해당 옵션은 source가 CUBRID 또는 Tibero일 때만 사용 가능하다.
+target을 Neo4j로 설정한다. 해당 옵션은 source가 CUBRID 또는 Tibero일 때만 사용 가능하다.
 
 Local GRAPH dump files
 ------------------------

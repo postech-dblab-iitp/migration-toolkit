@@ -383,6 +383,9 @@ public class GraphSelectSrcTarTypesView {
 		btnOnlineNeo4j.setEnabled(true);
 		btnDumpTar.setEnabled(true);
 		btnCSVTar.setEnabled(true);
+		
+		btnOnlineTiberoTar.setEnabled(false);
+		btnOnlineTar.setEnabled(false);
 	}
 	
 	private void selectGraphSrc() {

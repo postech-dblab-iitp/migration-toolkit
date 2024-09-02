@@ -51,6 +51,18 @@ public class GraphDictionary {
 		}
 	}
 	
+	public void removeVertex(String vertexName) {
+		int listSize = migratedVertexList.size();
+		
+		for (int i = 0; i < listSize; i++) {
+			Vertex vertex = migratedVertexList.get(i);
+			if (vertex.getVertexLabel().equals(vertexName)) {
+				migratedVertexList.remove(i);
+				return;
+			}
+		}
+	}
+	
 	public void printVertexAndEdge(){
 		StringBuilder relationVertexes = new StringBuilder();
 		

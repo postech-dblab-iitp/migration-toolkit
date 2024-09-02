@@ -372,8 +372,38 @@ public class GraphMappingPage extends MigrationWizardPage {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				
+				String originalName;
+				 
+				if (selectedObject instanceof Vertex) {
+					originalName = selectedVertex.getName();
+				} else {
+					originalName = selectedEdge.getName();
+				}
+				
 				GraphRenamingDialog renameDialog = new GraphRenamingDialog(getShell(), gdbDict, selectedObject);
 				renameDialog.open();
+				
+				GraphDictionary gdbDict = mConfig.getGraphDictionary();
+				List<Edge> migratedEdgeList = gdbDict.getMigratedEdgeList();
+				List<Vertex> migratedVertexList = gdbDict.getMigratedVertexList();
+				
+				if (selectedObject instanceof Vertex) {
+					for (Vertex vertex : migratedVertexList) {
+						if (vertex.getName().equals(selectedVertex.getName())) {
+							workBuffer.addWork(workCtrl.createWork(workTypeEnum.WT_RENAME.ordinal(), vertex, originalName));
+							break;
+						}
+					}
+				} else {
+					for (Edge edge : migratedEdgeList) {
+						if (edge.getName().equals(selectedEdge.getName())) {
+							workBuffer.addWork(workCtrl.createWork(workTypeEnum.WT_RENAME.ordinal(), edge, originalName));
+							break;
+						}
+					}
+				}
+				
+				redoUndoHandler();
 				
 				graphViewer.refresh();
 			}
@@ -541,7 +571,6 @@ public class GraphMappingPage extends MigrationWizardPage {
 	}
 	
 	public void createTableView(Composite parent) {
-		
 		SashForm verticalSash = new SashForm(parent, SWT.VERTICAL);
 		verticalSash.setLayout(new GridLayout(4, false));
 		verticalSash.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
@@ -885,22 +914,108 @@ public class GraphMappingPage extends MigrationWizardPage {
 	private void executeUndo(Work work) {
 		workCtrl.setWork(work);
 		
-		if (work.getWorkType() == workTypeEnum.WT_DELETE.ordinal()) {
-			gdbDict.addMigratedEdgeList(work.getEdge());
-		} else if (work.getWorkType() == workTypeEnum.WT_CREATE.ordinal()) {
-			gdbDict.removeEdge(workCtrl.getEdge().getEdgeLabel());
+		if (work.getObject() instanceof Vertex) {
+			if (work.getWorkType() == workTypeEnum.WT_DELETE.ordinal()) {
+				gdbDict.addMigratedVertexList((Vertex) work.getObject());
+				
+			} else if (work.getWorkType() == workTypeEnum.WT_CREATE.ordinal()) {
+				gdbDict.removeVertex(((Vertex) workCtrl.getObject()).getVertexLabel());
+				
+			} else if (work.getWorkType() == workTypeEnum.WT_RENAME.ordinal()) {
+				String tempStr = work.getObject().getName();
+				
+				changeVertexName(work.getObject().getName(), work.getOriginalName());
+				work.setOriginalName(tempStr);
+			}
+		} else {
+			if (work.getWorkType() == workTypeEnum.WT_DELETE.ordinal()) {
+				gdbDict.addMigratedEdgeList((Edge) work.getObject());
+				
+			} else if (work.getWorkType() == workTypeEnum.WT_CREATE.ordinal()) {
+				gdbDict.removeEdge(((Edge) workCtrl.getObject()).getEdgeLabel());
+				
+			} else if (work.getWorkType() == workTypeEnum.WT_RENAME.ordinal()) {
+				String tempStr = work.getObject().getName();
+				
+				changeEdgeName(work.getObject().getName(), work.getOriginalName());
+				work.setOriginalName(tempStr);
+			}
 		}
+		
 		graphViewer.refresh();
 	}
 	
 	private void executeRedo(Work work) {
 		workCtrl.setWork(work);
 		
-		if (work.getWorkType() == workTypeEnum.WT_DELETE.ordinal()) {
-			gdbDict.removeEdge(workCtrl.getEdge().getEdgeLabel());
-		} else if (work.getWorkType() == workTypeEnum.WT_CREATE.ordinal()) {
-			gdbDict.addMigratedEdgeList(work.getEdge());
+		if (work.getObject() instanceof Vertex) {
+			if (work.getWorkType() == workTypeEnum.WT_DELETE.ordinal()) {
+				gdbDict.removeVertex(((Vertex) workCtrl.getObject()).getVertexLabel());
+				
+			} else if (work.getWorkType() == workTypeEnum.WT_CREATE.ordinal()) {
+				gdbDict.addMigratedVertexList((Vertex) work.getObject());
+				
+			} else if (work.getWorkType() == workTypeEnum.WT_RENAME.ordinal()) {
+				String tempStr = work.getObject().getName();
+				
+				changeVertexName(work.getObject().getName(), work.getOriginalName());
+				work.setOriginalName(tempStr);
+				
+			}
+		} else {
+			if (work.getWorkType() == workTypeEnum.WT_DELETE.ordinal()) {
+				gdbDict.removeEdge(((Edge) workCtrl.getObject()).getEdgeLabel());
+				
+			} else if (work.getWorkType() == workTypeEnum.WT_CREATE.ordinal()) {
+				gdbDict.addMigratedEdgeList((Edge) work.getObject());
+				
+			} else if (work.getWorkType() == workTypeEnum.WT_RENAME.ordinal()) {
+				String tempStr = work.getObject().getName();
+				
+				changeEdgeName(work.getObject().getName(), work.getOriginalName());
+				work.setOriginalName(tempStr);
+				
+			}
 		}
+
 		graphViewer.refresh();
+	}
+	
+	private void changeVertexName(String nowName, String originalName) {
+		ArrayList<Edge> edgeList = (ArrayList<Edge>) gdbDict.getMigratedEdgeList();
+		
+		for (Edge edge : edgeList) {
+			if (edge.getStartVertexName().equals(nowName)) {
+				edge.setStartVertexName(originalName);
+			}
+			
+			if (edge.getEndVertexName().equals(nowName)) {
+				edge.setEndVertexName(originalName);
+			}
+		}
+		
+		ArrayList<Vertex> vertexList = (ArrayList<Vertex>) gdbDict.getMigratedVertexList();
+		
+		for (Vertex vertex : vertexList) {
+			if (vertex.getVertexLabel().equals(nowName)) {
+				vertex.setVertexLabel(originalName);
+			}
+			
+			for (Vertex endVertex : vertex.getEndVertexes()) {
+				if (endVertex.getVertexLabel().equals(nowName)) {
+					endVertex.setVertexLabel(originalName);
+				}
+			}
+		}
+	}
+	
+	private void changeEdgeName(String nowName, String originalName) {
+		ArrayList<Edge> edgeList = (ArrayList<Edge>) gdbDict.getMigratedEdgeList();
+		
+		for (Edge edge : edgeList) {
+			if (edge.getName().equals(nowName)) {
+				edge.setEdgeLabel(originalName);
+			}
+		}
 	}
 }

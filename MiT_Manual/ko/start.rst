@@ -47,6 +47,11 @@ Online CUBRID database
 
 target을 CUBRID로 설정한다. 해당 옵션은 source가 GraphDB일 때만 지원한다.
 
+Online Tibero database
+-------------------------
+
+target을 Tibero로 설정한다. 해당 옵션은 source가 GraphDB일 때만 지원한다.
+
 Online Neo4j database
 ------------------------
 
@@ -161,4 +166,3 @@ JDBC URL을 커스텀 할 수 있다. 만약 DB연결시 parameter가 필요할 
     getting_start/2.RDB_to_dump.rst
     getting_start/3.RDB_to_csv.rst
     getting_start/4.CLI.rst
-    getting_start/5.CDC.rst

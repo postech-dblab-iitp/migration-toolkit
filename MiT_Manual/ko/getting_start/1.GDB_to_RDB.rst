@@ -7,8 +7,6 @@ GDB to RDB 이관하기
 
 vertex, edge로 구성된 GDB의 데이터를 RDB의 table, relation 변환하여 이관하는 기능이다.
 
-현재는 CUBRID만 target으로 설정 가능하다. 
-
 .. toctree::
     :titlesonly:
 

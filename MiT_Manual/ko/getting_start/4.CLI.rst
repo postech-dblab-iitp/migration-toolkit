@@ -11,4 +11,3 @@ CLI(CommandLine Interface) 환경에서 미리 생성된 script를 통해 이관
 
 .. toctree::
     CLI/0.cli_prepare.rst
-    CLI/1.cdc_execute.rst

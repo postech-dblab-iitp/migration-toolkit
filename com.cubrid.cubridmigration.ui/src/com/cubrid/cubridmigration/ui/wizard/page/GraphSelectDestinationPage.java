@@ -72,6 +72,7 @@ import com.cubrid.cubridmigration.ui.message.Messages;
 import com.cubrid.cubridmigration.ui.wizard.MigrationWizard;
 import com.cubrid.cubridmigration.ui.wizard.dialog.CSVSettingsDialog;
 import com.cubrid.cubridmigration.ui.wizard.page.view.AbstractDestinationView;
+import com.jcraft.jsch.ConfigRepository.Config;
 
 /**
  * new wizard step 3. Select target database connection or choose OFF Line
@@ -251,30 +252,36 @@ public class GraphSelectDestinationPage extends
 				graphSelectContainer.setLayout(new GridLayout(8, false));
 				graphSelectContainer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
 				graphSelectContainer.setVisible(false);
-				btnTurboGraphType = new Button(graphSelectContainer, SWT.RADIO);
-				btnTurboGraphType.setSelection(true);
-				btnTurboGraphType.addSelectionListener(new SelectionAdapter() {
-					@Override
-					public void widgetSelected(SelectionEvent e) {
-						//btnNeo4jType.setSelection(false);
-						
-					}
-				});
-				final Label labelTurboGraph = new Label(graphSelectContainer, SWT.NONE);
-				labelTurboGraph.setText("Turbograph");
+				
 				btnNeo4jType = new Button(graphSelectContainer, SWT.RADIO);
-				btnNeo4jType.setSelection(false);
+				btnNeo4jType.setSelection(true);
 				btnNeo4jType.addSelectionListener(new SelectionAdapter() {
 					@Override
 					public void widgetSelected(SelectionEvent e) {
 						//btnTurboGraphType.setSelection(false);
-						
 					}
 				});
 				
-				
 				final Label labelNeo4j = new Label(graphSelectContainer, SWT.NONE);
 				labelNeo4j.setText("Neo4j");
+				
+				if (!(getMigrationWizard().getMigrationConfig().getDestType() == MigrationConfiguration.DEST_DB_UNLOAD)) {
+					btnTurboGraphType = new Button(graphSelectContainer, SWT.RADIO);
+					btnTurboGraphType.setSelection(true);
+					btnTurboGraphType.addSelectionListener(new SelectionAdapter() {
+						@Override
+						public void widgetSelected(SelectionEvent e) {
+							//btnNeo4jType.setSelection(false);
+						}
+					});
+					
+					final Label labelTurboGraph = new Label(graphSelectContainer, SWT.NONE);
+					labelTurboGraph.setText("Turbograph");
+					
+					btnNeo4jType.setSelection(false);
+				}
+				
+
 			}
 			
 			if (fileRepositoryContainer != null) {

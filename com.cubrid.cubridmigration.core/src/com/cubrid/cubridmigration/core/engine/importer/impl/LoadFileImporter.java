@@ -108,7 +108,9 @@ public class LoadFileImporter extends
 		super(mrManager);
 		unloadFileUtil = new Data2StrTranslator(mrManager.getDirAndFilesMgr().getMergeFilesDir(),
 				config, config.getDestType());
-		createGraphListFile();
+		
+		if (config.getDestType() != 100)
+			createGraphListFile();
 		
 	}
 

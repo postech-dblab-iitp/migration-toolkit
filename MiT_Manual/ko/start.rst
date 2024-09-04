@@ -166,3 +166,4 @@ JDBC URL을 커스텀 할 수 있다. 만약 DB연결시 parameter가 필요할 
     getting_start/2.RDB_to_dump.rst
     getting_start/3.RDB_to_csv.rst
     getting_start/4.CLI.rst
+    getting_start/5.Type_Mapping.rst

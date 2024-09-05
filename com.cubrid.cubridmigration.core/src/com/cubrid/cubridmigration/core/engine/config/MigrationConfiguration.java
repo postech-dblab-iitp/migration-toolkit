@@ -97,7 +97,7 @@ public class MigrationConfiguration {
 	public static final char CSV_NO_CHAR = '\u0000';
 
 	//GDB need remapping code
-	public static final int DEST_DB_UNLOAD = 0;
+	public static final int DEST_DB_UNLOAD = 100;
 	public static final int DEST_CSV = 101;
 	public static final int DEST_SQL = 102;
 	public static final int DEST_XLS = 103;

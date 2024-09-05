@@ -24,13 +24,13 @@
 
 이관할 테이블을 선택한 후 다음 페이지로 진행한다.
 
-.. image:: R2D_image/dump_graph_sample.png
+.. image:: R2D_image/dump_mapping_page.png
 
 =======
 그래프
 =======
 
-전 페이지에서 선택된 object들이 GQL을 통해 이관될 경우 graphDB에서 어떻게 보이게 될지 예시를 보여준다.
+전 페이지에서 선택된 object들이 GQL을 통해 이관될 경우 GraphDB에서 어떻게 보이게 될지 예시를 보여준다.
 
 ==================
 RDB, GDB 컬럼

@@ -11,7 +11,7 @@ G2R 기능은 Graph DB에 쿼리를 날려 조회된 결과값을 RDB의 테이�
 sourceDB 선택
 ==================
 
-G2R 이관이기 때문에 이 경우 source는 graphDB가 된다.
+G2R 이관이기 때문에 이 경우 source는 GraphDB가 된다.
 
 .. image:: G2R_image/g2r_source.png
 

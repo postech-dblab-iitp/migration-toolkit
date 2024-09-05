@@ -81,9 +81,6 @@ public final class UserDefinedDataHandlerManager {
 	 * @return true if put successfully
 	 */
 	public boolean putColumnDataHandler(String dataHandler, boolean replace) {
-
-		URLClassLoader loader = null;
-
 		if (StringUtils.isBlank(dataHandler)) {
 			return false;
 		}
@@ -103,7 +100,7 @@ public final class UserDefinedDataHandlerManager {
 			handlerFullPath = PathUtils.getHandlersDir() + handlerJar;
 
 			final File fileFull = new File(handlerFullPath);
-			loader = new URLClassLoader(
+			URLClassLoader loader = new URLClassLoader(
 					new URL[]{fileFull.toURI().toURL() });
 			Object model = loader.loadClass(handlerClass).newInstance();
 			if (getHandlerMethod(model) != null) {
@@ -112,8 +109,6 @@ public final class UserDefinedDataHandlerManager {
 			return true;
 		} catch (Exception e) {
 			LOG.error("", e);
-		} finally {
-			Closer.close(loader);
 		}
 		return false;
 	}

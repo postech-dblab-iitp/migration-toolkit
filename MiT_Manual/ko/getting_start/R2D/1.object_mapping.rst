@@ -24,7 +24,7 @@
 
 이관할 테이블을 선택한 후 다음 페이지로 진행한다.
 
-.. image:: R2D_image/dump_graph_sample.png
+.. image:: R2D_image/dump_mapping_page.png
 
 =======
 그래프

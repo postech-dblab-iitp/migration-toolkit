@@ -164,7 +164,7 @@ public class GraphSelectSrcTarTypesView {
 		});
 		srcButtons.add(btnOnlineGraphSrc);
 		
-		btnOnlineTurboSrc = createSrcTarTypeBtn(grpSrc, "Online TurboGraph Source", "Connecting to TurboGraph via JDBC");
+		btnOnlineTurboSrc = createSrcTarTypeBtn(grpSrc, Messages.btnSrcOnlineTurbo, Messages.btnSrcOnlineTurboDes);
 		btnOnlineTurboSrc.setData(MigrationConfiguration.SOURCE_TYPE_TURBO);
 		btnOnlineTurboSrc.addSelectionListener(new SelectionListener() {
 			@Override
@@ -225,7 +225,7 @@ public class GraphSelectSrcTarTypesView {
 		tarButtons.add(btnOnlineTar);
 		
 		btnOnlineTiberoTar = createSrcTarTypeBtn(grpTar, Messages.btnSrcOnlineTiberoDB, 
-				"Connect to Tibero via JDBC");
+				Messages.btnSrcOnlineTiberoDBDes);
 		btnOnlineTiberoTar.setData(MigrationConfiguration.DEST_TYPE_TIBERO);
 		tarButtons.add(btnOnlineTiberoTar);
 		

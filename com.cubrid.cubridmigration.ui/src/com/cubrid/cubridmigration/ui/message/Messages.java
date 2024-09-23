@@ -160,6 +160,8 @@ public class Messages extends
 	public static String btnSrcSQLFilesDes;
 	public static String btnSrcOnlineTiberoDB;
 	public static String btnSrcOnlineTiberoDBDes;
+	public static String btnSrcOnlineTurbo;
+	public static String btnSrcOnlineTurboDes;
 	public static String btnSSHProxySettings;
 	public static String btnStartMigrationByHistory;
 	public static String btnStartMigrationBySelectedHistory;
@@ -208,6 +210,7 @@ public class Messages extends
 	public static String colPrecision;
 	public static String colProgress;
 	public static String colProgressPercent;
+	public static String colPropertyName;
 	public static String colRecordCount;
 	public static String colReplace;
 	public static String colReportFile;
@@ -333,6 +336,7 @@ public class Messages extends
 	public static String errNoSQLTableSelected;
 	public static String errNoValidSQLFile;
 	public static String errNoTableSelected;
+	public static String errNoTableSelectedDes;
 	public static String errOtherMigrationRunning;
 	public static String errSequenceName;
 	public static String failedLogDialogSaveErrMsg;
@@ -491,6 +495,7 @@ public class Messages extends
 	public static String msgCfmErrorSave;
 	public static String msgCheckCharset;
 	public static String msgColumnList;
+	public static String msgColumnName;
 	public static String msgConfirmation;
 	public static String msgConfirmationChangedType;
 	public static String msgConfirmationTypeChanged;
@@ -576,6 +581,7 @@ public class Messages extends
 	public static String msgExportScriptSuccess;
 	public static String msgFetchingXMLSchema;
 	public static String msgFile;
+	public static String msgGDBTypes;
 	public static String msgGraph;
 	public static String msgImplicitEstimate;
 	public static String msgInformation;
@@ -588,6 +594,12 @@ public class Messages extends
 	public static String msgLobInformation;
 	public static String msgLowerCaseWarning;
 	public static String msgMappingOverride;
+	public static String msgMenuChangeName;
+	public static String msgMenuDeleteEdge;
+	public static String msgMenuEndVertex;
+	public static String msgMenuStartVertex;
+	public static String msgMenuRedo;
+	public static String msgMenuUndo;
 	public static String msgNoIndexColumn;
 	public static String msgNoSQLImported;
 	public static String msgNotAccomplished;
@@ -597,6 +609,8 @@ public class Messages extends
 	public static String msgSQLParameterSupport;
 	public static String msgPkHAdatabaseAlert;
 	public static String msgPrepare4Start;
+	public static String msgGDBColumn;
+	public static String msgRDBColumn;
 	public static String msgRemapColumns;
 	public static String msgRenameColumns;
 	public static String msgRenameSchema;
@@ -625,6 +639,7 @@ public class Messages extends
 	public static String msgTitleImportSQL;
 	public static String msgToggleExitConfirm;
 	public static String msgTTLocateSourceTable;
+	public static String msgVertex;
 	public static String msgWarning;
 	public static String msgWarnTableRecreated;
 	public static String msgWizardStep;
@@ -766,6 +781,7 @@ public class Messages extends
 	public static String ttRemoveConnection;
 	public static String ttSelectXMLDumpFile;
 	public static String ttTop10Rows;
+	public static String twowayEdge;
 	public static String txtPageFetchCount;
 	public static String verifySQLDialogColumnNomatchErrorMess;
 	public static String verifySQLDialogExecuteErrorMess;

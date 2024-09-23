@@ -95,7 +95,7 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 		
 		TableColumn column1 = new TableColumn(tableViewer.getTable(), SWT.LEFT);
 		TableColumn column2 = new TableColumn(tableViewer.getTable(), SWT.LEFT);
-		column2.setText("table Name");
+		column2.setText(Messages.colTableName);
 		
 		tableViewer.addSelectionChangedListener(new ISelectionChangedListener() {
 			@Override
@@ -174,8 +174,8 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 		TableColumn column1 = new TableColumn(columnViewer.getTable(), SWT.LEFT);
 		TableColumn column2 = new TableColumn(columnViewer.getTable(), SWT.LEFT);
 		
-		column1.setText("column Name");
-		column2.setText("data Type");
+		column1.setText(Messages.colColumnName);
+		column2.setText(Messages.tabTitleDataType);
 		
 		columnViewer.getTable().setLayout(columnLayout);
 		columnViewer.getTable().setLinesVisible(true);
@@ -297,7 +297,7 @@ public class GraphTableSelectPage extends MigrationWizardPage {
 		}
 		
 		if (selectedTableList.isEmpty()) {
-			MessageDialog.openError(getShell(), "No table selected", Messages.errNoTableSelected);
+			MessageDialog.openError(getShell(), Messages.errNoTableSelected, Messages.errNoTableSelectedDes);
 			return false;
 		} else {
 			showTableInformationForGdbms(selectedTableList);

@@ -100,7 +100,7 @@ public class GraphMappingPage extends MigrationWizardPage {
 	
 	private GraphDataTypeComboBoxCellEditor comboEditor;
 	
-	private String[] columnProperties = {"Property Name", "GDB Types"};
+	private String[] columnProperties = {Messages.colPropertyName, Messages.msgGDBTypes};
 	private String[] targetTypeList = {"integer", "string", "date", "datetime"};
 	
 	private WorkBuffer workBuffer = new WorkBuffer();
@@ -146,7 +146,7 @@ public class GraphMappingPage extends MigrationWizardPage {
 		createGraph(tabFolder);
 		
 		TabItem folder1 = new TabItem(tabFolder, SWT.NONE);
-		folder1.setText("Vertex");
+		folder1.setText(Messages.msgVertex);
 		folder1.setControl(graphViewer.getControl());
 	}
 	
@@ -285,7 +285,7 @@ public class GraphMappingPage extends MigrationWizardPage {
 		
 		//TODO setting message
 		MenuItem item1 = new MenuItem(popupMenu, SWT.POP_UP);
-		item1.setText("Select As Start Vertex");
+		item1.setText(Messages.msgMenuStartVertex);
 		
 		item1.addSelectionListener(new SelectionListener() {
 			
@@ -315,7 +315,7 @@ public class GraphMappingPage extends MigrationWizardPage {
 		});
 		
 		MenuItem item2 = new MenuItem(popupMenu, SWT.POP_UP);
-		item2.setText("Select As End Vertex");
+		item2.setText(Messages.msgMenuEndVertex);
 		
 		item2.addSelectionListener(new SelectionListener() {
 			
@@ -342,7 +342,7 @@ public class GraphMappingPage extends MigrationWizardPage {
 		});
 		
 		MenuItem item3 = new MenuItem(popupMenu, SWT.POP_UP);
-		item3.setText("Cancel");
+		item3.setText(Messages.btnCancel);
 		
 		item3.addSelectionListener(new SelectionListener() {
 			
@@ -365,7 +365,7 @@ public class GraphMappingPage extends MigrationWizardPage {
 		MenuItem separator = new MenuItem(popupMenu, SWT.SEPARATOR);
 		
 		MenuItem changeName = new MenuItem(popupMenu, SWT.POP_UP);
-		changeName.setText("Change Name");
+		changeName.setText(Messages.msgMenuChangeName);
 		
 		changeName.addSelectionListener(new SelectionListener() {
 			
@@ -413,7 +413,7 @@ public class GraphMappingPage extends MigrationWizardPage {
 		});
 		
 		MenuItem deleteEdge = new MenuItem(popupMenu, SWT.POP_UP);
-		deleteEdge.setText("Delete Edge");
+		deleteEdge.setText(Messages.msgMenuDeleteEdge);
 		
 		deleteEdge.addSelectionListener(new SelectionListener() {
 
@@ -444,7 +444,7 @@ public class GraphMappingPage extends MigrationWizardPage {
 		MenuItem separator2 = new MenuItem(popupMenu, SWT.SEPARATOR);
 		
 		MenuItem undo = new MenuItem(popupMenu, SWT.POP_UP);
-		undo.setText("Undo");
+		undo.setText(Messages.msgMenuUndo);
 		
 		undo.addSelectionListener(new SelectionListener() {
 			@Override
@@ -460,7 +460,7 @@ public class GraphMappingPage extends MigrationWizardPage {
 		});
 		
 		MenuItem redo = new MenuItem(popupMenu, SWT.POP_UP);
-		redo.setText("Redo");
+		redo.setText(Messages.msgMenuRedo);
 		
 		redo.addSelectionListener(new SelectionListener() {
 			@Override
@@ -584,7 +584,7 @@ public class GraphMappingPage extends MigrationWizardPage {
 		sashContainer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
 		
 		twoWayBtn = new Button(btnContiainer, SWT.CHECK);
-		twoWayBtn.setText("set two-way edge");
+		twoWayBtn.setText(Messages.twowayEdge);
 		
 		verticalSash.setWeights(new int[] {15, 1});
 		verticalSash.setSashWidth(1);
@@ -592,12 +592,12 @@ public class GraphMappingPage extends MigrationWizardPage {
 		Group leftSash = new Group(sashContainer, SWT.NONE);
 		leftSash.setLayout(new FillLayout());
 		leftSash.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		leftSash.setText("RDB column");
+		leftSash.setText(Messages.msgRDBColumn);
 		
 		Group rightSash = new Group(sashContainer, SWT.NONE);
 		rightSash.setLayout(new FillLayout());
 		rightSash.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		rightSash.setText("GDB column");
+		rightSash.setText(Messages.msgGDBColumn);
 		
 		rdbTable = new TableViewer(leftSash, SWT.FULL_SELECTION);
 		rdbTable.setContentProvider(new IStructuredContentProvider() {
@@ -679,8 +679,8 @@ public class GraphMappingPage extends MigrationWizardPage {
 		TableColumn rdbColumn2 = new TableColumn(rdbTable.getTable(), SWT.LEFT);
 		TableColumn rdbColumn3 = new TableColumn(rdbTable.getTable(), SWT.LEFT);
 		
-		rdbColumn2.setText("Column Name");
-		rdbColumn3.setText("Data Type");
+		rdbColumn2.setText(Messages.msgColumnName);
+		rdbColumn3.setText(Messages.tabTitleDataType);
 		
 		rdbTable.addSelectionChangedListener(new ISelectionChangedListener() {
 			@Override
@@ -736,7 +736,7 @@ public class GraphMappingPage extends MigrationWizardPage {
 			@Override
 			public boolean canModify(Object element, String property) {
 				// TODO Auto-generated method stub
-				if (property.equals("GDB Types")){
+				if (property.equals(Messages.msgGDBTypes)){
 					return true;
 				} else {
 					return false;

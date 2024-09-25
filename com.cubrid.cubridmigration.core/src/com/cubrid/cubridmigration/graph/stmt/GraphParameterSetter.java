@@ -41,6 +41,7 @@ import com.cubrid.cubridmigration.cubrid.stmt.handler.DefaultHandler;
 import com.cubrid.cubridmigration.cubrid.stmt.handler.SetterHandler;
 import com.cubrid.cubridmigration.graph.dbobj.Edge;
 import com.cubrid.cubridmigration.graph.stmt.handler.GraphDateHandler;
+import com.cubrid.cubridmigration.graph.stmt.handler.GraphDateTimeHandler;
 import com.cubrid.cubridmigration.graph.stmt.handler.GraphDoubleHandler;
 import com.cubrid.cubridmigration.graph.stmt.handler.GraphFloatHandler;
 import com.cubrid.cubridmigration.graph.stmt.handler.GraphIntHandler;
@@ -59,9 +60,11 @@ public class GraphParameterSetter {
 	private final DefaultHandler defaultHandler = new DefaultHandler();
 
 	public GraphParameterSetter(MigrationConfiguration config) {
-		
 		GraphDateHandler dateHandler = new GraphDateHandler();
 		handlerMap.put("date", dateHandler);
+		
+		GraphDateTimeHandler dateTimeHandler = new GraphDateTimeHandler();
+		handlerMap.put("datetime", dateTimeHandler);
 		
 		GraphIntHandler intHandler = new GraphIntHandler();
 		handlerMap.put("integer", intHandler);

@@ -1,13 +1,13 @@
 package com.cubrid.cubridmigration.graph.stmt.handler;
 
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.sql.Types;
 
 import com.cubrid.cubridmigration.core.dbobject.Record.ColumnValue;
 
-public class GraphDateHandler extends DefaultHandler {
+public class GraphDateTimeHandler extends DefaultHandler {
 	public void handle(PreparedStatement stmt, int idx, ColumnValue columnValue) throws SQLException {
 		//Column column = columnValue.getColumn();
 		//Integer dataTypeID = column.getJdbcIDOfDataType();
@@ -17,6 +17,7 @@ public class GraphDateHandler extends DefaultHandler {
 			return;
 		}
 		
-		stmt.setDate(idx + 1, Date.valueOf(String.valueOf(value)));
+		stmt.setTimestamp(idx + 1, Timestamp.valueOf(String.valueOf(value)));
+		//(idx + 1, Date.valueOf(String.valueOf(value)));
 	}
 }

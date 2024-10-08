@@ -54,10 +54,14 @@ public class Column extends
 
 	private boolean nullable = true;
 	private boolean unique;
+
 	private boolean shared = false;
 	private String sharedValue;
 	private String defaultValue;
 	private TableOrView tableOrView;
+	
+	private String fromDate;
+	private String toDate;
 
 	//The maximum length of the column in bytes
 	private int byteLength;
@@ -97,6 +101,7 @@ public class Column extends
 	private String graphDataType = "";
 	private boolean isSelected = true;
 	private boolean supportGraphDatatype = true;
+	private boolean isConditionColumn = false;
 	
 	public static final int TYPE_TURBOGRAPH = 1;
 	public static final int TYPE_NEO4J = 2;
@@ -499,10 +504,33 @@ public class Column extends
 		return "Column name: " + this.getName() + " | Column type: " + this.getDataType() + "\n";
 	}
 
+	public boolean isConditionColumn() {
+		return isConditionColumn;
+	}
+
+	public void setConditionColumn(boolean isConditionColumn) {
+		this.isConditionColumn = isConditionColumn;
+	}
+	
 	@Override
 	public String getSourceDBObject() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 	
+	public String getFromDate() {
+		return fromDate;
+	}
+
+	public void setFromDate(String fromDate) {
+		this.fromDate = fromDate;
+	}
+
+	public String getToDate() {
+		return toDate;
+	}
+
+	public void setToDate(String toDate) {
+		this.toDate = toDate;
+	}
 }

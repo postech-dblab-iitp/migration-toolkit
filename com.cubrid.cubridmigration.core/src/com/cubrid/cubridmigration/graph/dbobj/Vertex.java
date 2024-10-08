@@ -21,6 +21,8 @@ public class Vertex extends DBObject {
     
 	private int id;
 
+	private boolean hasDateTimeFilter = false;
+
 	//GDB is selected for select page
 	private boolean isNameChanged;
 	private boolean isSelected;
@@ -217,5 +219,26 @@ public class Vertex extends DBObject {
 	
 	public String getSourceDBObject() {
 		return sourceDBObject;
+	}
+	
+	public boolean hasDateTimeFilter() {
+		return hasDateTimeFilter;
+	}
+
+	public void setHasDateTimeFilter(boolean hasTimeFilter) {
+		if (hasTimeFilter == false) {
+			removeDateTimeFilter();
+		}
+		
+		this.hasDateTimeFilter = hasTimeFilter;
+	}
+	
+	private void removeDateTimeFilter() {
+		for (Column col : getColumnList()) {
+			if (col.isConditionColumn() == true) {
+				col.setConditionColumn(false);
+				break;
+			}
+		}
 	}
 }

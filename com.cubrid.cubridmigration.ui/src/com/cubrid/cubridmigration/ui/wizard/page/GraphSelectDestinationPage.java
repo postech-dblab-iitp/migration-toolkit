@@ -280,7 +280,6 @@ public class GraphSelectDestinationPage extends
 					
 					btnNeo4jType.setSelection(false);
 				}
-				
 
 			}
 			

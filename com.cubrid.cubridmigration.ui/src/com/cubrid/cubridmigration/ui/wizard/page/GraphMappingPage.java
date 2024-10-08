@@ -60,6 +60,7 @@ import com.cubrid.cubridmigration.ui.MigrationUIPlugin;
 import com.cubrid.cubridmigration.ui.message.Messages;
 import com.cubrid.cubridmigration.ui.preference.GraphDataTypeComboBoxCellEditor;
 import com.cubrid.cubridmigration.ui.wizard.MigrationWizard;
+import com.cubrid.cubridmigration.ui.wizard.dialog.GraphDateTimeFilterDialog;
 import com.cubrid.cubridmigration.ui.wizard.dialog.GraphEdgeSettingDialog;
 import com.cubrid.cubridmigration.ui.wizard.dialog.GraphRenamingDialog;
 
@@ -475,6 +476,49 @@ public class GraphMappingPage extends MigrationWizardPage {
 			public void widgetDefaultSelected(SelectionEvent e) {}
 		});
 		
+		MenuItem separator3 = new MenuItem(popupMenu, SWT.SEPARATOR);
+		
+		MenuItem dateTimeFilter = new MenuItem(popupMenu, SWT.POP_UP);
+		dateTimeFilter.setText("set datetime filter");
+		
+		dateTimeFilter.addSelectionListener(new SelectionListener() {
+			
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				GraphDateTimeFilterDialog dateTimeFilter = new GraphDateTimeFilterDialog(getShell(), selectedObject);
+				dateTimeFilter.open();
+				filterHandler();
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+				// TODO Auto-generated method stub
+			}
+		});
+		
+		MenuItem unsetFilter = new MenuItem(popupMenu, SWT.POP_UP);
+		unsetFilter.setText("unset filter");
+		
+		unsetFilter.addSelectionListener(new SelectionListener() {
+			
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				if (selectedObject instanceof Vertex) {
+					((Vertex) selectedObject).setHasDateTimeFilter(false);
+				} else if (selectedObject instanceof Edge) {
+					((Edge) selectedObject).setHasDateTimeFilter(false);
+				}
+				
+				filterHandler();
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
 		item1.setEnabled(true);
 		item2.setEnabled(false);
 		item3.setEnabled(false);
@@ -483,6 +527,8 @@ public class GraphMappingPage extends MigrationWizardPage {
 		deleteEdge.setEnabled(true);
 		redo.setEnabled(false);
 		undo.setEnabled(false);
+		
+		unsetFilter.setEnabled(false);
 	}
 	
 	public void setHighlight(GraphNode node) {
@@ -540,6 +586,22 @@ public class GraphMappingPage extends MigrationWizardPage {
 			popupMenu.getItem(8).setEnabled(false);
 		} else {
 			popupMenu.getItem(8).setEnabled(true);
+		}
+	}
+	
+	public void filterHandler() {
+		boolean hasDateTimeFilter = false;
+		
+		if (selectedObject instanceof Vertex) {
+			hasDateTimeFilter = ((Vertex) selectedObject).hasDateTimeFilter();
+		} else if (selectedObject instanceof Edge) {
+			hasDateTimeFilter = ((Edge) selectedObject).hasDateTimeFilter();
+		}
+		
+		if (hasDateTimeFilter) {
+			popupMenu.getItem(11).setEnabled(true);
+		} else {
+			popupMenu.getItem(11).setEnabled(false);
 		}
 	}
 	

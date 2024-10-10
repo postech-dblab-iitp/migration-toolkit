@@ -37,6 +37,7 @@ import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.zest.core.viewers.EntityConnectionData;
 import org.eclipse.zest.core.viewers.GraphViewer;
 import org.eclipse.zest.core.viewers.IGraphEntityRelationshipContentProvider;
@@ -97,7 +98,9 @@ public class GraphMappingPage extends MigrationWizardPage {
 	private TableViewer rdbTable;
 	
 	private Menu popupMenu;
-	Button twoWayBtn;
+	private Button twoWayBtn;
+	
+	Text dateTimeText;
 	
 	private GraphDataTypeComboBoxCellEditor comboEditor;
 	
@@ -247,6 +250,8 @@ public class GraphMappingPage extends MigrationWizardPage {
 					redoUndoHandler();
 					System.out.println("selected object: " + ((Edge) selectedObject).getEdgeLabel());
 				}
+				
+				dateTimeTextHandler();
 				
 				graphViewer.refresh();
 			}
@@ -487,6 +492,7 @@ public class GraphMappingPage extends MigrationWizardPage {
 			public void widgetSelected(SelectionEvent e) {
 				GraphDateTimeFilterDialog dateTimeFilter = new GraphDateTimeFilterDialog(getShell(), selectedObject);
 				dateTimeFilter.open();
+				dateTimeTextHandler();
 				filterHandler();
 			}
 			
@@ -509,6 +515,7 @@ public class GraphMappingPage extends MigrationWizardPage {
 					((Edge) selectedObject).setHasDateTimeFilter(false);
 				}
 				
+				dateTimeTextHandler();
 				filterHandler();
 			}
 			
@@ -529,6 +536,39 @@ public class GraphMappingPage extends MigrationWizardPage {
 		undo.setEnabled(false);
 		
 		unsetFilter.setEnabled(false);
+	}
+	
+	public void dateTimeTextHandler() {
+		List<Column> columnList;
+		
+		String fromDateString = null;
+		String toDateString = null;
+		
+		StringBuffer dateTimeTextBuffer = new StringBuffer();
+		
+		if (selectedObject instanceof Vertex) {
+			columnList = ((Vertex) selectedObject).getColumnList();
+		} else {
+			columnList = ((Edge) selectedObject).getColumnList();
+		}
+		
+		for (Column col : columnList) {
+			if (col.isConditionColumn()) {
+				fromDateString = col.getFromDate();
+				toDateString = col.getToDate();
+				
+				break;
+			}
+		}
+		
+		if (!(fromDateString == null || fromDateString.isEmpty()) && !(toDateString == null || toDateString.isEmpty())) {
+			dateTimeTextBuffer.append("from: " + fromDateString + "\n");
+			dateTimeTextBuffer.append("to: " + toDateString);
+		} else {
+			dateTimeTextBuffer.append("no filter applied");
+		}
+		
+		dateTimeText.setText(dateTimeTextBuffer.toString());
 	}
 	
 	public void setHighlight(GraphNode node) {
@@ -641,14 +681,17 @@ public class GraphMappingPage extends MigrationWizardPage {
 		sashContainer.setLayout(new FillLayout());
 		sashContainer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		
+		SashForm textContainer = new SashForm(verticalSash, SWT.BORDER);
+		dateTimeText = new Text(textContainer, SWT.MULTI | SWT.READ_ONLY);
+		
 		SashForm btnContiainer = new SashForm(verticalSash, SWT.VERTICAL);
-		sashContainer.setLayout(new FillLayout());
-		sashContainer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
+		btnContiainer.setLayout(new FillLayout());
+		btnContiainer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
 		
 		twoWayBtn = new Button(btnContiainer, SWT.CHECK);
 		twoWayBtn.setText(Messages.twowayEdge);
 		
-		verticalSash.setWeights(new int[] {15, 1});
+		verticalSash.setWeights(new int[] {15, 5, 1});
 		verticalSash.setSashWidth(1);
 		
 		Group leftSash = new Group(sashContainer, SWT.NONE);

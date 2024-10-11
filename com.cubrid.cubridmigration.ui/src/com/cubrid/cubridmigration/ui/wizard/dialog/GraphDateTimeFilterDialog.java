@@ -75,13 +75,13 @@ public class GraphDateTimeFilterDialog extends Dialog {
 		
 		if (selectedObject instanceof Vertex) {
 			for (Column col : ((Vertex) selectedObject).getColumnList()) {
-				if ((col.getDataType().equals("date") || col.getDataType().equals("datetime")) && col.isSelected()) {
+				if ((col.getDataType().equalsIgnoreCase("date") || col.getDataType().equalsIgnoreCase("datetime") || col.getDataType().matches("(?i).*TIMESTAMP.*")) && col.isSelected()) {
 					dbObject.add(col);
 				}
 			}
 		} else if (selectedObject instanceof Edge) {
 			for (Column col : ((Edge) selectedObject).getColumnList()) {
-				if (col.getDataType().equals("date") || col.getDataType().equals("datetime") && col.isSelected()) {
+				if ((col.getDataType().equalsIgnoreCase("date") || col.getDataType().equalsIgnoreCase("datetime") || col.getDataType().matches("(?i).*timestamp.*")) && col.isSelected()) {
 					dbObject.add(col);
 				}
 			}
@@ -215,7 +215,7 @@ public class GraphDateTimeFilterDialog extends Dialog {
 				
 				selectedColumn = (Column) selection.getFirstElement();
 				
-				if (selectedColumn.getDataType().equals("date")) {
+				if (selectedColumn.getDataType().equalsIgnoreCase("date")) {
 					fromTimeCalendar.setEnabled(false);
 					toTimeCalendar.setEnabled(false);
 				} else {

@@ -288,4 +288,14 @@ public class Edge extends DBObject {
 			}
 		}
 	}
+	
+	public Column getConditionColumn() {
+		for (Column col : columnList) {
+			if (col.isConditionColumn()) {
+				return col;
+			}
+		}
+		
+		return null;
+	}
 }

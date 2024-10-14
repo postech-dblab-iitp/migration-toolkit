@@ -2,11 +2,10 @@ package com.cubrid.cubridmigration.ui.wizard.dialog;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import org.eclipse.jface.dialogs.Dialog;
-import org.eclipse.jface.preference.StringFieldEditor;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -18,8 +17,6 @@ import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
@@ -39,6 +36,7 @@ import com.cubrid.cubridmigration.core.dbobject.Table;
 import com.cubrid.cubridmigration.graph.dbobj.Edge;
 import com.cubrid.cubridmigration.graph.dbobj.Vertex;
 import com.cubrid.cubridmigration.ui.MigrationUIPlugin;
+import com.cubrid.cubridmigration.ui.message.Messages;
 
 
 public class GraphDateTimeFilterDialog extends Dialog {
@@ -62,8 +60,8 @@ public class GraphDateTimeFilterDialog extends Dialog {
 	DateTime toTimeCalendar;
 	
 	private String[] propertyList = {
-		"column name",
-		"data type"
+		Messages.lblColumnName,
+		Messages.lblDataType
 	};
 	
 	public GraphDateTimeFilterDialog(Shell parentShell, Object selectedObject) {
@@ -125,20 +123,20 @@ public class GraphDateTimeFilterDialog extends Dialog {
 		lblFromDate.setText("from: ");
 		
 		fromDateCalendar = new DateTime(fromDateComp, SWT.DATE);
-		fromDateCalendar.setEnabled(true);
+		fromDateCalendar.setEnabled(false);
 		
 		fromTimeCalendar = new DateTime(fromDateComp, SWT.TIME);
-		fromTimeCalendar.setEnabled(true);
+		fromTimeCalendar.setEnabled(false);
 		
 		Label lblToDate = new Label(fromDateComp, SWT.CENTER);
 		lblToDate.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
 		lblToDate.setText("to: ");
 		
 		toDateCalendar = new DateTime(fromDateComp, SWT.DATE);
-		toDateCalendar.setEnabled(true);
+		toDateCalendar.setEnabled(false);
 		
 		toTimeCalendar = new DateTime(fromDateComp, SWT.TIME);
-		toTimeCalendar.setEnabled(true);
+		toTimeCalendar.setEnabled(false);
 	}
 	
 	protected void setColumnTable(Group group) {
@@ -215,6 +213,9 @@ public class GraphDateTimeFilterDialog extends Dialog {
 				
 				selectedColumn = (Column) selection.getFirstElement();
 				
+				fromDateCalendar.setEnabled(true);
+				toDateCalendar.setEnabled(true);
+				
 				if (selectedColumn.getDataType().equalsIgnoreCase("date")) {
 					fromTimeCalendar.setEnabled(false);
 					toTimeCalendar.setEnabled(false);
@@ -272,6 +273,7 @@ public class GraphDateTimeFilterDialog extends Dialog {
 	protected boolean checkData() {
 		
 		if (selectedColumn == null) {
+			MessageDialog.openWarning(getShell(), Messages.errColumnNotSelected, Messages.msgErrColumnNotSelected);
 			return false;
 		}
 
@@ -305,6 +307,7 @@ public class GraphDateTimeFilterDialog extends Dialog {
 			int compareResult = fromCal.compareTo(toCal);
 			
 			if (compareResult > 0) {
+				MessageDialog.openWarning(getShell(), Messages.errInvalidData, Messages.msgErrInvalidData);
 				return false;
 			} else {
 			    fromDateTime = String.format("%d-%02d-%02d %02d:%02d:%02d", fromYear, fromMonth + 1, fromDate, fromHour, fromMin, fromSec);
@@ -318,6 +321,7 @@ public class GraphDateTimeFilterDialog extends Dialog {
 			toCal.set(toYear, toMonth, toDate);
 			
 			if (fromCal.compareTo(toCal) > 0) {
+				MessageDialog.openWarning(getShell(), Messages.errInvalidData, Messages.msgErrInvalidData);
 				return false;
 			} else {
 				fromDateTime = String.format("%d-%02d-%02d", fromYear, fromMonth + 1, fromDate);
@@ -343,13 +347,8 @@ public class GraphDateTimeFilterDialog extends Dialog {
 	protected void okPressed() {
 		boolean flag = checkData();
 		
-		setDateTimeFilter();
-		
-		System.out.println("graphDateTimeFilter: valid check = " + flag);
-		System.out.println("graphDateTimeFilter: from Date = " + selectedColumn.getFromDate());
-		System.out.println("graphDateTimeFilter: to Date = " + selectedColumn.getToDate());
-		
 		if (flag){
+			setDateTimeFilter();
 			super.okPressed();
 		} else {
 			//TODO open dialog

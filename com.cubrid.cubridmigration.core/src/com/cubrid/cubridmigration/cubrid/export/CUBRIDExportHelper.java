@@ -154,10 +154,6 @@ public class CUBRIDExportHelper extends
 					orderby.append("\"").append(pkCol).append("\"");
 				}
 			}
-			
-			// TODO date time filter
-			
-			
 			if (orderby.length() > 0) {
 				buf.append(" ORDER BY ");
 				buf.append(orderby);
@@ -561,7 +557,26 @@ public class CUBRIDExportHelper extends
 		
 		whereBuffer.append(" = " + edgeLabel + ".");
 		
-		whereBuffer.append(addDoubleQuote(refColList.get(1)));			
+		whereBuffer.append(addDoubleQuote(refColList.get(1)));
+		
+		if (e.hasDateTimeFilter()) {
+			Column conditionCol = e.getConditionColumn();
+			
+			whereBuffer.append(" AND ");
+			whereBuffer.append(conditionCol.getName());
+			
+			whereBuffer.append(" BETWEEN ");
+			
+			if (conditionCol.getDataType().equals("date")) {
+				whereBuffer.append("date\'" + conditionCol.getFromDate() + "\'");
+				whereBuffer.append(" AND ");
+				whereBuffer.append("date\'" + conditionCol.getToDate() + "\'");
+			} else {
+				whereBuffer.append("datetime\'" + conditionCol.getFromDate() + "\'");
+				whereBuffer.append(" AND ");
+				whereBuffer.append("datetime\'" + conditionCol.getToDate() + "\'");
+			}
+		}
 		
 		whereBuffer.append(" order by " + edgeLabel + ".");
 		

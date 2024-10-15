@@ -46,6 +46,7 @@ import com.cubrid.cubridmigration.graph.stmt.handler.GraphDoubleHandler;
 import com.cubrid.cubridmigration.graph.stmt.handler.GraphFloatHandler;
 import com.cubrid.cubridmigration.graph.stmt.handler.GraphIntHandler;
 import com.cubrid.cubridmigration.graph.stmt.handler.GraphStringHandler;
+import com.cubrid.cubridmigration.graph.stmt.handler.GraphTimeHandler;
 
 /**
  * CUBRIDParameterSetter responses to read source data value and transform it to
@@ -65,6 +66,9 @@ public class GraphParameterSetter {
 		
 		GraphDateTimeHandler dateTimeHandler = new GraphDateTimeHandler();
 		handlerMap.put("datetime", dateTimeHandler);
+
+		GraphTimeHandler timeHandler = new GraphTimeHandler();
+		handlerMap.put("time", timeHandler);
 		
 		GraphIntHandler intHandler = new GraphIntHandler();
 		handlerMap.put("integer", intHandler);

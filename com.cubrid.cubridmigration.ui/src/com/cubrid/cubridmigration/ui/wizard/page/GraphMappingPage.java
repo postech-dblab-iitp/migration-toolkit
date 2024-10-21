@@ -37,6 +37,7 @@ import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.zest.core.viewers.EntityConnectionData;
 import org.eclipse.zest.core.viewers.GraphViewer;
 import org.eclipse.zest.core.viewers.IGraphEntityRelationshipContentProvider;
@@ -60,6 +61,7 @@ import com.cubrid.cubridmigration.ui.MigrationUIPlugin;
 import com.cubrid.cubridmigration.ui.message.Messages;
 import com.cubrid.cubridmigration.ui.preference.GraphDataTypeComboBoxCellEditor;
 import com.cubrid.cubridmigration.ui.wizard.MigrationWizard;
+import com.cubrid.cubridmigration.ui.wizard.dialog.GraphDateTimeFilterDialog;
 import com.cubrid.cubridmigration.ui.wizard.dialog.GraphEdgeSettingDialog;
 import com.cubrid.cubridmigration.ui.wizard.dialog.GraphRenamingDialog;
 
@@ -96,7 +98,9 @@ public class GraphMappingPage extends MigrationWizardPage {
 	private TableViewer rdbTable;
 	
 	private Menu popupMenu;
-	Button twoWayBtn;
+	private Button twoWayBtn;
+	
+	Text dateTimeText;
 	
 	private GraphDataTypeComboBoxCellEditor comboEditor;
 	
@@ -246,6 +250,8 @@ public class GraphMappingPage extends MigrationWizardPage {
 					redoUndoHandler();
 					System.out.println("selected object: " + ((Edge) selectedObject).getEdgeLabel());
 				}
+				
+				dateTimeTextHandler();
 				
 				graphViewer.refresh();
 			}
@@ -475,6 +481,51 @@ public class GraphMappingPage extends MigrationWizardPage {
 			public void widgetDefaultSelected(SelectionEvent e) {}
 		});
 		
+		MenuItem separator3 = new MenuItem(popupMenu, SWT.SEPARATOR);
+		
+		MenuItem dateTimeFilter = new MenuItem(popupMenu, SWT.POP_UP);
+		dateTimeFilter.setText("set datetime filter");
+		
+		dateTimeFilter.addSelectionListener(new SelectionListener() {
+			
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				GraphDateTimeFilterDialog dateTimeFilter = new GraphDateTimeFilterDialog(getShell(), selectedObject);
+				dateTimeFilter.open();
+				dateTimeTextHandler();
+				filterHandler();
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+				// TODO Auto-generated method stub
+			}
+		});
+		
+		MenuItem unsetFilter = new MenuItem(popupMenu, SWT.POP_UP);
+		unsetFilter.setText("unset filter");
+		
+		unsetFilter.addSelectionListener(new SelectionListener() {
+			
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				if (selectedObject instanceof Vertex) {
+					((Vertex) selectedObject).setHasDateTimeFilter(false);
+				} else if (selectedObject instanceof Edge) {
+					((Edge) selectedObject).setHasDateTimeFilter(false);
+				}
+				
+				dateTimeTextHandler();
+				filterHandler();
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
 		item1.setEnabled(true);
 		item2.setEnabled(false);
 		item3.setEnabled(false);
@@ -483,6 +534,41 @@ public class GraphMappingPage extends MigrationWizardPage {
 		deleteEdge.setEnabled(true);
 		redo.setEnabled(false);
 		undo.setEnabled(false);
+		
+		unsetFilter.setEnabled(false);
+	}
+	
+	public void dateTimeTextHandler() {
+		List<Column> columnList;
+		
+		String fromDateString = null;
+		String toDateString = null;
+		
+		StringBuffer dateTimeTextBuffer = new StringBuffer();
+		
+		if (selectedObject instanceof Vertex) {
+			columnList = ((Vertex) selectedObject).getColumnList();
+		} else {
+			columnList = ((Edge) selectedObject).getColumnList();
+		}
+		
+		for (Column col : columnList) {
+			if (col.isConditionColumn()) {
+				fromDateString = col.getFromDate();
+				toDateString = col.getToDate();
+				
+				break;
+			}
+		}
+		
+		if (!(fromDateString == null || fromDateString.isEmpty()) && !(toDateString == null || toDateString.isEmpty())) {
+			dateTimeTextBuffer.append("from: " + fromDateString + "\n");
+			dateTimeTextBuffer.append("to: " + toDateString);
+		} else {
+			dateTimeTextBuffer.append("no filter applied");
+		}
+		
+		dateTimeText.setText(dateTimeTextBuffer.toString());
 	}
 	
 	public void setHighlight(GraphNode node) {
@@ -543,6 +629,22 @@ public class GraphMappingPage extends MigrationWizardPage {
 		}
 	}
 	
+	public void filterHandler() {
+		boolean hasDateTimeFilter = false;
+		
+		if (selectedObject instanceof Vertex) {
+			hasDateTimeFilter = ((Vertex) selectedObject).hasDateTimeFilter();
+		} else if (selectedObject instanceof Edge) {
+			hasDateTimeFilter = ((Edge) selectedObject).hasDateTimeFilter();
+		}
+		
+		if (hasDateTimeFilter) {
+			popupMenu.getItem(11).setEnabled(true);
+		} else {
+			popupMenu.getItem(11).setEnabled(false);
+		}
+	}
+	
 	public void changeColumnData(Object data) {
 		if (data == null) {
 			return;
@@ -579,14 +681,17 @@ public class GraphMappingPage extends MigrationWizardPage {
 		sashContainer.setLayout(new FillLayout());
 		sashContainer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		
+		SashForm textContainer = new SashForm(verticalSash, SWT.BORDER);
+		dateTimeText = new Text(textContainer, SWT.MULTI | SWT.READ_ONLY);
+		
 		SashForm btnContiainer = new SashForm(verticalSash, SWT.VERTICAL);
-		sashContainer.setLayout(new FillLayout());
-		sashContainer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
+		btnContiainer.setLayout(new FillLayout());
+		btnContiainer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
 		
 		twoWayBtn = new Button(btnContiainer, SWT.CHECK);
 		twoWayBtn.setText(Messages.twowayEdge);
 		
-		verticalSash.setWeights(new int[] {15, 1});
+		verticalSash.setWeights(new int[] {15, 5, 1});
 		verticalSash.setSashWidth(1);
 		
 		Group leftSash = new Group(sashContainer, SWT.NONE);

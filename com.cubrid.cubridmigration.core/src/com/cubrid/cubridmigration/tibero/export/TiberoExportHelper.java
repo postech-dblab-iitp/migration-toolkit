@@ -488,6 +488,25 @@ public class TiberoExportHelper extends
 		
 		conditionBuffer.append(")");
 		
+		if (e.hasDateTimeFilter()) {
+			Column conditionCol = e.getConditionColumn();
+			
+			conditionBuffer.append(" WHERE ");
+			conditionBuffer.append(conditionCol.getName());
+			
+			conditionBuffer.append(" BETWEEN ");
+			
+			if (conditionCol.getDataType().equalsIgnoreCase("date")) {
+				conditionBuffer.append("TO_DATE(\'" + conditionCol.getFromDate() + "\')");
+				conditionBuffer.append(" AND ");
+				conditionBuffer.append("TO_DATE(\'" + conditionCol.getToDate() + "\')");
+			} else {
+				conditionBuffer.append("TO_TIMESTAMP(\'" + conditionCol.getFromDate() + "\')");
+				conditionBuffer.append(" AND ");
+				conditionBuffer.append("TO_TIMESTAMP(\'" + conditionCol.getToDate() + "\')");
+			}
+		}
+		
 		return conditionBuffer.toString();
 	}
 	
@@ -578,8 +597,119 @@ public class TiberoExportHelper extends
 	}
 
 	@Override
+	public String getGraphSelectSQL(Vertex v, boolean targetIsCSV) {
+		StringBuffer buf = new StringBuffer(256);
+		buf.append("SELECT ");
+
+		final List<Column> columnList = v.getColumnList();
+		for (int i = 0; i < columnList.size(); i++) {
+			if (i > 0) {
+				buf.append(',');
+			}
+			buf.append(getQuotedObjName(columnList.get(i).getName()));
+		}
+		buf.append(" FROM ");
+		// it will make a query with a schema and table name 
+		// if it required a schema name when there create sql such as SCOTT.EMP
+		addGraphSchemaPrefix(v, buf);
+		buf.append(getQuotedObjName(v.getTableName()));
+
+		
+		if (v.hasDateTimeFilter()) {
+			Column conditionCol = v.getConditionColumn();
+			
+			buf.append(" WHERE ");
+			buf.append(conditionCol.getName());
+			
+			buf.append(" BETWEEN ");
+			
+			if (conditionCol.getDataType().equalsIgnoreCase("date")) {
+				buf.append("TO_DATE(\'" + conditionCol.getFromDate() + "\')");
+				buf.append(" AND ");
+				buf.append("TO_DATE(\'" + conditionCol.getToDate() + "\')");
+			} else {
+				buf.append("TO_TIMESTAMP(\'" + conditionCol.getFromDate() + "\')");
+				buf.append(" AND ");
+				buf.append("TO_TIMESTAMP(\'" + conditionCol.getToDate() + "\')");
+			}
+		}
+		
+		return buf.toString();
+	}
+	
 	public String getGraphSelectSQL(Edge e, boolean targetIsCSV) {
-		// TODO Auto-generated method stub
-		return null;
+		StringBuffer buf = new StringBuffer(256);
+		buf.append("SELECT /*+ use_merge */");
+		final List<Column> columnList = e.getColumnList();
+		for (int i = 0; i < columnList.size(); i++) {
+			if (i > 0) {
+				buf.append(',');
+			}
+			buf.append(getQuotedObjName(columnList.get(i).getName()));
+		}
+		buf.append(" FROM ");
+		// it will make a query with a schema and table name 
+		// if it required a schema name when there create sql such as SCOTT.EMP
+		addGraphSchemaPrefix(e, buf);
+		buf.append(getQuotedObjName(e.getEdgeLabel()));
+		
+		if (e.hasDateTimeFilter() && !(targetIsCSV)) {
+			Column conditionCol = e.getConditionColumn();
+			
+			buf.append(" WHERE ");
+			buf.append(conditionCol.getName());
+			
+			buf.append(" BETWEEN ");
+			
+			if (conditionCol.getDataType().equalsIgnoreCase("date")) {
+				buf.append("TO_DATE(\'" + conditionCol.getFromDate() + "\')");
+				buf.append(" AND ");
+				buf.append("TO_DATE(\'" + conditionCol.getToDate() + "\')");
+			} else {
+				buf.append("TO_TIMESTAMP(\'" + conditionCol.getFromDate() + "\')");
+				buf.append(" AND ");
+				buf.append("TO_TIMESTAMP(\'" + conditionCol.getToDate() + "\')");
+			}
+		}
+
+		return buf.toString();
+	}
+	
+	public String getGraphSelectSQL(Edge e) {
+		StringBuffer buf = new StringBuffer(256);
+		buf.append("SELECT /*+ use_merge */");
+		final List<Column> columnList = e.getColumnList();
+		for (int i = 0; i < columnList.size(); i++) {
+			if (i > 0) {
+				buf.append(',');
+			}
+			buf.append(getQuotedObjName(columnList.get(i).getName()));
+		}
+		buf.append(" FROM ");
+		// it will make a query with a schema and table name 
+		// if it required a schema name when there create sql such as SCOTT.EMP
+		addGraphSchemaPrefix(e, buf);
+		buf.append(getQuotedObjName(e.getEdgeLabel()));
+		
+		if (e.hasDateTimeFilter()) {
+			Column conditionCol = e.getConditionColumn();
+			
+			buf.append(" WHERE ");
+			buf.append(conditionCol.getName());
+			
+			buf.append(" BETWEEN ");
+			
+			if (conditionCol.getDataType().equalsIgnoreCase("date")) {
+				buf.append("TO_DATE(\'" + conditionCol.getFromDate() + "\')");
+				buf.append(" AND ");
+				buf.append("TO_DATE(\'" + conditionCol.getToDate() + "\')");
+			} else {
+				buf.append("TO_TIMESTAMP(\'" + conditionCol.getFromDate() + "\')");
+				buf.append(" AND ");
+				buf.append("TO_TIMESTAMP(\'" + conditionCol.getToDate() + "\')");
+			}
+		}
+
+		return buf.toString();
 	}
 }

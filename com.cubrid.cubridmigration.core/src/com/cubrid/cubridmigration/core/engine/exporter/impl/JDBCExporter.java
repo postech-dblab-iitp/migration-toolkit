@@ -673,7 +673,7 @@ public class JDBCExporter extends
 			long innerTotalExported = 0L;
 			long totalExported = 0L;
 			long intPageCount = config.getPageFetchCount();
-			String sql = graphExHelper.getGraphSelectSQL(e);
+			String sql = graphExHelper.getGraphSelectSQL(e, config.targetIsCSV());
 			while (true) {
 				if (interrupted) {
 					return;
@@ -971,12 +971,6 @@ public class JDBCExporter extends
 							intPageCount);
 				}
 				String pagesql;
-				
-//				if (config.targetIsCSV()) {
-//					pagesql = graphExHelper.getPagedSelectSQLForEdgeCSV(e, sql, realPageCount, totalExported, pk, hasMultiSchema(conn));
-//				} else {
-//					pagesql = graphExHelper.getPagedSelectSQL(sql, realPageCount, totalExported, pk);
-//				}
 				
 				pagesql = graphExHelper.getPagedSelectSQL(sql, realPageCount, totalExported, pk);
 				

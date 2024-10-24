@@ -464,42 +464,23 @@ public class CUBRIDExportHelper extends
 			editString = startVertexIdMatcher.replaceFirst(column);
 		}
 		
-//		if (e.getEdgeType() == Edge.JOIN_TWO_WAY_TYPE) {
-//			Pattern startIdPattern = Pattern.compile("\":START_ID", Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
-//			Matcher startIdMatcher = startIdPattern.matcher(editString);
-//			
-//			if (startIdMatcher.find()) {
-//				String startId = dupEndVertexName + ".\":START_ID";
-//				
-//				editString = startIdMatcher.replaceFirst(startId);
-//			}
-//			
-//			Pattern endIdPattern = Pattern.compile("\":END_ID", Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);;
-//			Matcher endIdMatcher = endIdPattern.matcher(editString);
-//			
-//			if (endIdMatcher.find()) {
-//				String endId = dupStartVertexName + ".\":END_ID";
-//				
-//				editString = endIdMatcher.replaceFirst(endId);
-//			}
-//		} else {
-			Pattern startIdPattern = Pattern.compile("\":START_ID", Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
-			Matcher startIdMatcher = startIdPattern.matcher(editString);
+		Pattern startIdPattern = Pattern.compile("\":START_ID", Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
+		Matcher startIdMatcher = startIdPattern.matcher(editString);
+		
+		if (startIdMatcher.find()) {
+			String startId = dupStartVertexName + ".\":START_ID";
 			
-			if (startIdMatcher.find()) {
-				String startId = dupStartVertexName + ".\":START_ID";
-				
-				editString = startIdMatcher.replaceFirst(startId);
-			}
+			editString = startIdMatcher.replaceFirst(startId);
+		}
+		
+		Pattern endIdPattern = Pattern.compile("\":END_ID", Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);;
+		Matcher endIdMatcher = endIdPattern.matcher(editString);
+		
+		if (endIdMatcher.find()) {
+			String endId = dupEndVertexName + ".\":END_ID";
 			
-			Pattern endIdPattern = Pattern.compile("\":END_ID", Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);;
-			Matcher endIdMatcher = endIdPattern.matcher(editString);
-			
-			if (endIdMatcher.find()) {
-				String endId = dupEndVertexName + ".\":END_ID";
-				
-				editString = endIdMatcher.replaceFirst(endId);
-			}
+			editString = endIdMatcher.replaceFirst(endId);
+		}
 		
 		Pattern endVertexIdPattern = Pattern.compile(addDoubleQuote(refColList.get(1)), Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
 		Matcher endVertexIdMatcher = endVertexIdPattern.matcher(editString);
@@ -576,7 +557,26 @@ public class CUBRIDExportHelper extends
 		
 		whereBuffer.append(" = " + edgeLabel + ".");
 		
-		whereBuffer.append(addDoubleQuote(refColList.get(1)));			
+		whereBuffer.append(addDoubleQuote(refColList.get(1)));
+		
+		if (e.hasDateTimeFilter()) {
+			Column conditionCol = e.getConditionColumn();
+			
+			whereBuffer.append(" AND ");
+			whereBuffer.append(conditionCol.getName());
+			
+			whereBuffer.append(" BETWEEN ");
+			
+			if (conditionCol.getDataType().equals("date")) {
+				whereBuffer.append("date\'" + conditionCol.getFromDate() + "\'");
+				whereBuffer.append(" AND ");
+				whereBuffer.append("date\'" + conditionCol.getToDate() + "\'");
+			} else {
+				whereBuffer.append("datetime\'" + conditionCol.getFromDate() + "\'");
+				whereBuffer.append(" AND ");
+				whereBuffer.append("datetime\'" + conditionCol.getToDate() + "\'");
+			}
+		}
 		
 		whereBuffer.append(" order by " + edgeLabel + ".");
 		
@@ -793,6 +793,25 @@ public class CUBRIDExportHelper extends
 		addGraphSchemaPrefix(v, buf);
 		buf.append(getQuotedObjName(v.getTableName()));
 
+		if (v.hasDateTimeFilter()) {
+			Column conditionCol = v.getConditionColumn();
+			
+			buf.append(" WHERE ");
+			buf.append(conditionCol.getName());
+			
+			buf.append(" BETWEEN ");
+			
+			if (conditionCol.getDataType().equals("date")) {
+				buf.append("date\'" + conditionCol.getFromDate() + "\'");
+				buf.append(" AND ");
+				buf.append("date\'" + conditionCol.getToDate() + "\'");
+			} else {
+				buf.append("datetime\'" + conditionCol.getFromDate() + "\'");
+				buf.append(" AND ");
+				buf.append("datetime\'" + conditionCol.getToDate() + "\'");
+			}
+		}
+		
 //		String condition = setc.getCondition();
 //		if (StringUtils.isNotBlank(condition)) {
 //			condition = condition.trim();
@@ -805,7 +824,6 @@ public class CUBRIDExportHelper extends
 //			buf.append(" ").append(condition);
 //		}
 		return buf.toString();
-		
 	}
 	
 	public String getGraphSelectSQL(Edge e) {
@@ -823,7 +841,26 @@ public class CUBRIDExportHelper extends
 		// if it required a schema name when there create sql such as SCOTT.EMP
 		addGraphSchemaPrefix(e, buf);
 		buf.append(getQuotedObjName(e.getEdgeLabel()));
-
+		
+		if (e.hasDateTimeFilter()) {
+			Column conditionCol = e.getConditionColumn();
+			
+			buf.append(" WHERE ");
+			buf.append(conditionCol.getName());
+			
+			buf.append(" BETWEEN ");
+			
+			if (conditionCol.getDataType().equals("date")) {
+				buf.append("date\'" + conditionCol.getFromDate() + "\'");
+				buf.append(" AND ");
+				buf.append("date\'" + conditionCol.getToDate() + "\'");
+			} else {
+				buf.append("datetime\'" + conditionCol.getFromDate() + "\'");
+				buf.append(" AND ");
+				buf.append("datetime\'" + conditionCol.getToDate() + "\'");
+			}
+		}
+		
 //		String condition = setc.getCondition();
 //		if (StringUtils.isNotBlank(condition)) {
 //			condition = condition.trim();

@@ -300,11 +300,13 @@ public class Messages extends
 	public static String errCannotOpenExternalBrowser;
 	public static String errCannotOpenInternalBrowser;
 	public static String errCascadeOnUpdateNotSupported;
+	public static String errColumnNotSelected;
 	public static String errConnectDatabase;
 	public static String errDuplicateSequenceName;
 	public static String errErrorFileNotFound;
 	public static String errInvalidChar;
 	public static String errInvalidDate;
+	public static String errInvalidData;
 	public static String errInvalidHandlerSetting;
 	public static String errInvalidJdbcJar;
 	public static String errInvalidMysqlDumpFile;
@@ -532,6 +534,7 @@ public class Messages extends
 	public static String msgErrBigMin;
 	public static String msgErrCanntOpenWizardWithReport;
 	public static String msgErrColumnNotEnoughLength;
+	public static String msgErrColumnNotSelected;
 	public static String msgErrDefaultValue;
 	public static String msgErrDupColumnName;
 	public static String msgErrDupFKName;
@@ -557,6 +560,7 @@ public class Messages extends
 	public static String msgErrInvalidColumnName;
 	public static String msgErrInvalidCondition;
 	public static String msgErrInvalidDataType;
+	public static String msgErrInvalidData;
 	public static String msgErrInvalidFilePrefix;
 	public static String msgErrInvalidFKColumns;
 	public static String msgErrInvalidFKName;

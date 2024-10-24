@@ -869,7 +869,6 @@ public abstract class DBExportHelper implements
 //			buf.append(" ").append(condition);
 //		}
 		return buf.toString();
-		
 	}
 	
 	public String getGraphSelectSQL(Edge e) {

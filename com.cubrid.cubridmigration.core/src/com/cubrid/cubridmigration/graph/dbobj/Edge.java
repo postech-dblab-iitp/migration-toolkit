@@ -38,6 +38,8 @@ public class Edge extends DBObject {
 	private String endVertexName;
 	private String sourceDBObject;
 
+	private boolean hasDateTimeFilter = false;
+
 	String ddl = "-";
 	
 	private List<Column> columnList = new ArrayList<Column>();
@@ -264,5 +266,36 @@ public class Edge extends DBObject {
 		}
 		
 		return sourceDBObject;
+	}
+	
+	public boolean hasDateTimeFilter() {
+		return hasDateTimeFilter;
+	}
+
+	public void setHasDateTimeFilter(boolean hasTimeFilter) {
+		if (hasTimeFilter == false) {
+			removeDateTimeFilter();
+		}
+		
+		this.hasDateTimeFilter = hasTimeFilter;
+	}	
+	
+	private void removeDateTimeFilter() {
+		for (Column col : getColumnList()) {
+			if (col.isConditionColumn() == true) {
+				col.setConditionColumn(false);
+				break;
+			}
+		}
+	}
+	
+	public Column getConditionColumn() {
+		for (Column col : columnList) {
+			if (col.isConditionColumn()) {
+				return col;
+			}
+		}
+		
+		return null;
 	}
 }

@@ -30,6 +30,8 @@ MiT는 DB의 연결 정보 또는 DB이관에 필요한 정보들을 추가할 D
 
 대부분의 파라미터는 DBConstant에 작성해놓은 내용을 사용하기 때문에 DBConstant 클래스를 먼저 작성하는 것이 권장된다.
 
+.. image:: ./image/DatabaseType.png
+
 -------------
 ConnHelper
 -------------
@@ -41,6 +43,8 @@ DatabaseType 내부에 inner class로 존재한다.
 - String makeUrl: parameter로 connParameters를 사용하여 jdbc 연결 url을 return하는 메소드
 - Connection createConnection: parameter로 connParameters를 사용하여 connection을 return하는 메소드
 - void checkDatabase: parameter로 connetion을 사용해서 간단한 요청을 날려 db가 현재 사용가능한 상태인지를 확인한다
+
+.. image:: ./image/ConnHelper.png
 
 ==================
 SchemaFetcher
@@ -67,6 +71,8 @@ graphDB를 추가할 경우 필요한 메소드의 예시는 다음과 같다
 
 Exporter의 호출로 실행되며 실제 query를 실행하고 이관하는 것은 Exporter에서 이뤄진다
 
+.. image:: ./image/ExportHelper.png
+
 =========================
 Exporter
 =========================
@@ -86,7 +92,12 @@ LoadFileImporter
 추출한 record를 csv 형태로 출력할 때 이 class에서 추가해야 할 내용이 있다. 해당 method는 LoadFileImporter class에 구현되어 있다
 
 - handleListFileHeader: 배치 실행을 위해 sh형태로 csv 입력 명령어를 작성하는 method
+
+.. image:: ./image/GraphListFile.png
+
 - writeGraphHeader: csv파일의 첫 줄(header)을 해당 DB가 인식 할 수 있는 형태로 작성하는 method
+
+.. image:: ./image/FileHeader.png
 
 -------------------------
 GraphJDBCImporter
@@ -153,3 +164,5 @@ GraphSelectSrcTarTypesView
 최초 MiT를 실행하고 원본, 대상 DB를 선택하는 페이지이다.
 
 UI페이지에서 radio button으로 원본, 대상 DB에 추가할 DB 선택 버튼을 설정한다.
+
+.. image:: ./image/SrcTarTypesView.png

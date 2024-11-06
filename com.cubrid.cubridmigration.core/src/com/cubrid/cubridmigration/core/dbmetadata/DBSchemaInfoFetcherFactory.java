@@ -31,8 +31,6 @@ package com.cubrid.cubridmigration.core.dbmetadata;
 
 import com.cubrid.cubridmigration.core.connection.ConnParameters;
 import com.cubrid.cubridmigration.core.dbobject.Catalog;
-import com.cubrid.cubridmigration.mysql.MysqlXmlDumpSource;
-import com.cubrid.cubridmigration.mysql.meta.MYSQLXMLSchemaFether;
 
 /**
  * DBSchemaInfoFetcherFactory build data source's schema information.
@@ -68,8 +66,6 @@ public final class DBSchemaInfoFetcherFactory {
 	public static IDBSchemaInfoFetcher createFetcher(IDBSource ds) {
 		if (ds instanceof ConnParameters) {
 			return new JDBCDBSchemaFetcherFacade();
-		} else if (ds instanceof MysqlXmlDumpSource) {
-			return new MYSQLXMLSchemaFether();
 		}
 		return NA_FETCHER;
 	}

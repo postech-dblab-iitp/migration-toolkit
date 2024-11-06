@@ -85,7 +85,6 @@ import com.cubrid.cubridmigration.core.engine.exception.ErrorMigrationTemplateEx
 import com.cubrid.cubridmigration.graph.dbobj.Edge;
 import com.cubrid.cubridmigration.graph.dbobj.GraphDictionary;
 import com.cubrid.cubridmigration.graph.dbobj.Vertex;
-import com.cubrid.cubridmigration.mysql.trans.MySQL2CUBRIDMigParas;
 
 /**
  * MigrationTemplateParser Description
@@ -247,16 +246,6 @@ public final class MigrationTemplateParser {
 					getBooleanString(config.isImplicitEstimate()));
 			param.setAttribute(TemplateTags.ATTR_UPDATE_STATISTICS,
 					getBooleanString(config.isUpdateStatistics()));
-			if (config.hasOtherParam()) {
-				String s1 = config.getOtherParam(MySQL2CUBRIDMigParas.UNPARSED_TIME);
-				param.setAttribute(MySQL2CUBRIDMigParas.UNPARSED_TIME, s1 == null ? "" : s1);
-				String s2 = config.getOtherParam(MySQL2CUBRIDMigParas.UNPARSED_DATE);
-				param.setAttribute(MySQL2CUBRIDMigParas.UNPARSED_DATE, s2 == null ? "" : s2);
-				String s3 = config.getOtherParam(MySQL2CUBRIDMigParas.UNPARSED_TIMESTAMP);
-				param.setAttribute(MySQL2CUBRIDMigParas.UNPARSED_TIMESTAMP, s3 == null ? "" : s3);
-				String s4 = config.getOtherParam(MySQL2CUBRIDMigParas.REPLAXE_CHAR0);
-				param.setAttribute(MySQL2CUBRIDMigParas.REPLAXE_CHAR0, s4 == null ? "" : s4);
-			}
 			//Save XML content to file.
 			saveDoc2File(fileName, document);
 		} catch (Exception ex) {

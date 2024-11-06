@@ -62,7 +62,6 @@ import com.cubrid.cubridmigration.core.export.DBExportHelper;
 import com.cubrid.cubridmigration.cubrid.export.CUBRIDExportHelper;
 import com.cubrid.cubridmigration.graph.dbobj.Edge;
 import com.cubrid.cubridmigration.graph.dbobj.Vertex;
-import com.cubrid.cubridmigration.oracle.export.OracleExportHelper;
 import com.cubrid.cubridmigration.tibero.export.TiberoExportHelper;
 
 /**
@@ -403,8 +402,7 @@ public class JDBCExporter extends
 	protected boolean isLatestPage(Table sTable, long exportedRecords, long recordCountOfCurrentPage) {
 		int sourceDBTypeID = config.getSourceDBType().getID();
 		if (config.isImplicitEstimate()
-		        && (sourceDBTypeID == DatabaseType.ORACLE.getID()
-		        ||  sourceDBTypeID == DatabaseType.MYSQL.getID() || sourceDBTypeID == DatabaseType.TIBERO.getID())) {
+		        && sourceDBTypeID == DatabaseType.TIBERO.getID()) {
 			return true;
 		}
 		
@@ -420,8 +418,7 @@ public class JDBCExporter extends
 	protected boolean isGraphLatestPage(Table sTable, long exportedRecords, long recordCountOfCurrentPage) {
 		int sourceDBTypeID = config.getSourceDBType().getID();
 		if (config.isImplicitEstimate()
-		        && (sourceDBTypeID == DatabaseType.ORACLE.getID()
-		        ||  sourceDBTypeID == DatabaseType.MYSQL.getID() || sourceDBTypeID == DatabaseType.TIBERO.getID())) {
+		        && sourceDBTypeID == DatabaseType.TIBERO.getID()) {
 			return true;
 		}
 		
@@ -1348,8 +1345,6 @@ public class JDBCExporter extends
 	private DBExportHelper getExportHelperType(DBExportHelper exportHelper) {
 		if (exportHelper instanceof CUBRIDExportHelper) {
 			return (CUBRIDExportHelper) exportHelper;
-		} else if (exportHelper instanceof OracleExportHelper) {
-			return (OracleExportHelper) exportHelper;
 		} else if (exportHelper instanceof TiberoExportHelper) {
 			return (TiberoExportHelper) exportHelper;
 		} else {

@@ -59,7 +59,7 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 
 import com.cubrid.cubridmigration.core.common.log.LogUtil;
 import com.cubrid.cubridmigration.cubrid.CUBRIDTimeUtil;
-import com.cubrid.cubridmigration.mysql.trans.MySQL2CUBRIDMigParas;
+import com.cubrid.cubridmigration.tibero.trans.MigrationParameters;
 import com.cubrid.cubridmigration.ui.common.Status;
 import com.cubrid.cubridmigration.ui.common.UICommonTool;
 import com.cubrid.cubridmigration.ui.message.Messages;
@@ -104,7 +104,7 @@ public class MySQLToCUBRIDParameterPage extends
 		if (btnTimeNull.getSelection()) {
 			return null;
 		} else if (btnTime0.getSelection()) {
-			return MySQL2CUBRIDMigParas.DEFAULT_UNPARSED_TIME_VALUE;
+			return MigrationParameters.DEFAULT_UNPARSED_TIME_VALUE;
 		} else {
 			long timestamp = CUBRIDTimeUtil.parseTime2Long(txtOtherTime.getText(),
 					TimeZone.getDefault());
@@ -122,7 +122,7 @@ public class MySQLToCUBRIDParameterPage extends
 		if (btnDate0Null.getSelection()) {
 			return null;
 		} else if (btnDate0First.getSelection()) {
-			return MySQL2CUBRIDMigParas.DEFAULT_UNPARSED_DATE_VALUE;
+			return MigrationParameters.DEFAULT_UNPARSED_DATE_VALUE;
 		} else {
 			long time = CUBRIDTimeUtil.parseDate2Long(txtOtherDate.getText(), TimeZone.getDefault());
 			return CUBRIDTimeUtil.defaultFormatDate(new Date(time));
@@ -139,7 +139,7 @@ public class MySQLToCUBRIDParameterPage extends
 		if (btnTimeStampNull.getSelection()) {
 			return null;
 		} else if (btnTimeStamp0.getSelection()) {
-			return MySQL2CUBRIDMigParas.DEFAULT_UNPARSED_TIMESTAMP_VALUE;
+			return MigrationParameters.DEFAULT_UNPARSED_TIMESTAMP_VALUE;
 		} else {
 			long timestamp = CUBRIDTimeUtil.parseDatetime2Long(txtOtherTimestamp.getText(),
 					TimeZone.getDefault());
@@ -155,7 +155,7 @@ public class MySQLToCUBRIDParameterPage extends
 	 */
 	private String getReplacedChar() throws ParseException {
 		if (btnChar0Space.getSelection()) {
-			return MySQL2CUBRIDMigParas.DEFAULT_REPLAXE_CHAR0_VALUE;
+			return MigrationParameters.DEFAULT_REPLAXE_CHAR0_VALUE;
 		} else if (btnChar0Unchanged.getSelection()) {
 			return "'\u0000'";
 		} else {
@@ -204,13 +204,13 @@ public class MySQLToCUBRIDParameterPage extends
 		}
 
 		try {
-			MySQL2CUBRIDMigParas.putMigrationParamter(MySQL2CUBRIDMigParas.UNPARSED_TIME,
+			MigrationParameters.putMigrationParamter(MigrationParameters.UNPARSED_TIME,
 					getReplacedTime());
-			MySQL2CUBRIDMigParas.putMigrationParamter(MySQL2CUBRIDMigParas.UNPARSED_DATE,
+			MigrationParameters.putMigrationParamter(MigrationParameters.UNPARSED_DATE,
 					getReplacedDate());
-			MySQL2CUBRIDMigParas.putMigrationParamter(MySQL2CUBRIDMigParas.UNPARSED_TIMESTAMP,
+			MigrationParameters.putMigrationParamter(MigrationParameters.UNPARSED_TIMESTAMP,
 					getReplacedTimestamp());
-			MySQL2CUBRIDMigParas.putMigrationParamter(MySQL2CUBRIDMigParas.REPLAXE_CHAR0,
+			MigrationParameters.putMigrationParamter(MigrationParameters.REPLAXE_CHAR0,
 					getReplacedChar());
 			MigrationPreferenceUtils.save();
 		} catch (ParseException e) {
@@ -267,7 +267,7 @@ public class MySQLToCUBRIDParameterPage extends
 	 * performDefaults
 	 */
 	protected void performDefaults() {
-		MySQL2CUBRIDMigParas.restoreDefault();
+		MigrationParameters.restoreDefault();
 		MigrationPreferenceUtils.save();
 		refreshGUI();
 		updateDialogStatus(null);
@@ -624,54 +624,54 @@ public class MySQLToCUBRIDParameterPage extends
 	 * 
 	 */
 	private void refreshGUI() {
-		String timeValue = MySQL2CUBRIDMigParas.getMigrationParamter(MySQL2CUBRIDMigParas.UNPARSED_TIME);
+		String timeValue = MigrationParameters.getMigrationParamter(MigrationParameters.UNPARSED_TIME);
 		btnTimeNull.setSelection(false);
 		btnTime0.setSelection(false);
 		btnOtherTime.setSelection(false);
 
 		if (timeValue == null) {
 			btnTimeNull.setSelection(true);
-		} else if (timeValue.equals(MySQL2CUBRIDMigParas.DEFAULT_UNPARSED_TIME_VALUE)) {
+		} else if (timeValue.equals(MigrationParameters.DEFAULT_UNPARSED_TIME_VALUE)) {
 			btnTime0.setSelection(true);
 		} else {
 			btnOtherTime.setSelection(true);
 			txtOtherTime.setText(timeValue);
 		}
 
-		String dateValue = MySQL2CUBRIDMigParas.getMigrationParamter(MySQL2CUBRIDMigParas.UNPARSED_DATE);
+		String dateValue = MigrationParameters.getMigrationParamter(MigrationParameters.UNPARSED_DATE);
 		btnDate0Null.setSelection(false);
 		btnDate0First.setSelection(false);
 		btnOtherDate.setSelection(false);
 
 		if (dateValue == null) {
 			btnDate0Null.setSelection(true);
-		} else if (dateValue.equals(MySQL2CUBRIDMigParas.DEFAULT_UNPARSED_DATE_VALUE)) {
+		} else if (dateValue.equals(MigrationParameters.DEFAULT_UNPARSED_DATE_VALUE)) {
 			btnDate0First.setSelection(true);
 		} else {
 			btnOtherDate.setSelection(true);
 			txtOtherDate.setText(dateValue);
 		}
 
-		String timestampValue = MySQL2CUBRIDMigParas.getMigrationParamter(MySQL2CUBRIDMigParas.UNPARSED_TIMESTAMP);
+		String timestampValue = MigrationParameters.getMigrationParamter(MigrationParameters.UNPARSED_TIMESTAMP);
 		btnTimeStampNull.setSelection(false);
 		btnTimeStamp0.setSelection(false);
 		btnTimeStampOther.setSelection(false);
 
 		if (timestampValue == null) {
 			btnTimeStampNull.setSelection(true);
-		} else if (timestampValue.equals(MySQL2CUBRIDMigParas.DEFAULT_UNPARSED_TIMESTAMP_VALUE)) {
+		} else if (timestampValue.equals(MigrationParameters.DEFAULT_UNPARSED_TIMESTAMP_VALUE)) {
 			btnTimeStamp0.setSelection(true);
 		} else {
 			btnTimeStampOther.setSelection(true);
 			txtOtherTimestamp.setText(timestampValue);
 		}
 
-		String charValue = MySQL2CUBRIDMigParas.getMigrationParamter(MySQL2CUBRIDMigParas.REPLAXE_CHAR0);
+		String charValue = MigrationParameters.getMigrationParamter(MigrationParameters.REPLAXE_CHAR0);
 		btnChar0Space.setSelection(false);
 		btnChar0Unchanged.setSelection(false);
 		btnChar0Other.setSelection(false);
 
-		if (charValue.equals(MySQL2CUBRIDMigParas.DEFAULT_REPLAXE_CHAR0_VALUE)) {
+		if (charValue.equals(MigrationParameters.DEFAULT_REPLAXE_CHAR0_VALUE)) {
 			btnChar0Space.setSelection(true);
 		} else if ("'\u0000'".equals(charValue)) {
 			btnChar0Unchanged.setSelection(true);

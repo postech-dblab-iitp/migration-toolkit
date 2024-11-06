@@ -64,7 +64,6 @@ import com.cubrid.cubridmigration.core.engine.config.SourceTableConfig;
 import com.cubrid.cubridmigration.cubrid.CUBRIDDataTypeHelper;
 import com.cubrid.cubridmigration.graph.dbobj.Edge;
 import com.cubrid.cubridmigration.graph.dbobj.Vertex;
-import com.cubrid.cubridmigration.mysql.trans.MySQL2CUBRIDMigParas;
 
 /**
  * MigrationTemplateHandler Description
@@ -538,22 +537,6 @@ public final class MigrationTemplateHandler extends
 					attributes.getValue(TemplateTags.ATTR_IMPLICIT_ESTIMATE_PROGRESS), false));
 			config.setUpdateStatistics(getBoolean(
 					attributes.getValue(TemplateTags.ATTR_UPDATE_STATISTICS), true));
-			String s1 = attributes.getValue(MySQL2CUBRIDMigParas.UNPARSED_TIME);
-			if (s1 != null) {
-				config.putOtherParam(MySQL2CUBRIDMigParas.UNPARSED_TIME, s1);
-			}
-			String s2 = attributes.getValue(MySQL2CUBRIDMigParas.UNPARSED_DATE);
-			if (s2 != null) {
-				config.putOtherParam(MySQL2CUBRIDMigParas.UNPARSED_DATE, s2);
-			}
-			String s3 = attributes.getValue(MySQL2CUBRIDMigParas.UNPARSED_TIMESTAMP);
-			if (s3 != null) {
-				config.putOtherParam(MySQL2CUBRIDMigParas.UNPARSED_TIMESTAMP, s3);
-			}
-			String s4 = attributes.getValue(MySQL2CUBRIDMigParas.REPLAXE_CHAR0);
-			if (s4 != null) {
-				config.putOtherParam(MySQL2CUBRIDMigParas.REPLAXE_CHAR0, s4);
-			}
 
 		} else if (isSourceNode) {
 			startSourceElement(qName, attributes);

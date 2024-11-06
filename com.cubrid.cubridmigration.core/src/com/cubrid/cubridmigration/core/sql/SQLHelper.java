@@ -35,7 +35,6 @@ import java.util.regex.Pattern;
 import org.apache.commons.lang.StringUtils;
 
 import com.cubrid.cubridmigration.core.dbobject.Table;
-import com.cubrid.cubridmigration.mssql.MSSQLSQLHelper;
 
 /**
  * SQLHelper Description
@@ -121,14 +120,13 @@ public abstract class SQLHelper {
 	 * @return SQL replaced by page query parameters
 	 */
 	public String replacePageQueryParameters(String sql, long pageSize, long exportedRecordCount) {
-		SQLHelper helper = MSSQLSQLHelper.getInstance(null);
-		String result = helper.replacePageQueryParameterToValue(sql, SQLHelper.SQLPARAM_PAGE_SIZE,
+		String result = replacePageQueryParameterToValue(sql, SQLHelper.SQLPARAM_PAGE_SIZE,
 				String.valueOf(pageSize));
 		long pageStart = Math.max(0, exportedRecordCount);
-		result = helper.replacePageQueryParameterToValue(result, SQLHelper.SQLPARAM_PAGE_START,
+		result = replacePageQueryParameterToValue(result, SQLHelper.SQLPARAM_PAGE_START,
 				String.valueOf(pageStart));
 		long pageEnd = Math.max(0, pageStart + pageSize - 1);
-		result = helper.replacePageQueryParameterToValue(result, SQLHelper.SQLPARAM_PAGE_END,
+		result = replacePageQueryParameterToValue(result, SQLHelper.SQLPARAM_PAGE_END,
 				String.valueOf(pageEnd));
 		return result;
 	}

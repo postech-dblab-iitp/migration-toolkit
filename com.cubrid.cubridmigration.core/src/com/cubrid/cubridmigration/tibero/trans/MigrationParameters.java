@@ -27,7 +27,7 @@
  * OF SUCH DAMAGE. 
  *
  */
-package com.cubrid.cubridmigration.mysql.trans;
+package com.cubrid.cubridmigration.tibero.trans;
 
 import java.io.ByteArrayInputStream;
 import java.sql.Date;
@@ -53,7 +53,7 @@ import com.cubrid.cubridmigration.cubrid.CUBRIDTimeUtil;
  * @author moulingwang
  * @version 1.0 - 2010-12-15
  */
-public final class MySQL2CUBRIDMigParas {
+public final class MigrationParameters {
 	public static final String UNPARSED_TIME = "unparsed_time";
 	public static final String UNPARSED_DATE = "unparsed_date";
 	public static final String UNPARSED_TIMESTAMP = "unparsed_timestamp";
@@ -174,7 +174,7 @@ public final class MySQL2CUBRIDMigParas {
 		}
 	}
 
-	private MySQL2CUBRIDMigParas() {
+	private MigrationParameters() {
 		//Do nothing
 	}
 

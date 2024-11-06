@@ -77,7 +77,7 @@ public class ConnParameters implements
 
 		//String sn = schemaName;
 		//Fix DB name: Oracle is special. For backward compatibility
-		if (dt.getID() == DatabaseType.ORACLE.getID() || dt.getID() == DatabaseType.TIBERO.getID()) {
+		if (dt.getID() == DatabaseType.TIBERO.getID()) {
 			String db = dbName;
 			String header = "";
 			if (dbName.indexOf('/') == 0) {
@@ -400,11 +400,7 @@ public class ConnParameters implements
 	 * @return the default schema name.
 	 */
 	public static String getDefaultSchema(DatabaseType dt, String dbName, String userName) {
-		if (dt.getID() == DatabaseType.MSSQL.getID()) {
-			return "dbo";
-		} else if (dt.getID() == DatabaseType.ORACLE.getID()) {
-			return StringUtils.upperCase(userName);
-		} else if (dt.getID() == DatabaseType.TIBERO.getID()) {
+		if (dt.getID() == DatabaseType.TIBERO.getID()) {
 			return StringUtils.upperCase(userName);
 		}
 		return dbName;

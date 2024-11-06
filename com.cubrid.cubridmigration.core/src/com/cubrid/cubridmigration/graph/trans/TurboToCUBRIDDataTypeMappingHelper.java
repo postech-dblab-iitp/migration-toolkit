@@ -33,7 +33,7 @@ import org.apache.log4j.Logger;
 
 import com.cubrid.cubridmigration.core.common.log.LogUtil;
 import com.cubrid.cubridmigration.core.mapping.AbstractDataTypeMappingHelper;
-import com.cubrid.cubridmigration.oracle.OracleDataTypeHelper;
+import com.cubrid.cubridmigration.tibero.TiberoDataTypeHelper;
 
 /**
  * CubridDatatypeMapping
@@ -74,6 +74,6 @@ public class TurboToCUBRIDDataTypeMappingHelper extends
 //		} else {
 //			return OracleDataTypeHelper.getOracleDataTypeKey(dataTypeUpper);
 //		}
-		return OracleDataTypeHelper.getOracleDataTypeKey(dataTypeUpper);
+		return TiberoDataTypeHelper.getTiberoDataTypeKey(dataTypeUpper);
 	}
 }

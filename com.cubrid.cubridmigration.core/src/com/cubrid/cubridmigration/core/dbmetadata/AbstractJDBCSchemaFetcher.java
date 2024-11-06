@@ -92,7 +92,7 @@ public abstract class AbstractJDBCSchemaFetcher implements
 		String catalogName;
 
 		DatabaseType databaseType = cp.getDatabaseType();
-		if (DatabaseType.ORACLE == databaseType || DatabaseType.ORACLE == databaseType) {
+		if (DatabaseType.TIBERO == databaseType) {
 			//If DB name is SID/schemaName pattern
 			if (dbName.startsWith("/")) {
 				dbName = dbName.substring(1, dbName.length());

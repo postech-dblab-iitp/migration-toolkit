@@ -39,8 +39,6 @@ import com.cubrid.cubridmigration.core.engine.exception.NormalMigrationException
 import com.cubrid.cubridmigration.core.engine.exporter.IMigrationExporter;
 import com.cubrid.cubridmigration.core.engine.exporter.impl.CUBRIDJDBCExporter;
 import com.cubrid.cubridmigration.core.engine.exporter.impl.JDBCExporter;
-import com.cubrid.cubridmigration.core.engine.exporter.impl.MYSQLDumpXMLExporter;
-import com.cubrid.cubridmigration.core.engine.exporter.impl.PerformMYSQLXMLDataReader;
 import com.cubrid.cubridmigration.core.engine.importer.IMigrationImporter;
 import com.cubrid.cubridmigration.core.engine.importer.impl.GraphJDBCImporter;
 import com.cubrid.cubridmigration.core.engine.importer.impl.JDBCImporter;
@@ -200,17 +198,6 @@ public class MigrationProcessManager {
 			exp.setConnManager(context.getConnManager());
 			exp.setEventHandler(context.getEventsHandler());
 			exp.setStatusManager(context.getStatusMgr());
-			exporter = exp;
-		} else if (config.sourceIsXMLDump()) {
-			MYSQLDumpXMLExporter exp = new MYSQLDumpXMLExporter();
-			exp.setConfig(config);
-			exp.setEventHandler(context.getEventsHandler());
-
-			PerformMYSQLXMLDataReader handler = new PerformMYSQLXMLDataReader();
-			handler.setConfig(config);
-			handler.setExecutor(context.getExportRecExe());
-			handler.setStatusManager(context.getStatusMgr());
-			exp.setHandler(handler);
 			exporter = exp;
 		} else {
 			exporter = null;

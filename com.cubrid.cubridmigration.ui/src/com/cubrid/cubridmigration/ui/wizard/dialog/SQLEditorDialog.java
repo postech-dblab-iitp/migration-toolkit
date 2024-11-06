@@ -140,7 +140,7 @@ public class SQLEditorDialog extends
 		getShell().setSize(700, 480);
 		getShell().setText(Messages.addSQLDialogShellTitle);
 		//TODO: Show supporting pagination query message.
-		if (config.sourceIsOnline() && config.getSourceDBType().equals(DatabaseType.MSSQL)) {
+		if (config.sourceIsOnline()) {
 			setMessage(Messages.msgSQLParameterSupport);
 		}
 

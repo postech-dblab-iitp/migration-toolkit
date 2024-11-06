@@ -80,7 +80,6 @@ import com.cubrid.cubridmigration.core.trans.MigrationTransFactory;
 import com.cubrid.cubridmigration.cubrid.CUBRIDDataTypeHelper;
 import com.cubrid.cubridmigration.cubrid.CUBRIDSQLHelper;
 import com.cubrid.cubridmigration.graph.dbobj.GraphDictionary;
-import com.cubrid.cubridmigration.mysql.MysqlXmlDumpSource;
 
 /**
  * 
@@ -104,9 +103,6 @@ public class MigrationConfiguration {
 	//GDB dest_online is cubrid.
 
 	public static final int SOURCE_TYPE_CUBRID = DatabaseType.CUBRID.getID();
-	public static final int SOURCE_TYPE_MYSQL = DatabaseType.MYSQL.getID();
-	public static final int SOURCE_TYPE_ORACLE = DatabaseType.ORACLE.getID();
-	public static final int SOURCE_TYPE_MSSQL = DatabaseType.MSSQL.getID();
 	public static final int SOURCE_TYPE_GRAPH = DatabaseType.NEO4J.getID();
 	public static final int SOURCE_TYPE_TIBERO = DatabaseType.TIBERO.getID();
 	public static final int SOURCE_TYPE_TURBO = DatabaseType.TURBO.getID();
@@ -628,7 +624,7 @@ public class MigrationConfiguration {
 		String catalogName;
 		String defSchemaName;
 		DatabaseType databaseType = sourceConParams.getDatabaseType();
-		if (DatabaseType.ORACLE == databaseType || DatabaseType.TIBERO == databaseType) {
+		if (DatabaseType.TIBERO == databaseType) {
 			//If DB name is SID/schemaName pattern
 			if (dbName.startsWith("/")) {
 				dbName = dbName.substring(1, dbName.length());
@@ -1624,8 +1620,6 @@ public class MigrationConfiguration {
 	private IDBSource getDBSource() {
 		if (sourceIsOnline()) {
 			return sourceConParams;
-		} else if (sourceIsXMLDump()) {
-			return new MysqlXmlDumpSource(sourceFileName, sourceFileEncoding);
 		} else {
 			return new IDBSource() {
 			};
@@ -2122,9 +2116,6 @@ public class MigrationConfiguration {
 	public DatabaseType getSourceDBType() {
 		if (sourceIsCSV() || sourceIsSQL()) {
 			return DatabaseType.CUBRID;
-		}
-		if (sourceIsXMLDump()) {
-			return DatabaseType.MYSQL;
 		}
 		return DatabaseType.getDatabaseTypeByID(sourceType);
 	}
@@ -3557,9 +3548,7 @@ public class MigrationConfiguration {
 	 * @return true if the source is an online database
 	 */
 	public boolean sourceIsOnline() {
-		return (sourceType == SOURCE_TYPE_CUBRID) || (sourceType == SOURCE_TYPE_MYSQL)
-				|| (sourceType == SOURCE_TYPE_ORACLE) || (sourceType == SOURCE_TYPE_MSSQL)
-				|| (sourceType == SOURCE_TYPE_GRAPH || sourceType == SOURCE_TYPE_TIBERO)
+		return (sourceType == SOURCE_TYPE_GRAPH || sourceType == SOURCE_TYPE_TIBERO)
 				|| (sourceType == SOURCE_TYPE_TURBO);
 	}
 

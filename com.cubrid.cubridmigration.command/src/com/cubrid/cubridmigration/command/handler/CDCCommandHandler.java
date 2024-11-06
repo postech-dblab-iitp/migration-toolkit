@@ -73,7 +73,7 @@ import com.cubrid.cubridmigration.cubrid.CUBRIDTimeUtil;
 import com.cubrid.cubridmigration.graph.dbobj.Edge;
 import com.cubrid.cubridmigration.graph.dbobj.GraphDictionary;
 import com.cubrid.cubridmigration.graph.dbobj.Vertex;
-import com.cubrid.cubridmigration.mysql.trans.MySQL2CUBRIDMigParas;
+import com.cubrid.cubridmigration.tibero.trans.MigrationParameters;
 
 /**
  * StartCommandHandler Description
@@ -182,17 +182,17 @@ public class CDCCommandHandler implements
 			}
 			config.cleanNoUsedConfigForStart();
 			if (config.hasOtherParam()) {
-				String s1 = config.getOtherParam(MySQL2CUBRIDMigParas.UNPARSED_TIME);
-				MySQL2CUBRIDMigParas.putMigrationParamter(MySQL2CUBRIDMigParas.UNPARSED_TIME,
+				String s1 = config.getOtherParam(MigrationParameters.UNPARSED_TIME);
+				MigrationParameters.putMigrationParamter(MigrationParameters.UNPARSED_TIME,
 						StringUtils.isEmpty(s1) ? null : s1);
-				String s2 = config.getOtherParam(MySQL2CUBRIDMigParas.UNPARSED_DATE);
-				MySQL2CUBRIDMigParas.putMigrationParamter(MySQL2CUBRIDMigParas.UNPARSED_DATE,
+				String s2 = config.getOtherParam(MigrationParameters.UNPARSED_DATE);
+				MigrationParameters.putMigrationParamter(MigrationParameters.UNPARSED_DATE,
 						StringUtils.isEmpty(s2) ? null : s2);
-				String s3 = config.getOtherParam(MySQL2CUBRIDMigParas.UNPARSED_TIMESTAMP);
-				MySQL2CUBRIDMigParas.putMigrationParamter(MySQL2CUBRIDMigParas.UNPARSED_TIMESTAMP,
+				String s3 = config.getOtherParam(MigrationParameters.UNPARSED_TIMESTAMP);
+				MigrationParameters.putMigrationParamter(MigrationParameters.UNPARSED_TIMESTAMP,
 						StringUtils.isEmpty(s3) ? null : s3);
-				String s4 = config.getOtherParam(MySQL2CUBRIDMigParas.REPLAXE_CHAR0);
-				MySQL2CUBRIDMigParas.putMigrationParamter(MySQL2CUBRIDMigParas.REPLAXE_CHAR0,
+				String s4 = config.getOtherParam(MigrationParameters.REPLAXE_CHAR0);
+				MigrationParameters.putMigrationParamter(MigrationParameters.REPLAXE_CHAR0,
 						StringUtils.isEmpty(s4) ? null : s4);
 			}
 			if (reportMode >= 0) {

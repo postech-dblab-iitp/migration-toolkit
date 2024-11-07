@@ -73,9 +73,6 @@ public class SelectSrcTarTypesView {
 	private Button btnXLSTar;
 
 	private Button btnOnlineCUBRIDSrc;
-	private Button btnOnlineOracleSrc;
-	private Button btnOnlineMYSQLSrc;
-	private Button btnOnlineMSSQLSrc;
 
 	private Button btnDumpSrc;
 	private Button btnSQLSrc;
@@ -135,13 +132,6 @@ public class SelectSrcTarTypesView {
 		btnOnlineGraph.setData(MigrationConfiguration.DEST_GRAPH);
 		tarButtons.add(btnOnlineGraph);
 		
-		
-
-		//		btnOfflineTar = createSrcTarTypeBtn(grpTar,
-		//				Messages.btnDestOfflineCUBRIDDB,
-		//				Messages.btnDestOfflineCUBRIDDBDes);
-		//		btnOfflineTar.setData(MigrationConfiguration.DEST_OFFLINE);
-		//		tarButtons.add(btnOfflineTar);
 		comSep = new Label(grpTar, SWT.SEPARATOR | SWT.HORIZONTAL);
 		comSep.setLayoutData(new GridData(SWT.FILL, SWT.NONE, true, false));
 		{

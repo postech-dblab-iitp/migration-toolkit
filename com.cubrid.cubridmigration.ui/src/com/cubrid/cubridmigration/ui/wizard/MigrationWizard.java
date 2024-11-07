@@ -307,7 +307,8 @@ public class MigrationWizard extends
 		if (migrationConfig.sourceIsSQL()) {
 			return IDX_SQL;
 		}
-		return null;
+		
+		return IDX_GRAPH;
 	}
 
 	/**

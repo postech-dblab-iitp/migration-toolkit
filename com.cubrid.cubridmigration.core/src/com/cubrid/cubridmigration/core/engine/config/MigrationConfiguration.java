@@ -3548,7 +3548,7 @@ public class MigrationConfiguration {
 	 * @return true if the source is an online database
 	 */
 	public boolean sourceIsOnline() {
-		return (sourceType == SOURCE_TYPE_GRAPH || sourceType == SOURCE_TYPE_TIBERO)
+		return (sourceType == SOURCE_TYPE_CUBRID) || (sourceType == SOURCE_TYPE_GRAPH || sourceType == SOURCE_TYPE_TIBERO)
 				|| (sourceType == SOURCE_TYPE_TURBO);
 	}
 

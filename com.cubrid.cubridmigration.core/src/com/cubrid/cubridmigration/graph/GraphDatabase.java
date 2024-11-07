@@ -21,7 +21,7 @@ public class GraphDatabase extends DatabaseType {
 
 	public GraphDatabase() {
 		super(DBConstant.DBTYPE_GRAPH,
-				DBConstant.DB_NAMES[4],
+				DBConstant.DB_NAMES[DBConstant.DBTYPE_GRAPH],
 				new String[] { DBConstant.JDBC_CLASS_NEO4J },
 				DBConstant.DEF_PORT_GRAPH, new GraphSchemaFetcher(),
 				new GraphExportHelper(), new GraphConnHelper(), false);

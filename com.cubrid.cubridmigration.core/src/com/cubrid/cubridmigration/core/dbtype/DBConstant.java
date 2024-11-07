@@ -38,33 +38,24 @@ package com.cubrid.cubridmigration.core.dbtype;
 public class DBConstant { // NOPMD
 
 	// public static final int DBTYPE_XML_MYSQL = 4;
-	public static final int DBTYPE_MYSQL = 0;
-	public static final int DBTYPE_CUBRID = 1;
-	public static final int DBTYPE_MSSQL = 2;
-	public static final int DBTYPE_ORACLE = 3;
+	public static final int DBTYPE_CUBRID = 0;
+	public static final int DBTYPE_TIBERO = 1;
+	
 	// GDB dbtype code
-	public static final int DBTYPE_GRAPH = 4;
-	public static final int DBTYPE_TURBO = 6;
+	public static final int DBTYPE_GRAPH = 2;
+	public static final int DBTYPE_TURBO = 3;
 
-	public static final int DBTYPE_TIBERO = 5;
 
 	// GDB in db names
-	public static final String[] DB_NAMES = new String[] { "MYSQL", "CUBRID", "MSSQL", "ORACLE", "GRAPH", "TIBERO",	"TURBO" };
+	public static final String[] DB_NAMES = new String[] { "CUBRID", "TIBERO", "GRAPH", "TURBO" };
 
-	public static final String JDBC_CLASS_ORACLE = "oracle.jdbc.OracleDriver";
-	public static final String JDBC_CLASS_MSSQL = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
 	public static final String JDBC_CLASS_CUBRID = "cubrid.jdbc.driver.CUBRIDDriver";
-	public static final String JDBC_CLASS_MYSQL = "org.gjt.mm.mysql.Driver";
 	public static final String JDBC_CLASS_TIBERO = "com.tmax.tibero.jdbc.TbDriver";
 	public static final String JDBC_CLASS_TURBO = "turbograph.jdbc.driver.TURBOGRAPHDriver";
-	public static final String JDBC_CLASS_MSSQL_JTDS = "net.sourceforge.jtds.jdbc.Driver";
 	// GDB driver
 	public static final String JDBC_CLASS_NEO4J = "org.neo4j.jdbc.Driver";
 
-	public static final String DEF_PORT_MSSQL = "1433";
-	public static final String DEF_PORT_MYSQL = "3306";
 	public static final String DEF_PORT_CUBRID = "33000";
-	public static final String DEF_PORT_ORACLE = "1521";
 	public static final String DEF_PORT_TIBERO = "8629";
 	// GDB port
 	public static final String DEF_PORT_GRAPH = "7687";
@@ -75,14 +66,8 @@ public class DBConstant { // NOPMD
 	// public static final String PATTERN_JAR_FILE_CUBRID = "^jdbc\\S*.jar";
 	// public static final String PATTERN_JAR_FILE_ORACLE = "^ojdbc\\S*.jar";
 
-	public static final String PREFIX_QUOTE_MSSQL = "[";
-	public static final String SUFFIX_QUOTE_MSSQL = "]";
-	public static final String PREFIX_QUOTE_MYSQL = "`";
-	public static final String SUFFIX_QUOTE_MYSQL = "`";
 	public static final String PREFIX_QUOTE_CUBRID = "\"";
 	public static final String SUFFIX_QUOTE_CUBRID = "\"";
-	public static final String PREFIX_QUOTE_ORACLE = "\"";
-	public static final String SUFFIX_QUOTE_ORACLE = "\"";
 
 	public static final String DB_NULL_VALUE = "NULL";
 }

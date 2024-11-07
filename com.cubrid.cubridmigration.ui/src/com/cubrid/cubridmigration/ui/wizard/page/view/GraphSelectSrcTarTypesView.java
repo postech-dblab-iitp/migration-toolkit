@@ -68,26 +68,15 @@ public class GraphSelectSrcTarTypesView {
 
 	private Button btnOnlineTar;
 	private Button btnOnlineNeo4j;
-	//private Button btnOfflineTar;
 	private Button btnDumpTar;
-	//private Button btnSQLTar;
 
 	private Button btnCSVTar;
-	//private Button btnXLSTar;
 
 	private Button btnOnlineCUBRIDSrc;
 	private Button btnOnlineTiberoSrc;
 	private Button btnOnlineGraphSrc;
-	private Button btnOnlineOracleSrc;
 	private Button btnOnlineTiberoTar;
 	private Button btnOnlineTurboSrc;
-	private Button btnOnlineTurboTar;
-	//private Button btnOnlineMYSQLSrc;
-	//private Button btnOnlineMSSQLSrc;
-
-	//private Button btnDumpSrc;
-	//private Button btnSQLSrc;
-	//private Button btnCSVSrc;
 
 	private final List<Button> srcButtons = new ArrayList<Button>(4);
 
@@ -116,22 +105,6 @@ public class GraphSelectSrcTarTypesView {
 			}
 		});
 		srcButtons.add(btnOnlineCUBRIDSrc);
-		
-//		btnOnlineOracleSrc = createSrcTarTypeBtn(grpSrc, Messages.btnSrcOnlineOracleDB,
-//				Messages.btnSrcOnlineOracleDBDes);
-//		btnOnlineOracleSrc.setData(MigrationConfiguration.SOURCE_TYPE_ORACLE);
-//		btnOnlineOracleSrc.addSelectionListener(new SelectionAdapter() {
-//			@Override
-//			public void widgetSelected(SelectionEvent e) {
-//				// TODO Auto-generated method stub
-//				Button sourceBtn = (Button) e.getSource();
-//				if (sourceBtn.getSelection()) {
-//					selectCUBRIDSrc();
-//				}
-//			}
-//		});
-//		
-//		srcButtons.add(btnOnlineOracleSrc);
 		
 		btnOnlineTiberoSrc = createSrcTarTypeBtn(grpSrc, Messages.btnSrcOnlineTiberoDB,
 				Messages.btnSrcOnlineTiberoDBDes);
@@ -180,39 +153,12 @@ public class GraphSelectSrcTarTypesView {
 		});
 		srcButtons.add(btnOnlineTurboSrc);
 
-//		btnOnlineMYSQLSrc = createSrcTarTypeBtn(grpSrc, Messages.btnSrcOnlineMySQLDB,
-//				Messages.btnSrcOnlineMySQLDBDes);
-//		btnOnlineMYSQLSrc.setData(MigrationConfiguration.SOURCE_TYPE_MYSQL);
-//		srcButtons.add(btnOnlineMYSQLSrc);
-//
-//		btnOnlineOracleSrc = createSrcTarTypeBtn(grpSrc, Messages.btnSrcOnlineOracleDB,
-//			Messages.btnSrcOnlineOracleDBDes);
-//		btnOnlineOracleSrc.setData(MigrationConfiguration.SOURCE_TYPE_ORACLE);
-//		srcButtons.add(btnOnlineOracleSrc);
-//
-//		btnOnlineMSSQLSrc = createSrcTarTypeBtn(grpSrc, Messages.btnSrcOnlineMSSQLDB,
-//				Messages.btnSrcOnlineMSSQLDBDes);
-//		btnOnlineMSSQLSrc.setData(MigrationConfiguration.SOURCE_TYPE_MSSQL);
-//		srcButtons.add(btnOnlineMSSQLSrc);
 		Label comSep = new Label(grpSrc, SWT.SEPARATOR | SWT.HORIZONTAL);
 		{
 			GridData gd = new GridData(SWT.FILL, SWT.NONE, true, false);
 			gd.verticalIndent = 8;
 			comSep.setLayoutData(gd);
 		}
-
-//		btnDumpSrc = createSrcTarTypeBtn(grpSrc, Messages.btnSrcMySQLDumpDB,
-//				Messages.btnSrcMySQLDumpDBDes);
-//		btnDumpSrc.setData(MigrationConfiguration.SOURCE_TYPE_XML_1);
-//		srcButtons.add(btnDumpSrc);
-//
-//		btnSQLSrc = createSrcTarTypeBtn(grpSrc, Messages.btnSrcSQLFiles, Messages.btnSrcSQLFilesDes);
-//		btnSQLSrc.setData(MigrationConfiguration.SOURCE_TYPE_SQL);
-//		srcButtons.add(btnSQLSrc);
-//
-//		btnCSVSrc = createSrcTarTypeBtn(grpSrc, Messages.btnSrcCSVFiles, Messages.btnSrcCSVFilesDes);
-//		btnCSVSrc.setData(MigrationConfiguration.SOURCE_TYPE_CSV);
-//		srcButtons.add(btnCSVSrc);
 
 		Group grpTar = new Group(sectionClient, SWT.NONE);
 		grpTar.setLayout(new GridLayout());
@@ -234,13 +180,6 @@ public class GraphSelectSrcTarTypesView {
 		btnOnlineNeo4j.setData(MigrationConfiguration.DEST_GRAPH);
 		tarButtons.add(btnOnlineNeo4j);
 		
-		
-
-		//		btnOfflineTar = createSrcTarTypeBtn(grpTar,
-		//				Messages.btnDestOfflineCUBRIDDB,
-		//				Messages.btnDestOfflineCUBRIDDBDes);
-		//		btnOfflineTar.setData(MigrationConfiguration.DEST_OFFLINE);
-		//		tarButtons.add(btnOfflineTar);
 		comSep = new Label(grpTar, SWT.SEPARATOR | SWT.HORIZONTAL);
 		comSep.setLayoutData(new GridData(SWT.FILL, SWT.NONE, true, false));
 		{
@@ -254,20 +193,10 @@ public class GraphSelectSrcTarTypesView {
 		btnDumpTar.setData(MigrationConfiguration.DEST_DB_UNLOAD);
 		tarButtons.add(btnDumpTar);
 		
-//		btnSQLTar = createSrcTarTypeBtn(grpTar, Messages.btnDestSQLFiles,
-//				Messages.btnDestSQLFilesDes);
-//		btnSQLTar.setData(MigrationConfiguration.DEST_SQL);
-//		tarButtons.add(btnSQLTar);
-//
 		btnCSVTar = createSrcTarTypeBtn(grpTar, Messages.btnDestCSVFiles,
 				Messages.btnDestCSVFilesDes);
 		btnCSVTar.setData(MigrationConfiguration.DEST_CSV);
 		tarButtons.add(btnCSVTar);
-//
-//		btnXLSTar = createSrcTarTypeBtn(grpTar, Messages.btnDestXLSFiles,
-//				Messages.btnDestXLSFilesDes);
-//		btnXLSTar.setData(MigrationConfiguration.DEST_XLS);
-//		tarButtons.add(btnXLSTar);
 
 		readDefaultTypes();
 	}
@@ -352,12 +281,6 @@ public class GraphSelectSrcTarTypesView {
 	 * @return error message
 	 */
 	public String save() {
-//		if (btnSQLSrc.getSelection() && !btnOnlineTar.getSelection()) {
-//			return Messages.errMsgErrorDestinationType1;
-//		}
-//		if (btnCSVSrc.getSelection() && !btnOnlineTar.getSelection()) {
-//			return Messages.errMsgErrorDestinationType2;
-//		}
 		save2Default();
 		return "";
 	}

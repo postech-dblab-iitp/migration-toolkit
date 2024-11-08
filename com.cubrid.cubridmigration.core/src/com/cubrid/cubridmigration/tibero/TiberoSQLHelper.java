@@ -53,7 +53,6 @@ public class TiberoSQLHelper extends
 	 * Singleton factory.
 	 * 
 	 * @param version Tibero server version
-	 * @return MSSQLDDLUtil
 	 */
 	public static TiberoSQLHelper getInstance(String version) {
 		return INS;

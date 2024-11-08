@@ -113,7 +113,7 @@ public class MigrationConfiguration {
 	public static final int DEST_TYPE_TURBO = DatabaseType.TURBO.getID();
 	
 	public static final int DEST_ONLINE = 5;
-	public static final int DEST_GRAPH = 4;
+	public static final int DEST_GRAPH = 2;
 
 	public static final int SOURCE_TYPE_XML_1 = 101;
 	public static final int SOURCE_TYPE_SQL = 102;

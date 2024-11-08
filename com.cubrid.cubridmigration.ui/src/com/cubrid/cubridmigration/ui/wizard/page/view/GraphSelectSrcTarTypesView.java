@@ -177,7 +177,7 @@ public class GraphSelectSrcTarTypesView {
 		
 		//GDB online neo4j target connect button
 		btnOnlineNeo4j = createSrcTarTypeBtn(grpTar, Messages.btnDestOnlineGraph, Messages.btnDestOnlineGraphes);
-		btnOnlineNeo4j.setData(MigrationConfiguration.DEST_GRAPH);
+		btnOnlineNeo4j.setData(MigrationConfiguration.DEST_TYPE_NEO4J);
 		tarButtons.add(btnOnlineNeo4j);
 		
 		comSep = new Label(grpTar, SWT.SEPARATOR | SWT.HORIZONTAL);

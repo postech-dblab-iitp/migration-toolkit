@@ -459,7 +459,7 @@ public abstract class AbstractJDBCSchemaFetcher implements
 						continue;
 					}
 					
-					if (catalog.getDatabaseType().getID() == 1) {
+					if (catalog.getDatabaseType().getID() == DatabaseType.CUBRID.getID()) {
 						int major = catalog.getVersion().getDbMajorVersion();
 						int miner = catalog.getVersion().getDbMinorVersion();
 						

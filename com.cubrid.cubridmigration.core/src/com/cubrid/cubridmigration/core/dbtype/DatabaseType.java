@@ -69,7 +69,7 @@ public abstract class DatabaseType {
 	
 	public static final DatabaseType TIBERO = new TiberoDatabase();
 
-	private static final DatabaseType[] DTS = new DatabaseType[] {CUBRID, NEO4J, TIBERO, TURBO};
+	private static final DatabaseType[] DTS = new DatabaseType[] {CUBRID, TIBERO, NEO4J, TURBO};
 
 	/**
 	 * Retrieves all Database types

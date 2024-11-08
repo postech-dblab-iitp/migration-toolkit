@@ -308,7 +308,7 @@ public class MigrationWizard extends
 			return IDX_SQL;
 		}
 		
-		return IDX_GRAPH;
+		return null;
 	}
 
 	/**

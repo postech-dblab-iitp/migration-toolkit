@@ -103,7 +103,7 @@ public class MigrationConfiguration {
 	//GDB dest_online is cubrid.
 
 	public static final int SOURCE_TYPE_CUBRID = DatabaseType.CUBRID.getID();
-	public static final int SOURCE_TYPE_GRAPH = DatabaseType.NEO4J.getID();
+	public static final int SOURCE_TYPE_NEO4J = DatabaseType.NEO4J.getID();
 	public static final int SOURCE_TYPE_TIBERO = DatabaseType.TIBERO.getID();
 	public static final int SOURCE_TYPE_TURBO = DatabaseType.TURBO.getID();
 	
@@ -3548,7 +3548,7 @@ public class MigrationConfiguration {
 	 * @return true if the source is an online database
 	 */
 	public boolean sourceIsOnline() {
-		return (sourceType == SOURCE_TYPE_CUBRID) || (sourceType == SOURCE_TYPE_GRAPH || sourceType == SOURCE_TYPE_TIBERO)
+		return (sourceType == SOURCE_TYPE_CUBRID) || (sourceType == SOURCE_TYPE_NEO4J || sourceType == SOURCE_TYPE_TIBERO)
 				|| (sourceType == SOURCE_TYPE_TURBO);
 	}
 
@@ -3625,7 +3625,7 @@ public class MigrationConfiguration {
 	}
 	
 	public boolean targetIsGraph() {
-		return destType == DEST_GRAPH || destType == DEST_TYPE_TURBO;
+		return destType == DEST_GRAPH || destType == DEST_TYPE_TURBO || destType == DEST_TYPE_NEO4J;
 	}
 
 	/**

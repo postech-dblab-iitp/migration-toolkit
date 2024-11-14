@@ -91,8 +91,6 @@ public class Neo4j2TiberoTranformHelper extends DBTransformHelper {
 		String scale = mapping.getScale();
 		
 		tarCol.setDataType(mapping.getDatatype());
-		tarCol.setShownDataType(mapping.getDatatype());
-		
 		
 		if (precision != null) {
 			tarCol.setPrecision(Integer.parseInt(mapping.getPrecision()));
@@ -105,6 +103,8 @@ public class Neo4j2TiberoTranformHelper extends DBTransformHelper {
 		} else {
 			tarCol.setScale(0);
 		}
+		
+		tarCol.setShownDataType(mapping.getDatatype() + "(" + precision + ")");	
 		
 		return tarCol;
 	}

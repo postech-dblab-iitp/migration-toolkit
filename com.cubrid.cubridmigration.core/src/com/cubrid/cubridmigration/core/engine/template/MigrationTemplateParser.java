@@ -270,7 +270,13 @@ public final class MigrationTemplateParser {
 			target.setAttribute(TemplateTags.ATTR_DB_TYPE, "graph");
 		} else if (config.targetIsOnline()) {
 			target.setAttribute(TemplateTags.ATTR_TYPE, TemplateTags.VALUE_ONLINE);
-			target.setAttribute(TemplateTags.ATTR_DB_TYPE, "cubrid");
+			
+			if ((config.getTargetDBType().getID()) == MigrationConfiguration.DEST_TYPE_CUBRID) {
+				target.setAttribute(TemplateTags.ATTR_DB_TYPE, "cubrid");
+			} else if ((config.getTargetDBType().getID()) == MigrationConfiguration.DEST_TYPE_TIBERO) {
+				target.setAttribute(TemplateTags.ATTR_DB_TYPE, "tibero");
+			}
+			
 		} else if (config.targetIsFile()) {
 			target.setAttribute(TemplateTags.ATTR_TYPE, TemplateTags.VALUE_DIR);
 			target.setAttribute(TemplateTags.ATTR_DB_TYPE, "graph");
@@ -284,10 +290,10 @@ public final class MigrationTemplateParser {
 			createGraphTargetVertexTag(config, document, target);
 			createGraphTargetEdgeTag(config, document, target);
 		} else {
-		createTargetConInfoNode(config, document, target);
-		createTargetTableNodes(config, document, target);
-		createTargetSequenceNodes(config, document, target);
-		createTargetViewNodes(config, document, target);
+			createTargetConInfoNode(config, document, target);
+			createTargetTableNodes(config, document, target);
+			createTargetSequenceNodes(config, document, target);
+			createTargetViewNodes(config, document, target);
 		}
 	}
 	

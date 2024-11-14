@@ -35,6 +35,7 @@ import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.hsqldb.Database;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -286,7 +287,7 @@ public final class MigrationTemplateHandler extends
 		final String type = attributes.getValue(TemplateTags.ATTR_TYPE);
 		if (StringUtils.isEmpty(type)) {
 			System.out.println(targetTable.getName() + ":" + column.getName());
-
+			
 		}
 		dtHelper.setColumnDataType(type, column);
 		targetTable.addColumn(column);
@@ -298,10 +299,15 @@ public final class MigrationTemplateHandler extends
 	 * @param attributes of node
 	 */
 	private void parseTargetJDBC(Attributes attributes) {
-		DatabaseType dbType = DatabaseType.CUBRID;
+		DatabaseType dbType = null;
+		
 		
 		if (isGraphTarget) {
 			dbType = DatabaseType.NEO4J;
+		} else if (config.getDestType() == (DatabaseType.CUBRID.getID())) {
+			dbType = DatabaseType.CUBRID;
+		} else {
+			dbType = DatabaseType.TIBERO;
 		}
 		
 		ConnParameters cp = ConnParameters.getConParam(null,
@@ -512,14 +518,24 @@ public final class MigrationTemplateHandler extends
 			isSourceNode = true;
 			config.setSourceType(attributes.getValue(TemplateTags.ATTR_DB_TYPE));
 		} else if (TemplateTags.TAG_TARGET.equals(qName)) {
-			isGraphTarget = (attributes.getValue(TemplateTags.ATTR_DB_TYPE)).equals("graph");
+			String tarDBType = attributes.getValue(TemplateTags.ATTR_DB_TYPE);
+			
+			isGraphTarget = tarDBType.equals("graph");
 			
 			isSourceNode = false;
 			config.setTargetDBVersion(attributes.getValue(TemplateTags.ATTR_VERSION));
 			String type = attributes.getValue(TemplateTags.ATTR_TYPE);
-			config.setDestType(MigrationConfiguration.DEST_GRAPH);
-			if (TemplateTags.VALUE_ONLINE.equalsIgnoreCase(type) && !(isGraphTarget)) {
-				config.setDestType(MigrationConfiguration.DEST_ONLINE);
+			
+			if (isGraphTarget) {
+				config.setDestType(MigrationConfiguration.DEST_GRAPH);
+			} else if (TemplateTags.VALUE_ONLINE.equalsIgnoreCase(type) && !(isGraphTarget)) {
+				
+				if (tarDBType.equals("cubrid")) {
+					config.setDestType(MigrationConfiguration.DEST_TYPE_CUBRID);
+				} else if (tarDBType.equals("tibero")) {
+					config.setDestType(MigrationConfiguration.DEST_TYPE_TIBERO);
+				}
+				
 			} else if (TemplateTags.VALUE_DIR.equalsIgnoreCase(type)) {
 				config.setDestType(MigrationConfiguration.DEST_DB_UNLOAD);
 			}

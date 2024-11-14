@@ -122,7 +122,7 @@ public class GraphSelectSrcTarTypesView {
 		
 		btnOnlineGraphSrc = createSrcTarTypeBtn(grpSrc, Messages.btnSrcOnlineGraphDB,
 				Messages.btnSrcOnlineGraphDBDes);
-		btnOnlineGraphSrc.setData(MigrationConfiguration.SOURCE_TYPE_GRAPH);
+		btnOnlineGraphSrc.setData(MigrationConfiguration.SOURCE_TYPE_NEO4J);
 		btnOnlineGraphSrc.addSelectionListener(new SelectionListener() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -345,7 +345,7 @@ public class GraphSelectSrcTarTypesView {
 				
 				if (srcType == MigrationConfiguration.SOURCE_TYPE_TIBERO || srcType == MigrationConfiguration.SOURCE_TYPE_CUBRID) {
 					selectRDBSrc();
-				} else if (srcType == MigrationConfiguration.SOURCE_TYPE_GRAPH || srcType == MigrationConfiguration.SOURCE_TYPE_TURBO) {
+				} else if (srcType == MigrationConfiguration.SOURCE_TYPE_NEO4J || srcType == MigrationConfiguration.SOURCE_TYPE_TURBO) {
 					selectGraphSrc();
 				}
 			}

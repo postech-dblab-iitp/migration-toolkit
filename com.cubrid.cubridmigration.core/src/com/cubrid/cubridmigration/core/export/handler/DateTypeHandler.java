@@ -31,11 +31,9 @@ package com.cubrid.cubridmigration.core.export.handler;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.TimeZone;
 
 import com.cubrid.cubridmigration.core.dbobject.Column;
 import com.cubrid.cubridmigration.core.export.IExportDataHandler;
-import com.cubrid.cubridmigration.mysql.trans.MySQL2CUBRIDMigParas;
 
 /**
  * BytesTypeHandler Description
@@ -58,9 +56,8 @@ public class DateTypeHandler implements
 		try {
 			return rs.getDate(column.getName());
 		} catch (Exception e) {
-			String dateValue = MySQL2CUBRIDMigParas.getMigrationParamter(MySQL2CUBRIDMigParas.UNPARSED_DATE);
-			return MySQL2CUBRIDMigParas.getReplacedDate(dateValue,
-					TimeZone.getDefault());
+			e.printStackTrace();
+			return null;
 		}
 	}
 }

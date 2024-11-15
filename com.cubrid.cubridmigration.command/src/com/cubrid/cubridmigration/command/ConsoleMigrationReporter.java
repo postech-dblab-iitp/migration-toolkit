@@ -98,16 +98,6 @@ public class ConsoleMigrationReporter extends
 				text.append(srcConnParameters.getTimeZone().substring(0, length)).append(
 						lineSeparator);
 			}
-		} else if (config.sourceIsXMLDump()) {
-			text.append("MYSQL XML Dump file").append(lineSeparator);
-			text.append(tabSeparator).append("File :").append(config.getSourceFileName()).append(
-					lineSeparator);
-			text.append(tabSeparator).append("Charset :").append(config.getSourceFileEncoding()).append(
-					lineSeparator);
-			text.append(tabSeparator).append("Timezone :");
-			int length = config.getSourceFileTimeZone().length() > 9 ? 9
-					: config.getSourceFileTimeZone().length();
-			text.append(config.getSourceFileTimeZone().substring(0, length)).append(lineSeparator);
 		} else if (config.sourceIsSQL()) {
 			text.append("SQL").append(lineSeparator);
 			text.append("SQL Files List:\r\n");

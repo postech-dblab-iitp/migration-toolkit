@@ -62,7 +62,6 @@ import com.cubrid.cubridmigration.core.export.DBExportHelper;
 import com.cubrid.cubridmigration.cubrid.export.CUBRIDExportHelper;
 import com.cubrid.cubridmigration.graph.dbobj.Edge;
 import com.cubrid.cubridmigration.graph.dbobj.Vertex;
-import com.cubrid.cubridmigration.oracle.export.OracleExportHelper;
 import com.cubrid.cubridmigration.tibero.export.TiberoExportHelper;
 
 /**
@@ -403,8 +402,7 @@ public class JDBCExporter extends
 	protected boolean isLatestPage(Table sTable, long exportedRecords, long recordCountOfCurrentPage) {
 		int sourceDBTypeID = config.getSourceDBType().getID();
 		if (config.isImplicitEstimate()
-		        && (sourceDBTypeID == DatabaseType.ORACLE.getID()
-		        ||  sourceDBTypeID == DatabaseType.MYSQL.getID() || sourceDBTypeID == DatabaseType.TIBERO.getID())) {
+		        && sourceDBTypeID == DatabaseType.TIBERO.getID()) {
 			return true;
 		}
 		
@@ -420,8 +418,7 @@ public class JDBCExporter extends
 	protected boolean isGraphLatestPage(Table sTable, long exportedRecords, long recordCountOfCurrentPage) {
 		int sourceDBTypeID = config.getSourceDBType().getID();
 		if (config.isImplicitEstimate()
-		        && (sourceDBTypeID == DatabaseType.ORACLE.getID()
-		        ||  sourceDBTypeID == DatabaseType.MYSQL.getID() || sourceDBTypeID == DatabaseType.TIBERO.getID())) {
+		        && sourceDBTypeID == DatabaseType.TIBERO.getID()) {
 			return true;
 		}
 		
@@ -673,7 +670,7 @@ public class JDBCExporter extends
 			long innerTotalExported = 0L;
 			long totalExported = 0L;
 			long intPageCount = config.getPageFetchCount();
-			String sql = graphExHelper.getGraphSelectSQL(e, config.targetIsCSV());
+			String sql = graphExHelper.getGraphSelectSQL(e);
 			while (true) {
 				if (interrupted) {
 					return;
@@ -712,22 +709,6 @@ public class JDBCExporter extends
 				if (isLatestPage(sTable, totalExported, recordCountOfQuery)) {
 					break;
 				}
-//				innerTotalExported += realPageCount;
-//				outerTotalExported = 0;
-//				
-//				innerQuery = graphExHelper.getJoinTableInnerQuery(e, sql, conn, innerTotalExported, realPageCount);
-//				
-//				pagesql = graphExHelper.getPagedSelectSQLForEdgeCSV(e, innerQuery, realPageCount, outerTotalExported, pk, hasMultiSchema(conn));
-//				
-//				recordCountOfQuery = graphEdgeHandleSQL(conn, pagesql, e, sTable,
-//						records, newRecordProcessor);
-//				totalExported = totalExported + recordCountOfQuery;		
-//				
-//				if (!isLatestPage(sTable, totalExported, recordCountOfQuery)) {
-//					continue;
-//				} else {
-//					break;
-//				}
 			}
 			if (!records.isEmpty()) {
 				newRecordProcessor.processRecords(e.getEdgeLabel(), records);
@@ -789,19 +770,6 @@ public class JDBCExporter extends
 				if (isLatestPage(sTable, totalExported, recordCountOfQuery)) {
 					break;
 				}
-//				innerTotalExported += realPageCount;
-//				outerTotalExport = 0;
-//				
-//				innerQuery = graphExHelper.getInnerQuery(e, sql, conn, innerTotalExported, realPageCount);
-//				pageSQL = graphExHelper.getPagedFkRecords(e, innerQuery, realPageCount, outerTotalExport, hasMultiSchema(conn));
-//				recordCountOfQuery = graphEdgeHandleSQL(conn, pageSQL, e, sTable,
-//						records, newRecordProcessor);
-//				//Stop fetching condition: no result;less then fetching count;great then total count
-//				if (!isLatestPage(sTable, totalExported, recordCountOfQuery)) {
-//					continue;
-//				} else {
-//					break;
-//				}
 			}
 			if (!records.isEmpty()) {
 				newRecordProcessor.processRecords(e.getEdgeLabel(), records);
@@ -1348,8 +1316,6 @@ public class JDBCExporter extends
 	private DBExportHelper getExportHelperType(DBExportHelper exportHelper) {
 		if (exportHelper instanceof CUBRIDExportHelper) {
 			return (CUBRIDExportHelper) exportHelper;
-		} else if (exportHelper instanceof OracleExportHelper) {
-			return (OracleExportHelper) exportHelper;
 		} else if (exportHelper instanceof TiberoExportHelper) {
 			return (TiberoExportHelper) exportHelper;
 		} else {

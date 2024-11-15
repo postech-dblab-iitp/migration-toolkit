@@ -333,7 +333,7 @@ public class MigrationReport implements
 		int sourceType = brief.getSourceType();
 		int destType = brief.getDestType();
 		
-		if (sourceType == 4 && destType == 1) {
+		if (sourceType == MigrationConfiguration.SOURCE_TYPE_NEO4J) {
 			return getOverviewResults();
 		} else {
 			return getGraphOverviewResults();

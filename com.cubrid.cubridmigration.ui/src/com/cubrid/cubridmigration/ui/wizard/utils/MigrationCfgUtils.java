@@ -793,8 +793,7 @@ public class MigrationCfgUtils {
 	 *         avoid data lost.
 	 */
 	public boolean doesNeedToChangeCharacterTypeSize() {
-		return DatabaseType.MYSQL.equals(config.getSourceDBType())
-				|| DatabaseType.ORACLE.equals(config.getSourceDBType());
+		return false;
 	}
 
 	public MigrationConfiguration getMigrationConfiguration() {

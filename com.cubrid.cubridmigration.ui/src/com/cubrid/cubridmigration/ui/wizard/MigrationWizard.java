@@ -111,10 +111,7 @@ public class MigrationWizard extends
 	 */
 	public static Set<Integer> getSupportedSrcDBTypes() {
 		Set<Integer> supportedDBs = new HashSet<Integer>(5);
-		supportedDBs.add(DatabaseType.MYSQL.getID());
-		supportedDBs.add(DatabaseType.ORACLE.getID());
 		supportedDBs.add(DatabaseType.CUBRID.getID());
-		supportedDBs.add(DatabaseType.MSSQL.getID());
 		supportedDBs.add(DatabaseType.NEO4J.getID());
 		supportedDBs.add(DatabaseType.TIBERO.getID());
 		supportedDBs.add(DatabaseType.TURBO.getID());
@@ -310,6 +307,7 @@ public class MigrationWizard extends
 		if (migrationConfig.sourceIsSQL()) {
 			return IDX_SQL;
 		}
+		
 		return null;
 	}
 

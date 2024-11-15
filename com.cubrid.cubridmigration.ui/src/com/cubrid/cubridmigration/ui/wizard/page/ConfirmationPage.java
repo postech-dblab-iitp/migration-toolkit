@@ -55,7 +55,7 @@ import com.cubrid.cubridmigration.core.engine.config.SourceSQLTableConfig;
 import com.cubrid.cubridmigration.core.engine.config.SourceSequenceConfig;
 import com.cubrid.cubridmigration.core.engine.config.SourceTableConfig;
 import com.cubrid.cubridmigration.core.engine.config.SourceViewConfig;
-import com.cubrid.cubridmigration.mysql.trans.MySQL2CUBRIDMigParas;
+import com.cubrid.cubridmigration.tibero.trans.MigrationParameters;
 import com.cubrid.cubridmigration.ui.SWTResourceConstents;
 import com.cubrid.cubridmigration.ui.common.UIConstant;
 import com.cubrid.cubridmigration.ui.message.Messages;
@@ -388,24 +388,6 @@ public class ConfirmationPage extends
 		}
 		setDDLText();
 		switchText(false);
-		setSpecialParametersForMysqlSource();
-	}
-
-	/**
-	 */
-	protected void setSpecialParametersForMysqlSource() {
-		MigrationConfiguration cfg = getMigrationWizard().getMigrationConfig();
-		//Only MYSQL using these parameters
-		if (cfg.getSourceDBType().getID() == DatabaseType.MYSQL.getID()) {
-			String s1 = MySQL2CUBRIDMigParas.getMigrationParamter(MySQL2CUBRIDMigParas.UNPARSED_TIME);
-			cfg.putOtherParam(MySQL2CUBRIDMigParas.UNPARSED_TIME, s1);
-			String s2 = MySQL2CUBRIDMigParas.getMigrationParamter(MySQL2CUBRIDMigParas.UNPARSED_DATE);
-			cfg.putOtherParam(MySQL2CUBRIDMigParas.UNPARSED_DATE, s2);
-			String s3 = MySQL2CUBRIDMigParas.getMigrationParamter(MySQL2CUBRIDMigParas.UNPARSED_TIMESTAMP);
-			cfg.putOtherParam(MySQL2CUBRIDMigParas.UNPARSED_TIMESTAMP, s3);
-			String s4 = MySQL2CUBRIDMigParas.getMigrationParamter(MySQL2CUBRIDMigParas.REPLAXE_CHAR0);
-			cfg.putOtherParam(MySQL2CUBRIDMigParas.REPLAXE_CHAR0, s4);
-		}
 	}
 
 	/**

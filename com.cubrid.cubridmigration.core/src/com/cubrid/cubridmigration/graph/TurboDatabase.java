@@ -20,7 +20,7 @@ public class TurboDatabase extends DatabaseType {
 
 	public TurboDatabase() {
 		super(DBConstant.DBTYPE_TURBO,
-				DBConstant.DB_NAMES[6],	new String[] { DBConstant.JDBC_CLASS_TURBO }, DBConstant.DEF_PORT_TURBO, 
+				DBConstant.DB_NAMES[DBConstant.DBTYPE_TURBO],	new String[] { DBConstant.JDBC_CLASS_TURBO }, DBConstant.DEF_PORT_TURBO, 
 				new TurboSchemaFetcher(), new TurboExportHelper(), new TurboConnHelper(), false);
 		//GDB GraphDatabase constructor
 	}

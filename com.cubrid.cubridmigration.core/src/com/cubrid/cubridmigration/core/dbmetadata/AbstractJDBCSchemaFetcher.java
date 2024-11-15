@@ -92,7 +92,7 @@ public abstract class AbstractJDBCSchemaFetcher implements
 		String catalogName;
 
 		DatabaseType databaseType = cp.getDatabaseType();
-		if (DatabaseType.ORACLE == databaseType || DatabaseType.ORACLE == databaseType) {
+		if (DatabaseType.TIBERO == databaseType) {
 			//If DB name is SID/schemaName pattern
 			if (dbName.startsWith("/")) {
 				dbName = dbName.substring(1, dbName.length());
@@ -459,7 +459,7 @@ public abstract class AbstractJDBCSchemaFetcher implements
 						continue;
 					}
 					
-					if (catalog.getDatabaseType().getID() == 1) {
+					if (catalog.getDatabaseType().getID() == DatabaseType.CUBRID.getID()) {
 						int major = catalog.getVersion().getDbMajorVersion();
 						int miner = catalog.getVersion().getDbMinorVersion();
 						

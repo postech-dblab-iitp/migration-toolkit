@@ -45,11 +45,8 @@ import com.cubrid.cubridmigration.core.dbmetadata.AbstractJDBCSchemaFetcher;
 import com.cubrid.cubridmigration.core.export.DBExportHelper;
 import com.cubrid.cubridmigration.core.sql.SQLHelper;
 import com.cubrid.cubridmigration.cubrid.CUBRIDDatabase;
-import com.cubrid.cubridmigration.graph.TurboDatabase;
 import com.cubrid.cubridmigration.graph.GraphDatabase;
-import com.cubrid.cubridmigration.mssql.MSSQLDatabase;
-import com.cubrid.cubridmigration.mysql.MySQLDatabase;
-import com.cubrid.cubridmigration.oracle.OracleDatabase;
+import com.cubrid.cubridmigration.graph.TurboDatabase;
 import com.cubrid.cubridmigration.tibero.TiberoDatabase;
 
 /**
@@ -63,14 +60,8 @@ public abstract class DatabaseType {
 
 	//private static final Logger LOG = LogUtil.getLogger(DatabaseType.class);
 
-	public static final DatabaseType MYSQL = new MySQLDatabase();
-
 	public static final DatabaseType CUBRID = new CUBRIDDatabase();
 
-	public static final DatabaseType MSSQL = new MSSQLDatabase();
-
-	public static final DatabaseType ORACLE = new OracleDatabase();
-	
 	//GDB add graph Database into DB types
 	public static final DatabaseType NEO4J = new GraphDatabase();
 	
@@ -78,7 +69,7 @@ public abstract class DatabaseType {
 	
 	public static final DatabaseType TIBERO = new TiberoDatabase();
 
-	private static final DatabaseType[] DTS = new DatabaseType[] {MYSQL, CUBRID, ORACLE, MSSQL, NEO4J, TIBERO, TURBO};
+	private static final DatabaseType[] DTS = new DatabaseType[] {CUBRID, TIBERO, NEO4J, TURBO};
 
 	/**
 	 * Retrieves all Database types

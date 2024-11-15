@@ -52,7 +52,6 @@ import com.cubrid.cubridmigration.core.trans.DBTransformHelper;
 import com.cubrid.cubridmigration.cubrid.CUBRIDDataTypeHelper;
 import com.cubrid.cubridmigration.cubrid.CUBRIDTimeUtil;
 import com.cubrid.cubridmigration.cubrid.trans.ToCUBRIDDataConverterFacade;
-import com.cubrid.cubridmigration.mysql.trans.MySQL2CUBRIDMigParas;
 
 public class Tibero2CUBRIDTranformHelper extends
 		DBTransformHelper {
@@ -304,8 +303,8 @@ public class Tibero2CUBRIDTranformHelper extends
 			try {
 				CUBRIDTimeUtil.parseDatetime2Long(defaultValue, TimeZone.getDefault());
 			} catch (Exception e) {
-				String timestampValue = MySQL2CUBRIDMigParas.getMigrationParamter(MySQL2CUBRIDMigParas.UNPARSED_TIMESTAMP);
-				Timestamp replacedTimestamp = MySQL2CUBRIDMigParas.getReplacedTimestamp(
+				String timestampValue = MigrationParameters.getMigrationParamter(MigrationParameters.UNPARSED_TIMESTAMP);
+				Timestamp replacedTimestamp = MigrationParameters.getReplacedTimestamp(
 						timestampValue, TimeZone.getDefault());
 
 				if (replacedTimestamp == null) {
@@ -323,7 +322,7 @@ public class Tibero2CUBRIDTranformHelper extends
 				try {
 					CUBRIDTimeUtil.parseDate2Long(defaultValue, TimeZone.getDefault());
 				} catch (Exception e2) {
-					String timeValue = MySQL2CUBRIDMigParas.getMigrationParamter(MySQL2CUBRIDMigParas.UNPARSED_DATE);
+					String timeValue = MigrationParameters.getMigrationParamter(MigrationParameters.UNPARSED_DATE);
 					cubridColumn.setDefaultValue(timeValue);
 				}
 			}

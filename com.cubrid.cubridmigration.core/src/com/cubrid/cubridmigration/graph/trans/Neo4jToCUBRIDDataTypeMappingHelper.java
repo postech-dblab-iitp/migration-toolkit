@@ -29,12 +29,10 @@
  */
 package com.cubrid.cubridmigration.graph.trans;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.cubrid.cubridmigration.core.common.log.LogUtil;
 import com.cubrid.cubridmigration.core.mapping.AbstractDataTypeMappingHelper;
-import com.cubrid.cubridmigration.oracle.OracleDataTypeHelper;
 
 /**
  * CubridDatatypeMapping
@@ -64,18 +62,8 @@ public class Neo4jToCUBRIDDataTypeMappingHelper extends
 	 * @param scale String
 	 * @return key String
 	 */
-	public String getMapKey(String datatype, String precision, String scale) {
-		String dataTypeUpper = datatype;
-//		if ("NUMBER".equals(dataTypeUpper)) {
-//			return getNumberMapKey(dataTypeUpper, precision);
-//		} else if (dataTypeUpper.matches("INTERVAL DAY\\(\\d*\\) TO SECOND\\(\\d*\\)")) {
-//			return "INTERVAL DAY TO SECOND";
-//		} else if (dataTypeUpper.matches("INTERVAL YEAR\\(\\d*\\) TO MONTH")) {
-//			return "INTERVAL YEAR TO MONTH";
-//		} else {
-//			return OracleDataTypeHelper.getOracleDataTypeKey(dataTypeUpper);
-//		}
-		return OracleDataTypeHelper.getOracleDataTypeKey(dataTypeUpper);
+	public String getMapKey(String datatype, String precision, String scale) {	
+		return null;
 	}
 	
 	/**

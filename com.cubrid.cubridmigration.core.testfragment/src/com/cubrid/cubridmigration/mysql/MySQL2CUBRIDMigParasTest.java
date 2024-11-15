@@ -35,7 +35,7 @@ import java.util.TimeZone;
 
 import org.junit.Test;
 
-import com.cubrid.cubridmigration.mysql.trans.MySQL2CUBRIDMigParas;
+import com.cubrid.cubridmigration.tibero.trans.MigrationParameters;
 
 public class MySQL2CUBRIDMigParasTest {
 
@@ -50,18 +50,18 @@ public class MySQL2CUBRIDMigParasTest {
 		while (reader.read(buf) > 0) {
 			sb.append(buf[0]);
 		}
-		MySQL2CUBRIDMigParas.loadFromPreference(null);
-		MySQL2CUBRIDMigParas.loadFromPreference(sb.toString());
-		MySQL2CUBRIDMigParas.getReplacedDate(null, null);
-		MySQL2CUBRIDMigParas.getReplacedDate("2011-12-12", null);
-		MySQL2CUBRIDMigParas.getReplacedDate("2011-00-00", null);
-		MySQL2CUBRIDMigParas.getReplacedTime(null, null);
-		MySQL2CUBRIDMigParas.getReplacedTime("12:12:12", TimeZone.getDefault());
-		MySQL2CUBRIDMigParas.getReplacedTime("12:12:61", TimeZone.getDefault());
-		MySQL2CUBRIDMigParas.getReplacedTimestamp(null, TimeZone.getDefault());
-		MySQL2CUBRIDMigParas.getReplacedTimestamp("2011-12-12 12:12:12",
+		MigrationParameters.loadFromPreference(null);
+		MigrationParameters.loadFromPreference(sb.toString());
+		MigrationParameters.getReplacedDate(null, null);
+		MigrationParameters.getReplacedDate("2011-12-12", null);
+		MigrationParameters.getReplacedDate("2011-00-00", null);
+		MigrationParameters.getReplacedTime(null, null);
+		MigrationParameters.getReplacedTime("12:12:12", TimeZone.getDefault());
+		MigrationParameters.getReplacedTime("12:12:61", TimeZone.getDefault());
+		MigrationParameters.getReplacedTimestamp(null, TimeZone.getDefault());
+		MigrationParameters.getReplacedTimestamp("2011-12-12 12:12:12",
 				TimeZone.getDefault());
-		MySQL2CUBRIDMigParas.getReplacedTimestamp("2011-12-12 12:12:12.111",
+		MigrationParameters.getReplacedTimestamp("2011-12-12 12:12:12.111",
 				TimeZone.getDefault());
 	}
 }

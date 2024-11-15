@@ -53,7 +53,6 @@ public class TiberoSQLHelper extends
 	 * Singleton factory.
 	 * 
 	 * @param version Tibero server version
-	 * @return MSSQLDDLUtil
 	 */
 	public static TiberoSQLHelper getInstance(String version) {
 		return INS;
@@ -105,17 +104,17 @@ public class TiberoSQLHelper extends
 		bf.append(getQuotedObjName(column.getName()));
 		bf.append(" ").append(column.getShownDataType());
 		
-		if (column.getShownDataType().equals("varchar")) {
-			bf.append("(" + column.getPrecision() + ")");
-			
-			return bf.toString();
-		}
-		
-		if (column.getPrecision() > 0) { 
-			bf.append("(" + column.getPrecision() + ", " + column.getScale() + ")");
-		} else {
-			bf.append("");
-		}
+//		if (column.getShownDataType().equals("varchar")) {
+//			bf.append("(" + column.getPrecision() + ")");
+//			
+//			return bf.toString();
+//		}
+//		
+//		if (column.getPrecision() > 0) { 
+//			bf.append("(" + column.getPrecision() + ", " + column.getScale() + ")");
+//		} else {
+//			bf.append("");
+//		}
 
 		return bf.toString();
 	}

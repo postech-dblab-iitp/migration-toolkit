@@ -71,24 +71,11 @@ public class DataTypeConstant {
 	public static final int CUBRID_DT_CLOB = Types.CLOB; //2005;
 	public static final int CUBRID_DT_BLOB = Types.BLOB; //2004;
 	public static final int CUBRID_DT_ENUM = 61111; //12
-
-	/** MYSQL **/
-	public static final int MYSQL_MAXSIZE = 1073741823;
-	public static final String MYSQL_NCHARMAXSIZE = "536870911";
-
-	/** ORACLE **/
-	public static final int ORACLE_MAXSIZE = 1073741823;
-	public static final String ORACLE_NCHAR_MAXSIZE = "536870911";
-	public static final int ORACLE_INTEGERTOVARCHAR_MINSIZE = 127;
 	
 	/** TIBERO **/
 	public static final int TIBERO_MAXSIZE = 1073741823;
 	public static final String TIBERO_NCHAR_MAXSIZE = "536870911";
 	public static final int TIBERO_INTEGERTOVARCHAR_MINSIZE = 127;
-
-	/** SQLSERVER **/
-	public static final int SQLSERVER_MAXSIZE = 1073741823;
-	public static final String SQLSERVER_NCHAR_MAXSIZE = "536870911";
 
 	public static final String CUBRID_VARCHAR = "varchar";
 	public static final String CUBRID_STRING = "string";

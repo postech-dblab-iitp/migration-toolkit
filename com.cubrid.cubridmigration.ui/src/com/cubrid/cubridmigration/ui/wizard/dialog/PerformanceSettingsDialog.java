@@ -178,7 +178,7 @@ public class PerformanceSettingsDialog extends
 
 	private boolean isSupportPageQuery() {
 		return config.sourceIsOnline()
-				&& (config.getSourceDBType().getID() == DatabaseType.CUBRID.getID() || config.getSourceDBType().getID() == DatabaseType.MSSQL.getID());
+				&& (config.getSourceDBType().getID() == DatabaseType.CUBRID.getID());
 	}
 
 	/**

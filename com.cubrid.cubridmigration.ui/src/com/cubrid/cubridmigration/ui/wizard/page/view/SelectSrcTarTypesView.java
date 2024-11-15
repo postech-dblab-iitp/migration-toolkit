@@ -73,9 +73,6 @@ public class SelectSrcTarTypesView {
 	private Button btnXLSTar;
 
 	private Button btnOnlineCUBRIDSrc;
-	private Button btnOnlineOracleSrc;
-	private Button btnOnlineMYSQLSrc;
-	private Button btnOnlineMSSQLSrc;
 
 	private Button btnDumpSrc;
 	private Button btnSQLSrc;
@@ -100,20 +97,6 @@ public class SelectSrcTarTypesView {
 		btnOnlineCUBRIDSrc.setData(MigrationConfiguration.SOURCE_TYPE_CUBRID);
 		srcButtons.add(btnOnlineCUBRIDSrc);
 
-		btnOnlineMYSQLSrc = createSrcTarTypeBtn(grpSrc, Messages.btnSrcOnlineMySQLDB,
-				Messages.btnSrcOnlineMySQLDBDes);
-		btnOnlineMYSQLSrc.setData(MigrationConfiguration.SOURCE_TYPE_MYSQL);
-		srcButtons.add(btnOnlineMYSQLSrc);
-
-		btnOnlineOracleSrc = createSrcTarTypeBtn(grpSrc, Messages.btnSrcOnlineOracleDB,
-				Messages.btnSrcOnlineOracleDBDes);
-		btnOnlineOracleSrc.setData(MigrationConfiguration.SOURCE_TYPE_ORACLE);
-		srcButtons.add(btnOnlineOracleSrc);
-
-		btnOnlineMSSQLSrc = createSrcTarTypeBtn(grpSrc, Messages.btnSrcOnlineMSSQLDB,
-				Messages.btnSrcOnlineMSSQLDBDes);
-		btnOnlineMSSQLSrc.setData(MigrationConfiguration.SOURCE_TYPE_MSSQL);
-		srcButtons.add(btnOnlineMSSQLSrc);
 		Label comSep = new Label(grpSrc, SWT.SEPARATOR | SWT.HORIZONTAL);
 		{
 			GridData gd = new GridData(SWT.FILL, SWT.NONE, true, false);
@@ -149,13 +132,6 @@ public class SelectSrcTarTypesView {
 		btnOnlineGraph.setData(MigrationConfiguration.DEST_GRAPH);
 		tarButtons.add(btnOnlineGraph);
 		
-		
-
-		//		btnOfflineTar = createSrcTarTypeBtn(grpTar,
-		//				Messages.btnDestOfflineCUBRIDDB,
-		//				Messages.btnDestOfflineCUBRIDDBDes);
-		//		btnOfflineTar.setData(MigrationConfiguration.DEST_OFFLINE);
-		//		tarButtons.add(btnOfflineTar);
 		comSep = new Label(grpTar, SWT.SEPARATOR | SWT.HORIZONTAL);
 		comSep.setLayoutData(new GridData(SWT.FILL, SWT.NONE, true, false));
 		{

@@ -41,7 +41,7 @@ import org.osgi.service.prefs.Preferences;
 import com.cubrid.cubridmigration.core.common.log.LogUtil;
 import com.cubrid.cubridmigration.core.common.xml.IXMLMemento;
 import com.cubrid.cubridmigration.core.common.xml.XMLMemento;
-import com.cubrid.cubridmigration.mysql.trans.MySQL2CUBRIDMigParas;
+import com.cubrid.cubridmigration.tibero.trans.MigrationParameters;
 import com.cubrid.cubridmigration.ui.MigrationUIPlugin;
 
 /**
@@ -70,9 +70,9 @@ public final class MigrationPreferenceUtils {
 			String xmlString = preference.get(ROOT_MIGRATION_PARAMETER, "");
 
 			if (xmlString == null || xmlString.trim().length() == 0) {
-				MySQL2CUBRIDMigParas.restoreDefault();
+				MigrationParameters.restoreDefault();
 			} else {
-				MySQL2CUBRIDMigParas.loadFromPreference(xmlString);
+				MigrationParameters.loadFromPreference(xmlString);
 			}
 		}
 	}
@@ -89,12 +89,12 @@ public final class MigrationPreferenceUtils {
 
 				IXMLMemento dataTypeMapping = memento.createChild(TAG_MYSQLTOCUBRID_MIGRATION_PARAMETERS);
 
-				String[] keys = {MySQL2CUBRIDMigParas.UNPARSED_TIME,
-						MySQL2CUBRIDMigParas.UNPARSED_DATE,
-						MySQL2CUBRIDMigParas.UNPARSED_TIMESTAMP, MySQL2CUBRIDMigParas.REPLAXE_CHAR0};
+				String[] keys = {MigrationParameters.UNPARSED_TIME,
+						MigrationParameters.UNPARSED_DATE,
+						MigrationParameters.UNPARSED_TIMESTAMP, MigrationParameters.REPLAXE_CHAR0};
 
 				for (String key : keys) {
-					String value = MySQL2CUBRIDMigParas.getMigrationParamter(key);
+					String value = MigrationParameters.getMigrationParamter(key);
 					IXMLMemento childMemento = dataTypeMapping.createChild(key);
 					childMemento.putTextData(value == null ? "" : value);
 				}

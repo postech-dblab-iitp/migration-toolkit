@@ -46,7 +46,7 @@ public class TurboSchemaFetcher extends AbstractJDBCSchemaFetcher {
 		String catalogName;
 
 		DatabaseType databaseType = cp.getDatabaseType();
-		if (DatabaseType.ORACLE == databaseType || DatabaseType.TIBERO == databaseType) {
+		if (DatabaseType.TIBERO == databaseType) {
 			//If DB name is SID/schemaName pattern
 			if (dbName.startsWith("/")) {
 				dbName = dbName.substring(1, dbName.length());

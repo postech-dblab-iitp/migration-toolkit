@@ -39,6 +39,7 @@ MiT 2.0 사용자 매뉴얼
     install_upgrade.rst
     start.rst
     release_note/index.rst
+    dev_guide/dev_guide.rst
 
 인덱스
 ======

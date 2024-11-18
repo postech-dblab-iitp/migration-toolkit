@@ -63,7 +63,7 @@ public class Neo4jToCUBRIDDataTypeMappingHelper extends
 	 * @return key String
 	 */
 	public String getMapKey(String datatype, String precision, String scale) {	
-		return null;
+		return datatype;
 	}
 	
 	/**

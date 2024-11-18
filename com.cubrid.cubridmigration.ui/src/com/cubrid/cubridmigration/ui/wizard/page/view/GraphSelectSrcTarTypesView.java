@@ -304,11 +304,17 @@ public class GraphSelectSrcTarTypesView {
 	
 	private void selectRDBSrc() {
 		btnOnlineNeo4j.setEnabled(true);
+		btnOnlineNeo4j.setSelection(true);
+		
 		btnDumpTar.setEnabled(true);
+		
 		btnCSVTar.setEnabled(true);
 		
 		btnOnlineTiberoTar.setEnabled(false);
+		btnOnlineTiberoTar.setSelection(false);
+		
 		btnOnlineTar.setEnabled(false);
+		btnOnlineTar.setSelection(false);
 	}
 	
 	private void selectGraphSrc() {

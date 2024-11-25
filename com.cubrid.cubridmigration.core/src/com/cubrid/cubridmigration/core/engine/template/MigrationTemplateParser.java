@@ -372,6 +372,10 @@ public final class MigrationTemplateParser {
 			vertexElement.setAttribute("table_owner", vertex.getOwner());
 			vertexElement.setAttribute("table_oid", String.valueOf(vertex.getOid()));
 			
+			boolean hasDateTimeFilter = vertex.hasDateTimeFilter();
+			
+			vertexElement.setAttribute("has_filter", String.valueOf(hasDateTimeFilter));
+			
 			List<Column> columnList = vertex.getColumnList();
 			
 			Element columnsElement = createElement(doc, vertexElement, "properties"); 
@@ -389,6 +393,12 @@ public final class MigrationTemplateParser {
 				
 				property.setAttribute("precision", col.getPrecision().toString());
 				property.setAttribute("scale", col.getScale().toString());
+				
+				if (hasDateTimeFilter) {
+					property.setAttribute("start_datetime_value", col.getFromDate());
+					property.setAttribute("end_datetime_value", col.getToDate());
+					property.setAttribute("condition_column", String.valueOf(col.isConditionColumn()));
+				}
 			}
 			
 			Element pkElement = createElement(doc, vertexElement, "pks");

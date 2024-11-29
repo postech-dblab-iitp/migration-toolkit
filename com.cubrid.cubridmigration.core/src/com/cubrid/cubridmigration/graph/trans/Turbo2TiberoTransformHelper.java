@@ -112,6 +112,14 @@ public class Turbo2TiberoTransformHelper extends DBTransformHelper {
 			tarCol.setScale(0);
 		}
 		
+		if (tarCol.getDataType().equals("varchar")) {
+			tarCol.setPrecision(4000);
+			tarCol.setShownDataType(mapping.getDatatype() + "(" + 4000 + ")");
+		} else {
+			tarCol.setPrecision(0);
+		}
+		
+
 		return tarCol;
 	}
 }

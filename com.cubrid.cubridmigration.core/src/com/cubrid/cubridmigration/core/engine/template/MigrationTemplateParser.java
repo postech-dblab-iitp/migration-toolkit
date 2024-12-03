@@ -308,7 +308,7 @@ public final class MigrationTemplateParser {
 			dir.setAttribute(TemplateTags.ATTR_INDEX, config.getTargetIndexFileName());
 			dir.setAttribute(TemplateTags.ATTR_TIMEZONE, config.getTargetFileTimeZone());
 			dir.setAttribute(TemplateTags.ATTR_CHARSET, config.getTargetCharSet());
-
+			dir.setAttribute("sub_type", config.getGraphSubTypeForCSV() + "");
 			dir.setAttribute(TemplateTags.ATTR_ONETABLEONEFILE,
 					getBooleanString(config.isOneTableOneFile()));
 

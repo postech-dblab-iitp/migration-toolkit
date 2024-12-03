@@ -843,6 +843,7 @@ public final class MigrationTemplateHandler extends
 				config.setTargetFileTimeZone(attr.getValue(TemplateTags.ATTR_TIMEZONE));
 				config.setOneTableOneFile(getBoolean(attr.getValue(TemplateTags.ATTR_ONETABLEONEFILE),
 						false));
+				config.setGraphSubTyteForCSV(Integer.parseInt(attr.getValue("sub_type")));
 				final String fileMaxSize = attr.getValue(TemplateTags.ATTR_FILE_MAX_SIZE);
 				config.setMaxCountPerFile(fileMaxSize == null ? 0 : Integer.parseInt(fileMaxSize));
 				config.setTargetFilePrefix(attr.getValue(TemplateTags.ATTR_OUTPUT_FILE_PREFIX));

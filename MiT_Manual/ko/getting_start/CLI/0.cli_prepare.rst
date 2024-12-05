@@ -17,10 +17,9 @@ script
 script 파일은 xml 형식이며 source, target DB의 접속 정보, sourceDB의 메타 정보 등을 가지고 있다.
 
 .. image:: CLI_image/cli_script.png
-
 .. note::
-    script파일은 GUI를 사용한 이관을 진행하면 아래의 경로에 자동 생성된다.
-    ${MiT_workspace}/workspace/cmt/script/*.script
+   script파일은 GUI를 사용한 이관을 진행하면 아래의 경로에 자동 생성된다.
+   ${MiT_workspace}/workspace/cmt/script/*.script
 
 ==============
 MiT CLI 버전

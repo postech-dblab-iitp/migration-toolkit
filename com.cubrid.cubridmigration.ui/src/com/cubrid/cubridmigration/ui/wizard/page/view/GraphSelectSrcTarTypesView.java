@@ -307,8 +307,10 @@ public class GraphSelectSrcTarTypesView {
 		btnOnlineNeo4j.setSelection(true);
 		
 		btnDumpTar.setEnabled(true);
+		btnDumpTar.setSelection(false);
 		
 		btnCSVTar.setEnabled(true);
+		btnCSVTar.setSelection(false);
 		
 		btnOnlineTiberoTar.setEnabled(false);
 		btnOnlineTiberoTar.setSelection(false);

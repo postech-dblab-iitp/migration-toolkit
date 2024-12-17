@@ -653,11 +653,12 @@ public class LoadFileImporter extends
 				 } else if (gInstance instanceof Edge) {
 					 Edge e = (Edge) gInstance;
 					 
-					 if (e.getEdgeType() == Edge.JOIN_TWO_WAY_TYPE)
+					 if (e.getEdgeType() == Edge.JOIN_TWO_WAY_TYPE || e.getEdgeType() == Edge.TWO_WAY_TYPE)
 						 sb.append("\t--relationships_backward:");
 					 else
-						 sb.append("\t--relationships:")
-					 .append(e.getEdgeLabel().replaceAll(" ", "_").toUpperCase());
+						 sb.append("\t--relationships:");
+					 
+					 sb.append(e.getEdgeLabel().replaceAll(" ", "_").toUpperCase());
 				 }
 				 sb.append(" ${base_dir}")
 				 .append(inputFile);
